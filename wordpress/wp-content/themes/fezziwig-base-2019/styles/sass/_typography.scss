@@ -1,0 +1,124 @@
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+$fontsize-html: 18px;
+$fontsize-body: 1em;
+
+$fontsize-md: $fontsize-body;
+$fontsize-xxs: $fontsize-md * .7;
+$fontsize-xs: $fontsize-md * .8;
+$fontsize-sm: $fontsize-md * .9;
+$fontsize-lg: $fontsize-md * 1.33;
+$fontsize-xl: $fontsize-md * 1.66;
+$fontsize-xxl: $fontsize-md * 2;
+
+html {
+  font-size: $fontsize-html;
+}
+
+body {
+  font-size: $fontsize-body;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+body,
+button,
+input,
+select,
+optgroup,
+textarea {
+  color: #404040;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0 0 .75em 0;
+}
+
+h1 {
+  font-size: $fontsize-xxl;
+}
+
+h2 {
+  font-size: $fontsize-xl;
+}
+
+h3 {
+  font-size: $fontsize-lg;
+}
+
+h4 {
+  font-size: $fontsize-md;
+}
+
+h5 {
+  font-size: $fontsize-sm;
+}
+
+h6 {
+  font-size: $fontsize-xxs;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+dfn, cite, em, i {
+  font-style: italic;
+}
+
+blockquote {
+  margin: 0 1.5em;
+}
+
+address {
+  margin: 0 0 1.5em;
+}
+
+pre {
+  background: #eee;
+  font-family: "Courier 10 Pitch", Courier, monospace;
+  font-size: 15px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1.6em;
+}
+
+code, kbd, tt, var {
+  font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 15px;
+  font-size: 0.9375rem;
+}
+
+abbr, acronym {
+  border-bottom: 1px dotted #666;
+  cursor: help;
+}
+
+mark, ins {
+  background: #fff9c0;
+  text-decoration: none;
+}
+
+big {
+  font-size: 125%;
+}
+
+.oooooooooooooooooooooooo {
+  font-size: 2em;
+  color: green;
+  font-style: italic;
+  line-height: .5;
+}

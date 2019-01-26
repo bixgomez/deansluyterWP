@@ -301,7 +301,8 @@
     z-index: 1200;
     background: transparent url(images/video.png) no-repeat scroll 50% 50%;
     width: 100%;
-    height: 100%}
+    height: 100%
+}
 .soliloquy-container .soliloquy-video-holder {
     margin: 0;
     padding: 0;
@@ -314,7 +315,8 @@
     z-index: 1200;
     background: 0 0;
     width: 100%;
-    height: 100%
+    height: 100%;
+    background: black;
 }
 
 /**
@@ -396,6 +398,7 @@
 		float: right !important;
 	}
 }
+
 .rtl{
 	/**
 	* Pager
@@ -431,6 +434,7 @@
 		float: right !important;
 	}
 }
+
 /**
 * Thumbnails
 */
@@ -611,7 +615,8 @@
 * Retina
 */
 @media only screen and (-webkit-min-device-pixel-ratio:2), only screen and (min--moz-device-pixel-ratio:2), only screen and (-o-min-device-pixel-ratio:2/1), only screen and (min-device-pixel-ratio:2), only screen and (min-resolution:192dpi), only screen and (min-resolution:2dppx) {
-    .soliloquy-container {
+
+	.soliloquy-container {
 	    background-image: url(images/preloader@2x.gif);
 	    background-size: 16px 16px;
 	}
@@ -646,7 +651,7 @@
 	.soliloquy-thumbnails-position-right,
 	.soliloquy-thumbnails-position-left{
 			.soliloquy-prev{ background-size: 50% !important; }
-		 	.soliloquy-next{ background-size: 50% !important; }
+		     .soliloquy-next{ background-size: 50% !important; }
 	 }
 }
 
@@ -660,7 +665,7 @@
     .soliloquy-container .soliloquy-caption,
     .soliloquy-container .soliloquy-controls-auto,
     .soliloquy-container .soliloquy-pager {
-    	display: none;
+     display: none;
 	}
 .soliloquy-fullscreen-outer-container.soliloquy-thumbnails-position-left{
 	.soliloquy-thumbnails-container{
@@ -690,7 +695,80 @@
 	.soliloquy-caption.soliloquy-caption-mobile {
 		display: block;
 	}
+/**
+* RTL
+*/
+.soliloquy-rtl {
+	/**
+	* Pager
+	* - add margin to first child
+	* - remove margin from last child
+	*/
+	.soliloquy-pager-item:first-child {
+		margin-left: 7px;
+	}
+	.soliloquy-pager-item:last-child {
+		margin-left: 0;
+	}
+	/**
+	* Direction Controls
+	* - swap left + right controls over
+	*/
+	.soliloquy-next {
+		left: 10px;
+		right: auto;
+		background-image: url(images/left.png);
+	}
+	.soliloquy-prev {
+		right: 10px;
+		left: auto;
+		background-image: url(images/right.png);
+	}
 
+	/**
+	* Thumbnails
+	* - float right so they display
+	*/
+	.soliloquy-thumbnails-item {
+		float: right !important;
+	}
+}
+
+.rtl{
+	/**
+	* Pager
+	* - add margin to first child
+	* - remove margin from last child
+	*/
+	.soliloquy-pager-item:first-child {
+		margin-left: 7px;
+	}
+	.soliloquy-pager-item:last-child {
+		margin-left: 0;
+	}
+	/**
+	* Direction Controls
+	* - swap left + right controls over
+	*/
+	.soliloquy-next {
+		left: 10px;
+		right: auto;
+		background-image: url(images/left.png);
+	}
+	.soliloquy-prev {
+		right: 10px;
+		left: auto;
+		background-image: url(images/right.png);
+	}
+
+	/**
+	* Thumbnails
+	* - float right so they display
+	*/
+	.soliloquy-thumbnails-item {
+		float: right !important;
+	}
+}
 	@media only screen and (-webkit-min-device-pixel-ratio:2), only screen and (min--moz-device-pixel-ratio:2), only screen and (-o-min-device-pixel-ratio:2/1), only screen and (min-device-pixel-ratio:2), only screen and (min-resolution:192dpi), only screen and (min-resolution:2dppx) {
 	    .soliloquy-container .soliloquy-video-icon {
 		    background-image: url(images/video.png);

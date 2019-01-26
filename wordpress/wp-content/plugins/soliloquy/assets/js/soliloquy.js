@@ -7,7 +7,7 @@
 * To load more JS resources:
 * - Add them to the lib subfolder
 * - Add the to the imports directive of this file in CodeKit
-*/		
+*/
 // Mobile checker function.
 function soliloquyIsMobile() {
     var check = false;
@@ -65,7 +65,7 @@ function soliloquyVimeoVids(data, id, width, height, holder, $){
     // Immediately make the holder visible and increase z-index to overlay the player icon.
     $('#' + holder).show().css({'display':'block','z-index':'1210'});
     // Load a new video into the slider.
-    if ( $f ) {
+    // if ( $f ) {
         var attrs = {};
 
         $.each($('#' + holder)[0].attributes, function(idx, attr){
@@ -83,32 +83,29 @@ function soliloquyVimeoVids(data, id, width, height, holder, $){
         });
 
         // Store a reference to the video object for use with the API.
-        soliloquy_vimeo[id] = $f($('#' + holder)[0]);
-       	var slider_id = $('#' + holder).data('soliloquy-slider-id');
+        soliloquy_vimeo[id] = new Vimeo.Player( $(‘#’ + holder )[0], { transparent: false });
 
-        soliloquy_vimeo[id].addEvent('ready', function(){
-	        //stopAuto when video ready, prevents autoplay while buffering
-	        if ( soliloquy_slider[slider_id] ) {
-				soliloquy_slider[slider_id].stopAuto();
-    		}
-        	soliloquy_vimeo[id].addEvent('play', function(){
+          var slider_id = $('#' + holder).data('soliloquy-slider-id');
+
+
+          soliloquy_vimeo[id].on('play', function(){
 
 	            if ( soliloquy_slider[slider_id] ) {
 					soliloquy_slider[slider_id].stopAuto();
-    			}
+               }
             });
-            soliloquy_vimeo[id].addEvent('pause', function(){
-	        	if ( soliloquy_slider[slider_id].getSetting('auto') ) {
+            soliloquy_vimeo[id].on('pause', function(){
+	          if ( soliloquy_slider[slider_id].getSetting('auto') ) {
 					soliloquy_slider[slider_id].startAuto();
-        		}
+               }
             });
-            soliloquy_vimeo[id].addEvent('finish', function(){
-	       		if ( soliloquy_slider[slider_id].getSetting('auto') ) {
-		   			soliloquy_slider[slider_id].startAuto();
-        		}
+            soliloquy_vimeo[id].on('ended', function(){
+	               if ( soliloquy_slider[slider_id].getSetting('auto') ) {
+		               soliloquy_slider[slider_id].startAuto();
+               }
             });
-        });
-    }
+        // });
+    // }
 
 }
 function soliloquyVimeoSliderPause(vid){
@@ -205,18 +202,18 @@ function soliloquyLocalVids(data, id, width, height, holder, $){
     if (data.fullscreen === 1) {
         features.push('fullscreen');
     }
-    
+
     // Init MediaElementPlayer
     soliloquy_local[id] = new MediaElementPlayer( 'video#' + holder, {
         features: features,
         success: function( mediaElement, domObject ) {
 
             if (data.autoplay == 1) {
-	            
+
 				mediaElement.play();
 
             }
-            
+
         }
     });
 

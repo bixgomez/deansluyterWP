@@ -1,0 +1,29 @@
+$xs: 0;
+$sm: 768px;
+$md: 960px;
+$lg: 1080px;
+$xl: 1200px;
+
+$max-site-width: $xl;
+
+$editor-padding-left: 33px;
+$editor-padding-right: 10px;
+
+$editor-outline: #007cba;
+
+
+body {
+  // background-color: rgba(#006667, .1);
+  width: 100%;
+}
+
+.site-wrapper {
+  // background-color: rgba(#006667, .1);
+  max-width: $max-site-width;
+  margin: 0 auto;
+}
+
+.site {
+  // background-color: rgba(#006667, .1);
+  padding: 1em;
+}

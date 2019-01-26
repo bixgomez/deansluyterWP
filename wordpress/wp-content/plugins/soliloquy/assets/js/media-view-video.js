@@ -662,10 +662,6 @@
 					// Cancel operation
 					validated = false;
 				}
-					if ( model.get( 'src' ) === '' ) {
-						// Cancel
-						validated = true;
-					}
 				// If a self hosted video, we need an image placeholder
 				if ( model.get( 'hosted_video' ) ) {
 					if ( model.get( 'src' ) === '' ) {

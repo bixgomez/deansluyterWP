@@ -13,6 +13,39 @@
 		display: inline;
 	}
 
+	/* Un-style buttons */
+	button {
+		display: inline-block;
+		border: none;
+		padding: 0;
+		margin: 0;
+		font-family: $font__heading;
+		font-weight: 700;
+		line-height: $font__line-height-heading;
+		text-decoration: none;
+		background: transparent;
+		color: inherit;
+		cursor: pointer;
+		transition: background 250ms ease-in-out,
+		            transform 150ms ease;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		&:hover,
+		&:focus {
+			background: transparent;
+		}
+
+		&:focus {
+			outline: 1px solid transparent;
+			outline-offset: -4px;
+		}
+
+		&:active {
+			transform: scale(0.99);
+		}
+	}
+
 	.main-menu {
 
 		display: inline-block;
@@ -64,8 +97,9 @@
 				}
 
 				.submenu-expand {
+
 					display: inline-block;
-					margin-right: #{0.5 * $size__spacing-unit};
+					margin-right: #{0.25 * $size__spacing-unit};
 
 					/* Priority+ Menu */
 					&.main-menu-more-toggle {
@@ -85,6 +119,11 @@
 						}
 					}
 
+					.wp-customizer-unloading &,
+					&.is-empty {
+						display: none;
+					}
+
 					svg {
 						position: relative;
 						top: 0.2rem;
@@ -97,10 +136,6 @@
 				margin-right: 0;
 			}
 		}
-
-		.is-hidden {
-			display: none;
-		}
 	}
 
 	.sub-menu {
@@ -110,10 +145,9 @@
 		list-style: none;
 		padding-left: 0;
 
-		display: none;
 		position: absolute;
 		opacity: 0;
-		left: -999px;
+		left: -9999px;
 		z-index: 99999;
 
 		@include media(tablet) {
@@ -168,6 +202,7 @@
 				color: $color__background-body;
 				display: block;
 				line-height: $font__line-height-heading;
+				text-shadow: none;
 				padding: calc( .5 * #{$size__spacing-unit} ) calc( 24px + #{$size__spacing-unit} ) calc( .5 * #{$size__spacing-unit} ) $size__spacing-unit;
 				white-space: nowrap;
 
@@ -179,6 +214,17 @@
 						background: $color__link-hover;
 					}
 				}
+			}
+
+			> .menu-item-link-return {
+				width: 100%;
+				font-size: $font__size_base;
+				font-weight: normal;
+				text-align: left;
+			}
+
+			> a:empty {
+				display: none;
 			}
 
 			&.mobile-parent-nav-menu-item {
@@ -262,37 +308,16 @@
 			}
 		}
 
-		/* Nested sub-menu padding: 10 levels deep */
-		.sub-menu li > a:before {
+		/* Nested sub-menu dashes */
+		.sub-menu {
+			counter-reset: submenu;
+		}
+
+		.sub-menu > li > a::before {
 			font-family: $font__body;
 			font-weight: normal;
-		}
-		.sub-menu > li > a:before {
-			content: "\2013\00a0";
-		}
-		.sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
+			content: "\2013\00a0" counters(submenu, "\2013\00a0", none);
+			counter-increment: submenu
 		}
 	}
 
@@ -359,46 +384,30 @@
 			}
 		}
 
-		/* Nested sub-menu padding: 10 levels deep */
-		.sub-menu li > a:before {
+		/* Nested sub-menu dashes */
+		.sub-menu {
+			counter-reset: submenu;
+		}
+
+		.sub-menu > li > a::before {
 			font-family: $font__body;
 			font-weight: normal;
-		}
-		.sub-menu > li > a:before {
-			content: "\2013\00a0";
-		}
-		.sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
-		}
-		.sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu .sub-menu li > a:before {
-			content: "\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0\2013\00a0";
+			content: "\2013\00a0" counters(submenu, "\2013\00a0", none);
+			counter-increment: submenu
 		}
 	}
 
 	/**
-	 * Full-screen touch device styles
+	 * Fade-in animation for top-level submenus
+	 */
+	.main-menu > .menu-item-has-children:not(.off-canvas):hover > .sub-menu {
+		animation: fade_in 0.1s forwards;
+	}
+
+	/**
+	 * Off-canvas touch device styles
 	 */
 	.main-menu .menu-item-has-children.off-canvas .sub-menu {
-
-		animation: fade_in 0.1s forwards;
 
 		.submenu-expand .svg-icon {
 			transform: rotate(270deg);
@@ -416,6 +425,11 @@
 		li > a:hover,
 		li > a:focus {
 			background-color: transparent;
+		}
+
+		> li > a,
+		> li > .menu-item-link-return {
+			white-space: inherit;
 		}
 
 		&.expanded-true {
@@ -463,6 +477,14 @@
 			}
 		}
 	}
+
+	// Hide duplicate menu-more-link when re-loading a menu in the customizer
+	.main-menu-more {
+		&:nth-child(n+3) {
+			display: none;
+		}
+	}
+
 }
 
 /* Menu animation */

@@ -75,6 +75,7 @@
 	}
  }
 .post-type-soliloquy{
+	.media-modal label{ display: block; }
 	#wp-link-wrap{
 		z-index: 180105 !important;
 	}
@@ -84,45 +85,45 @@
 	}
 
 	#wpbody-content h1{
- 		display: block;
-  		margin: 0;
-  		padding-left: 20px;
- 		padding-right: 20px;
-  		line-height: 45px;
-  		font-size: 20px;
-  		font-weight: 400;
-  		background-color: $white;
-  		height: 45px;
-  		margin-left: -20px;
- 		margin-right: -20px;
-  		margin-bottom: 20px;
- 		.page-title-action{
- 			margin-left: 4px;
- 			padding: 4px 8px;
- 			position: relative;
- 			top: -3px;
- 			text-decoration: none;
- 			border: none;
- 			color: $primary-color;
- 			border-radius: 0;
- 			background: none;
- 			text-shadow: none;
- 			font-weight: 600;
- 			font-size: 13px;
- 			&:hover{
- 				background: none;
- 				color: $mid-grey;
- 			}
- 			&:before{
- 				display: inline-block;
- 				font-family: 'soliloquy';
- 				content:'\0050';
- 				margin-top: -3px;
- 				margin-right: 8px;
- 				vertical-align: middle;
- 			}
- 		}
- 	}
+          display: block;
+          margin: 0;
+          padding-left: 20px;
+          padding-right: 20px;
+          line-height: 45px;
+          font-size: 20px;
+          font-weight: 400;
+          background-color: $white;
+          height: 45px;
+          margin-left: -20px;
+          margin-right: -20px;
+          margin-bottom: 20px;
+          .page-title-action{
+               margin-left: 4px;
+               padding: 4px 8px;
+               position: relative;
+               top: -3px;
+               text-decoration: none;
+               border: none;
+               color: $primary-color;
+               border-radius: 0;
+               background: none;
+               text-shadow: none;
+               font-weight: 600;
+               font-size: 13px;
+               &:hover{
+                    background: none;
+                    color: $mid-grey;
+               }
+               &:before{
+                    display: inline-block;
+                    font-family: 'soliloquy';
+                    content:'\0050';
+                    margin-top: -3px;
+                    margin-right: 8px;
+                    vertical-align: middle;
+               }
+          }
+     }
 	.wrap{
 		margin-top: 0px !important;
 
@@ -421,8 +422,8 @@
 			padding: 0;
 			a{
 				float: left;
-				width: 110px;
-				margin: 0 20px;
+				width: 125px;
+				margin: 0 15px;
 				padding: 20px 0;
 				text-decoration: none;
 				color: $mid-grey;
@@ -479,7 +480,7 @@
 		#soliloquy-tab-nav-carousel a:before{ content:'\0059'; }
 	}
 	#soliloquy-settings-content{
-    	margin: 0 0 0 $tab-width;
+     margin: 0 0 0 $tab-width;
 		padding: 20px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -536,7 +537,7 @@
         }
 
         table.form-table {
-        	clear: none;
+          clear: none;
         }
         .soliloquy-config-header{
 			border-bottom: 1px solid $light-grey;
@@ -643,8 +644,8 @@
 			outline: none;
 			-webkit-transition: 0.05s border-color ease-in-out;
 			transition: 0.05s border-color ease-in-out;
-	    	min-width: 210px;
-	    	max-width: 350px;
+	     min-width: 210px;
+	     max-width: 350px;
 			width: 92%;
 			border-radius: $border-radius;
 			padding-right: 0;
@@ -654,20 +655,20 @@
 		#soliloquy-config-slider-height,
 		#soliloquy-config-slider-width{
 			max-width: 166px;
-	    	min-width: 75px;
+	     min-width: 75px;
 
 		}
 		th{
-	    	//min-width: 210px;
+	     //min-width: 210px;
 			//max-width: 100%;
-	    	padding-right: 0;
+	     padding-right: 0;
 		}
 		.description{
 			font-size: 13px;
 			line-height: 1.5;
 		}
 		#soliloquy-output {
-	    	margin: 0 0 10px;
+	     margin: 0 0 10px;
 			padding: 0;
 			list-style: none;
 			li{
@@ -954,10 +955,10 @@
 				    &.selected {
 				        border: 1px solid $green;
 				        a.check {
-				        	background-color: $green;
+				          background-color: $green;
 					        display: block;
 					        div.media-modal-icon {
-				            	display: block;
+				               display: block;
 							}
 				        }
 				    }
@@ -1010,7 +1011,7 @@
 
 		}
 		&:after {
-        	content: "";
+          content: "";
             display: table;
             clear: both;
 		}
@@ -1481,7 +1482,7 @@ body.rtl {
 	  }
 	#soliloquy-slider-settings{
 	#soliloquy-settings-content{
-    	margin: 0 0 0 50px;
+     margin: 0 0 0 50px;
 		padding: 20px;
       }
 
@@ -1513,3 +1514,14 @@ body.rtl {
          background-size: 134px 15px;
      }
  }
+
+ /* ==========================================================================
+   Misc Styles
+   ========================================================================== */
+#poststuff h2.soliloquy-code-panel-title {
+	padding-left: 0;
+	padding-right: 0;
+}
+.post-upload-ui a.soliloquy-media-library.button {
+	display: none;
+}

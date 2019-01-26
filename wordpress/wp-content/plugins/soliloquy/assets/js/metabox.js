@@ -8,5 +8,7 @@
 * - media-insert.js
 * - media-manage.js
 * - media-upload.js
+* - media-view-video.js
+* - media-view-html.js
 * - tabs.js
 */

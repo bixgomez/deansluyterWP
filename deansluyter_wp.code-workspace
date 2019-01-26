@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "wordpress"
+		},
+		{
+			"path": "wordpress/wp-content/themes/deansluyter_2019"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

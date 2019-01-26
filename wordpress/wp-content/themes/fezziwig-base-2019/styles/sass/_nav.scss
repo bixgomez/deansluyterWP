@@ -1,0 +1,36 @@
+#nav {
+  display: flex;
+  align-items: center;
+}
+
+#networking {
+  flex: auto;
+}
+
+.nav {
+  display: block;
+  flex: auto;
+
+  a {
+    &:link,
+    &:visited {
+      padding: .25em .5em;
+      display: inline-block;
+      margin-left: .125em;
+      background-color: rgba(black, .25);
+    }
+
+    &:hover {
+      background-color: rgba(black, .75);
+      color: white;
+    }
+
+    &.highlight {
+
+    }
+  }
+
+
+
+
+}

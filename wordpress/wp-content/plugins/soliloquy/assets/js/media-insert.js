@@ -68,7 +68,7 @@ jQuery( document ).ready( function( $ ) {
 
                 // Get the chosen options for this image (size, alignment, link type, link URL)
                 var display = state.display( attachment ).toJSON(),
-                	type = attachment.get( 'type' );
+                    type = attachment.get( 'type' );
 
                 // Change the image link parameter based on the "Link To" setting the user chose in the media view
                 switch ( display.link ) {
@@ -129,8 +129,9 @@ jQuery( document ).ready( function( $ ) {
         wp.media.frames.soliloquy.open();
         // Remove the 'Create Gallery' left hand menu item in the modal, as we don't
         // want users inserting galleries!
-        $( 'div.media-menu a.media-menu-item:nth-child(2)' ).addClass( 'hidden' );
-        $( 'div.media-menu a.media-menu-item:nth-child(4)' ).addClass( 'hidden' );
+	   $( 'div.media-menu a.media-menu-item:nth-child(2)' ).addClass( 'hidden' );
+	   $( 'div.media-menu a.media-menu-item:nth-child(3)' ).addClass( 'hidden' );
+	   $( 'div.media-menu a.media-menu-item:nth-child(4)' ).addClass( 'hidden' );
         $( 'div.media-menu a.media-menu-item:nth-child(6)' ).addClass( 'hidden' );
 
         return;

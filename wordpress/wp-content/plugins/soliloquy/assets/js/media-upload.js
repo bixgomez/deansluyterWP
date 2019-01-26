@@ -8,11 +8,11 @@
     $(function() {
 
         if ( typeof uploader !== 'undefined' ) {
-	        
+
 			//soliloquy_media_uploader.uploader_files_computer
 			$( 'input#plupload-browse-button' ).val( soliloquy_media_uploader.uploader_files_computer );
             $('.drag-drop-info').text( soliloquy_media_uploader.uploader_info_text  );
-            
+
             // Set a custom progress bar
             $('#soliloquy .drag-drop-inside').append( '<div class="soliloquy-progress-bar"><div></div></div>' );
             var soliloquy_bar      = $('#soliloquy .soliloquy-progress-bar'),
@@ -56,19 +56,19 @@
                                 $(soliloquy_output).append(res);
                                 break;
                         }
-                        
+
 						$( document ).trigger('soliloquyUploaded');
-                        
+
                         $(res).find('.wp-editor-container').each(function(i, el){
-	                        
+
                             var id = $(el).attr('id').split('-')[4];
                             quicktags({id: 'soliloquy-caption-' + id, buttons: 'strong,em,link,ul,ol,li,close'});
                             QTags._buttonsInit(); // Force buttons to initialize.
-                        
+
                         });
-                        
+
                         $(document).trigger('insertSlides');
-						                     
+
                     },
                     'json'
                 );
@@ -84,7 +84,7 @@
 
             // File Upload Error
             uploader.bind('Error', function(up, err) {
-	            
+
                 // Show message
                 $('#soliloquy-upload-error').html( '<div class="error fade"><p>' + err.file.name + ': ' + err.message + '</p></div>' );
                 up.refresh();

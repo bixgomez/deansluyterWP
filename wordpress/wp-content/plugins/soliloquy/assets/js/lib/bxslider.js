@@ -1,6 +1,5 @@
-;
-(function($, window, document, undefined) {
-	
+;(function($, window, document, undefined) {
+
 	var plugin = {};
 
 	var defaults = {
@@ -87,7 +86,7 @@
 		if(this.length === 0) {
 			return this;
 		}
-		
+
 		// support mutltiple elements
 		if(this.length > 1){
 			this.each(function(){$(this).soliloquy(options)});
@@ -203,7 +202,7 @@
 				position: 'relative'
 			});
 			if(slider.settings.mode != 'fade'){
-    			slider.viewport.css({overflow:'hidden'});
+               slider.viewport.css({overflow:'hidden'});
 			}
 			slider.viewport.parent().css({
 				maxWidth: getViewportMaxWidth()
@@ -259,7 +258,7 @@
 				// if controls are requested, add them
 				if(slider.settings.controls) {
 					appendControls();
-				}	
+				}
 				// if auto is true, and auto controls are requested, add them
 				if(slider.settings.auto && slider.settings.autoControls) {
 					appendControlsAuto();
@@ -304,7 +303,7 @@
 				var slicePrepend = slider.children.slice(-slice).clone(true).addClass('soliloquy-clone');
 				el.append(sliceAppend).prepend(slicePrepend);
 			}
-			
+
 			// remove the loading DOM element
 			slider.loader.remove();
 			// set the left / top position of "el"
@@ -345,15 +344,24 @@
 			}
 			// Added by Thomas
             if (slider.settings.keyboard && !slider.settings.ticker) {
-                $( 'body' ).on('keydown', function(e) {
-                	// Added by Tim
-                	// Check the target (focused) element - if it's an input or textarea, don't do anything
-                	// otherwise the user can't use arrow keys within inputs or textareas
-                	if ( e.target.type == 'textarea' || e.target.type == 'input' ) {
-                		return;
-                	}
 
-                	// If here, OK to change slide
+                $( 'body' ).on('keydown', function(e) {
+
+				var isLightbox = $('.soliloquybox-overlay').is(":visible");
+
+				//Check to see if Lightbox is visible if not bail.
+				if( isLightbox ){
+					return;
+				}
+
+                    // Added by Tim
+                    // Check the target (focused) element - if it's an input or textarea, don't do anything
+                    // otherwise the user can't use arrow keys within inputs or textareas
+                    if ( e.target.type == 'textarea' || e.target.type == 'input' ) {
+                         return;
+                    }
+
+                    // If here, OK to change slide
                     if ( e.keyCode == 39 ) {
                         clickNextBind( e );
                         return false;
@@ -413,10 +421,10 @@
 			}
 
 			if(slider.viewport.css('box-sizing') == 'border-box'){
-				height +=	parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom')) +
+				height += parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom')) +
 							parseFloat(slider.viewport.css('border-top-width')) + parseFloat(slider.viewport.css('border-bottom-width'));
 			}else if(slider.viewport.css('box-sizing') == 'padding-box'){
-				height +=	parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom'));
+				height += parseFloat(slider.viewport.css('padding-top')) + parseFloat(slider.viewport.css('padding-bottom'));
 			}
 
 			return height;
@@ -529,7 +537,7 @@
 		 * Sets the slider's (el) left or top position
 		 */
 		var setSlidePosition = function(){
-			
+
 			// if last slide, not infinite loop, and number of children is larger than specified maxSlides
 			if (slider.children.length > slider.settings.maxSlides && slider.active.last && !slider.settings.infiniteLoop) {
 
@@ -713,21 +721,21 @@
 				slider.pagerEl = $('<div class="soliloquy-pager" />');
 			} else {
 				// Manually specified pager - insert
-				slider.pagerEl = $(slider.settings.pagerCustom);	
+				slider.pagerEl = $(slider.settings.pagerCustom);
 			}
-			
+
 			// If a pager selector was supplied, populate it with the pager
 			if (slider.settings.pagerSelector) {
 				$(slider.settings.pagerSelector).html(slider.pagerEl);
 			} else {
 				slider.controls.el.addClass('soliloquy-has-pager').append(slider.pagerEl);
 			}
-			
+
 			// If we are not using a custom pager, automatically populated slider.pagerEl
 			if (!slider.settings.pagerCustom) {
 				populatePager();
 			}
-			
+
 			// Assign the clickPagerBind event
 			slider.pagerEl.on('click', 'a', clickPagerBind);
 		};
@@ -811,6 +819,8 @@
 		 *  - DOM event object
 		 */
 		var clickNextBind = function(e){
+
+
 			// if auto show is running, stop it
 			if (slider.settings.auto) el.stopAuto();
 			el.goToNextSlide();
@@ -919,7 +929,7 @@
 			slider.working = false;
 			// Added by Thomas
 			if(slider.settings.mode == 'fade'){
-    			slider.viewport.css({overflow:''});
+               slider.viewport.css({overflow:''});
 			}
 			// onSlideAfter callback
 			slider.settings.onSlideAfter(slider.children.eq(slider.active.index), slider.oldIndex, slider.active.index);
@@ -1318,6 +1328,14 @@
 		 * Transitions to the next slide in the show
 		 */
 		el.goToNextSlide = function(){
+
+			var isLightbox = $('.soliloquybox-overlay').is(":visible");
+
+			//Check to see if Lightbox is visible if not bail.
+			if( isLightbox ){
+				return;
+			}
+
 			// if infiniteLoop is false and last page is showing, disregard call
 			if (!slider.settings.infiniteLoop && slider.active.last) return;
 			var pagerIndex = parseInt(slider.active.index) + 1;
@@ -1328,6 +1346,14 @@
 		 * Transitions to the prev slide in the show
 		 */
 		el.goToPrevSlide = function(){
+
+			var isLightbox = $('.soliloquybox-overlay').is(":visible");
+
+			//Check to see if Lightbox is visible if not bail.
+			if( isLightbox ){
+				return;
+			}
+
 			// if infiniteLoop is false and last page is showing, disregard call
 			if (!slider.settings.infiniteLoop && slider.active.index == 0) return;
 			var pagerIndex = parseInt(slider.active.index) - 1;
@@ -1448,7 +1474,7 @@
 				slider.controls.autoEl.remove();
 			}
 			clearInterval(slider.interval);
-			
+
 			if(slider.settings.responsive) {
 				$(window).unbind('resize', resizeWindow);
 			}
@@ -1466,11 +1492,11 @@
 		};
 
 		el.getSetting = function(setting){
-    		if ( slider.settings[setting] ) {
-        		return slider.settings[setting];
-    		} else {
-        		return false;
-    		}
+          if ( slider.settings[setting] ) {
+               return slider.settings[setting];
+          } else {
+               return false;
+          }
 		};
 
 		init();

@@ -1,0 +1,121 @@
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Variables
+# Normalize
+# Typography
+	## Headings
+	## Copy
+# Elements
+	## Lists
+	## Tables
+# Forms
+	## Buttons
+	## Fields
+# Navigation
+	## Links
+	## Menus
+	## Next & Previous
+# Accessibility
+# Alignments
+# Clearings
+# Layout
+# Widgets
+# Content
+	## Archives
+	## Posts and pages
+	## Comments
+# Blocks
+# Media
+	## Captions
+	## Galleries
+--------------------------------------------------------------*/
+/* If we add the border using a regular CSS border, it won't look good on non-retina devices,
+ * since its edges can look jagged due to lack of antialiasing. In this case, we are several
+ * layers of box-shadow to add the border visually, which will render the border smoother. */
+/* Fallback for non-latin fonts */
+/* Calculates maximum width for post content */
+/* Nested sub-menu padding: 10 levels deep */
+h1 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 2.25rem; }
+
+h2 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.625rem; }
+
+h3 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.33rem; }
+
+h5 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: .9rem; }
+
+h4 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1rem; }
+
+.wp-block-image {
+  display: contents; }
+  .wp-block-image figure {
+    padding: 0;
+    margin: 0 0 .5em 0; }
+    .wp-block-image figure div {
+      padding: 0;
+      margin: 0; }
+    .wp-block-image figure img {
+      display: block;
+      padding: 0;
+      margin: 0; }
+
+.site-container {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0 auto; }
+
+.site-inner {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto; }
+
+.content-area {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto; }
+
+.site-main {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto; }
+
+/* Normalize */
+/* Typography */
+/* Elements */
+/* Forms */
+/* Navigation */
+/* Accessibility */
+/* Alignments */
+/* Clearings */
+/* Layout */
+/* Content */
+/* Widgets */
+/* Blocks */
+/* Media */
+
+/*# sourceMappingURL=maps/styles.css.map */

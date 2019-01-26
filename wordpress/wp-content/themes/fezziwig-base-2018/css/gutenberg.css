@@ -1,0 +1,184 @@
+/* If we add the border using a regular CSS border, it won't look good on non-retina devices,
+ * since its edges can look jagged due to lack of antialiasing. In this case, we are several
+ * layers of box-shadow to add the border visually, which will render the border smoother. */
+/* Fallback for non-latin fonts */
+/* Calculates maximum width for post content */
+/* Nested sub-menu padding: 10 levels deep */
+h1 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 2.25rem; }
+
+h2 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.625rem; }
+
+h3 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.33rem; }
+
+h5 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: .9rem; }
+
+h4 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1rem; }
+
+.wp-block-image {
+  display: contents; }
+  .wp-block-image figure {
+    padding: 0;
+    margin: 0 0 .5em 0; }
+    .wp-block-image figure div {
+      padding: 0;
+      margin: 0; }
+    .wp-block-image figure img {
+      display: block;
+      padding: 0;
+      margin: 0; }
+
+.site-container {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0 auto; }
+
+.site-inner {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 0 auto; }
+
+.content-area {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto; }
+
+.site-main {
+  background-color: rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto; }
+
+.editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,
+.editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit,
+.editor-block-list__layout > .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit {
+  margin-top: 0;
+  margin-bottom: 0; }
+
+html.wp-toolbar {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  padding-top: 32px; }
+
+body.block-editor-page.wp-admin {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.6; }
+
+.wp-block {
+  max-width: none; }
+
+div.editor-styles-wrapper {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.6; }
+
+div.editor-styles-wrapper p.wp-block-paragraph {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1em 0; }
+
+/*
+.editor-post-title {
+	border-top: 1px dashed green;
+	background-color: rgba(green, .125);
+}
+.editor-block-list__layout {
+	border-top: 1px dashed blue;
+	background-color: rgba(blue, .125);
+}
+
+.wp-block {
+	border-top: 1px dashed red;
+	background-color: rgba(red, .125);
+}
+*/
+.editor-block-list__layout .editor-block-list__block .editor-block-drop-zone {
+  top: -4px;
+  bottom: -3px;
+  margin: 0; }
+
+.wp-block-heading h1,
+.wp-block-heading h1.editor-rich-text__tinymce,
+.editor-post-title__block .editor-post-title__input {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0; }
+
+.wp-block-heading h2,
+.wp-block-heading h2.editor-rich-text__tinymce {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.625rem; }
+
+.wp-block-heading h3,
+.wp-block-heading h3.editor-rich-text__tinymce {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1.33rem; }
+
+.wp-block-heading h4,
+.wp-block-heading h4.editor-rich-text__tinymce {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: 1rem; }
+
+.wp-block-heading h5,
+.wp-block-heading h5.editor-rich-text__tinymce {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 1em 0;
+  font-size: .9rem; }
+
+.wp-block-image {
+  padding: 0;
+  margin: 0 0 .5em 0; }
+  .wp-block-image div {
+    padding: 0;
+    margin: 0; }
+  .wp-block-image img {
+    display: block;
+    padding: 0;
+    margin: 0; }
+
+.editor-block-list__layout .editor-block-list__block[data-align=left] .editor-block-list__block-edit {
+  float: left;
+  margin-right: 1em; }
+
+.editor-block-list__layout .editor-block-list__block[data-align=right] .editor-block-list__block-edit {
+  float: right;
+  margin-left: 1em; }
+
+/*# sourceMappingURL=maps/gutenberg.css.map */
