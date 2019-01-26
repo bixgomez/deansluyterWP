@@ -18,3 +18,4 @@ wordpress/sitemap.xml
 wordpress/sitemap.xml.gz
 
 .DS_Store
+.idea
