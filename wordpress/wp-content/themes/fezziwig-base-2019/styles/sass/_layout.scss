@@ -5,12 +5,7 @@ $lg: 1080px;
 $xl: 1200px;
 
 $max-site-width: $xl;
-
-$editor-padding-left: 33px;
-$editor-padding-right: 10px;
-
-$editor-outline: #007cba;
-
+$site-padding: 20px;
 
 body {
   // background-color: rgba(#006667, .1);
@@ -25,5 +20,6 @@ body {
 
 .site {
   // background-color: rgba(#006667, .1);
-  padding: 1em;
+  padding: $site-padding;
+  background-color: rgba(blue, .075);
 }

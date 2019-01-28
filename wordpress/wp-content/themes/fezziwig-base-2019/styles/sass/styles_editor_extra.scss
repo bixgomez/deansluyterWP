@@ -1,0 +1,76 @@
+@import "variables";
+@import "mixins";
+
+// @import "meyer-reset";
+// @import "normalize";
+
+@import "base";
+@import "typography";
+
+@import "layout";
+
+.editor-block-list__layout .editor-block-list__block {
+  padding-left: 43px;
+  padding-right: 43px;
+}
+
+.editor-block-list__layout .editor-block-list__block .editor-block-drop-zone {
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+.editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit::before {
+  left: -14px;
+  right: -14px;
+}
+
+.edit-post-visual-editor .editor-block-list__block .editor-block-list__block-edit {
+  margin-left: -28px;
+  margin-right: -28px;
+}
+
+.editor-styles-wrapper .editor-block-list__layout, .editor-styles-wrapper .editor-post-title {
+  padding-left: 33px;
+  padding-right: 10px;
+}
+
+.editor-styles-wrapper .editor-writing-flow {
+  // border-left: 1px dashed rgba(black, 0.25);
+  // border-right: 1px dashed rgba(black, 0.25);
+
+  max-width: $max-site-width + 33px + 10px + 14px + 14px + 2px - ($site-padding * 2);
+
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 47px;
+}
+
+
+
+
+
+
+
+
+
+div.editor-styles-wrapper p.mce-content-body,
+.editor-styles-wrapper .mce-content-body,
+.editor-styles-wrapper p {
+  @include typography-body;
+}
+
+.components-notice.is-warning {
+  background-color: rgba(#fef8ee, .85);
+
+  &:hover {
+    background-color: #fef8ee;
+  }
+}
+
+.components-notice.is-success {
+  background-color: rgba(#eff9f1, .85);
+
+  &:hover {
+    background-color: #eff9f1;
+  }
+}

@@ -87,9 +87,21 @@ if ( ! function_exists( 'fezziwig_base_2019_setup' ) ) :
          */
         add_theme_support( 'editor-styles' );
         add_editor_style( get_template_directory_uri() . '/styles/css/styles_editor.css' );
+
 	}
 endif;
 add_action( 'after_setup_theme', 'fezziwig_base_2019_setup' );
+
+// Add backend styles for Gutenberg.
+add_action( 'enqueue_block_editor_assets', 'extra_gutenberg_assets' );
+
+/**
+ * Load Gutenberg stylesheet.
+ */
+function extra_gutenberg_assets() {
+  // Load the theme styles within Gutenberg.
+  wp_enqueue_style( 'extra-gutenberg', get_template_directory_uri() . '/styles/css/styles_editor_extra.css', false );
+}
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.

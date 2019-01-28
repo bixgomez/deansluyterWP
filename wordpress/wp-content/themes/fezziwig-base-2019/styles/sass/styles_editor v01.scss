@@ -1,7 +1,7 @@
 @import "variables";
 @import "mixins";
 
-// @import "meyer-reset";
+@import "meyer-reset";
 // @import "normalize";
 
 @import "base";
@@ -29,8 +29,16 @@ body {
   background-color: $bgcolor-body;
 }
 
+// I am thinking we don't need these margins anymore.
+// But I can't seem to be able to override this!
+.edit-post-visual-editor .editor-block-list__block .editor-block-list__block-edit {
+  // margin-left: 0 !important;
+  // margin-right: 0 !important;
+}
+
 p {
   @extend p;
+  line-height: $lineheight-default !important;
 }
 
 .edit-post-layout__content,
@@ -40,6 +48,13 @@ p {
 
 .editor-styles-wrapper {
   font-size: $fontsize-body;
+}
+
+// I can't seem to be able to override this!
+div.editor-styles-wrapper p,
+div.editor-styles-wrapper p.mce-content-body {
+  // font-size: 1em !important;
+  // line-height: 1.5 !important;
 }
 
 .editor-post-title__block .editor-post-title__input {
@@ -60,6 +75,15 @@ p {
 .block-editor__container,
 .editor-writing-flow {
   background-color: $bgcolor-body !important;
+}
+
+.editor-writing-flow {
+  border-left: $border-block--hover;
+  border-right: $border-block--hover;
+  max-width: $max-site-width + $editor-padding-left + $editor-padding-right + 24;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 47px;
 }
 
 .edit-post-visual-editor .editor-block-list__block .editor-block-list__block-edit {
@@ -141,4 +165,9 @@ p {
     background-color: transparent;
     background: none;
   }
+}
+
+// Why not?
+div.components-notice {
+  opacity: .9;
 }

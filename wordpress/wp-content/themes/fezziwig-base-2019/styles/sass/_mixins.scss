@@ -1,15 +1,11 @@
 @mixin block--align-right {
   float: right;
   margin-left: 2em/*!rtl:end:ignore*/;
-  margin-right: 0;
-  border-left: 2px dashed sienna;
 }
 
 @mixin block--align-left {
   float: left;
   margin-right: 2em/*!rtl:end:ignore*/;
-  margin-left: 0;
-  border-right: 2px dashed sienna;
 }
 
 .wp-block-image .alignright,
