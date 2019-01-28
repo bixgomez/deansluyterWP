@@ -19,3 +19,4 @@ wordpress/sitemap.xml.gz
 
 .DS_Store
 .idea
+/.idea/workspace.xml
