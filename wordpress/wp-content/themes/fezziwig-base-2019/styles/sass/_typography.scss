@@ -4,27 +4,38 @@
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-$fontsize-html: 18px;
-$fontsize-body: 1em;
+$font-size--base: 16;
+$font-size--body: $font-size--base;
 
-$fontsize-md: $fontsize-body;
-$fontsize-xxs: $fontsize-md * .7;
-$fontsize-xs: $fontsize-md * .8;
-$fontsize-sm: $fontsize-md * .9;
-$fontsize-lg: $fontsize-md * 1.33;
-$fontsize-xl: $fontsize-md * 1.66;
-$fontsize-xxl: $fontsize-md * 2;
+$font-size--md: $font-size--body;
+$font-size--xxs: $font-size--md * .7;
+$font-size--xs: $font-size--md * .8;
+$font-size--sm: $font-size--md * .9;
+$font-size--lg: $font-size--md * 1.33;
+$font-size--xl: $font-size--md * 1.66;
+$font-size--xxl: $font-size--md * 2;
 
 $lineheight-default: 1.6;
 $lineheight-headings: 1.2;
 
 @mixin typography-body {
-  font-size: $fontsize-body;
+  font-size: px-to-rem($font-size--body);
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   line-height: $lineheight-default;
+
+  /*
+  @include breakpoint(700px) {
+    font-size: px-to-rem($font-size--xs);
+  }
+  @media only screen and (min-width: $sm) {
+    font-size: px-to-rem($font-size--xs);
+  }
+  */
+
 }
 
 @mixin typography-heading {
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-weight: bold;
   line-height: 1.2;
   padding: 0;
@@ -32,7 +43,7 @@ $lineheight-headings: 1.2;
 }
 
 html {
-  font-size: $fontsize-html;
+  font-size: px-to-rem($font-size--base);
 }
 
 body,
@@ -50,27 +61,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: $fontsize-xxl;
+  font-size: px-to-rem($font-size--xxl);
 }
 
 h2 {
-  font-size: $fontsize-xl;
+  font-size: px-to-rem($font-size--xl);
 }
 
 h3 {
-  font-size: $fontsize-lg;
+  font-size: px-to-rem($font-size--lg);
 }
 
 h4 {
-  font-size: $fontsize-md;
+  font-size: px-to-rem($font-size--md);
 }
 
 h5 {
-  font-size: $fontsize-sm;
+  font-size: px-to-rem($font-size--sm);
 }
 
 h6 {
-  font-size: $fontsize-xxs;
+  font-size: px-to-rem($font-size--xxs);
 }
 
 p {
@@ -92,7 +103,7 @@ address {
 pre {
   background: #eee;
   font-family: "Courier 10 Pitch", Courier, monospace;
-  font-size: $fontsize-sm;
+  font-size: px-to-rem($font-size--sm);
   line-height: $lineheight-default;
   margin-bottom: 1.6em;
   max-width: 100%;
@@ -102,7 +113,7 @@ pre {
 
 code, kbd, tt, var {
   font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-  font-size: $fontsize-sm;
+  font-size: px-to-rem($font-size--sm);
 }
 
 abbr, acronym {
@@ -116,5 +127,5 @@ mark, ins {
 }
 
 big {
-  font-size: $fontsize-xxl;
+  font-size: px-to-rem($font-size--xxl);
 }

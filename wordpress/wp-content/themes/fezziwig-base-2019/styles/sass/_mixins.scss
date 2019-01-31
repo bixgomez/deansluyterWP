@@ -7,8 +7,3 @@
   float: left;
   margin-right: 2em/*!rtl:end:ignore*/;
 }
-
-.wp-block-image .alignright,
-.editor-block-list__layout .editor-block-list__block[data-align=right]>.editor-block-list__block-edit {
-  @include block--align-right;
-}

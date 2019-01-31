@@ -27,8 +27,7 @@ gulp.task('sass', function () {
     // Run Sass
     .pipe(sass({
       includePaths: [
-        './node_modules/breakpoint-sass/stylesheets/',
-        './node_modules/compass-sass-mixins/lib/'
+        './node_modules/breakpoint-sass/stylesheets/'
       ],
       errLogToConsole: true,
       outputStyle: 'expanded'

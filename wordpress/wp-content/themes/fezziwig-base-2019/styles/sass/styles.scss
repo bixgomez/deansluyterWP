@@ -1,7 +1,11 @@
+/* Import breakpoint */
+@import "breakpoint";
+
+@import "functions";
 @import "variables";
 @import "mixins";
 
-@import "meyer-reset";
+// @import "meyer-reset";
 // @import "normalize";
 
 @import "base";
