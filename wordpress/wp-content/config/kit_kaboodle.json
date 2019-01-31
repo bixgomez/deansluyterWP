@@ -2,7 +2,7 @@
     "_amn_sol_last_checked": "1548892800",
     "_blockopts_default_registered_": "1",
     "acf_version": "5.8.0-beta3",
-    "active_plugins": "a:12:{i:0;s:34:\"advanced-custom-fields-pro\/acf.php\";i:1;s:30:\"atomic-blocks\/atomicblocks.php\";i:2;s:24:\"block-options\/plugin.php\";i:3;s:35:\"crop-thumbnails\/crop-thumbnails.php\";i:4;s:43:\"custom-post-type-ui\/custom-post-type-ui.php\";i:5;s:35:\"fezziwig-blocks\/fezziwig-blocks.php\";i:6;s:47:\"post-tags-and-categories-for-pages\/post-tag.php\";i:7;s:33:\"query-wrangler\/query-wrangler.php\";i:8;s:47:\"regenerate-thumbnails\/regenerate-thumbnails.php\";i:9;s:57:\"soliloquy-featured-content\/soliloquy-featured-content.php\";i:10;s:23:\"soliloquy\/soliloquy.php\";i:11;s:17:\"wp-cfm\/wp-cfm.php\";}",
+    "active_plugins": "a:14:{i:0;s:34:\"advanced-custom-fields-pro\/acf.php\";i:1;s:26:\"ag-custom-admin\/plugin.php\";i:2;s:30:\"atomic-blocks\/atomicblocks.php\";i:3;s:24:\"block-options\/plugin.php\";i:4;s:35:\"crop-thumbnails\/crop-thumbnails.php\";i:5;s:43:\"custom-post-type-ui\/custom-post-type-ui.php\";i:6;s:35:\"fezziwig-blocks\/fezziwig-blocks.php\";i:7;s:47:\"post-tags-and-categories-for-pages\/post-tag.php\";i:8;s:33:\"query-wrangler\/query-wrangler.php\";i:9;s:47:\"regenerate-thumbnails\/regenerate-thumbnails.php\";i:10;s:57:\"soliloquy-featured-content\/soliloquy-featured-content.php\";i:11;s:23:\"soliloquy\/soliloquy.php\";i:12;s:23:\"wp-cerber\/wp-cerber.php\";i:13;s:17:\"wp-cfm\/wp-cfm.php\";}",
     "admin_email": "gilbert67@gmail.com",
     "avatar_default": "mystery",
     "avatar_rating": "G",
