@@ -41,14 +41,14 @@
           <p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
           <?php
         endif;
-        $fezziwig_base_2019_description = get_bloginfo( 'description', 'display' );
-        if ( $fezziwig_base_2019_description || is_customize_preview() ) :
-          ?>
-          <p class="site-description"><?php echo $fezziwig_base_2019_description; /* WPCS: xss ok. */ ?></p>
-        <?php endif; ?>
+        ?>
       </div><!-- .site-branding -->
+
+      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('header') ) : endif; ?>
+
     </header><!-- #header -->
 
+    <?php /* ?>
     <nav id="navigation" class="section section-navigation">
       <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Main Menu', 'fezziwig-base-2019' ); ?></button>
       <?php
@@ -58,5 +58,6 @@
       ) );
       ?>
     </nav><!-- #navigation -->
+    <?php */ ?>
 
     <div id="content" class="section section-content">
