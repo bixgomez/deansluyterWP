@@ -50,11 +50,11 @@
     </header><!-- #header -->
 
     <nav id="navigation" class="section section-navigation">
-      <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'fezziwig-base-2019' ); ?></button>
+      <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Main Menu', 'fezziwig-base-2019' ); ?></button>
       <?php
       wp_nav_menu( array(
         'theme_location' => 'menu-1',
-        'menu_id'        => 'primary-menu',
+        'menu_id'        => 'main-menu',
       ) );
       ?>
     </nav><!-- #navigation -->
