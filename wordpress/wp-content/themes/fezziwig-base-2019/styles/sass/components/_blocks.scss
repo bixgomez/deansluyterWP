@@ -9,21 +9,11 @@ figure {
     margin-bottom: 1em;
 
     &.alignleft {
-      float: none;
-      margin-left: 0;
-      margin-right: 0;
-      @include breakpoint($md) {
-        @include block--align-left;
-      }
+      @include block--align-left;
     }
 
     &.alignright {
-      float: none;
-      margin-left: 0;
-      margin-right: 0;
-      @include breakpoint($md) {
-        @include block--align-right;
-      }
+      @include block--align-right;
     }
 
     figcaption {

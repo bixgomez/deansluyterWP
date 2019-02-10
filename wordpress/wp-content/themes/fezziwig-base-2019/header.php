@@ -21,14 +21,13 @@
 </head>
 
 <body <?php body_class(); ?>>
+<a name="Top" id="Top"></a>
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'fezziwig-base-2019' ); ?></a>
 
-<div class="site-wrapper">
+<div class="section-outer section-outer--header">
+  <header class="section section--header">
+    <div class="section-inner section-inner--header">
 
-  <div id="site" class="site">
-
-    <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'fezziwig-base-2019' ); ?></a>
-
-    <header id="header" class="section section-header">
       <div class="site-branding">
         <?php
         the_custom_logo();
@@ -43,12 +42,13 @@
         endif;
         ?>
       </div><!-- .site-branding -->
-
       <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('header') ) : endif; ?>
 
-    </header><!-- #header -->
+    </div>
+  </header>
+</div>
 
-    <?php /* ?>
+<?php /* ?>
     <nav id="navigation" class="section section-navigation">
       <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Main Menu', 'fezziwig-base-2019' ); ?></button>
       <?php
@@ -60,4 +60,6 @@
     </nav><!-- #navigation -->
     <?php */ ?>
 
-    <div id="content" class="section section-content">
+<div class="section-outer section-outer--content">
+  <div class="section section--content">
+    <div class="section-inner section-inner--content">

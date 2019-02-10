@@ -1,0 +1,61 @@
+body {
+  width: 100%;
+  background-color: rgba(black, .4);
+}
+
+.section-outer {
+  width: 100%;
+  background-color: rgba(white, .25);
+
+  &--header {
+
+  }
+
+  &--content {
+
+  }
+
+  &--footer {
+
+  }
+}
+
+.section {
+  width: 100%;
+  max-width: 1000px;
+  padding: 0;
+  margin: 0 auto;
+  background-color: rgba(white, .25);
+
+  &--header {
+
+  }
+
+  &--content {
+
+  }
+
+  &--footer {
+
+  }
+}
+
+.section-inner {
+  padding: 1em;
+  width: 100%;
+  max-width: 100%;
+  background-color: rgba(white, .25);
+
+  &--header {
+
+  }
+
+  &--content {
+
+  }
+
+  &--footer {
+
+  }
+}
+

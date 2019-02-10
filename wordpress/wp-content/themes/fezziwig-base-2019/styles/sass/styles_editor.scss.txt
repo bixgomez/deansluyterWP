@@ -40,7 +40,7 @@ p {
 }
 
 .editor-styles-wrapper {
-  font-size: px-to-rem($font-size--body);
+  font-size: px-to-rem($font-size--base);
 }
 
 .editor-post-title__block .editor-post-title__input {

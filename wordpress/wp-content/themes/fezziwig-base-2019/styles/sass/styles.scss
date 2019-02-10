@@ -1,17 +1,12 @@
 /* Import breakpoint */
 @import "breakpoint";
 
-@import "functions";
-@import "variables";
-@import "mixins";
+@import "config/config";
 
-// @import "meyer-reset";
-// @import "normalize";
+@import "base/base";
 
-@import "base";
-@import "typography";
+@import "typography/typography";
+@import "layout/layout";
 
-@import "layout";
+@import "components/components";
 
-@import "nav";
-@import "components";

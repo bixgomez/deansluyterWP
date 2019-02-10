@@ -1,0 +1,30 @@
+// Color variables.
+$color--white: #FFF;
+$color--black: #000;
+$color--primary: #006667;
+
+
+// Typography variables.
+$font-size--base: 18;
+
+$font-size--md: $font-size--base;
+$font-size--xxs: $font-size--md * .7;
+$font-size--xs: $font-size--md * .8;
+$font-size--sm: $font-size--md * .9;
+$font-size--lg: $font-size--md * 1.33;
+$font-size--xl: $font-size--md * 1.66;
+$font-size--xxl: $font-size--md * 2;
+
+$lineheight-default: 1.6;
+$lineheight-headings: 1.2;
+
+
+// Layout variables.
+$xs: 0;
+$sm: 500px;
+$md: 768px;
+$lg: 1000px;
+$xl: 1200px;
+
+$max-site-width: $xl;
+$site-padding: 20px;

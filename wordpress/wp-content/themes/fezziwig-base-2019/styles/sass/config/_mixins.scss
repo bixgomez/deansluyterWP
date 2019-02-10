@@ -1,0 +1,84 @@
+// Typography mixins.
+@mixin typography-body {
+  font-size: px-to-rem($font-size--base);
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  line-height: $lineheight-default;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin typography-heading {
+  font-family: 'Alice', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0 0 .75em 0;
+}
+
+
+// Block mixins.
+@mixin block--align-right {
+  width: 100%;
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+
+  img {
+    width: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  @include breakpoint($sm) {
+    img {
+      width: auto;
+      height: auto;
+    }
+  }
+
+  @include breakpoint($md) {
+    width: auto;
+    float: right;
+    max-width: 50%;
+    margin-left: 2em /*!rtl:end:ignore*/;
+    margin-right: 0;
+
+    img {
+      width: auto;
+      height: auto;
+    }
+  }
+}
+
+@mixin block--align-left {
+  width: 100%;
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  @include breakpoint($sm) {
+    img {
+      width: auto;
+      height: auto;
+    }
+  }
+
+  @include breakpoint($md) {
+    width: auto;
+    float: left;
+    max-width: 50%;
+    margin-left: 0;
+    margin-right: 2em /*!rtl:end:ignore*/;
+
+    img {
+      width: auto;
+      height: auto;
+    }
+  }
+}
+

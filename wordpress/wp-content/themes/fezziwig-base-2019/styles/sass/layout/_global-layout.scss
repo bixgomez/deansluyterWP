@@ -1,0 +1,14 @@
+body {
+  width: 100%;
+  background-color: $color--primary;
+}
+
+.site-wrapper {
+  max-width: $max-site-width;
+  margin: 0 auto;
+}
+
+.site {
+  padding: $site-padding;
+  background-color: $color--white;
+}
