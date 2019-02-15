@@ -46,11 +46,15 @@ a:visited {
 
 .site-title {
   @extend h1;
-  font-size: px-to-rem($font-size--xxl);
+  font-size: px-to-rem($font-size--xl);
   margin: 0;
 
   a {
     text-decoration: none;
+  }
+
+  @include breakpoint($sm) {
+    font-size: px-to-rem($font-size--xxl);
   }
 }
 

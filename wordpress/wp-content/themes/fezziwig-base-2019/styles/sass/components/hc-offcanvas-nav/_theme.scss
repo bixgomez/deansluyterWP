@@ -12,6 +12,10 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
 
 .hc-offcanvas-nav {
 
+  .nav-container {
+    // width: 400px;
+  }
+
   &,
   .nav-wrapper {
     &::after {
@@ -26,17 +30,17 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
   }
 
   h2 {
-    font-size: 19px;
+    font-size: px-to-rem(20);
     font-weight: normal;
     text-align: left;
-    padding: 20px 17px;
+    padding: px-to-rem(10) px-to-rem(18);
     color: darken($hc-offcanvas-nav-background-color, 20%);
   }
 
   a,
   .nav-item {
-    padding: 14px 17px;
-    font-size: 15px;
+    padding: px-to-rem(10) px-to-rem(18);
+    font-size: px-to-rem(20);
     color: rgba($hc-offcanvas-nav-text-color, .85);
     z-index: 1;
     background: rgba(0, 0, 0, 0);
@@ -125,7 +129,7 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
         }
 
         &::before {
-          margin-left: -9px;
+          margin-left: -6px;
           transform: rotate(135deg);
         }
 
