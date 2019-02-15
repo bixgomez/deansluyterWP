@@ -1,11 +1,5 @@
-body {
-  width: 100%;
-  background-color: rgba(black, .4);
-}
-
 .section-outer {
   width: 100%;
-  background-color: rgba(white, .25);
 
   &--header {
 
@@ -22,13 +16,12 @@ body {
 
 .section {
   width: 100%;
-  max-width: 1000px;
+  max-width: $max-site-width;
   padding: 0;
   margin: 0 auto;
-  background-color: rgba(white, .25);
 
   &--header {
-
+    max-width: 100%;
   }
 
   &--content {
@@ -36,18 +29,19 @@ body {
   }
 
   &--footer {
-
+    max-width: 100%;
   }
 }
 
 .section-inner {
-  padding: 1em;
+  @include site-padding;
+  @include section-padding;
+  margin: 0 auto;
   width: 100%;
   max-width: 100%;
-  background-color: rgba(white, .25);
 
   &--header {
-
+    max-width: $max-site-width;
   }
 
   &--content {
@@ -55,7 +49,7 @@ body {
   }
 
   &--footer {
-
+    max-width: $max-site-width;
   }
 }
 

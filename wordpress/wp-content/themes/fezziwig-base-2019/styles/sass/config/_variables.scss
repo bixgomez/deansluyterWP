@@ -2,6 +2,19 @@
 $color--white: #FFF;
 $color--black: #000;
 $color--primary: #006667;
+$color--primary-light: mix($color--primary, $color--white, 50%);
+$color--primary-dark: mix($color--primary, $color--black, 50%);
+
+$color--gray-md: mix($color--black, $color--white, 50%);
+$color--gray-light: mix($color--black, $color--white, 40%);
+$color--gray-lighter: mix($color--black, $color--white, 25%);
+$color--gray-lightest: mix($color--black, $color--white, 10%);
+$color--gray-dark: mix($color--white, $color--black, 40%);
+$color--gray-darker: mix($color--white, $color--black, 25%);
+$color--gray-darkest: mix($color--white, $color--black, 10%);
+
+$color--header: $color--gray-lightest;
+$color--footer: lighten($color--header, 5%);
 
 
 // Typography variables.
@@ -11,9 +24,10 @@ $font-size--md: $font-size--base;
 $font-size--xxs: $font-size--md * .7;
 $font-size--xs: $font-size--md * .8;
 $font-size--sm: $font-size--md * .9;
-$font-size--lg: $font-size--md * 1.33;
-$font-size--xl: $font-size--md * 1.66;
-$font-size--xxl: $font-size--md * 2;
+$font-size--lg: $font-size--md * 1.25;
+$font-size--xl: $font-size--md * 1.5;
+$font-size--xxl: $font-size--md * 1.75;
+$font-size--xxxl: $font-size--md * 2;
 
 $lineheight-default: 1.6;
 $lineheight-headings: 1.2;
@@ -22,9 +36,9 @@ $lineheight-headings: 1.2;
 // Layout variables.
 $xs: 0;
 $sm: 500px;
-$md: 768px;
+$md: 800px;
 $lg: 1000px;
-$xl: 1200px;
+$xl: 1100px;
 
 $max-site-width: $xl;
 $site-padding: 20px;

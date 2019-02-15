@@ -1,0 +1,15 @@
+.grid-layout--header {
+  display: flex;
+  align-items: center;
+
+  .site-branding {
+    flex: none;
+    width: max-content;
+  }
+  .main-navigation {
+    flex: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+

@@ -132,8 +132,8 @@ function fezziwig_base_2019_widgets_init() {
     'after_title'   => '</h2>',
   ) );
   register_sidebar( array(
-    'name'          => esc_html__( 'Header', 'fezziwig-base-2019' ),
-    'id'            => 'header',
+    'name'          => esc_html__( 'Site Navigation', 'fezziwig-base-2019' ),
+    'id'            => 'site-navigation',
     'description'   => esc_html__( 'Add widgets here.', 'fezziwig-base-2019' ),
     'before_widget' => '<section id="%1$s" class="widget %2$s">',
     'after_widget'  => '</section>',

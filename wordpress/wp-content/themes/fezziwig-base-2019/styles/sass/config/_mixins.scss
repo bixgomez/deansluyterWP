@@ -2,17 +2,32 @@
 @mixin typography-body {
   font-size: px-to-rem($font-size--base);
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  line-height: $lineheight-default;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(black, .75);
 }
 
 @mixin typography-heading {
-  font-family: 'Alice', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-weight: bold;
   line-height: 1.2;
   padding: 0;
   margin: 0 0 .75em 0;
+  color: mix(black, $color--primary, 25%);
+}
+
+
+// Padding mixins.
+@mixin site-padding {
+  padding-left: $site-padding;
+  padding-right: $site-padding;
+}
+
+@mixin section-padding {
+  padding-top: $site-padding;
+  padding-bottom: $site-padding;
 }
 
 
@@ -24,7 +39,6 @@
   margin-right: 0;
 
   img {
-    width: auto;
     width: 100%;
     height: auto;
   }

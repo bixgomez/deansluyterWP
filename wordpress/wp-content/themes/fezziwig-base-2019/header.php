@@ -28,21 +28,32 @@
   <header class="section section--header">
     <div class="section-inner section-inner--header">
 
-      <div class="site-branding">
-        <?php
-        the_custom_logo();
-        if ( is_front_page() && is_home() ) :
-          ?>
-          <h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+      <div class="grid-layout grid-layout--header">
+        <div class="site-branding">
           <?php
-        else :
+          the_custom_logo();
+          if ( is_front_page() && is_home() ) :
+            ?>
+            <h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+            <?php
+          else :
+            ?>
+            <p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+            <?php
+          endif;
           ?>
-          <p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+        </div><!-- .site-branding -->
+
+        <nav id="site-navigation" class="main-navigation">
+          <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'fezziwig-base-2019-02' ); ?></button>
           <?php
-        endif;
-        ?>
-      </div><!-- .site-branding -->
-      <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('header') ) : endif; ?>
+          wp_nav_menu( array(
+            'theme_location' => 'menu-1',
+            'menu_id'        => 'primary-menu',
+          ) );
+          ?>
+        </nav><!-- #site-navigation -->
+      </div>
 
     </div>
   </header>

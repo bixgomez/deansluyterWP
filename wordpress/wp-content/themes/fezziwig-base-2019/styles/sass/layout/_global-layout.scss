@@ -1,14 +1,15 @@
 body {
   width: 100%;
-  background-color: $color--primary;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .site-wrapper {
-  max-width: $max-site-width;
+  width: 100%;
   margin: 0 auto;
-}
-
-.site {
-  padding: $site-padding;
-  background-color: $color--white;
 }

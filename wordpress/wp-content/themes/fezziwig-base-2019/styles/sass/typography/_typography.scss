@@ -1,68 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Alice|Lato');
-
-$font-size--md: 1em;
-
-$font-size--lg: $font-size--md * 1.25;
-$font-size--xl: $font-size--md * 1.5;
-$font-size--xxl: $font-size--md * 1.75;
-
-$font-size--sm: $font-size--md * .9;
-$font-size--xs: $font-size--md * .8;
-$font-size--xxs: $font-size--md * .7;
-
-@mixin fontsize($size:md) {
-  @if $size = "md" {
-    font-size: $font-size--md;
-  }
-  @if $size = "lg" {
-    font-size: $font-size--lg;
-  }
-  @if $size = "xl" {
-    font-size: $font-size--xl;
-  }
-}
-
-html {
-  // transition: all .1s linear;
-  font-size: 18px;
-  @media (min-width: 600px) {
-    font-size: 16px;
-  }
-  @media (min-width: 960px) {
-    font-size: 17px;
-  }
-  @media (min-width: 1024px) {
-    font-size: 18px;
-  }
-  @media (min-width: 1200px) {
-    font-size: 19px;
-  }
-}
-
-body {
-  font-family: "Rubik", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 1em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: rgba(black, .75);
-  line-height: 1.6;
-}
-
-h1, h2, h3, h4, h5, .navbar-brand {
-  font-family: "Copse", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.1);
-
-  color: rgba(black, .85);
-  text-shadow: rgba(black, .25) 0 1px 1px;
-  line-height: 1.2;
-}
-
-html {
-  font-size: #{$font-size--base}px;
-}
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Alice|Lato|Montserrat');
 
 body,
 button,
@@ -78,28 +14,44 @@ h1, h2, h3, h4, h5, h6 {
   @include typography-heading;
 }
 
+// Heading font sizes.
 h1 {
   font-size: px-to-rem($font-size--xxl);
+  letter-spacing: px-to-rem($font-size--xxl * .2);
+  text-transform: uppercase;
 }
-
 h2 {
   font-size: px-to-rem($font-size--xl);
+  letter-spacing: px-to-rem($font-size--xl * .2);
+  text-transform: uppercase;
 }
-
 h3 {
   font-size: px-to-rem($font-size--lg);
+  letter-spacing: px-to-rem($font-size--lg * .2);
 }
 
-h4 {
-  font-size: px-to-rem($font-size--md);
+h4 { font-size: px-to-rem($font-size--md); }
+h5 { font-size: px-to-rem($font-size--sm); }
+h6 { font-size: px-to-rem($font-size--xxs); }
+
+
+a,
+a:visited {
+  color: rgba($color--primary, .85);
+
+  &:hover {
+    color: $color--primary;
+  }
 }
 
-h5 {
-  font-size: px-to-rem($font-size--sm);
-}
+.site-title {
+  @extend h1;
+  font-size: px-to-rem($font-size--xxl);
+  margin: 0;
 
-h6 {
-  font-size: px-to-rem($font-size--xxs);
+  a {
+    text-decoration: none;
+  }
 }
 
 p {
