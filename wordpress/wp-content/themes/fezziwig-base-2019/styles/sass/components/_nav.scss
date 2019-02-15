@@ -1,36 +1,24 @@
-#nav {
-  display: flex;
-  align-items: center;
-}
+a.hc-nav-trigger {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  display: none;
+  top: 0;
+  z-index: 9980;
+  width: 30px;
+  min-height: 24px;
+  margin-left: auto;
 
-#networking {
-  flex: auto;
-}
+  span {
+    background-color: $color--primary;
 
-.nav {
-  display: block;
-  flex: auto;
-
-  a {
-    &:link,
-    &:visited {
-      padding: .25em .5em;
-      display: inline-block;
-      margin-left: .125em;
-      background-color: rgba(black, .25);
+    &:before {
+      background-color: $color--primary;
     }
 
-    &:hover {
-      background-color: rgba(black, .75);
-      color: white;
-    }
-
-    &.highlight {
-
+    &:after {
+      background-color: $color--primary;
     }
   }
-
-
-
-
 }
+
