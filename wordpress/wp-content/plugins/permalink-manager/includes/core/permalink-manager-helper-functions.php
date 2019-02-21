@@ -307,22 +307,6 @@ class Permalink_Manager_Helper_Functions extends Permalink_Manager_Class {
 	}
 
 	/**
-	* Remove post tag from permastructure
-	*/
-	static function remove_post_tag($permastruct) {
-		$post_types = self::get_post_types_array('full');
-
-		// Get all post tags
-		$post_tags = array("%postname%", "%pagename%");
-		foreach($post_types as $post_type) {
-			$post_tags[] = "%{$post_type['name']}%";
-		}
-
-		$permastruct = str_replace($post_tags, "", $permastruct);
-		return trim($permastruct, "/");
-	}
-
-	/**
 	* Structure Tags & Rewrite functions
 	*/
 	static function get_all_structure_tags($code = true, $seperator = ', ', $hide_slug_tags = true) {
@@ -384,6 +368,32 @@ class Permalink_Manager_Helper_Functions extends Permalink_Manager_Class {
 	}
 
 	/**
+	 * Remove post tag from permastructure
+	 */
+	static function remove_post_tag($permastruct) {
+		$post_types = self::get_post_types_array('full');
+
+		// Get all post tags
+		$post_tags = array("%postname%", "%pagename%");
+		foreach($post_types as $post_type) {
+			$post_tags[] = "%{$post_type['name']}%";
+		}
+
+		$permastruct = str_replace($post_tags, "", $permastruct);
+		return trim($permastruct, "/");
+	}
+
+	/**
+	 * Get front-page ID
+	 */
+	static function is_front_page($page_id) {
+		$front_page_id = get_option('page_on_front');
+		$bool = (!empty($front_page_id) && $page_id == $front_page_id) ? true : false;
+
+		return apply_filters('permalink_manager_is_front_page', $bool, $page_id, $front_page_id);
+	}
+
+	/**
 	 * Sanitize multidimensional array
 	 */
 	static function sanitize_array($data = array()) {
@@ -435,7 +445,7 @@ class Permalink_Manager_Helper_Functions extends Permalink_Manager_Class {
 		// Remove special characters
 		if($sanitize_slugs !== false) {
 			$clean = preg_replace("/[\s_|+-]+/", "-", $clean);
-			$clean = preg_replace("/[\.]+/", "", $clean);
+			$clean = preg_replace('/([\.]+)(?![a-z]{3,4}$)/i', '', $clean);
 			$clean = preg_replace('/([-\s+]\/[-\s+])/', '-', $clean);
 		} else {
 			$clean = preg_replace("/[\s]+/", "-", $clean);
@@ -551,7 +561,26 @@ class Permalink_Manager_Helper_Functions extends Permalink_Manager_Class {
  		$all_uris = $permalink_manager_uris;
  		unset($permalink_manager_uris[$element_id]);
 
- 		return (in_array($uri, $permalink_manager_uris)) ? 1 : 0;
+ 		if(in_array($uri, $permalink_manager_uris)) {
+			$all_duplicates = (array) array_keys($permalink_manager_uris, $uri);
+			$this_uri_lang = Permalink_Manager_Third_Parties::wpml_get_language_code($element_id);
+
+			if($this_uri_lang) {
+				foreach($all_duplicates as $key => $duplicated_id) {
+					$duplicated_uri_lang = Permalink_Manager_Third_Parties::wpml_get_language_code($duplicated_id);
+
+					if($duplicated_uri_lang !== $this_uri_lang) {
+						unset($all_duplicates[$key]);
+					}
+				}
+
+				return (count($all_duplicates) > 0) ? true : false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
  	}
 
 	/**

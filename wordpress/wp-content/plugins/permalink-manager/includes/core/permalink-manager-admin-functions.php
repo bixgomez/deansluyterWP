@@ -129,7 +129,7 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 	 * Generate the fields
 	 */
 	static public function generate_option_field($input_name, $args) {
-		global $permalink_manager_options;
+		global $permalink_manager_options, $permalink_manager_permastructs;
 
 		// Reset $fields variables
 		$fields = $section_name = $field_name = '';
@@ -269,9 +269,72 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 			case 'permastruct' :
 				$siteurl = Permalink_Manager_Helper_Functions::get_permalink_base();
 
+				if(!empty($args['post_type'])) {
+					$type = $args['post_type'];
+					$type_name = $type['name'];
+
+					$permastructures = $permalink_manager_permastructs['post_types'];
+				} else if(!empty($args['taxonomy'])) {
+					$type = $args['taxonomy'];
+					$type_name = $type['name'];
+
+					$permastructures = $permalink_manager_permastructs['taxonomies'];
+				} else {
+					break;
+				}
+
+				// Get permastructures
+				$default_permastruct = trim(Permalink_Manager_Helper_Functions::get_default_permastruct($type_name), "/");
+				$current_permastruct = isset($permastructures[$type_name]) ? $permastructures[$type_name] : $default_permastruct;
+
+				// Append extra attributes
+				$input_atts .= " data-default=\"{$default_permastruct}\"";
+				$input_atts .= " placeholder=\"{$default_permastruct}\"";
+
+				$fields .= "<div class=\"all-permastruct-container\">";
+
+				// 1. Default permastructure
 				$fields .= "<div class=\"permastruct-container\">";
 				$fields .= "<span><code>{$siteurl}/</code></span>";
-				$fields .= "<span><input type='text' {$input_atts} value='{$value}' name='{$input_name}'/></span>";
+				$fields .= "<span><input type='text' {$input_atts} value='{$current_permastruct}' name='{$input_name}'/></span>";
+				$fields .= "</div>";
+
+				$fields .= "<div class=\"permastruct-toggle\">";
+
+				// 2A. Permastructure for each language
+				$languages = (array) Permalink_Manager_Third_Parties::get_all_languages(true);
+				if($languages) {
+					$fields .= sprintf(
+						"<h4>%s</h4><p class=\"permastruct-instruction\">%s</p>",
+						__("Permastructure translations", "permalink-manager"),
+						__("If you would like to translate the permastructures and set-up different permalink structure per language, please fill in the fields below. Otherwise the permastructure set for default language (see field above) will be applied.", "permalink-manager")
+					);
+
+					foreach($languages as $lang => $name) {
+						$current_lang_permastruct = isset($permastructures["{$type_name}_{$lang}"]) ? $permastructures["{$type_name}_{$lang}"] : '';
+
+						$fields .= "<label>{$name}</label>";
+						$fields .= "<div class=\"permastruct-container\">";
+						$fields .= "<span><code>{$siteurl}/</code></span>";
+						$fields .= sprintf("<span><input type='text' %s value='%s' name='%s'/></span>", $input_atts, $current_lang_permastruct, str_replace("]", "_{$lang}]", $input_name));
+						$fields .= "</div>";
+					}
+				}
+
+				// 2B. Restore default permalinks
+				$fields .= sprintf(
+					"<p class=\"default-permastruct-row columns-container\"><span class=\"column-2_4\"><strong>%s:</strong> %s</span><span class=\"column-2_4\"><a href=\"#\" class=\"restore-default\"><span class=\"dashicons dashicons-image-rotate\"></span> %s</a></span></p>",
+					__("Default permastructure", "permalink-manager"), esc_html($default_permastruct),
+					__("Restore default permastructure", "permalink-manager")
+				);
+				$fields .= "</div>";
+
+				// 3. Show toggle button
+				$fields .= sprintf(
+					"<p class=\"permastruct-toggle-button\"><a href=\"#\"><span class=\"dashicons dashicons-admin-settings\"></span> %s</a></p>",
+					__("Show additional settings", "permalink-manager")
+				);
+
 				$fields .= "</div>";
 
 				break;
@@ -478,31 +541,6 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 	}
 
 	/**
-	 * Display error/info message
-	 */
-	public static function get_alert_message($alert_content = "", $alert_type = "", $dismissable = true, $id = false) {
-		// Ignore empty messages (just in case)
-		if(empty($alert_content) || empty($alert_type)) {
-			return "";
-		}
-
-		$class = ($dismissable) ? "is-dismissible" : "";
-		$alert_id = ($id) ? " data-alert_id=\"{$id}\"" : "";
-
-		$html = sprintf( "<div class=\"{$alert_type} permalink-manager-notice notice {$class}\"{$alert_id}> %s</div>", wpautop($alert_content) );
-
-		return $html;
-	}
-
-	/**
-	 * Help tooltip
-	 */
-	static function help_tooltip($text = '') {
-		$html = " <a href=\"#\" title=\"{$text}\" class=\"help_tooltip\"><span class=\"dashicons dashicons-editor-help\"></span></a>";
-		return $html;
-	}
-
-	/**
 	 * Display the table with updated slugs after one of the actions is triggered
 	 */
 	static function display_updated_slugs($updated_array, $return_array = false, $display_full_table = true) {
@@ -609,6 +647,14 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 	}
 
 	/**
+	 * Hide "Custom URI" column
+	 */
+	function quick_edit_hide_column($hidden, $screen) {
+		$hidden[] = 'permalink-manager-col';
+		return $hidden;
+	}
+
+	/**
 	 * Display "Permalink Manager" box
 	 */
 	public static function display_uri_box($element, $gutenberg = false) {
@@ -618,6 +664,7 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 			$id = $element_id = $element->ID;
 			$native_slug = $element->post_name;
 			$is_draft = (!empty($element->post_status) && (in_array($element->post_status, array('draft', 'auto-draft')))) ? true : false;
+			$is_front_page = Permalink_Manager_Helper_Functions::is_front_page($id);
 
 			// Auto-update settings
 			$auto_update_val = get_post_meta($id, "auto_update_uri", true);
@@ -667,7 +714,7 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 		}
 
 		// 4. Custom URI
-		if(!empty($element->ID) && get_option('page_on_front') == $id) {
+		if(!empty($is_front_page)) {
 			$custom_uri_field = Permalink_Manager_Admin_Functions::generate_option_field("custom_uri", array("type" => "hidden", "extra_atts" => "data-default=\"{$default_uri}\" data-element-id=\"{$element_id}\"", "input_class" => "widefat custom_uri", "value" => rawurldecode($uri)));
 			$custom_uri_field .= __("The custom URI cannot be edited on frontpage.", "permalink-manager");
 		} else {
@@ -692,7 +739,7 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 		}
 
 		// Three fields that should be hidden on front-page
-		if(get_option('page_on_front') != $id) {
+		if(empty($is_front_page)) {
 			// 6. Auto-update URI
 			if(!empty($auto_update_choices)) {
 				$html .= sprintf("<div><p><label for=\"auto_auri\" class=\"strong\">%s %s</label></p><span>%s</span></div>",
@@ -737,7 +784,8 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 		$html .= "</div>";
 		$html .= "</div>";
 
-		// 11. Append nonce field & element ID
+		// 11. Append nonce field, element ID & native slug
+		$html .= Permalink_Manager_Admin_Functions::generate_option_field("permalink-manager-edit-uri-element-slug", array("type" => "hidden", "value" => $native_slug));
 		$html .= Permalink_Manager_Admin_Functions::generate_option_field("permalink-manager-edit-uri-element-id", array("type" => "hidden", "value" => $element_id));
 		$html .= wp_nonce_field('permalink-manager-edit-uri-box', 'permalink-manager-nonce', true, false);
 
@@ -771,11 +819,28 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 	}
 
 	/**
-	 * Hide "Custom URI" column
+	 * Display error/info message
 	 */
-	function quick_edit_hide_column($hidden, $screen) {
-		$hidden[] = 'permalink-manager-col';
-		return $hidden;
+	public static function get_alert_message($alert_content = "", $alert_type = "", $dismissable = true, $id = false) {
+		// Ignore empty messages (just in case)
+		if(empty($alert_content) || empty($alert_type)) {
+			return "";
+		}
+
+		$class = ($dismissable) ? "is-dismissible" : "";
+		$alert_id = ($id) ? " data-alert_id=\"{$id}\"" : "";
+
+		$html = sprintf( "<div class=\"{$alert_type} permalink-manager-notice notice {$class}\"{$alert_id}> %s</div>", wpautop($alert_content) );
+
+		return $html;
+	}
+
+	/**
+	 * Help tooltip
+	 */
+	static function help_tooltip($text = '') {
+		$html = " <a href=\"#\" title=\"{$text}\" class=\"help_tooltip\"><span class=\"dashicons dashicons-editor-help\"></span></a>";
+		return $html;
 	}
 
 	/**
@@ -848,9 +913,9 @@ class Permalink_Manager_Admin_Functions extends Permalink_Manager_Class {
 			// Convert the output to JSON and stop the function
 			echo json_encode($duplicates_array);
 		} else if(!empty($_REQUEST['custom_uri']) && !empty($_REQUEST['element_id'])) {
-			$is_duplicated = Permalink_Manager_Helper_Functions::is_uri_duplicated($uri, $element_id) ? $duplicate_alert : 0;
+			$is_duplicated = Permalink_Manager_Helper_Functions::is_uri_duplicated($uri, $element_id);
 
-			echo $is_duplicated;
+			echo ($is_duplicated) ? $duplicate_alert : 0;;
 		}
 
 		die();

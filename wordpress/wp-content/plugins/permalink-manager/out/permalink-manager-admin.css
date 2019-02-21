@@ -15,6 +15,7 @@
 #permalink-manager .lead{font-size:125%}
 #permalink-manager .licence-info{font-weight:bold}
 #permalink-manager p label{font-size:13px;color:#555d66;font-weight:bold}
+#permalink-manager a:focus{box-shadow:none}
 
 #permalink-manager .woocommerce-icon:before{font-family:"WooCommerce";font-style:normal}
 #permalink-manager .woocommerce-cart:before{content:"\e01d"}
@@ -76,7 +77,6 @@
 
 #permalink-manager .updated-slugs-table .row-title{max-width:400px}
 
-
 /**
  * Columns
  */
@@ -109,7 +109,8 @@
 #permalink-manager.permalink-manager-edit-uri-box .close-icon:before{content:"\f158";display:inline-block;font:400 20px/1 dashicons;speak:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-decoration:none!important}
 #permalink-manager .default-permalink-row,#permalink-manager .redirects-row{border-top:1px solid #eee;padding-top:15px}
 #permalink-manager .default-permalink-row,#permalink-manager .default-permastruct-row,#permalink-manager .redirects-row{color:#aaa;font-size:90%}
-#permalink-manager .restore-default{display:inline-block;text-align:right;width:100%;border-radius:0;color:#959595;text-decoration:none}
+#permalink-manager .restore-default,#permalink-manager .permastruct-toggle-button a{display:inline-block;width:100%;border-radius:0;color:#959595;text-decoration:none}
+#permalink-manager .restore-default{text-align:right}
 #permalink-manager .widefat,#permalink-manager #redirect-panel-inside,#permalink-manager #redirect-panel-inside table{width:100%!important}
 #permalink-manager .heading,#permalink-manager .heading a{margin:0;line-height:1.4;font-weight:600;text-decoration:none;color:#777}
 #permalink-manager.permalink-manager-edit-term .permalink-manager-edit-uri-box{display:block!important;margin:0}
@@ -159,6 +160,18 @@
  * Tippy.js custom theme
  */
 .tippy-tooltip.tippy-pm-theme{text-align:left;font-size:13px}
+
+/**
+ * Permastructures
+ */
+#permalink-manager .all-permastruct-container
+#permalink-manager .all-permastruct-container > *,#permalink-manager .all-permastruct-container .permastruct-toggle > *:last-child{margin-top:15px}
+#permalink-manager .all-permastruct-container .permastruct-toggle{display:none}
+#permalink-manager .all-permastruct-container h4{font-size:14px}
+#permalink-manager .all-permastruct-container p{font-size:13px}
+#permalink-manager .all-permastruct-container label{font-weight:600;margin-top:15px!important;font-size:13px;margin-bottom:5px!important;display:block;clear:both}
+#permalink-manager .permastruct-toggle-button a{font-size:90%;padding-top:10px;font-weight:bold}
+
 
 /**
  * TagEditor custom theme & "Stop Words"

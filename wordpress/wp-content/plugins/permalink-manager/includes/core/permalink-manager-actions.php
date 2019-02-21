@@ -199,7 +199,8 @@ class Permalink_Manager_Actions extends Permalink_Manager_Class {
 		if(!empty($element_id) && is_numeric($element_id)) {
 			Permalink_Manager_URI_Functions_Post::update_post_uri($element_id);
 
-			// Reload URI Editor
+			// Reload URI Editor & clean post cache
+			clean_post_cache($element_id);
 			$element = get_post($element_id);
 			$html = Permalink_Manager_Admin_Functions::display_uri_box($element, true);
 
@@ -572,5 +573,3 @@ class Permalink_Manager_Actions extends Permalink_Manager_Class {
 	}
 
 }
-
-?>

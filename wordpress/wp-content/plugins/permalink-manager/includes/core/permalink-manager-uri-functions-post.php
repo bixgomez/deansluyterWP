@@ -60,7 +60,7 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		if(!empty($post->post_type) && Permalink_Manager_Helper_Functions::is_disabled($post->post_type, 'post_type')) { return $permalink; }
 
 		// 2A. Do not change permalink of frontpage
-		if(get_option('page_on_front') == $post->ID) {
+		if(Permalink_Manager_Helper_Functions::is_front_page($post->ID)) {
 			return $permalink;
 		}
 		// 2B. Do not change permalink for drafts and future posts (+ remove trailing slash from them)
@@ -85,8 +85,12 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 			$permalink = "{$home_url}/" . urldecode("/{$permalink}");
 		}
 
-		// 5. Allow to filter
-		return apply_filters('permalink_manager_filter_final_post_permalink', user_trailingslashit($permalink), $post, $old_permalink);
+		// 5. Allow to filter (do not filter in Customizer)
+		if(!(function_exists('is_customize_preview') && is_customize_preview())) {
+			return apply_filters('permalink_manager_filter_final_post_permalink', user_trailingslashit($permalink), $post, $old_permalink);
+		} else {
+			return $old_permalink;
+		}
 	}
 
 	/**
@@ -135,7 +139,8 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		$post = is_object($post) ? $post : get_post($post);
 
 		// Check if post ID is defined (and front page permalinks should be empty)
-		if(empty($post->ID) || (get_option('page_on_front') == $post->ID)) { return ''; }
+		if(empty($post->ID) || Permalink_Manager_Helper_Functions::is_front_page($post->ID)) { return ''; }
+
 		$post_id = $post->ID;
 		$post_type = $post->post_type;
 		$post_name = (empty($post->post_name)) ? Permalink_Manager_Helper_Functions::sanitize_title($post->post_title) : $post->post_name;
@@ -143,10 +148,9 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		// 1A. Check if post type is allowed
 		if($check_if_disabled && Permalink_Manager_Helper_Functions::is_disabled($post_type, 'post_type')) { return ''; }
 
-		// 1. Get the permastruct
+		// 1A. Get the native permastructure
 		if($post_type == 'attachment') {
 			$parent_page = ($post->post_parent > 0 && $post->post_parent != $post->ID) ? get_post($post->post_parent) : false;
-			// $default_permastruct = ($parent_page) ? trim(get_page_uri($parent_page->ID), "/") . "/attachment" : "";
 
 			if(!empty($parent_page->ID)) {
 				$parent_page_uri = (!empty($permalink_manager_uris[$parent_page->ID])) ? $permalink_manager_uris[$parent_page->ID] : get_page_uri($parent_page->ID);
@@ -154,22 +158,20 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 				$parent_page_uri = "";
 			}
 
-			$default_permastruct = ($parent_page) ? trim($parent_page_uri, "/") . "/attachment" : "";
-
-			if($native_uri) {
-				$permastruct = $default_permastruct;
-			} else {
-				$permastruct = (!empty($permalink_manager_permastructs['post_types'][$post_type])) ? $permalink_manager_permastructs['post_types'][$post_type] : $default_permastruct;
-			}
+			$native_permastructure = ($parent_page) ? trim($parent_page_uri, "/") . "/attachment" : "";
 		} else {
-			$default_permastruct = Permalink_Manager_Helper_Functions::get_default_permastruct($post_type);
-			if($native_uri) {
-				$permastruct = $default_permastruct;
-			} else {
-				$permastruct = (isset($permalink_manager_permastructs['post_types'][$post_type])) ? $permalink_manager_permastructs['post_types'][$post_type] : $default_permastruct;
-			}
+			$native_permastructure = Permalink_Manager_Helper_Functions::get_default_permastruct($post_type);
 		}
-		$default_base = (!empty($permastruct)) ? trim($permastruct, '/') : "";
+
+		// 1B. Get the permastructure
+		if($native_uri || empty($permalink_manager_permastructs['post_types'][$post_type])) {
+			$permastructure = $native_permastructure;
+		} else {
+			$permastructure = apply_filters('permalink_manager_filter_permastructure', $permalink_manager_permastructs['post_types'][$post_type], $post);
+		}
+
+		// 1C. Set the permastructure
+		$default_base = (!empty($permastructure)) ? trim($permastructure, '/') : "";
 
 		// 2A. Get the date
 		$date = explode(" ", date('Y m d H i s', strtotime($post->post_date)));
@@ -182,13 +184,15 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		}
 
 		// 2C. Get the post type slug
-		if(!empty($wp_post_types[$post_type]->rewrite['slug'])) {
-			$post_type_slug = $wp_post_types[$post_type]->rewrite['slug'];
-		} else if(is_string($wp_post_types[$post_type]->rewrite)) {
-			$post_type_slug = $wp_post_types[$post_type]->rewrite;
-		} else {
-			$post_type_slug = $post_type;
+		if(!empty($wp_post_types[$post_type])) {
+			if(!empty($wp_post_types[$post_type]->rewrite['slug'])) {
+				$post_type_slug = $wp_post_types[$post_type]->rewrite['slug'];
+			} else if(is_string($wp_post_types[$post_type]->rewrite)) {
+				$post_type_slug = $wp_post_types[$post_type]->rewrite;
+			}
 		}
+
+		$post_type_slug = (!empty($post_type_slug)) ? $post_type_slug : $post_type;
 		$post_type_slug = apply_filters('permalink_manager_filter_post_type_slug', $post_type_slug, $post, $post_type);
 		$post_type_slug = preg_replace('/(%([^%]+)%\/?)/', '', $post_type_slug);
 
@@ -271,13 +275,18 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 				else if(!empty($replacement_term->term_id) && strpos($default_uri, "%{$taxonomy}_flat%") === false && is_taxonomy_hierarchical($taxonomy)) {
 					$mode = 2;
 				}
-				// 4C. Force flat term base - get highgest level term (if %taxonomy_flat% tag is used)
+				// 4C. Force flat/non-hierarchical term base - get highgest level term (if %taxonomy_flat% tag is used and primary term is not set)
 				else if(!$native_uri && strpos($default_uri, "%{$taxonomy}_flat%") !== false && !empty($terms) && empty($primary_term->slug)) {
 					$mode = 3;
 				}
-				// 4D. Flat/non-hierarchical term base - get primary term (if set) or first term
-				else {
+				// 4D. Flat/non-hierarchical term base - get first term (if primary term not set)
+				else if(empty($primary_term->slug)) {
 					$mode = 4;
+				}
+				// 4E. Flat/non-hierarchical term base - get and force primary term (if set)
+				else {
+					$mode = 5;
+					$replacement_term = $primary_term;
 				}
 
 				// Get the replacement slug (custom + native)
@@ -301,7 +310,10 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 	function exclude_homepage($uris) {
 		// Find the homepage URI
 		$homepage_id = get_option('page_on_front');
-		if(is_array($uris) && !empty($uris[$homepage_id])) { unset($uris[$homepage_id]); }
+
+		if(is_array($uris) && !empty($uris[$homepage_id])) {
+			unset($uris[$homepage_id]);
+		}
 
 		return $uris;
 	}
@@ -573,40 +585,46 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		$show_uri_editor = apply_filters("permalink_manager_hide_uri_editor_post_{$post->post_type}", true);
 		if(!$show_uri_editor) { return $html; }
 
-		$html = preg_replace("/(<strong>(.*)<\/strong>)(.*)/is", "$1 ", $html);
+		$new_html = preg_replace("/(<strong>(.*)<\/strong>)(.*)/is", "$1 ", $html);
 		$default_uri = self::get_default_post_uri($id);
 		$native_uri = self::get_default_post_uri($id, true);
 
 		// Make sure that home URL ends with slash
 		$home_url = Permalink_Manager_Helper_Functions::get_permalink_base($post);
 
-		// Do not change anything if post is not saved yet (display sample permalink instead)
-		if(get_option('page_on_front') == $id) {
-			$$sample_permalink_uri = "";
+		// A. Display original permalink on front-page editor
+		if(Permalink_Manager_Helper_Functions::is_front_page($id)) {
+			preg_match('/href="([^"]+)"/mi', $html, $matches);
+			$sample_permalink = (!empty($matches[1])) ? $matches[1] : "";
 		}
-		else if($autosave || empty($post->post_status)) {
-			$sample_permalink_uri = $default_uri;
-		} else {
-			$sample_permalink_uri = (!empty($permalink_manager_uris[$id])) ? $permalink_manager_uris[$id] : $native_uri;
+		else {
+			// B. Do not change anything if post is not saved yet (display sample permalink instead)
+			if($autosave || empty($post->post_status)) {
+				$sample_permalink_uri = $default_uri;
+			}
+			// C. Display custom URI if set
+			else {
+				$sample_permalink_uri = (!empty($permalink_manager_uris[$id])) ? $permalink_manager_uris[$id] : $native_uri;
+			}
+
+			// Decode URI & allow to filter it
+			$sample_permalink_uri = apply_filters('permalink_manager_filter_post_sample_uri', urldecode($sample_permalink_uri), $post);
+
+			// Prepare the sample & default permalink
+			$sample_permalink = sprintf("%s/<span class=\"editable\">%s</span>", $home_url, str_replace("//", "/", $sample_permalink_uri));
+
+			// Allow to filter the sample permalink URL
+			// $sample_permalink = apply_filters('permalink_manager_filter_post_sample_permalink', $sample_permalink, $post);
 		}
-
-		// Decode URI & allow to filter it
-		$sample_permalink_uri = apply_filters('permalink_manager_filter_post_sample_uri', urldecode($sample_permalink_uri), $post);
-
-		// Prepare the sample & default permalink
-		$sample_permalink = sprintf("{$home_url}/<span class=\"editable\">%s</span>", str_replace("//", "/", $sample_permalink_uri));
-
-		// Allow to filter the sample permalink URL
-		$sample_permalink = apply_filters('permalink_manager_filter_post_sample_permalink', $sample_permalink, $post);
 
 		// Append new HTML output
-		$html .= sprintf("<span class=\"sample-permalink-span\"><a id=\"sample-permalink\" href=\"%s\">%s</a></span>&nbsp;", strip_tags($sample_permalink), $sample_permalink);
-		$html .= (!$autosave) ? Permalink_Manager_Admin_Functions::display_uri_box($post) : "";
+		$new_html .= sprintf("<span class=\"sample-permalink-span\"><a id=\"sample-permalink\" href=\"%s\">%s</a></span>&nbsp;", strip_tags($sample_permalink), $sample_permalink);
+		$new_html .= (!$autosave) ? Permalink_Manager_Admin_Functions::display_uri_box($post) : "";
 
 		// Append hidden field with native slug
-		$html .= (!empty($post->post_name)) ? "<span id=\"editable-post-name-full\">{$post->post_name}</span>" : "";
+		$new_html .= (!empty($post->post_name)) ? "<span id=\"editable-post-name-full\">{$post->post_name}</span>" : "";
 
-		return $html;
+		return $new_html;
 	}
 
 	/**
@@ -649,6 +667,9 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 
 		// Prevent language mismatch in MultilingualPress plugin
 		if(is_admin() && !empty($post->ID) && $post->ID != $post_id) { return $post_id; }
+
+		// Stop when products are imported with WooCommerce importer
+		if(!empty($_REQUEST['action']) && $_REQUEST['action'] == 'woocommerce_do_ajax_product_import') { return $post_id; }
 
 		// Do not do anything if post is autosaved
 		if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return $post_id; }
@@ -748,7 +769,7 @@ class Permalink_Manager_URI_Functions_Post extends Permalink_Manager_Class {
 		update_option('permalink-manager-uris', $permalink_manager_uris);
 
 		// Update the slug (if changed)
-		if(!empty($_POST['post_name']) && isset($_POST['native_slug']) && ($_POST['native_slug'] !== $_POST['post_name'])) {
+		if(isset($_POST['permalink-manager-edit-uri-element-slug']) && isset($_POST['native_slug']) && ($_POST['native_slug'] !== $_POST['permalink-manager-edit-uri-element-slug'])) {
 			self::update_slug_by_id($_POST['native_slug'], $post_id);
 		}
 

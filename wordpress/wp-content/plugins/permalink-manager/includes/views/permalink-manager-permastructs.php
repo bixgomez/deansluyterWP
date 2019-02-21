@@ -61,33 +61,16 @@ class Permalink_Manager_Permastructs extends Permalink_Manager_Class {
 		// 3. Append fields for all post types
 		foreach($all_post_types as $post_type) {
 
-			$default_permastruct = trim(Permalink_Manager_Helper_Functions::get_default_permastruct($post_type['name']), "/");
-			$current_permastruct = isset($permalink_manager_permastructs['post_types'][$post_type['name']]) ? $permalink_manager_permastructs['post_types'][$post_type['name']] : $default_permastruct;
-
 			$fields["post_types"]["fields"][$post_type['name']] = array(
 				'label' => $post_type['label'],
 				'container' => 'row',
 				'input_class' => 'permastruct-field',
-				'after_description' => self::restore_default_row($default_permastruct),
-				'extra_atts' => "data-default=\"{$default_permastruct}\"",
-				'value' => $current_permastruct,
-				'placeholder' => $default_permastruct,
+				'post_type' => $post_type,
 				'type' => 'permastruct'
 			);
 		}
 
 		return apply_filters('permalink-manager-permastructs-fields', $fields);
-	}
-
-	/**
-	 * Restore default permastructure row
-	 */
-	public static function restore_default_row($default_permastruct) {
-		return sprintf(
-			"<p class=\"default-permastruct-row columns-container\"><span class=\"column-2_4\"><strong>%s:</strong> %s</span><span class=\"column-2_4\"><a href=\"#\" class=\"restore-default\"><span class=\"dashicons dashicons-image-rotate\"></span> %s</a></span></p>",
-			__("Default permastructure", "permalink-manager"), esc_html($default_permastruct),
-			__("Restore to Default Permastructure", "permalink-manager")
-		);
 	}
 
 	/**

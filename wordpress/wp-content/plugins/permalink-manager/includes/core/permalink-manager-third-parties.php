@@ -26,6 +26,9 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 			// URI Editor
 			add_filter('permalink-manager-uri-editor-extra-info', array($this, 'wpml_lang_column_content_uri_editor'), 9, 3);
 
+			// Adjust front page ID
+			add_filter('permalink_manager_is_front_page', array($this, 'wpml_is_front_page'), 9, 3);
+
 			if((isset($sitepress_settings['language_negotiation_type']) && in_array($sitepress_settings['language_negotiation_type'], array(1, 2))) || (isset($polylang->links_model->options['force_lang']) && in_array($polylang->links_model->options['force_lang'], array(1, 2, 3)))) {
 				add_filter('permalink-manager-detect-uri', array($this, 'wpml_detect_post'), 9, 3);
 				add_filter('permalink_manager-filter-permalink-base', array($this, 'wpml_prepend_lang_prefix'), 9, 2);
@@ -41,6 +44,9 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 				add_filter('permalink_manager_filter_post_type_slug', array($this, 'wpml_translate_post_type_slug'), 9, 3);
 				// add_filter('permalink_manager_filter_taxonomy_slug', array($this, 'wpml_translate_taxonomy_slug'), 9, 3);
 			}
+
+			// Translate permastructure
+			add_filter('permalink_manager_filter_permastructure', array($this, 'wpml_translate_permastructure'), 9, 2);
 		}
 
 		// 2. AMP
@@ -64,6 +70,8 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 				add_filter('request', 'Permalink_Manager_Pro_Functions::woocommerce_detect_coupon_code', 1, 1);
 				add_filter('permalink-manager-disabled-post-types', 'Permalink_Manager_Pro_Functions::woocommerce_coupon_uris', 9, 1);
 			}
+
+			add_action('woocommerce_product_import_inserted_product_object', array($this, 'woocommerce_generate_permalinks_after_import'), 9, 2);
 		}
 
 		// 4. Theme My Login
@@ -363,6 +371,21 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 		return $post_type_slug;
 	}
 
+	function wpml_translate_permastructure($permastructure, $element) {
+		global $permalink_manager_permastructs;
+
+		// Get element language code
+		$language_code = self::wpml_get_language_code($element);
+
+		if(!empty($element->ID)) {
+			$translated_permastructure = (!empty($permalink_manager_permastructs["post_types"]["{$element->post_type}_{$language_code}"])) ? $permalink_manager_permastructs["post_types"]["{$element->post_type}_{$language_code}"] : '';
+		} else if(!empty($element->term_id)) {
+			$translated_permastructure = (!empty($permalink_manager_permastructs["taxonomies"]["{$element->taxonomy}_{$language_code}"])) ? $permalink_manager_permastructs["taxonomies"]["{$element->taxonomy}_{$language_code}"] : '';
+		}
+
+		return (!empty($translated_permastructure)) ? $translated_permastructure : $permastructure;
+	}
+
 	function wpml_lang_column_uri_editor($columns) {
 		if(class_exists('SitePress') || class_exists('Polylang')) {
 			$columns['post_lang'] = __('Language', 'permalink-manager');
@@ -376,6 +399,13 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 		$output .= (!empty($language_code)) ? sprintf(" | <span><strong>%s:</strong> %s</span>", __("Language"), $language_code) : "";
 
 		return $output;
+	}
+
+	function wpml_is_front_page($bool, $page_id, $front_page_id) {
+		$default_language_code = self::get_default_language();
+		$page_id = apply_filters('wpml_object_id', $page_id, 'page', true, $default_language_code);
+
+		return (!empty($page_id) && $page_id == $front_page_id) ? true : $bool;
 	}
 
 	function wpml_ignore_lang_query_parameter($uri_parts) {
@@ -531,6 +561,19 @@ class Permalink_Manager_Third_Parties extends Permalink_Manager_Class {
 		// Do not redirect "thank you" & another WooCommerce pages
 		if(is_checkout() || (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url())) {
 			$wp_query->query_vars['do_not_redirect'] = 1;
+		}
+	}
+
+	function woocommerce_generate_permalinks_after_import($object, $data) {
+		global $permalink_manager_uris;
+
+		if(!empty($object)) {
+			$product_id = $object->get_id();
+			$product_uri = Permalink_Manager_URI_Functions_Post::get_default_post_uri($product_id, false, true);
+
+			$permalink_manager_uris[$product_id] = $product_uri;
+
+			update_option('permalink-manager-uris', $permalink_manager_uris);
 		}
 	}
 

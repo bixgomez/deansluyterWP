@@ -34,7 +34,7 @@ class Permalink_Manager_Core_Functions extends Permalink_Manager_Class {
 		// Trailing slashes
 		add_filter( 'permalink_manager_filter_final_term_permalink', array($this, 'control_trailing_slashes'), 9);
 		add_filter( 'permalink_manager_filter_final_post_permalink', array($this, 'control_trailing_slashes'), 9);
-		add_filter( 'permalink_manager_filter_post_sample_permalink', array($this, 'control_trailing_slashes'), 9);
+		add_filter( 'permalink_manager_filter_post_sample_uri', array($this, 'control_trailing_slashes'), 9);
 
 		// Replace empty placeholder tags & remove BOM
 		add_filter( 'permalink_manager_filter_default_post_uri', array($this, 'replace_empty_placeholder_tags'), 10, 5 );
@@ -45,7 +45,7 @@ class Permalink_Manager_Core_Functions extends Permalink_Manager_Class {
 	* The most important Permalink Manager function
 	*/
 	public static function detect_post($query, $request_url = false, $return_object = false) {
-		global $wpdb, $wp, $wp_rewrite, $permalink_manager_uris, $wp_filter, $permalink_manager_options, $pm_query, $pm_uri_parts;
+		global $wpdb, $wp, $wp_rewrite, $permalink_manager, $permalink_manager_uris, $wp_filter, $permalink_manager_options, $pm_query, $pm_uri_parts;
 
 		// Check if any custom URI is used and we are not in WP-Admin dashboard
 		if(!(is_array($permalink_manager_uris)) || (empty($query) && empty($request_url))) return $query;
@@ -244,6 +244,7 @@ class Permalink_Manager_Core_Functions extends Permalink_Manager_Class {
 						$query['post_type'] = $post_type;
 					} else if($post_type == 'page') {
 						$query['pagename'] = $final_uri;
+						$query['post_type'] = $post_type;
 					} else if($post_type == 'post') {
 						$query['name'] = $final_uri;
 					} else if($post_type == 'attachment') {
@@ -351,6 +352,14 @@ class Permalink_Manager_Core_Functions extends Permalink_Manager_Class {
 				$debug_info['post_type'] = $post_type;
 			} else if(isset($term_taxonomy)) {
 				$debug_info['taxonomy'] = $term_taxonomy;
+			}
+
+			// License key info
+			if(class_exists('Permalink_Manager_Pro_Functions')) {
+				$license_key = $permalink_manager->functions['pro-functions']->get_license_key();
+
+				// Mask the license key
+				$debug_info['license_key'] = preg_replace('/([^-]+)-([^-]+)-([^-]+)-([^-]+)$/', '***-***-$3', $license_key);
 			}
 
 			$debug_txt = sprintf("<pre style=\"display:block;\">%s</pre>", print_r($debug_info, true));

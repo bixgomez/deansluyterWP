@@ -211,6 +211,15 @@ jQuery(document).ready(function() {
 	});
 
 	/**
+	 * Dispaly additional permastructure settings
+	 */
+	jQuery('#permalink-manager').on('click', '.permastruct-toggle-button a', function() {
+		jQuery(this).parents('.field-container').find('.permastruct-toggle').slideToggle();
+
+		return false;
+	});
+
+	/**
 	 * Hide global admin notices
 	 */
 	jQuery(document).on('click', '.permalink-manager-notice.is-dismissible .notice-dismiss', function() {

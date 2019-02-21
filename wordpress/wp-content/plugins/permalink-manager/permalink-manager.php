@@ -4,7 +4,7 @@
 * Plugin Name:       Permalink Manager Lite
 * Plugin URI:        https://permalinkmanager.pro?utm_source=plugin
 * Description:       Advanced plugin that allows to set-up custom permalinks (bulk editors included), slugs and permastructures (WooCommerce compatible).
-* Version:           2.1.2.3
+* Version:           2.2.0
 * Author:            Maciej Bis
 * Author URI:        http://maciejbis.net/
 * License:           GPL-2.0+
@@ -21,7 +21,7 @@ if (!defined('WPINC')) {
 // Define the directories used to load plugin files.
 define( 'PERMALINK_MANAGER_PLUGIN_NAME', 'Permalink Manager' );
 define( 'PERMALINK_MANAGER_PLUGIN_SLUG', 'permalink-manager' );
-define( 'PERMALINK_MANAGER_VERSION', '2.1.2.3' );
+define( 'PERMALINK_MANAGER_VERSION', '2.2.0' );
 define( 'PERMALINK_MANAGER_FILE', __FILE__ );
 define( 'PERMALINK_MANAGER_DIR', untrailingslashit(dirname(__FILE__)) );
 define( 'PERMALINK_MANAGER_BASENAME', dirname(plugin_basename(__FILE__)));
@@ -31,7 +31,7 @@ define( 'PERMALINK_MANAGER_DONATE', 'https://www.paypal.me/Bismit' );
 
 class Permalink_Manager_Class {
 
-	public $permalink_manager, $permalink_manager_options_page, $permalink_manager_options;
+	public $permalink_manager_options_page, $permalink_manager_options;
 	public $sections, $functions, $permalink_manager_before_sections_html, $permalink_manager_after_sections_html;
 
 	/**
@@ -157,7 +157,7 @@ class Permalink_Manager_Class {
 				'canonical_redirect' => 1,
 				'trailing_slashes' => 0,
 				'pagination_redirect' => 0,
-				'auto_remove_duplicates' => 0,
+				'auto_remove_duplicates' => 1,
 				'partial_disable' => array(),
 				'deep_detect' => 1,
 				'fix_language_mismatch' => 1
@@ -182,18 +182,18 @@ class Permalink_Manager_Class {
 	*/
 	public function default_alerts($alerts) {
 		$default_alerts = apply_filters('permalink-manager-default-alerts', array(
-			'january2019' => array(
+			'spring' => array(
 				'txt' => sprintf(
 					__("Get access to extra features: full taxonomy and WooCommerce support, possibility to use custom fields inside the permalinks and more!<br /><strong>Buy Permalink Manager Pro <a href=\"%s\" target=\"_blank\">here</a> and save %s using \"%s\" coupon code!</strong> Valid until %s!", "permalink-manager"),
 					PERMALINK_MANAGER_WEBSITE,
 					'20&#37;',
-					'JAN2019',
-					'31.01'
+					'SPRING',
+					'31.03'
 				),
 				'type' => 'notice-info',
 				'show' => 'pro_hide',
 				'plugin_only' => true,
-				'until' => '2019-12-31'
+				'until' => '2018-04-01'
 			)
 		));
 
@@ -244,6 +244,8 @@ class Permalink_Manager_Class {
 * Begins execution of the plugin.
 */
 function run_permalink_manager() {
-	$Permalink_Manager_Class = new Permalink_Manager_Class();
+	global $permalink_manager;
+
+	$permalink_manager = new Permalink_Manager_Class();
 }
 run_permalink_manager();
