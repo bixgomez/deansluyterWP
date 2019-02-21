@@ -1,17 +1,9 @@
-/* Import breakpoint */
 @import "breakpoint";
-
-@import "functions";
-@import "variables";
-@import "mixins";
-
-// @import "meyer-reset";
-// @import "normalize";
-
-@import "base";
-@import "typography";
-
-@import "layout";
+@import "config/config";
+// @import "base/base";
+@import "typography/typography";
+@import "layout/layout";
+@import "components/components";
 
 $color-wpblue: #0073aa;
 

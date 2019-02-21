@@ -1,17 +1,9 @@
-/* Import breakpoint */
 @import "breakpoint";
-
-@import "functions";
-@import "variables";
-@import "mixins";
-
-// @import "meyer-reset";
-// @import "normalize";
-
-@import "base";
-@import "typography";
-
-@import "layout";
+@import "config/config";
+// @import "base/base";
+@import "typography/typography";
+@import "layout/layout";
+@import "components/components";
 
 // Variables derived from default editor layout values.
 // I am keeping these as-is, but enforcing their "highest breakpoint" values.
@@ -34,6 +26,22 @@ $editor-margin-right: 10px;
 .editor-block-list__layout .editor-block-list__block .editor-block-drop-zone {
   margin-left: $block-margin;
   margin-right: $block-margin;
+}
+
+.editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit > div[data-block] {
+  position: relative;
+
+  &.editor-block-contextual-toolbar {
+    position: unset;
+  }
+
+  > * {
+    z-index: 1000;
+  }
+
+  .editor-block-contextual-toolbar {
+    position: unset;
+  }
 }
 
 .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit::before {

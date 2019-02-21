@@ -157,15 +157,9 @@ add_action( 'widgets_init', 'fezziwig_base_2019_widgets_init' );
  */
 function fezziwig_base_2019_scripts() {
 	wp_enqueue_style( 'fezziwig-base-2019-style', get_stylesheet_uri() );
-
     wp_enqueue_style( 'fezziwig-base-2019-styles', get_template_directory_uri() . '/styles/css/styles.css' );
-
-    // wp_enqueue_style( 'hc-offcanvas-nav-styles', get_template_directory_uri() . '/styles/css/hc-offcanvas-nav.css' );
-
 	wp_enqueue_script( 'fezziwig-base-2019-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
 	wp_enqueue_script( 'fezziwig-base-2019-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
-
     wp_enqueue_script( 'hc-offcanvas-nav', get_template_directory_uri() .'/js/hc-offcanvas-nav.js', array('jquery'), null, true );
     wp_enqueue_script( 'hc-offcanvas-nav--config', get_template_directory_uri() .'/js/hc-offcanvas-nav--config.js', array('jquery'), null, true );
 
@@ -199,6 +193,26 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 if ( defined( 'JETPACK__VERSION' ) ) {
-	require get_template_directory() . '/inc/jetpack.php';
+  require get_template_directory() . '/inc/jetpack.php';
 }
+
+function fezziwig_acf_init() {
+
+  if( ! function_exists('fezziwig_acf_init') )
+    return;
+
+  // register a testimonial block
+  acf_register_block(array(
+    'name'				=> 'event',
+    'title'				=> __( 'Event' ),
+    'description'		=>  __( 'A custom event block.' ),
+    'render_template'	=> 'blocks/block-event.php',
+    'category'			=> 'formatting',
+    'icon'				=> 'admin-comments',
+    'mode'			    => 'edit',
+    'keywords'			=> array( 'event', 'calendar', 'schedule' )
+  ));
+}
+
+add_action('acf/init', 'fezziwig_acf_init');
 
