@@ -203,6 +203,8 @@ if ( defined( 'JETPACK__VERSION' ) ) {
   require get_template_directory() . '/inc/jetpack.php';
 }
 
+require get_template_directory() . '/post-types/posttype--book.php';
+
 function fezziwig_acf_init() {
 
   if( ! function_exists('fezziwig_acf_init') )
