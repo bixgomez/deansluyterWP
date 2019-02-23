@@ -1,0 +1,39 @@
+.events-intro-text {
+  .paragraphs-item-image-on-top {
+    margin-bottom: 3em;
+  }
+}
+
+.events-footer-text {
+  margin-top: 3em;
+}
+
+.event {
+  display: flex;
+  margin-bottom: 1.5em;
+  &--image {
+    flex: 1;
+  }
+  &--info {
+    flex: 2;
+    .inner {
+      padding-left: 1em;
+    }
+  }
+
+  &--title {
+
+  }
+  &--subtitle {
+    text-transform: uppercase;
+    font-weight: 700;
+
+  }
+  &--date {
+    // text-transform: uppercase;
+    font-weight: 700;
+  }
+  &--body {
+
+  }
+}

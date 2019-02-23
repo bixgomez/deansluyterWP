@@ -11,27 +11,59 @@
 $photo = get_field( 'event_image' );
 $title = get_field( 'event_title' );
 $subtitle = get_field( 'event_subtitle' );
-$location = get_field( 'event_location' );
+$date = get_field( 'event_date' );
 $description = get_field( 'event_description' );
-// $notes = get_field( 'event_notes' );
+$notes = get_field( 'event_notes' );
+?>
+
+<?php ?>
+
+<div class="event">
+
+  <?php if( !empty( $photo ) ) : ?>
+    <div class="event--image">
+      <div class="inner">
+      <?php echo wp_get_attachment_image( $photo['ID'], 'width-lg', null, array( 'class' => 'team-member--avatar' ) ); ?>
+      </div>
+    </div>
+  <?php endif; ?>
 
 
-if( !empty( $photo ) )
-  echo wp_get_attachment_image( $photo['ID'], 'thumbnail', null, array( 'class' => 'team-member--avatar' ) );
+  <div class="event--info">
+    <div class="inner">
 
-if( !empty( $title ) )
-  echo '<h2>' . esc_html( $title ) . '</h2>';
+      <?php if( !empty( $date ) ) : ?>
+        <div class="event--date">
+          <?php echo esc_html( $date ); ?>
+        </div>
+      <?php endif; ?>
 
-if( !empty( $subtitle ) )
-  echo '<h3>' . esc_html( $subtitle ) . '</h3>';
+      <?php if( !empty( $subtitle ) ) : ?>
+        <div class="event--subtitle">
+          <?php echo esc_html( $subtitle ); ?>
+        </div>
+      <?php endif; ?>
 
-if( !empty( $location ) )
-  echo '<h4>' . esc_html( $location ) . '</h4>';
+      <?php if( !empty( $title ) ) : ?>
+        <div class="event--title">
+          <?php echo esc_html( $title ); ?>
+        </div>
+      <?php endif; ?>
 
-if( !empty( $description ) )
-  echo '<p>' . esc_html( $description ) . '</p>';
+      <?php if( !empty( $description ) ) : ?>
+        <div class="event--body">
+          <?php echo $description; ?>
+        </div>
+      <?php endif; ?>
 
-// if( !empty( $notes ) )
-  // echo '<p>' . esc_html( $notes ) . '</p>';
+      <?php if( !empty( $notes ) ) : ?>
+        <div class="event--notes">
+          <?php echo esc_html( $notes ); ?>
+        </div>
+      <?php endif; ?>
 
+    </div>
+  </div>
+
+</div>
 
