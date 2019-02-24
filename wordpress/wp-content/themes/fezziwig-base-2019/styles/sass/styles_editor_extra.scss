@@ -14,6 +14,15 @@ $block-margin: 14px;
 $editor-margin-left: 33px;
 $editor-margin-right: 10px;
 
+.edit-post-layout__content,
+.wp-block {
+  font-size: px-to-rem($font-size--base);
+}
+
+body.is-fullscreen-mode .edit-post-layout__content {
+  overflow: visible;
+}
+
 .edit-post-visual-editor {
   padding: 0;
 }
