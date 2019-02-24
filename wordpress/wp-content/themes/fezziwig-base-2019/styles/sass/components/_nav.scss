@@ -22,3 +22,21 @@ a.hc-nav-trigger {
   }
 }
 
+#primary-menu {
+
+  .menu-item {
+    margin-right: 1em;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .sub-menu {
+    .menu-item {
+      background-color: white;
+      margin-right: 0;
+    }
+  }
+
+}
