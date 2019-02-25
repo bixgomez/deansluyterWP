@@ -18,6 +18,9 @@ $color--footer: lighten($color--header, 5%);
 
 
 // Typography variables.
+$font-choice--base: 'Merriweather', Palatino, Times, serif;
+$font-choice--heading: 'Montserrat', Helvetica, Arial, sans-serif;
+
 $font-size--base: 18;
 
 $font-size--md: $font-size--base;

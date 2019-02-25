@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Alice|Lato|Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Alice|Lato|Montserrat|Domine|Libre+Baskerville:400,400i|Merriweather:300,400,400i,700|Volkhov:400,400i');
 
 body,
 button,
@@ -10,7 +10,7 @@ p {
   @include typography-body;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, #primary-menu {
   @include typography-heading;
 }
 
