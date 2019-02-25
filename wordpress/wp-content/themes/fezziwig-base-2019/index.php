@@ -15,8 +15,6 @@
 get_header();
 ?>
 
-
-
 		<?php
 		if ( have_posts() ) :
 
@@ -49,7 +47,6 @@ get_header();
 
 		endif;
 		?>
-
 
 <?php
 get_sidebar();

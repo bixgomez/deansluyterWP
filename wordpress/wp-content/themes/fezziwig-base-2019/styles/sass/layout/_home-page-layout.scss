@@ -1,0 +1,71 @@
+.front-page-grid {
+  display: grid;
+  grid-gap: 1em;
+  min-height: calc(100vh - (210px));
+  grid-template-columns: 1fr;
+
+  font-size: 1.5em;
+
+  @include breakpoint($sm) {
+    font-size: 1em;
+  }
+
+  @include breakpoint($md) {
+    font-size: 1em;
+  }
+
+  @include breakpoint($md) {
+    grid-template-columns: 1fr 1fr;
+    height: calc(100vh - (210px));
+  }
+
+  h3 {
+    font-size: 1.25em;
+    text-transform: uppercase;
+  }
+
+  .item {
+    padding: 1.25em;
+
+    &-1 {
+      background-color: rgba(blue, .125);
+    }
+
+    &-2 {
+      background-color: rgba(maroon, .15);
+    }
+
+    &-3 {
+      background-color: rgba(orange, .3);
+    }
+
+    &-4 {
+      background-color: rgba(purple, .25);
+    }
+
+    &-5 {
+      background-color: rgba(brown, .17);
+    }
+
+    &-6 {
+      background-color: rgba(green, .125);
+    }
+
+    p.extra-content {
+      display: none;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+
+    @include breakpoint($md) {
+      p.extra-content {
+        display: block;
+      }
+    }
+
+  }
+}
+
