@@ -15,8 +15,6 @@
 get_header();
 ?>
 
-
-
 <div class="front-page-grid">
 
 	<div class="item item-1">
@@ -25,7 +23,9 @@ get_header();
       Here's my idea... That we break the page up into equal (or maybe not so equal) sections...
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
@@ -36,7 +36,9 @@ get_header();
       so that there is less of a chance of losing any content below the fold.
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
@@ -47,7 +49,9 @@ get_header();
       our layout would become a 2-column layout, and maybe have more descriptive content.
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
@@ -58,18 +62,22 @@ get_header();
       there is less of a chance of disappearing below the fold.
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
 	<div class="item item-5">
     <h3>Item Five.</h3>
     <p>
-      Obvuously this requires more thought and experimentation, but I think it's a good way to display
+      Obviously this requires more thought and experimentation, but I think it's a good way to display
       display the "five or six" main "call to action" featured links.
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
@@ -79,20 +87,13 @@ get_header();
       What do you think?  I will see if I can find any examples of this out in the wild.
     </p>
     <p class="extra-content">
-      Some extra-content could appear at a certain breakpoint.
+      Some extra-content could appear at a certain breakpoint. Cras mattis consectetur purus sit
+      amet fermentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus.
     </p>
 	</div>
 
 </div>
-
-
-
-
-
-
-
-
-
 
 		<?php
         /*

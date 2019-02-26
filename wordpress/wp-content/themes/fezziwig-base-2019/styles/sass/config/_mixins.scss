@@ -1,11 +1,11 @@
 // Typography mixins.
 @mixin typography-body {
-  font-size: px-to-rem($font-size--base);
+  font-size: $font-size--md;
   font-family: $font-choice--base;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: $lineheight-default;
   color: rgba(black, .75);
 }
 
@@ -17,7 +17,6 @@
   margin: 0 0 .75em 0;
   color: mix(black, $color--primary, 25%);
 }
-
 
 
 // Padding mixins.

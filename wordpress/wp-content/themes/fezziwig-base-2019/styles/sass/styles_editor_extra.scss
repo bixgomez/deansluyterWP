@@ -16,7 +16,7 @@ $editor-margin-right: 10px;
 
 .edit-post-layout__content,
 .wp-block {
-  font-size: px-to-rem($font-size--base);
+  font-size: $font-size--base;
 }
 
 body.is-fullscreen-mode .edit-post-layout__content {

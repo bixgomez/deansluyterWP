@@ -28,11 +28,11 @@ p {
 
 .edit-post-layout__content,
 .wp-block {
-  font-size: px-to-rem($font-size--base);
+  font-size: $font-size--base;
 }
 
 .editor-styles-wrapper {
-  font-size: px-to-rem($font-size--base);
+  font-size: $font-size--base;
 }
 
 .editor-post-title__block .editor-post-title__input {
