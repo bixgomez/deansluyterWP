@@ -20,7 +20,7 @@
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class( 'front-end' ); ?>>
 <a name="Top" id="Top"></a>
 <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'fezziwig-base-2019' ); ?></a>
 

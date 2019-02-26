@@ -14,6 +14,10 @@ $block-margin: 14px;
 $editor-margin-left: 33px;
 $editor-margin-right: 10px;
 
+.edit-post-visual-editor.editor-styles-wrapper {
+  font-size: $font-size--html;
+}
+
 .edit-post-layout__content,
 .wp-block {
   font-size: $font-size--base;
@@ -51,6 +55,10 @@ body.is-fullscreen-mode .edit-post-layout__content {
   .editor-block-contextual-toolbar {
     position: unset;
   }
+}
+
+.editor-block-list__block .editor-block-contextual-toolbar {
+  z-index: 1000;
 }
 
 .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit::before {
