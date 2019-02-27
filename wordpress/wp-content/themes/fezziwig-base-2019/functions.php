@@ -210,7 +210,7 @@ function fezziwig_acf_init() {
   if( ! function_exists('fezziwig_acf_init') )
     return;
 
-  // register a testimonial block
+  // register an event block
   acf_register_block(array(
     'name'				=> 'event',
     'title'				=> __( 'Event' ),
@@ -220,6 +220,18 @@ function fezziwig_acf_init() {
     'icon'				=> 'admin-comments',
     'mode'			    => 'edit',
     'keywords'			=> array( 'event', 'calendar', 'schedule' )
+  ));
+
+  // register a media block
+  acf_register_block(array(
+    'name'				=> 'media',
+    'title'				=> __( 'Media' ),
+    'description'		=>  __( 'A custom media block.' ),
+    'render_template'	=> 'blocks/block-media.php',
+    'category'			=> 'formatting',
+    'icon'				=> 'admin-comments',
+    'mode'			    => 'edit',
+    'keywords'			=> array( 'media', 'audio', 'video' )
   ));
 }
 
