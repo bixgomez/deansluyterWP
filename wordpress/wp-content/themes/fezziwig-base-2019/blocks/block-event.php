@@ -23,7 +23,7 @@ $notes = get_field( 'event_notes' );
   <?php if( !empty( $photo ) ) : ?>
     <div class="event--image">
       <div class="inner">
-      <?php echo wp_get_attachment_image( $photo['ID'], 'width-lg', null, array( 'class' => 'team-member--avatar' ) ); ?>
+      <?php echo wp_get_attachment_image( $photo['ID'], 'width-lg', null, array( 'class' => 'image' ) ); ?>
       </div>
     </div>
   <?php endif; ?>
