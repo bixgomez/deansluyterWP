@@ -12,16 +12,15 @@
   }
 
   &--title {
-    font-weight: 700;
+
   }
 
   &--subtitle {
-    font-weight: 300;
-
+    @extend p;
   }
 
   &--date {
-    font-weight: 300;
+    @extend p;
   }
 
   &--body {

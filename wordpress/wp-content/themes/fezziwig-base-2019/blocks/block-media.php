@@ -42,6 +42,7 @@ $length = get_field( 'media_length' );
 
       <?php if( !empty( $title ) ) : ?>
         <div class="media--title">
+          <h3>
           <?php if( !empty( $url ) ) : ?>
             <?php echo '<a target="_blank" href="' . esc_html( $url ) . '">'; ?>
           <?php endif; ?>
@@ -50,6 +51,7 @@ $length = get_field( 'media_length' );
             </a>
           <?php endif; ?>
         </div>
+        </h3>
       <?php endif; ?>
 
       <?php if( !empty( $subtitle ) ) : ?>

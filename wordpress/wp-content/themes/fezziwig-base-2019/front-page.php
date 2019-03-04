@@ -15,6 +15,10 @@
 get_header();
 ?>
 
+<div class="front-page-image">
+  <img src="/wp-content/themes/fezziwig-base-2019/images/Sluyter-Headshot-600h.jpg">
+</div>
+
 <div class="front-page-grid">
 
 	<div class="item item-1">

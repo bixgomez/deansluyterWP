@@ -10,27 +10,47 @@ body.front-end {
 
 h1, h2, h3, h4, h5, h6, #primary-menu {
   @include typography-heading;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 // Heading font sizes.
 h1 {
   font-size: $font-size--xxl;
   letter-spacing: ($font-size--xxl * .2);
+  margin-bottom: ($font-size--xxl * .5);
   text-transform: uppercase;
 }
+
 h2 {
   font-size: $font-size--xl;
   letter-spacing: ($font-size--xl * .2);
+  margin-bottom: ($font-size--xl * .5);
   text-transform: uppercase;
 }
+
 h3 {
   font-size: $font-size--lg;
-  letter-spacing: ($font-size--lg * .2);
+  letter-spacing: ($font-size--lg * .03);
+  margin-bottom: ($font-size--lg * .5);
 }
 
-h4 { font-size: $font-size--md; }
-h5 { font-size: $font-size--sm; }
-h6 { font-size: $font-size--xxs; }
+h4 {
+  font-size: $font-size--md;
+  margin-bottom: ($font-size--md * .5);
+}
+
+h5 {
+  font-size: $font-size--sm;
+  margin-bottom: ($font-size--sm * .5);
+}
+
+h6 {
+  font-size: $font-size--xxs;
+  margin-bottom: ($font-size--xxs * .5);
+}
 
 a,
 a:visited {
@@ -56,8 +76,9 @@ a:visited {
 }
 
 p {
-  margin-bottom: 1em;
-  // text-align: justify;
+  font-size: $font-size--md;
+  margin-top: 0;
+  margin-bottom: ($font-size--md * .75);
 }
 
 dfn, cite, em, i {
