@@ -16,6 +16,15 @@ get_header();
 ?>
 
 <div class="front-page-image">
+  <div class="front-page-text">
+    <div class="inner">
+      <h2>Bibendum Justo</h2>
+      <p>
+        Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+        Cum sociis nascetur ridiculus mus.
+      </p>
+    </div>
+  </div>
   <img src="/wp-content/themes/fezziwig-base-2019/images/Sluyter-Headshot-600h.jpg">
 </div>
 

@@ -1,16 +1,52 @@
 .front-page-image {
-  height: 500px;
+  height: 29.5vw;
   overflow: hidden;
   position: relative;
 
   img {
     object-fit: cover;
     position: absolute;
-    top: 0;
+    top:
     left: 0;
     right: 0;
     bottom: 0;
     height: 100%;
     width: auto;
+  }
+}
+
+.front-page-text {
+  position: relative;
+  z-index: 1000;
+  margin: 0 auto;
+  max-width: $max-site-width;
+  padding: 0 $site-padding;
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+
+  .inner {
+    width: 55%;
+    background-color: rgba(white, .5);
+    margin-bottom: 1vw;
+    padding: $site-padding;
+
+    font-size: .7em;
+
+    @include breakpoint($sm) {
+      font-size: .8em;
+    }
+
+    @include breakpoint($md) {
+      font-size: .9em;
+    }
+
+    @include breakpoint($lg) {
+      font-size: 1em;
+    }
+  }
+
+  p {
+    font-family: $font-choice--heading;
   }
 }

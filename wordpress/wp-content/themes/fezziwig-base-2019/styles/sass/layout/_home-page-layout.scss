@@ -1,4 +1,26 @@
+body.home .section--content {
+  width: 100%;
+  max-width: 100%;
+
+  .section-inner {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
+}
+
+
+
 .front-page-grid {
+
+  .inner {
+
+  }
+
+  max-width: $max-site-width;
+  margin: $site-padding auto;
+  padding: 0 $site-padding;
+
   display: grid;
   grid-gap: 1em;
   // min-height: calc(100vh - (210px));
