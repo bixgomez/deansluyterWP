@@ -3,20 +3,11 @@ body.home .section--content {
   max-width: 100%;
 
   .section-inner {
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
+    padding: 0;
   }
 }
 
-
-
 .front-page-grid {
-
-  .inner {
-
-  }
-
   max-width: $max-site-width;
   margin: $site-padding auto;
   padding: 0 $site-padding;
@@ -41,72 +32,44 @@ body.home .section--content {
     // height: calc(100vh - (210px));
   }
 
+  @include breakpoint($lg) {
+    grid-template-columns: 1fr 1fr 1fr;
+    // height: calc(100vh - (210px));
+  }
+
   h3 {
     // font-size: 1.25em;
     text-transform: uppercase;
   }
+}
 
-  .item {
-    padding: 1.25em;
+.home-page-feature {
+  text-decoration: none;
+  padding: 1.25em;
 
-    &-1 {
-      background-color: rgba(blue, .125);
-      p {
-        font-family: 'Merriweather', serif;
-      }
+  background-color: rgba($color--black, .1);
+  p {
+    font-family: 'Merriweather', serif;
+  }
+
+  p.extra-content {
+    display: none;
+
+    &:last-child {
+      margin-bottom: 0;
     }
+  }
 
-    &-2 {
-      background-color: rgba(maroon, .15);
-      p {
-        font-family: 'Libre Baskerville', serif;
-      }
-    }
-
-    &-3 {
-      background-color: rgba(orange, .3);
-      p {
-        font-family: 'Volkhov', serif;
-      }
-    }
-
-    &-4 {
-      background-color: rgba(purple, .2);
-      p {
-        font-family: 'Domine', serif;
-      }
-    }
-
-    &-5 {
-      background-color: rgba(brown, .17);
-      p {
-        font-family: 'Lora', serif;
-      }
-    }
-
-    &-6 {
-      background-color: rgba(green, .125);
-      p {
-        font-family: 'Noto Serif', serif;
-      }
-    }
-
-    background-color: rgba(black, .05) !important;
-
+  @include breakpoint($md) {
     p.extra-content {
-      display: none;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+      display: block;
     }
+  }
 
-
-    @include breakpoint($md) {
-      p.extra-content {
-        display: block;
-      }
+  &:hover {
+    background-color: $color--primary;
+    * {
+      color: $color--white;
     }
-
   }
 }

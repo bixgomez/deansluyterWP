@@ -1,9 +1,11 @@
 .media {
   display: flex;
   margin-bottom: 1.5em;
+
   &--image {
     flex: 1;
   }
+
   &--info {
     flex: 2;
     .inner {

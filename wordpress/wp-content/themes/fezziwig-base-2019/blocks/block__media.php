@@ -40,31 +40,33 @@ $length = get_field( 'media_length' );
   <div class="media--info">
     <div class="inner">
 
-      <?php if( !empty( $title ) ) : ?>
-        <div class="media--title">
-          <h3>
-          <?php if( !empty( $url ) ) : ?>
-            <?php echo '<a target="_blank" href="' . esc_html( $url ) . '">'; ?>
-          <?php endif; ?>
-          <?php echo esc_html( $title ); ?>
-          <?php if( !empty( $url ) ) : ?>
-            </a>
-          <?php endif; ?>
-        </div>
-        </h3>
-      <?php endif; ?>
+      <div class="info-header">
+        <?php if( !empty( $title ) ) : ?>
+          <div class="media--title">
+            <h3>
+            <?php if( !empty( $url ) ) : ?>
+              <?php echo '<a target="_blank" href="' . esc_html( $url ) . '">'; ?>
+            <?php endif; ?>
+            <?php echo esc_html( $title ); ?>
+            <?php if( !empty( $url ) ) : ?>
+              </a>
+            <?php endif; ?>
+            </h3>
+          </div>
+        <?php endif; ?>
 
-      <?php if( !empty( $subtitle ) ) : ?>
-        <div class="media--subtitle">
-          <?php echo esc_html( $subtitle ); ?>
-        </div>
-      <?php endif; ?>
+        <?php if( !empty( $subtitle ) ) : ?>
+          <div class="media--subtitle">
+            <h4><?php echo esc_html( $subtitle ); ?></h4>
+          </div>
+        <?php endif; ?>
 
-      <?php if( !empty( $date ) ) : ?>
-        <div class="media--date">
-          <?php echo esc_html( $date ); ?>
-        </div>
-      <?php endif; ?>
+        <?php if( !empty( $date ) ) : ?>
+          <div class="media--date">
+            <h4><?php echo esc_html( $date ); ?></h4>
+          </div>
+        <?php endif; ?>
+      </div>
 
       <?php if( !empty( $description ) ) : ?>
         <div class="media--body">

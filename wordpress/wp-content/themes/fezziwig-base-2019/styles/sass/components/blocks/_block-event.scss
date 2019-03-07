@@ -1,10 +1,11 @@
-
 .event {
   display: flex;
   margin-bottom: 1.5em;
+
   &--image {
     flex: 1;
   }
+
   &--info {
     flex: 2;
     .inner {
@@ -13,16 +14,24 @@
   }
 
   &--title {
-
+    h3 {
+      margin: 0;
+    }
   }
+
   &--subtitle {
-    font-weight: 700;
+  }
 
-  }
   &--date {
-    font-weight: 700;
   }
+
   &--body {
 
   }
+}
+
+.info-header {
+  background-color: rgba($color--header, .25);
+  padding: .5em;
+  margin-bottom: .75em;
 }

@@ -215,7 +215,7 @@ function fezziwig_acf_init() {
     'name'				=> 'event',
     'title'				=> __( 'Event' ),
     'description'		=>  __( 'A custom event block.' ),
-    'render_template'	=> 'blocks/block-event.php',
+    'render_template'	=> 'blocks/block__event.php',
     'category'			=> 'formatting',
     'icon'				=> 'admin-comments',
     'mode'			    => 'edit',
@@ -227,11 +227,23 @@ function fezziwig_acf_init() {
     'name'				=> 'media',
     'title'				=> __( 'Media' ),
     'description'		=>  __( 'A custom media block.' ),
-    'render_template'	=> 'blocks/block-media.php',
+    'render_template'	=> 'blocks/block__media.php',
     'category'			=> 'formatting',
     'icon'				=> 'admin-comments',
     'mode'			    => 'edit',
     'keywords'			=> array( 'media', 'audio', 'video' )
+  ));
+
+  // register a media block
+  acf_register_block(array(
+    'name'				=> 'home-page-feature',
+    'title'				=> __( 'Home Page Feature' ),
+    'description'		=>  __( 'Home page feature block.' ),
+    'render_template'	=> 'blocks/block__home-page-feature.php',
+    'category'			=> 'formatting',
+    'icon'				=> 'admin-comments',
+    'mode'			    => 'edit',
+    'keywords'			=> array( 'home', 'feature', 'front' )
   ));
 }
 
