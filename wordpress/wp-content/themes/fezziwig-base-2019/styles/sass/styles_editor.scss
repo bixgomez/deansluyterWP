@@ -35,6 +35,10 @@ p {
   font-size: $font-size--base;
 }
 
+.editor-styles-wrapper .home-page-feature--link {
+  display: none;
+}
+
 .editor-post-title__block .editor-post-title__input {
   @extend h1;
   margin-left: 2px;
