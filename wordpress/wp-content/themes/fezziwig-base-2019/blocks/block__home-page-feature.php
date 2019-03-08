@@ -16,7 +16,9 @@ $link_text = get_field( 'link_text' );
 
 <?php ?>
 
-<a class="item home-page-feature" href="<?php echo esc_html( $url ) ?>">
+<div class="item home-page-feature">
+
+  <a class="home-page-feature--link" href="<?php echo esc_html( $url ) ?>"><?php echo $link_text; ?></a>
 
   <?php if( !empty( $title ) ) : ?>
     <div class="home-page-feature--title">
@@ -36,4 +38,4 @@ $link_text = get_field( 'link_text' );
     </div>
   <?php endif; ?>
 
-</a>
+</div>

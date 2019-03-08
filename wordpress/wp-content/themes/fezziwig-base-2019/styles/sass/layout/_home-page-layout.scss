@@ -42,34 +42,3 @@ body.home .section--content {
     text-transform: uppercase;
   }
 }
-
-.home-page-feature {
-  text-decoration: none;
-  padding: 1.25em;
-
-  background-color: rgba($color--black, .1);
-  p {
-    font-family: 'Merriweather', serif;
-  }
-
-  p.extra-content {
-    display: none;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  @include breakpoint($md) {
-    p.extra-content {
-      display: block;
-    }
-  }
-
-  &:hover {
-    background-color: $color--primary;
-    * {
-      color: $color--white;
-    }
-  }
-}
