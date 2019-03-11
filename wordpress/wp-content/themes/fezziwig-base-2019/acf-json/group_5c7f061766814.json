@@ -41,6 +41,25 @@
             "delay": 0
         },
         {
+            "key": "field_5c8605dc88b45",
+            "label": "Extra Text",
+            "name": "extra_text",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "extra-content",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
             "key": "field_5c7f065fabac7",
             "label": "Link",
             "name": "link",
@@ -74,6 +93,30 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_5c86095992c1e",
+            "label": "Background Image",
+            "name": "background_image",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
         },
         {
             "key": "field_5c7f24f6105b5",
@@ -117,5 +160,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1551836648
+    "modified": 1552288402
 }
