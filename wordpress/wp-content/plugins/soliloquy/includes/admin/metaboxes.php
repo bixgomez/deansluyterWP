@@ -787,7 +787,7 @@ endforeach;
 
 					 <?php foreach ( $slider_data['slider'] as $id => $data ) : ?>
 
-							<?php     echo $this->get_slider_item( $id, $data, ( ! empty( $data['type'] ) ? $data['type'] : 'image' ), $post->ID ); ?>
+							<?php echo $this->get_slider_item( $id, $data, ( ! empty( $data['type'] ) ? $data['type'] : 'image' ), $post->ID ); ?>
 
 						<?php endforeach; ?>
 

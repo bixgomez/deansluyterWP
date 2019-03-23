@@ -87,8 +87,48 @@ class Soliloquy_Posttype_Admin {
 		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_custom_box' ), 10, 2 ); // Single Item.
 		add_action( 'bulk_edit_custom_box', array( $this, 'bulk_edit_custom_box' ), 10, 2 ); // Multiple Items.
 		add_action( 'post_updated', array( $this, 'bulk_edit_save' ) );
-	}
 
+		// Expand search with IDs in addition to WordPress default of post/gallery titles.
+		add_action( 'posts_where', array( $this, 'enable_search_by_gallery_id' ), 10 );
+
+	}
+	/**
+	 * Enables search by ID for galleries in table overview screen
+	 *
+	 * @since 1.6.5
+	 * @param string $where MYSQL.
+	 *
+	 * @return string Revised Where.
+	 */
+	public function enable_search_by_gallery_id( $where ) {
+
+		// Bail if we are not in the admin area or not doing a search.
+		if ( ! is_admin() || ! is_search() ) {
+			return $where;
+		}
+
+		// Bail if this is not the envira page.
+		if ( empty( $_GET['post_type'] ) || 'soliloquy' !== $_GET['post_type'] ) { // @codingStandardsIgnoreLine
+			return $where;
+		}
+
+		global $wpdb;
+
+		// Get the value that is being searched.
+		$search_string = get_query_var( 's' );
+
+		if ( is_numeric( $search_string ) ) {
+
+			$where = str_replace( '(' . $wpdb->posts . '.post_title LIKE', '(' . $wpdb->posts . '.ID = ' . $search_string . ') OR (' . $wpdb->posts . '.post_title LIKE', $where );
+
+		} elseif ( preg_match( '/^(\d+)(,\s*\d+)*$/', $search_string ) ) { // string of post IDs.
+
+			$where = str_replace( '(' . $wpdb->posts . '.post_title LIKE', '(' . $wpdb->posts . '.ID in (' . $search_string . ')) OR (' . $wpdb->posts . '.post_title LIKE', $where );
+		}
+
+		return $where;
+
+	}
 	/**
 	 * admin_header_html function.
 	 *

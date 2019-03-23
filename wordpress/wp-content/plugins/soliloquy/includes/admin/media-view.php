@@ -165,7 +165,7 @@ class Soliloquy_Media_View {
 								</label>
 
 							</div>
-							
+
 							<!-- Title -->
 							<div class="soliloquy-meta">
 
@@ -183,7 +183,7 @@ class Soliloquy_Media_View {
 
 
 							</div>
-						
+
 							<!-- Alt Text -->
 							  <div class="soliloquy-meta">
 
@@ -233,7 +233,7 @@ class Soliloquy_Media_View {
 							<div class="soliloquy-meta">
 								<label class="setting">
 									<span class="name"><?php esc_html_e( 'URL', 'soliloquy' ); ?></span>
-									<input type="text" name="link" value="{{ data.src }}" />
+									<input type="text" name="link" value="{{ data.link }}" />
 										<span class="buttons">
 											<button class="button button-small media-file"><?php esc_html_e( 'Media File', 'soliloquy' ); ?></button>
 											<button class="button button-small attachment-page"><?php esc_html_e( 'Attachment Page', 'soliloquy' ); ?></button>
@@ -252,11 +252,11 @@ class Soliloquy_Media_View {
 
 								</div>
 							<# } #>
-							
+
 							<!-- Video Link -->
 							<# if ( data.type  === 'video' ) { #>
 
-		
+
 
 							<div class="soliloquy-meta">
 								<!-- Link -->
@@ -266,7 +266,7 @@ class Soliloquy_Media_View {
 								</label>
 							</div>
 							<# } #>
-							
+
 							<!-- HTML -->
 							<# if ( data.type  === 'html' ) { #>
 							<div class="soliloquy-meta code">
@@ -277,7 +277,7 @@ class Soliloquy_Media_View {
 									</label>
 							</div>
 							<# } #>
-							
+
 							<!-- Addons can populate the UI here -->
 							<div class="addons"></div>
 

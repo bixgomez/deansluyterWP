@@ -23,7 +23,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 2.5
 	 */
-	function __construct() {
+	public function __construct() {
 
 		$this->base = Soliloquy::get_instance();
 
@@ -51,12 +51,13 @@ class Soliloquy_Ajax {
 		add_action( 'wp_ajax_soliloquy_get_attachment_links', array( $this, 'get_attachment_links' ) );
 
 	}
+
 	/**
 	 * Returns the media link (direct image URL) for the given attachment ID
 	 *
 	 * @since
 	 */
-	function get_attachment_links() {
+	public function get_attachment_links() {
 
 		// Check nonce
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
@@ -81,7 +82,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function upgrade_sliders() {
+	public function upgrade_sliders() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-upgrade', 'nonce' );
@@ -632,7 +633,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function change_type() {
+	public function change_type() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-change-type', 'nonce' );
@@ -664,7 +665,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function load_image() {
+	public function load_image() {
 
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-load-image', 'nonce' );
@@ -725,7 +726,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function insert_slides() {
+	public function insert_slides() {
 
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-insert-images', 'nonce' );
@@ -829,7 +830,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function sort_images() {
+	public function sort_images() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-sort', 'nonce' );
@@ -865,7 +866,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 2.5
 	 */
-	function remove_slides() {
+	public function remove_slides() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-remove-slide', 'nonce' );
@@ -914,7 +915,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function remove_slide() {
+	public function remove_slide() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-remove-slide', 'nonce' );
@@ -958,7 +959,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function save_meta() {
+	public function save_meta() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
@@ -986,7 +987,7 @@ class Soliloquy_Ajax {
 		}
 
 		if ( isset( $meta['link'] ) ) {
-			$slider_data['slider'][ $attach_id ]['link'] = esc_url( $meta['link'] );
+			$slider_data['slider'][ $attach_id ]['link'] = esc_url_raw( $meta['link'] );
 		}
 
 		if ( isset( $meta['linktab'] ) && $meta['linktab'] ) {
@@ -1000,11 +1001,11 @@ class Soliloquy_Ajax {
 		}
 
 		if ( isset( $meta['url'] ) ) {
-			$slider_data['slider'][ $attach_id ]['url'] = esc_url( $meta['url'] );
+			$slider_data['slider'][ $attach_id ]['url'] = esc_url_raw( $meta['url'] );
 		}
 
 		if ( isset( $meta['src'] ) ) {
-			$slider_data['slider'][ $attach_id ]['src'] = esc_url( $meta['src'] );
+			$slider_data['slider'][ $attach_id ]['src'] = esc_url_raw( $meta['src'] );
 		}
 
 		if ( isset( $meta['code'] ) ) {
@@ -1021,11 +1022,13 @@ class Soliloquy_Ajax {
 		Soliloquy_Common::get_instance()->flush_slider_caches( $post_id );
 
 		wp_send_json_success();
+
 		die;
 
 	}
-	function bulk_save_meta() {
-		// Run a security check first.
+
+	public function bulk_save_meta() {
+
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
 
@@ -1047,6 +1050,7 @@ class Soliloquy_Ajax {
 			if ( ! isset( $slider_data['slider'][ $image_id ] ) ) {
 				continue;
 			}
+
 			// Go ahead and ensure to store the attachment ID.
 			$slider_data['slider'][ $image_id ]['id'] = $image_id;
 
@@ -1059,7 +1063,7 @@ class Soliloquy_Ajax {
 			}
 
 			if ( isset( $meta['link'] ) && $meta['link'] != '' ) {
-				$slider_data['slider'][ $image_id ]['link'] = esc_url( $meta['link'] );
+				$slider_data['slider'][ $image_id ]['link'] = esc_url_raw( $meta['link'] );
 			}
 
 			if ( isset( $meta['linktab'] ) && $meta['linktab'] ) {
@@ -1073,13 +1077,15 @@ class Soliloquy_Ajax {
 			}
 
 			if ( isset( $meta['url'] ) && $meta['url'] != '' ) {
-				$slider_data['slider'][ $image_id ]['url'] = esc_url( $meta['url'] );
+				$slider_data['slider'][ $image_id ]['url'] = esc_url_raw( $meta['url'] );
 			}
 
 			if ( isset( $meta['src'] ) && $meta['src'] != '' ) {
-				$slider_data['slider'][ $image_id ]['src'] = esc_url( $meta['src'] );
+				$slider_data['slider'][ $image_id ]['src'] = esc_url_raw( $meta['src'] );
 			}
+
 			$slider_data = apply_filters( 'soliloquy_ajax_save_bulk_meta', $slider_data, $meta, $image_id, $post_id );
+
 		}
 
 		// Update the slider data.
@@ -1098,7 +1104,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function refresh() {
+	public function refresh() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-refresh', 'nonce' );
@@ -1131,7 +1137,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function load_slider_data() {
+	public function load_slider_data() {
 
 		// Prepare variables and grab the slider data.
 		$slider_id   = absint( $_POST['post_id'] );
@@ -1148,7 +1154,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function install_addon() {
+	public function install_addon() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-install', 'nonce' );
@@ -1216,7 +1222,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function activate_addon() {
+	public function activate_addon() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-activate', 'nonce' );
@@ -1241,7 +1247,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function deactivate_addon() {
+	public function deactivate_addon() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-deactivate', 'nonce' );
@@ -1267,7 +1273,7 @@ class Soliloquy_Ajax {
 	 * @param array  $data         Data to be used for the slide.
 	 * @return array $slider_data Amended slider data with updated image metadata.
 	 */
-	function prepare_slider_data( $slider_data, $id, $type = 'image', $data = array() ) {
+	public function prepare_slider_data( $slider_data, $id, $type = 'image', $data = array() ) {
 
 		// Get global option for slide status
 		$publishingDefault = get_option( 'soliloquy-publishing-default', 'pending' );
@@ -1414,7 +1420,7 @@ class Soliloquy_Ajax {
 	 * @param string $videoID YouTube Video ID
 	 * @return string HD or SD Thumbnail URL
 	 */
-	function get_youtube_thumbnail_url( $videoID ) {
+	public function get_youtube_thumbnail_url( $videoID ) {
 
 		// Determine video URL
 		$prefix  = is_ssl() ? 'https' : 'http';
@@ -1472,7 +1478,7 @@ class Soliloquy_Ajax {
 	 * @param string $videoID Vimeo Video ID
 	 * @return string Best resolution URL
 	 */
-	function get_vimeo_thumbnail_url( $videoID ) {
+	public function get_vimeo_thumbnail_url( $videoID ) {
 
 		// Get existing access token
 		$vimeoAccessToken = get_option( 'soliloquy_vimeo_access_token' );
@@ -1526,7 +1532,7 @@ class Soliloquy_Ajax {
 
 	}
 
-	function slider_view() {
+	public function slider_view() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
@@ -1552,7 +1558,7 @@ class Soliloquy_Ajax {
 
 	}
 
-	function change_slide_status() {
+	public function change_slide_status() {
 
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-save-meta', 'nonce' );
@@ -1591,7 +1597,7 @@ class Soliloquy_Ajax {
 	 * @access public
 	 * @return void
 	 */
-	function sort_slides() {
+	public function sort_slides() {
 
 		// Run a security check first.
 		check_admin_referer( 'soliloquy-save-meta', 'nonce' );
@@ -1622,6 +1628,7 @@ class Soliloquy_Ajax {
 		foreach ( (array) $slider_data['slider'] as $id => $data ) {
 			$html .= Soliloquy_Metaboxes::get_instance()->get_slider_item( $id, $data, ( ! empty( $data['type'] ) ? $data['type'] : 'image' ), $post_id );
 		}
+
 		echo wp_send_json_success( $html );
 
 		die;
@@ -1636,7 +1643,7 @@ class Soliloquy_Ajax {
 	 *
 	 * @since 1.0.0
 	 */
-	function init_sliders() {
+	public function init_sliders() {
 
 		// Run a security check first.
 		check_ajax_referer( 'soliloquy-ajax-nonce', 'ajax_nonce' );
@@ -1690,7 +1697,7 @@ class Soliloquy_Ajax {
 	 * @param array &$imageinfo (default: array())
 	 * @return void
 	 */
-	function getimagesizefromstring( $data, &$imageinfo = array() ) {
+	public function getimagesizefromstring( $data, &$imageinfo = array() ) {
 
 		$uri = 'data://application/octet-stream;base64,' . base64_encode( $data );
 
