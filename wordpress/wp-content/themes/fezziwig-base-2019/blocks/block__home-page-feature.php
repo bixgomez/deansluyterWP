@@ -14,11 +14,12 @@ $body_extra = get_field( 'extra_text' );
 $url = get_field( 'link' );
 $link_text = get_field( 'link_text' );
 $background_image = get_field( 'featured_image' );
+$full_width = get_field( 'full_width' );
 ?>
 
 <?php ?>
 
-<div class="item home-page-feature">
+<div class="item home-page-feature<?php if( $full_width ) : ?> full-width<?php endif; ?>">
 
   <a class="home-page-feature--link" href="<?php echo esc_html( $url ) ?>"><?php echo $link_text; ?></a>
 
