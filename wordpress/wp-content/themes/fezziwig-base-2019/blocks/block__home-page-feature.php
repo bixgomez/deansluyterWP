@@ -13,7 +13,7 @@ $body = get_field( 'body' );
 $body_extra = get_field( 'extra_text' );
 $url = get_field( 'link' );
 $link_text = get_field( 'link_text' );
-$background_image = get_field( 'background_image' );
+$background_image = get_field( 'featured_image' );
 ?>
 
 <?php ?>

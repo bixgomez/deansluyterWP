@@ -66,5 +66,13 @@ a.hc-nav-trigger {
 }
 
 #primary-menu > .menu-item-has-children > a {
-  border-radius: .3em .3em 0 0;
+
+  &:after {
+    content: "\0025BE";
+    padding-left: .4em;
+  }
+
+  &:hover {
+    border-radius: .3em .3em 0 0;
+  }
 }
