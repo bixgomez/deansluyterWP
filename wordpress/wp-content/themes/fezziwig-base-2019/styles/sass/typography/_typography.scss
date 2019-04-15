@@ -22,19 +22,27 @@ h1 {
   letter-spacing: ($font-size--xxl * .2);
   margin-bottom: ($font-size--xxl * .5);
   text-transform: uppercase;
+
+  &.entry-title {
+    text-transform: lowercase;
+    opacity: .625;
+  }
 }
 
 h2 {
   font-size: $font-size--xl;
   letter-spacing: ($font-size--xl * .2);
   margin-bottom: ($font-size--xl * .5);
-  text-transform: uppercase;
+  text-transform: lowercase;
+  opacity: .625;
 }
 
 h3 {
   font-size: $font-size--lg;
   letter-spacing: ($font-size--lg * .03);
   margin-bottom: ($font-size--lg * .5);
+  text-transform: lowercase;
+  opacity: .625;
 }
 
 h4 {

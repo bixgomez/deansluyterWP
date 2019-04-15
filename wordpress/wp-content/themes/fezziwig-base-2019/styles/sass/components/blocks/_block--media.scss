@@ -13,19 +13,26 @@
     }
   }
 
-  &--title {
-
+  &--title h3 {
+    margin: 0;
   }
 
   &--subtitle {
     @extend p;
+    margin: .5em 0 0;
   }
 
-  &--date {
+  &--date h4 {
     @extend p;
+    margin: .5em 0 0;
   }
 
   &--body {
 
+  }
+
+  &--link a {
+    display: inline-block;
+    margin: .5em 0 0;
   }
 }
