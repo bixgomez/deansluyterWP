@@ -3,6 +3,30 @@
     "title": "Block: Home Page Feature",
     "fields": [
         {
+            "key": "field_5c7f24f6105b5",
+            "label": "Status",
+            "name": "status",
+            "type": "radio",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "1": "Active",
+                "0": "Inactive"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": 1,
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
             "key": "field_5c7f062cabac5",
             "label": "Title",
             "name": "title",
@@ -119,9 +143,9 @@
             "mime_types": ""
         },
         {
-            "key": "field_5c7f24f6105b5",
-            "label": "Status",
-            "name": "status",
+            "key": "field_5cb57dbbd768c",
+            "label": "Image Position",
+            "name": "image_position",
             "type": "radio",
             "instructions": "",
             "required": 1,
@@ -132,12 +156,13 @@
                 "id": ""
             },
             "choices": {
-                "1": "Active",
-                "0": "Inactive"
+                "first": "First (left or top)",
+                "last": "Last (right or bottom)",
+                "background": "Background"
             },
             "allow_null": 0,
             "other_choice": 0,
-            "default_value": 1,
+            "default_value": "first",
             "layout": "vertical",
             "return_format": "value",
             "save_other_choice": 0
@@ -179,5 +204,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1555129070
+    "modified": 1555399605
 }
