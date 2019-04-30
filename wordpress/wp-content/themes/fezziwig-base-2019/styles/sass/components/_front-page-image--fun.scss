@@ -1,0 +1,21 @@
+body.home {
+  background-image: url(../../images/sluyter_body_fpo.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top -2.5em right 24%;
+}
+
+body.home .section-outer--header {
+  background-color: rgba(white, .5);
+}
+
+.front-page-image {
+  img {
+    display: none;
+  }
+}
+
+.front-page-grid--wrapper {
+  background-color: rgba(white, .25);
+  padding: .5em 0;
+}

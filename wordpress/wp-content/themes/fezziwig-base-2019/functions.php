@@ -252,13 +252,7 @@ add_action('acf/init', 'fezziwig_acf_init');
 //* Add image sizes
 add_action( 'after_setup_theme', 'fezziwig_image_sizes' );
 function fezziwig_image_sizes() {
-  add_image_size( 'square-sm', 200, 200, TRUE );
-  add_image_size( 'square-md', 400, 400, TRUE );
-  add_image_size( 'square-lg', 600, 600, TRUE );
-  add_image_size( 'square-xl', 800, 800, TRUE );
-  add_image_size( 'width-sm', 200 );
-  add_image_size( 'width-md', 400 );
-  add_image_size( 'width-lg', 600 );
-  add_image_size( 'width-xl', 800 );
+  add_image_size( 'homepage feature mobile', 600, 300, TRUE );
+  add_image_size( 'homepage feature desktop', 400, 250, TRUE );
 }
 

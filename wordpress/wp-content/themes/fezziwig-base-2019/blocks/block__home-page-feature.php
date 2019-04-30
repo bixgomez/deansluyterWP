@@ -26,7 +26,7 @@ $full_width = get_field( 'full_width' );
 
   <?php if( !empty($featured_image) && $image_position == 'first' ) : ?>
     <div class="home-page-feature--featured-image">
-      <?php echo wp_get_attachment_image( $featured_image, 'full' ); ?>
+      <?php echo wp_get_attachment_image( $featured_image, 'homepage feature desktop' ); ?>
     </div>
   <?php endif; ?>
 
