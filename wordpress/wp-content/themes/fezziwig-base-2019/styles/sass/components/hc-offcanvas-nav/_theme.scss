@@ -323,3 +323,23 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
     }
   }
 }
+
+.hc-nav.hc-nav-1 {
+  display: none !important;
+}
+
+.hc-nav-trigger.hc-nav-1 {
+  display: block !important;
+}
+
+
+@media screen and (min-width: $hamburger-threshold) {
+  .hc-nav.hc-nav-1 {
+    display: flex !important;
+  }
+
+  .hc-nav-trigger.hc-nav-1 {
+    display: none !important;
+  }
+}
+
