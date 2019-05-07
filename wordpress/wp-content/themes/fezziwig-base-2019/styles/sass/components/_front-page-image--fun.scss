@@ -1,17 +1,11 @@
 body.home {
-  background-image: url(../../images/dean-portrait_027_v04_v01.jpg);
+  background-image: url(../../images/dean-portrait_028_v01-3.jpg);
   background-color: #2a231b;
   background-repeat: no-repeat;
-  background-size: 170vw;
-  background-position: top -4.5vw right calc(40px - 40vw);
-
-  background-size: calc(110vw + 475px);
-  background-position: top -4.5vw right calc(-680px + 2vw);
-  background-position: top calc(0px - 2vw) left calc(-100px - 5vw);
 
 
-  background-size: calc(120vw + 475px);
-  background-position: top calc(25px - 4vw) left calc(-100px - 11vw);
+  background-size: 100vw;
+  background-position: top -2vw center;
 
 }
 
@@ -21,7 +15,7 @@ body.home .section-outer--header {
 
 .front-page-image {
 
-  height: calc(100px + 27vw);
+  height: 42vw;
 
   img {
     display: none;
