@@ -13,7 +13,7 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
 .hc-offcanvas-nav {
 
   .nav-container {
-    // width: 400px;
+    min-width: 67vw;
   }
 
   &,
@@ -39,8 +39,9 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
 
   a,
   .nav-item {
-    padding: px-to-rem(10) px-to-rem(18);
+    padding: .5em .9em;
     font-size: px-to-rem(20);
+    font-family: $font-choice--heading;
     color: rgba($hc-offcanvas-nav-text-color, .85);
     z-index: 1;
     background: rgba(0, 0, 0, 0);
@@ -332,6 +333,13 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
   display: block !important;
 }
 
+.hc-offcanvas-nav {
+  display: block;
+  @include breakpoint($hamburger-threshold) {
+    display: none;
+  }
+}
+
 
 @media screen and (min-width: $hamburger-threshold) {
   .hc-nav.hc-nav-1 {
@@ -342,4 +350,5 @@ $hc-offcanvas-nav-text-color:                 #fff !default;
     display: none !important;
   }
 }
+
 

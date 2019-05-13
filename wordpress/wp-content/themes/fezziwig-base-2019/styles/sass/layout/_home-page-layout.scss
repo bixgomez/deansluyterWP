@@ -9,8 +9,8 @@ body.home .section--content {
 
 .front-page-grid {
   max-width: $max-site-width;
-  margin: $site-padding auto;
-  padding: 0 $site-padding;
+  margin: 1em auto;
+  padding: 0 1em;
 
   display: grid;
   grid-gap: 1em;
