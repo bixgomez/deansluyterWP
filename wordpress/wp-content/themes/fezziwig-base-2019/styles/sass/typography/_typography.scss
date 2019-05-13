@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Alice|Lato|Lora|Montserrat|Noto+Serif|Domine|Libre+Baskerville:400,400i|Merriweather:300,400,400i,700|Volkhov:400,400i');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Varela+Round|Open+Sans|Alice|Lato|Lora|Montserrat:400,600,700|Noto+Serif|Domine|Libre+Baskerville:400,400i|Merriweather:300,400,400i,700|Volkhov:400,400i');
 
 html {
   font-size: $font-size--html;
@@ -14,6 +14,10 @@ h1, h2, h3, h4, h5, h6, #primary-menu, .site-info {
   a {
     text-decoration: none;
   }
+}
+
+#primary-menu, .site-info {
+  @include typography-menu;
 }
 
 // Heading font sizes.
@@ -73,6 +77,7 @@ a:visited {
   @extend h1;
   font-size: $font-size--xl;
   margin: 0;
+  font-weight: 600;
 
   a {
     text-decoration: none;
