@@ -1,17 +1,15 @@
 .event,
 .media {
   display: flex;
+  flex-direction: column;
   margin-bottom: 1.5em;
 
   &--image {
-    flex: 1;
-  }
+    margin-bottom: .75em;
 
-  &--info {
-    flex: 2;
-
-    .inner {
-      padding-left: 1em;
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 
@@ -25,6 +23,23 @@
 
   &--date {
     margin-bottom: .7em;
+  }
+
+  @include breakpoint(600px) {
+    flex-direction: row;
+
+    &--image {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    &--info {
+      flex: 2;
+
+      .inner {
+        padding-left: 1em;
+      }
+    }
   }
 }
 
