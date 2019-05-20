@@ -28,7 +28,6 @@ $notes = get_field( 'event_notes' );
     </div>
   <?php endif; ?>
 
-
   <div class="event--info">
     <div class="inner">
 
@@ -52,20 +51,21 @@ $notes = get_field( 'event_notes' );
         <?php endif; ?>
       </div>
 
-      <?php if( !empty( $description ) ) : ?>
-        <div class="event--body">
-          <?php echo $description; ?>
-        </div>
-      <?php endif; ?>
+      <div class="info-body">
+        <?php if( !empty( $description ) ) : ?>
+          <div class="event--description">
+            <?php echo $description; ?>
+          </div>
+        <?php endif; ?>
 
-      <?php if( !empty( $notes ) ) : ?>
-        <div class="event--notes">
-          <?php echo esc_html( $notes ); ?>
-        </div>
-      <?php endif; ?>
+        <?php if( !empty( $notes ) ) : ?>
+          <div class="event--notes">
+            <?php echo esc_html( $notes ); ?>
+          </div>
+        <?php endif; ?>
+      </div>
 
     </div>
   </div>
-
 </div>
 

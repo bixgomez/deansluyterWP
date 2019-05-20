@@ -1,12 +1,12 @@
 .home-page-feature {
   text-decoration: none;
-  padding: .5em;
+  padding: .5em .5em .75em .5em;
   background-color: rgba(#dedede, .5);
   position: relative;
   transition: .5s ease-in-out;
 
   p {
-    font-family: 'Merriweather', serif;
+    font-family: $font-choice--base;
     margin-bottom: 0;
     margin-top: $site-padding;
   }
@@ -33,6 +33,7 @@
 
   .home-page-feature--link-text {
     color: $color--primary;
+    margin-top: .5em;
   }
 
   .home-page-feature--body,
@@ -46,6 +47,14 @@
   .home-page-feature--body,
   .home-page-feature--title h3 {
     transition: .5s ease-in-out;
+  }
+
+  .home-page-feature--title h3 {
+    margin: .25em 0 0 0;
+  }
+
+  .home-page-feature--body p {
+    margin: .5em 0 0 0;
   }
 
   .home-page-feature--background-image {

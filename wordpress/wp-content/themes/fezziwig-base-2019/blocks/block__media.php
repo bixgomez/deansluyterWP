@@ -68,28 +68,26 @@ $length = get_field( 'media_length' );
         <?php endif; ?>
       </div>
 
-      <?php if( !empty( $description ) ) : ?>
-        <div class="media--body">
-          <?php echo $description; ?>
-        </div>
-      <?php endif; ?>
+      <div class="info-body">
+        <?php if( !empty( $description ) ) : ?>
+          <div class="media--description">
+            <?php echo $description; ?>
+          </div>
+        <?php endif; ?>
 
-      <?php if( !empty( $length ) ) : ?>
-        <div class="media--length">
-          <?php echo esc_html( $length ); ?>
-        </div>
-      <?php endif; ?>
+        <?php if( !empty( $length ) ) : ?>
+          <div class="media--length">
+            <?php echo esc_html( $length ); ?>
+          </div>
+        <?php endif; ?>
 
-      <?php if( !empty( $url ) && ( !empty( $link_text ) ) ) : ?>
-        <div class="media--link">
-          <?php echo '<a target="_blank" href="' . esc_html( $url ) . '">' . esc_html( $link_text ) . '</a>'; ?>
-        </div>
-      <?php endif; ?>
-
-
+        <?php if( !empty( $url ) && ( !empty( $link_text ) ) ) : ?>
+          <div class="media--link">
+            <?php echo '<a target="_blank" href="' . esc_html( $url ) . '">' . esc_html( $link_text ) . '</a>'; ?>
+          </div>
+        <?php endif; ?>
+      </div>
 
     </div>
   </div>
-
 </div>
-
