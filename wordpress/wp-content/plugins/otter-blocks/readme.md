@@ -1,7 +1,7 @@
 # Gutenberg Blocks and Template Library by Otter #
 **Contributors:** [themeisle](https://profiles.wordpress.org/themeisle), [hardeepasrani](https://profiles.wordpress.org/hardeepasrani)  
 **Tags:** gutenberg, block, services block, pricing block, testimonials block, post grid block, google map block, font awesome block, sharing icons block, about author block, columns block, advanced columns, section, columds, row, layout  
-**Requires at least:** 4.9      
+**Requires at least:** 5.0      
 **Tested up to:** 5.2    
 **Requires PHP:** 5.4    
 **Stable tag:** trunk  
@@ -45,6 +45,14 @@ It has:
 4. Pre-built Section
 
 ## Changelog ##
+### 1.2.3 - 2019-05-24  ###
+
+* Add BlockInserter
+* Google Maps Improvements
+* Link Component Improvements
+* Fix Sizing Control value type
+
+
 ### 1.2.2 - 2019-05-08  ###
 
 * Add HTML Anchor to Section Block.

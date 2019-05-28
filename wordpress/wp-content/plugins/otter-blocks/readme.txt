@@ -1,12 +1,12 @@
 === Gutenberg Blocks and Template Library by Otter ===
 Contributors: themeisle, hardeepasrani
 Tags: gutenberg, block, services block, pricing block, testimonials block, post grid block, google map block, font awesome block, sharing icons block, about author block, columns block, advanced columns, section, columds, row, layout
-Requires at least: 4.9
-Tested up to: 5.2
-Requires PHP: 5.4
+Requires at least: 5.0    
+Tested up to: 5.2  
+Requires PHP: 5.4  
 Stable tag: trunk
-License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
+License: GPLv3  
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html  
 
 Create beautiful and attracting posts, pages, and landing pages with Gutenberg Blocks and Template Library by Otter. Otter comes with dozens of Gutenberg blocks that are all you need to build beautiful pages in Gutenberg.
 
@@ -20,7 +20,7 @@ https://www.youtube.com/watch?v=ypIeTgvYeRE
 
 A feature that is worth mentioning is the Section Block that allows you to build columns and various layouts in Gutenberg. Moreover, aside from the Gutenberg blocks, the plugin provides a beautiful library of pre-built Gutenberg-compatible templates that you can simply import via one click. The templates have block-friendly layouts that can be customized with no effort.
 
-Every block can be customized in a few seconds, as they come with an easy and intuitive user
+Every block can be customized in a few seconds, as they come with an easy and intuitive user 
 
 It has:
 
@@ -45,7 +45,15 @@ It has:
 4. Pre-built Section
 
 == Changelog ==
-= 1.2.2 - 2019-05-08  =
+= 1.2.3 - 2019-05-24  = 
+
+* Add BlockInserter
+* Google Maps Improvements
+* Link Component Improvements
+* Fix Sizing Control value type
+
+
+= 1.2.2 - 2019-05-08  = 
 
 * Add HTML Anchor to Section Block.
 * Change Default Section setting.
@@ -58,12 +66,12 @@ It has:
 * Validate blocks before importing.
 
 
-= 1.2.1 - 2019-04-20  =
+= 1.2.1 - 2019-04-20  = 
 
 * Fixed issue with constant not being checked in Otter
 * Added error handling in Backbone functions
 
-= 1.2.0 - 2019-04-18  =
+= 1.2.0 - 2019-04-18  = 
 
 * Added Otter Option page
 * Added update notice on Template Library
@@ -72,7 +80,7 @@ It has:
 * Removed Handsontable from Chart block
 
 
-= 1.1.5 - 2019-03-08  =
+= 1.1.5 - 2019-03-08  = 
 
 * Redesign Template Library
 * Added Dynamic Column Resizing
@@ -85,25 +93,25 @@ It has:
 * Fixed Button Group errors
 * Fixed Sharing Icons block having wrong icon order in front-end
 
-= 1.1.4 - 2019-01-31  =
+= 1.1.4 - 2019-01-31  = 
 
 * Fix Font Awesome Block update path
 * Show selected font in Google Font picker
 * Fix Font Awesome Picker component being case-sensitive
 
-= 1.1.3 - 2019-01-30  =
+= 1.1.3 - 2019-01-30  = 
 
 * Adds Feedback for Button Group Switch
 * Fixes Post Grid throwing an error
 * Fixes issue with multiple block templates being inserted on the same post
 * Fixes Font Awesome block alignment on the backend
 
-= 1.1.2 - 2019-01-28  =
+= 1.1.2 - 2019-01-28  = 
 
 * Fix Button Group Migration
 * Revamped Font Awesome Icon Picker
 
-= 1.1.1 - 2019-01-25  =
+= 1.1.1 - 2019-01-25  = 
 
 * Added Developer Documentation
 * Added Typography Option to Block Toolbar
@@ -132,17 +140,17 @@ It has:
 
 = 1.0.4 - 2018-12-07 =
 * Fixed dependencies issue
-
+ 
 = 1.0.3 - 2018-12-07 =
 * Fixes issue with Posts Grid block displaying wrong author
-
+ 
 = 1.0.2 - 2018-12-05 =
 * Fixed Notice Block and Font Awesome Icons
 * Optimized build size
-
+ 
 = 1.0.1 - 2018-10-29 =
 * Bug fixed with Google Map block.
-
+ 
 = 1.0.0 - 2018-10-17 =
 * Adds docker env.
 * Adds hash back.
