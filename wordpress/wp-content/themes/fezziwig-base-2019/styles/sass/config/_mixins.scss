@@ -101,6 +101,44 @@
   }
 }
 
+
+
+// img align mixins.
+
+@mixin img--inline {
+  float: none;
+  margin-left: 0;
+  margin-right: 0;
+  height: auto;
+  max-width: 67%;
+  display: block;
+  margin-bottom: 1em;
+}
+
+@mixin img--align-right {
+  @include img--inline;
+
+  @include breakpoint($md) {
+    float: right;
+    max-width: 50%;
+    margin-left: 2em /*!rtl:end:ignore*/;
+    margin-right: 0;
+    height: auto;
+  }
+}
+
+@mixin img--align-left {
+  @include img--inline;
+
+  @include breakpoint($md) {
+    float: left;
+    max-width: 50%;
+    margin-left: 0;
+    margin-right: 2em /*!rtl:end:ignore*/;
+    height: auto;
+  }
+}
+
 // Transitions
 $transition: all 0.5s ease;
 $transition-fast: all 0.125s linear;
