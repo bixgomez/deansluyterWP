@@ -1,0 +1,44 @@
+.fl-module-content {
+  // margin: 0;
+}
+
+.fl-row-content-wrap {
+  // padding: 0;
+}
+
+.fl-builder-content {
+
+  .fl-row {
+    > .fl-row-content-wrap {
+      padding: 0;
+
+      .fl-module-content {
+        margin: 0 0 20px;
+      }
+    }
+  }
+
+  .fl-module-cta {
+
+    .fl-node-content {
+      margin: 0;
+    }
+
+    a.fl-button {
+      padding: 10px 20px;
+    }
+
+    .fl-module-content {
+      background-color: transparent;
+    }
+  }
+}
+
+.fl-col-group {
+  display: flex;
+  margin-right:-20px;
+
+  .fl-col {
+    margin-right: 20px;
+  }
+}
