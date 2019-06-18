@@ -5265,6 +5265,7 @@
 				helper    : FLBuilder._moduleHelpers[ data.type ],
 				rules     : FLBuilder._moduleHelpers[ data.type ] ? FLBuilder._moduleHelpers[ data.type ].rules : null,
 				messages  : FLBuilder._moduleHelpers[ data.type ] ? FLBuilder._moduleHelpers[ data.type ].messages : null,
+				hide      : ( ! FLBuilderConfig.userCanEditGlobalTemplates && data.global ) ? true : false,
 				preview   : {
 					type     : 'module',
 					layout   : data.layout,
@@ -8545,6 +8546,7 @@
 
 				init.setup = function (editor) {
 					editor.on('SaveContent', function (e) {
+						e.content = e.content.replace(/<a href="(\.\.\/){1,2}/g, '<a href="' + FLBuilderConfig.homeUrl + '/' );
 						e.content = e.content.replace(/src="(\.\.\/){1,2}/g, 'src="' + FLBuilderConfig.homeUrl + '/' );
 					});
 				}
@@ -9317,7 +9319,7 @@
 		_inputVarsCheck: function( o ) {
 
 			var maxInput = FLBuilderConfig.MaxInputVars || 0;
-			window.InputError = false;
+
 			if ( 'undefined' != typeof o && maxInput > 0 ) {
 				count = $.map( o, function(n, i) { return i; }).length;
 				if ( count > maxInput ) {

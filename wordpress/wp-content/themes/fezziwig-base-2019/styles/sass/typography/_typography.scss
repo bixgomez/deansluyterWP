@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Varela+Round|Open+Sans|Alice|Lato|Lora|Montserrat:400,600,700|Noto+Serif|Domine|Libre+Baskerville:400,400i|Merriweather:300,400,400i,700|Volkhov:400,400i');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Open+Sans:400,600,700|Montserrat:400,600,700');
 
 html {
   font-size: $font-size--html;
@@ -134,4 +134,10 @@ mark, ins {
 
 big {
   font-size: $font-size--xxl;
+}
+
+b,
+strong,
+.fl-rich-text strong {
+  font-weight: 600 !important;
 }
