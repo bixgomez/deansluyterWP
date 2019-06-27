@@ -30,8 +30,14 @@ $notes = get_field( 'event_notes' );
 
   <div class="event--info">
     <div class="inner">
-
       <div class="info-header">
+
+        <?php if( !empty( $title ) ) : ?>
+          <div class="event--title">
+            <h3><?php echo esc_html( $title ); ?></h3>
+          </div>
+        <?php endif; ?>
+
         <?php if( !empty( $date ) ) : ?>
           <div class="event--date">
             <h4><?php echo esc_html( $date ); ?></h4>
@@ -41,12 +47,6 @@ $notes = get_field( 'event_notes' );
         <?php if( !empty( $subtitle ) ) : ?>
           <div class="event--subtitle">
             <h4><?php echo esc_html( $subtitle ); ?></h4>
-          </div>
-        <?php endif; ?>
-
-        <?php if( !empty( $title ) ) : ?>
-          <div class="event--title">
-            <h3><?php echo esc_html( $title ); ?></h3>
           </div>
         <?php endif; ?>
       </div>
