@@ -36,3 +36,73 @@ body.home .section--content {
     text-transform: uppercase;
   }
 }
+
+.front-page-content--wrapper {
+  max-width: $max-site-width;
+  margin: 0 auto;
+  padding: 0;
+}
+
+div.front-page-content {
+  width: 100%;
+  margin: 0;
+  padding: 1em;
+  background-color: rgba(white, .25);
+
+  .fl-row-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2em;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  // Ignore all module wrappers, as they are unpredictable.
+  .fl-col-group {
+    display: contents;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  .fl-col {
+    display: contents;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  .fl-col-content {
+    display: contents;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  div.fl-module-teaser {
+    min-height: 3em;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  .fl-builder-content .fl-row > .fl-row-content-wrap .fl-module-content {
+    margin: 0;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+}

@@ -31,8 +31,21 @@ get_header();
   <img src="/wp-content/themes/fezziwig-base-2019/images/Sluyter-Headshot-600h.jpg">
 </div>
 
-<div class="front-page-grid--wrapper">
-  <div class="front-page-grid">
+<?php /* ?>
+  <div class="front-page-grid--wrapper">
+    <div class="front-page-grid">
+      <?php
+      while ( have_posts() ) :
+        the_post();
+        get_template_part( 'template-parts/content', 'front' );
+      endwhile;
+      ?>
+    </div>
+  </div>
+ <?php */ ?>
+
+<div class="front-page-content--wrapper">
+  <div class="front-page-content">
     <?php
     while ( have_posts() ) :
       the_post();

@@ -39,6 +39,7 @@ class FL_Custom_Modules_Example_Loader {
       require_once CUSTOM_BB_MODULES_DIR . 'modules/teaser/teaser.php';
       require_once CUSTOM_BB_MODULES_DIR . 'modules/biglink/biglink.php';
       require_once CUSTOM_BB_MODULES_DIR . 'modules/text-with-heading/text-with-heading.php';
+      require_once CUSTOM_BB_MODULES_DIR . 'modules/home-page-feature/home-page-feature.php';
     }
 	
 	/**
