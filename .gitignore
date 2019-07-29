@@ -21,3 +21,4 @@ wordpress/sitemap.xml.gz
 .idea
 /.idea/workspace.xml
 node_modules
+wp-config.php
