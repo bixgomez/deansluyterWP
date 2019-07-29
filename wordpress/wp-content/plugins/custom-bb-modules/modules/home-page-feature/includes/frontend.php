@@ -17,11 +17,10 @@
     
     <div class="home-page-feature--featured-image">
       <?php if ($settings->link_url) : ?>
-        <a href="<?php echo $settings->link_url; ?>"><img width="400" height="250" src="<?php echo wp_get_attachment_url($settings->image); ?>" class="attachment-homepage feature desktop size-homepage feature desktop" alt=""></a>
+        <a href="<?php echo $settings->link_url; ?>"><?php echo wp_get_attachment_image( $settings->image, 'homepage feature desktop', "", ["class" => "size-homepage"] ); ?></a>
       <?php else: ?>
-        <img width="400" height="250" src="<?php echo wp_get_attachment_url($settings->image); ?>" class="attachment-homepage feature desktop size-homepage feature desktop" alt="">
+        <?php echo wp_get_attachment_image( $settings->image, 'homepage feature desktop', "", ["class" => "size-homepage"] ); ?>
       <?php endif; ?>
-
     </div>
     
     <div class="home-page-feature--title">
