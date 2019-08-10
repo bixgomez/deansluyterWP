@@ -2,27 +2,28 @@
 @mixin typography-body {
   font-size: $font-size--md;
   font-family: $font-choice--base;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
   line-height: $lineheight-default;
   color: rgba(black, .75);
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
 }
 
 @mixin typography-heading {
   font-family: $font-choice--heading;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.2;
   padding: 0;
   margin: 0 0 .75em 0;
   color: mix(black, $color--primary, 25%);
+  -webkit-font-smoothing: unset;
+  -moz-osx-font-smoothing: unset;
 }
 
 @mixin typography-menu {
   @include typography-heading;
   font-weight: 400;
 }
-
 
 // Padding mixins.
 @mixin site-padding {
@@ -35,76 +36,62 @@
   padding-bottom: $site-padding;
 }
 
-
 // Block mixins.
 @mixin block--align-right {
-  // width: 100%;
   float: none;
   margin-left: 0;
   margin-right: 0;
 
   img {
-    // width: 100%;
     height: auto;
   }
 
   @include breakpoint($sm) {
     img {
-      // width: auto;
       height: auto;
     }
   }
 
   @include breakpoint($md) {
-    // width: auto;
     float: right;
     max-width: 50%;
     margin-left: 2em /*!rtl:end:ignore*/;
     margin-right: 0;
 
     img {
-      // width: auto;
       height: auto;
     }
   }
 }
 
 @mixin block--align-left {
-  // width: 100%;
   float: none;
   margin-left: 0;
   margin-right: 0;
 
   img {
-    // width: 100%;
     height: auto;
   }
 
   @include breakpoint($sm) {
     img {
-      // width: auto;
       height: auto;
     }
   }
 
   @include breakpoint($md) {
-    // width: auto;
     float: left;
     max-width: 50%;
     margin-left: 0;
     margin-right: 2em /*!rtl:end:ignore*/;
 
     img {
-      // width: auto;
       height: auto;
     }
   }
 }
 
-
-
 // img align mixins.
-
 @mixin img--inline {
   float: none;
   margin-left: 0;

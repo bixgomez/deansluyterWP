@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700|Open+Sans:400,600,700|Montserrat:400,600,700');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans:400,600|Open+Sans:400,600,700|Montserrat:400,600,700');
 
 html {
   font-size: $font-size--html;
@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6, #primary-menu, .site-info {
 // Heading font sizes.
 h1 {
   font-size: $font-size--xxl;
-  letter-spacing: ($font-size--xxl * .2);
+  letter-spacing: ($font-size--xxl * .125);
   margin-bottom: ($font-size--xxl * .5);
   text-transform: uppercase;
 
@@ -35,7 +35,7 @@ h1 {
 
 h2 {
   font-size: $font-size--xl;
-  letter-spacing: ($font-size--xl * .2);
+  letter-spacing: ($font-size--xl * .125);
   margin-bottom: ($font-size--xl * .5);
   text-transform: lowercase;
   opacity: .625;
@@ -43,7 +43,7 @@ h2 {
 
 h3 {
   font-size: $font-size--lg;
-  letter-spacing: ($font-size--lg * .03);
+  letter-spacing: ($font-size--lg * .05);
   margin-bottom: ($font-size--lg * .5);
   text-transform: lowercase;
   opacity: .625;
