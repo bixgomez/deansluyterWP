@@ -3,6 +3,8 @@ $color--white: #FFF;
 $color--black: #000;
 $color--primary: #006667;
 $color--primary-light: mix($color--primary, $color--white, 50%);
+$color--primary-lighter: mix($color--primary, $color--white, 30%);
+$color--primary-lightest: mix($color--primary, $color--white, 10%);
 $color--primary-dark: mix($color--primary, $color--black, 50%);
 
 $color--gray-md: mix($color--black, $color--white, 50%);
