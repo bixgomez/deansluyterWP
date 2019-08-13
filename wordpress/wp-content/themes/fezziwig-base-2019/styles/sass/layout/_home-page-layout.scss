@@ -51,12 +51,26 @@ div.front-page-content {
 
   .fl-row-content {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-gap: 2em;
+    font-size: 1em;
+    transition: $transition-fast;
 
     &:before,
     &:after {
       display: none;
+    }
+
+    @include breakpoint($sm) {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 1em;
+      font-size: .8em;
+    }
+
+    @include breakpoint($md) {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 1.5em;
+      font-size: 1em;
     }
   }
 
@@ -99,6 +113,7 @@ div.front-page-content {
 
   .fl-builder-content .fl-row > .fl-row-content-wrap .fl-module-content {
     margin: 0;
+    height: 100%;
 
     &:before,
     &:after {

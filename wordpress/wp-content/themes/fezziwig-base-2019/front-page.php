@@ -28,7 +28,6 @@ get_header();
       <?php endwhile; ?>
     </div>
   </div>
-  <img src="/wp-content/themes/fezziwig-base-2019/images/Sluyter-Headshot-600h.jpg">
 </div>
 
 <?php /* ?>
