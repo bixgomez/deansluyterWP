@@ -10,10 +10,11 @@
   transition: $transition-fast;
 
   @include breakpoint($lg) {
-    max-height: 50vh;
-    background-position: center center;
+    max-height: 85vh;
+    // background-position: center center;
   }
 }
+
 
 .front-page-text {
   position: relative;
