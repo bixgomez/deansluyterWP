@@ -19,9 +19,9 @@ get_header();
   <div class="front-page-text">
     <div class="inner">
       <?php while ( have_posts() ) : the_post(); ?>
-        <?php /* ?>
-        <h2><?php the_field('intro_title'); ?></h2>
-        <?php */ ?>
+        <?php  ?>
+        <h1 class="site-name">Dean Sluyter</h1>
+        <?php  ?>
         <p class="home-page-intro-text">
           <?php the_field('intro_text'); ?>
         </p>
