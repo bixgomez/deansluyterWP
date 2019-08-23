@@ -80,17 +80,23 @@ if ( ! function_exists( 'fezziwig_base_2019_setup' ) ) :
 			'flex-height' => true,
 		) );
 
-        /**
-         * Add support for editor styles, then enqueue editor styles.
-         *
-         * @link https://richtabor.com/add-wordpress-theme-styles-to-gutenberg/
-         */
-        add_theme_support( 'editor-styles' );
-        add_editor_style( get_template_directory_uri() . '/styles/css/styles_editor.css' );
+    /**
+     * Add support for editor styles, then enqueue editor styles.
+     *
+     * @link https://richtabor.com/add-wordpress-theme-styles-to-gutenberg/
+     */
+    add_theme_support( 'editor-styles' );
+    add_editor_style( get_template_directory_uri() . '/styles/css/styles_editor.css' );
 
 	}
 endif;
 add_action( 'after_setup_theme', 'fezziwig_base_2019_setup' );
+
+// Update CSS within in Admin
+function admin_style() {
+  wp_enqueue_style('admin-styles', get_template_directory_uri().'/styles/css/admin.css');
+}
+add_action('admin_enqueue_scripts', 'admin_style');
 
 /**
  * Load Gutenberg stylesheet. Add backend styles for Gutenberg.
@@ -270,3 +276,14 @@ function add_slug_body_class( $classes ) {
   return $classes;
 }
 add_filter( 'body_class', 'add_slug_body_class' );
+
+//Page Slug Admin Body Class
+function rw_admin_body_class( $classes ) {
+  global $post;
+  if ( isset( $post ) ) {
+    $classes .= $post->post_type . '-' . $post->post_name;
+  }
+  return $classes;
+}
+add_filter( 'admin_body_class', 'rw_admin_body_class' );
+

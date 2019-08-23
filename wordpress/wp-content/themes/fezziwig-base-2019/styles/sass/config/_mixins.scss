@@ -131,19 +131,23 @@ $transition: all 0.5s ease;
 $transition-fast: all 0.125s linear;
 
 @mixin yes-beaver {
-  #wp-toolbar #wp-admin-bar-edit {
+  #wp-toolbar #wp-admin-bar-edit,
+  .fl-builder-admin-tabs .fl-enable-editor {
     display: none;
   }
-  #wp-toolbar #wp-admin-bar-fl-builder-frontend-edit-link {
+  #wp-toolbar #wp-admin-bar-fl-builder-frontend-edit-link,
+  .fl-builder-admin-tabs .fl-enable-builder {
     display: block;
   }
 }
 
 @mixin no-beaver {
-  #wp-toolbar #wp-admin-bar-edit {
+  #wp-toolbar #wp-admin-bar-edit,
+  .fl-builder-admin-tabs .fl-enable-editor {
     display: block;
   }
-  #wp-toolbar #wp-admin-bar-fl-builder-frontend-edit-link {
+  #wp-toolbar #wp-admin-bar-fl-builder-frontend-edit-link,
+  .fl-builder-admin-tabs .fl-enable-builder {
     display: none;
   }
 }
