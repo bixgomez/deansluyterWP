@@ -1,0 +1,17 @@
+@include breakpoint($sm-down) {
+
+  .fl-col-group {
+    display: block;
+
+    .fl-col {
+      margin-right: 0;
+      margin-left: 0;
+
+      .fl-photo,
+      .fl-photo-align-center {
+        text-align: left;
+      }
+    }
+
+  }
+}
