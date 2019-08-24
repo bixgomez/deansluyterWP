@@ -151,3 +151,10 @@ $transition-fast: all 0.125s linear;
     display: none;
   }
 }
+
+@mixin horizontal-rule {
+  background-color: transparent;
+  border: 0;
+  border-top: 1px solid $color--primary-lighter;
+  height: auto;
+}
