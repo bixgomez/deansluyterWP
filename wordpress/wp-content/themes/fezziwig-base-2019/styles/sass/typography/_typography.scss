@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6, #primary-menu, .site-info {
 // Heading font sizes.
 h1 {
   font-size: $font-size--xxl;
-  letter-spacing: ($font-size--xxl * .125);
+  letter-spacing: .15em;
   margin-bottom: ($font-size--xxl * .5);
   text-transform: uppercase;
 
@@ -31,11 +31,18 @@ h1 {
     text-transform: lowercase;
     opacity: .625;
   }
+
+  &.site-name {
+    color: inherit;
+    text-transform: capitalize;
+    margin: 0;
+    font-size: 1.75em;
+  }
 }
 
 h2 {
   font-size: $font-size--xl;
-  letter-spacing: ($font-size--xl * .125);
+  letter-spacing: .1em;
   margin-bottom: ($font-size--xl * .5);
   text-transform: lowercase;
   opacity: .625;
@@ -43,7 +50,7 @@ h2 {
 
 h3 {
   font-size: $font-size--lg;
-  letter-spacing: ($font-size--lg * .05);
+  letter-spacing: .05em;
   margin-bottom: ($font-size--lg * .5);
   text-transform: lowercase;
   opacity: .625;
@@ -51,16 +58,19 @@ h3 {
 
 h4 {
   font-size: $font-size--md;
+  letter-spacing: .05em;
   margin-bottom: ($font-size--md * .5);
 }
 
 h5 {
   font-size: $font-size--sm;
+  letter-spacing: .05em;
   margin-bottom: ($font-size--sm * .5);
 }
 
 h6 {
   font-size: $font-size--xxs;
+  letter-spacing: .05em;
   margin-bottom: ($font-size--xxs * .5);
 }
 
