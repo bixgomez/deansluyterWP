@@ -156,7 +156,7 @@
 	margin-right: auto;
 	width: auto !important;
 }
-.fl-col-small {
+.fl-col-small:not(.fl-col-small-full-width) {
 	max-width: 400px;
 }
 .fl-block-col-resize {
