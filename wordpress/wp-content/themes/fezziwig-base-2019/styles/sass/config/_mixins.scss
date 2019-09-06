@@ -4,9 +4,10 @@
   font-family: $font-choice--base;
   font-weight: 400;
   line-height: $lineheight-default;
-  color: rgba(black, .75);
+  color: rgba(black, .9);
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 @mixin typography-heading {

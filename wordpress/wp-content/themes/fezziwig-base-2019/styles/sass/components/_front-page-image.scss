@@ -47,10 +47,6 @@
 
     h1.site-name {
       width: 5em;
-      font-family: "raleway", "Montserrat", Helvetica, Arial, sans-serif;
-      font-weight: 800;
-      letter-spacing: .05em;
-      font-size: 2em;
 
       @include breakpoint($md) {
         width: auto;
