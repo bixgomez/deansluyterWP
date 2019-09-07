@@ -326,7 +326,7 @@ $row_settings = array(
 									'fields' => array( 'bg_video_url_mp4', 'bg_video_url_webm' ),
 								),
 								'video_service' => array(
-									'fields' => array( 'bg_video_service_url', 'bg_video_audio', 'bg_video_mobile' ),
+									'fields' => array( 'bg_video_service_url' ),
 								),
 							),
 							'preview' => array(

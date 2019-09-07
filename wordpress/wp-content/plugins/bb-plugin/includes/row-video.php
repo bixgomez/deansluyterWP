@@ -1,6 +1,7 @@
 <?php // @codingStandardsIgnoreFile ?>
 <?php if ( 'wordpress' == $row->settings->bg_video_source ) { ?>
 <div class="fl-bg-video"
+data-video-mobile="<?php if ( isset( $row->settings->bg_video_mobile ) ) { echo $row->settings->bg_video_mobile;} ?>"
 data-width="<?php if ( isset( $vid_data['mp4'] ) ) { echo $vid_data['mp4']->width;
 } else { echo $vid_data['webm']->width;
 } ?>"
@@ -22,6 +23,7 @@ data-webm-type="video/<?php echo $vid_data['webm']->extension; ?>"
 
 <?php if ( 'video_url' == $row->settings->bg_video_source ) { ?>
 <div class="fl-bg-video"
+data-video-mobile="<?php if ( isset( $row->settings->bg_video_mobile ) ) { echo $row->settings->bg_video_mobile;} ?>"
 data-fallback="<?php if ( isset( $row->settings->bg_video_fallback_src ) ) { echo $row->settings->bg_video_fallback_src;} ?>"
 <?php if ( isset( $row->settings->bg_video_url_mp4 ) ) : ?>
 data-mp4="<?php echo $row->settings->bg_video_url_mp4; ?>"

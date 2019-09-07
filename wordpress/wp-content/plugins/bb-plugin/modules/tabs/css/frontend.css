@@ -3,6 +3,9 @@
 .fl-tabs-label {
 	cursor: pointer;
 }
+a.fl-tabs-label {
+	display: block;
+}
 .fl-tabs-label {
 	padding: 12px 18px;
 }
@@ -47,6 +50,7 @@
 	border-width: 1px;
 	border-style: solid;
 }
+
 .fl-tabs-panel-content {
 	display: none;
 	padding: 18px;

@@ -464,7 +464,7 @@
 				videoTag.append( webmTag );
 			}
 
-			// Check what video player we are going to load in a row
+			// This is either desktop, or mobile is enabled.
 			if ( ! FLBuilderLayout._isMobile() || ( FLBuilderLayout._isMobile() && "yes" == videoMobile ) ) {
 				if ( 'undefined' != typeof youtube ) {
 					FLBuilderLayout._initYoutubeBgVideo.apply( this );
@@ -472,8 +472,13 @@
 				else if ( 'undefined' != typeof vimeo ) {
 					FLBuilderLayout._initVimeoBgVideo.apply( this );
 				}
+				else {
+					wrap.append( videoTag );
+				}
 			}
 			else {
+				// if we are here, it means we are on mobile and NO is set so remove video src and use fallback
+				videoTag.attr('src', '')
 				wrap.append( videoTag );
 			}
 

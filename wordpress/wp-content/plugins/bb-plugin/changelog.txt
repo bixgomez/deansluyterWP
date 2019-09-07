@@ -1,3 +1,11 @@
+<h4>2.2.5.1 - 09/05/2019</h4>
+<p><strong>Hot Fix</strong></p>
+<ul>
+	<li>Fixed background video issues.</li>
+	<li>Fixed responsive visibility issue with equal heights column.</li>
+	<li>Fixed vertical tabs display issue.</li>
+</ul>
+
 <h4>2.2.5 - 09/04/2019</h4>
 <p><strong>Enhancements</strong></p>
 <ul>
