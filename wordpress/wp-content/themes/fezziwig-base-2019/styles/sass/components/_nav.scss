@@ -32,8 +32,12 @@ a.hc-nav-trigger {
       margin-right: 0;
     }
 
-    @include breakpoint(1000px) {
+    @include breakpoint(940px) {
       margin-right: 10px;
+    }
+
+    @include breakpoint(1000px) {
+      margin-right: 12px;
     }
 
     @include breakpoint(1200px) {

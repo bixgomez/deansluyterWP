@@ -27,7 +27,8 @@ gulp.task('sass', function () {
     // Run Sass
     .pipe(sass({
       includePaths: [
-        './node_modules/breakpoint-sass/stylesheets/'
+        './node_modules/breakpoint-sass/stylesheets/',
+        './node_modules/@fortawesome/fontawesome-free/scss'
       ],
       errLogToConsole: true,
       outputStyle: 'expanded'

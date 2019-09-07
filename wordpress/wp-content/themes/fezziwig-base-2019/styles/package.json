@@ -5,6 +5,7 @@
   "scripts": {},
   "dependencies": {},
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.2",
     "breakpoint-sass": "^2.7.1",
     "compass-sass-mixins": "^0.12.7",
     "gulp": "^4.0.0",
