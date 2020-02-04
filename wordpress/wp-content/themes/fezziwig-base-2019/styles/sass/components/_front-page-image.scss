@@ -1,15 +1,16 @@
 .front-page-image {
   overflow: hidden;
   position: relative;
-  height: 65vw;
-  background-image: url(../../images/dean-portrait_028_v01-4_cropped.jpg);
+  height: 80vw;
+  background-image: url(../../images/dean-portrait_028_v01-4_cropped__mobile.jpg);
   background-color: #2a231b;
   background-repeat: no-repeat;
-  background-size: 140vw;
+  background-size: 101vw;
   background-position: center center;
   transition: $transition-fast;
 
   @include breakpoint($sm) {
+    background-image: url(../../images/dean-portrait_028_v01-4_cropped__smallest.jpg);
     height: 44vw;
     background-size: 100vw;
   }
