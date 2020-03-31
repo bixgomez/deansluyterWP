@@ -143,16 +143,16 @@ FLCustomizer::add_panel('fl-general', array(
 					),
 				),
 				/* Medium Breakpoint */
-				'fl-medium-breakpoint'      => array(
+				'fl-medium-breakpoint'   => array(
 					'setting' => array(
 						'default' => 992,
 					),
 					'control' => array(
-						'class'   => 'FLCustomizerControl',
-						'label'   => __( 'Theme Medium Breakpoint', 'fl-automator' ),
+						'class'       => 'FLCustomizerControl',
+						'label'       => __( 'Theme Medium Breakpoint', 'fl-automator' ),
 						'description' => __( 'Medium device behavior starts below this setting.', 'fl-automator' ),
-						'type'    => 'slider',
-						'choices' => array(
+						'type'        => 'slider',
+						'choices'     => array(
 							'min'  => 500,
 							'max'  => 1200,
 							'step' => 1,
@@ -161,16 +161,16 @@ FLCustomizer::add_panel('fl-general', array(
 				),
 
 				/* Mobile Breakpoint */
-				'fl-mobile-breakpoint'      => array(
+				'fl-mobile-breakpoint'   => array(
 					'setting' => array(
 						'default' => 768,
 					),
 					'control' => array(
-						'class'   => 'FLCustomizerControl',
-						'label'   => __( 'Theme Mobile Breakpoint', 'fl-automator' ),
+						'class'       => 'FLCustomizerControl',
+						'label'       => __( 'Theme Mobile Breakpoint', 'fl-automator' ),
 						'description' => __( 'Mobile device behavior starts below this setting.', 'fl-automator' ),
-						'type'    => 'slider',
-						'choices' => array(
+						'type'        => 'slider',
+						'choices'     => array(
 							'min'  => 500,
 							'max'  => 1200,
 							'step' => 1,
@@ -484,11 +484,7 @@ FLCustomizer::add_panel('fl-general', array(
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H1' ),
 						'type'       => 'slider',
 						'priority'   => 5.0,
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -555,11 +551,7 @@ FLCustomizer::add_panel('fl-general', array(
 						/* translators: %s: HTML heading tag */
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H2' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -623,11 +615,7 @@ FLCustomizer::add_panel('fl-general', array(
 						/* translators: %s: HTML heading tag */
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H3' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -691,11 +679,7 @@ FLCustomizer::add_panel('fl-general', array(
 						/* translators: %s: HTML heading tag */
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H4' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -759,11 +743,7 @@ FLCustomizer::add_panel('fl-general', array(
 						/* translators: %s: HTML heading tag */
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H5' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -827,11 +807,7 @@ FLCustomizer::add_panel('fl-general', array(
 						/* translators: %s: HTML heading tag */
 						'label'      => sprintf( _x( '%s Font Size', '%s stands for HTML heading tag.', 'fl-automator' ), 'H6' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -930,11 +906,7 @@ FLCustomizer::add_panel('fl-general', array(
 						'class'      => 'FLCustomizerControl',
 						'label'      => __( 'Font Size', 'fl-automator' ),
 						'type'       => 'slider',
-						'choices'    => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices'    => get_font_size_limits(),
 						'responsive' => true,
 					),
 				),
@@ -1069,11 +1041,7 @@ FLCustomizer::add_panel('fl-general', array(
 						'class'   => 'FLCustomizerControl',
 						'label'   => _x( 'Font Size', 'Font size for buttons.', 'fl-automator' ),
 						'type'    => 'slider',
-						'choices' => array(
-							'min'  => 10,
-							'max'  => 72,
-							'step' => 1,
-						),
+						'choices' => get_font_size_limits(),
 					),
 				),
 				'fl-button-line-height'            => array(
@@ -1293,6 +1261,14 @@ FLCustomizer::add_panel('fl-general', array(
 						'label' => 'Google',
 					),
 				),
+
+				'fl-social-google-maps'       => array(
+					'control' => array(
+						'class' => 'WP_Customize_Control',
+						'label' => 'Google Maps',
+					),
+				),
+
 				'fl-social-snapchat'          => array(
 					'control' => array(
 						'class' => 'WP_Customize_Control',

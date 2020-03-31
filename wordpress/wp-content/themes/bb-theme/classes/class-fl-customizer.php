@@ -132,6 +132,10 @@ final class FLCustomizer {
 		wp_enqueue_script( 'fl-customizer', FL_THEME_URL . '/js/customizer.js', array(), FL_THEME_VERSION, true );
 		wp_enqueue_script( 'ace', FL_THEME_URL . '/js/ace/ace.js', array(), FL_THEME_VERSION, true );
 		wp_enqueue_script( 'ace-language-tools', FL_THEME_URL . '/js/ace/ext-language_tools.js', array(), FL_THEME_VERSION, true );
+		if ( true === apply_filters( 'fl_select2_enabled', true ) ) {
+			wp_enqueue_style( 'select2', FL_THEME_URL . '/css/select2.min.css', array(), FL_THEME_VERSION );
+			wp_enqueue_script( 'select2', FL_THEME_URL . '/js/select2.min.js', array( 'jquery' ), FL_THEME_VERSION, true );
+		}
 	}
 
 	/**
@@ -206,6 +210,13 @@ final class FLCustomizer {
 	}
 
 	/**
+	 * @since 1.7.4
+	 */
+	static public function clearmodcache() {
+		self::$_mods = false;
+	}
+
+	/**
 	 * Returns an array of all theme mods.
 	 *
 	 * @since 1.2.0
@@ -232,9 +243,10 @@ final class FLCustomizer {
 				$mods = self::_get_default_mods();
 				update_option( 'theme_mods_' . get_option( 'stylesheet' ), $mods );
 			}
-		} else {
-			$mods = self::$_mods;
+			self::$_mods = $mods;
 		}
+
+		$mods = self::$_mods;
 
 		// Hack to insure the mod values are the same as the customzier
 		// values since get_theme_mods doesn't return the correct values
@@ -289,6 +301,7 @@ final class FLCustomizer {
 	 * @return void
 	 */
 	static public function refresh_css() {
+		self::clearmodcache();
 		self::_clear_css_cache();
 		return self::_compile_css();
 	}
@@ -683,7 +696,7 @@ final class FLCustomizer {
 					$mods[ $option_id ] = isset( $option['setting']['default'] ) ? $option['setting']['default'] : '';
 
 					// Add default for responsive controls.
-					if ( isset( $option['control']['responsive'] ) && true == $option['control']['responsive'] ) {
+					if ( isset( $option['control']['responsive'] ) && true === $option['control']['responsive'] ) {
 						foreach ( array( 'medium', 'mobile' ) as $device ) {
 							$mods[ $option_id . '_' . $device ] = isset( $option['setting']['default'] ) ? $option['setting']['default'] : '';
 						}
@@ -711,7 +724,7 @@ final class FLCustomizer {
 
 			foreach ( $data['settings'] as $key => $val ) {
 
-				if ( ! in_array( $key, $keys ) ) {
+				if ( ! in_array( $key, $keys, true ) ) {
 					$keys[] = $key;
 				}
 			}
@@ -775,9 +788,9 @@ final class FLCustomizer {
 	static private function _merge_mods( $merge_with = 'default', $mods = null ) {
 		if ( ! $mods ) {
 			return false;
-		} elseif ( 'default' == $merge_with ) {
+		} elseif ( 'default' === $merge_with ) {
 			$new_mods = self::_get_default_mods();
-		} elseif ( 'saved' == $merge_with ) {
+		} elseif ( 'saved' === $merge_with ) {
 			$new_mods = get_theme_mods();
 			$new_mods = self::_merge_mods( 'default', $new_mods );
 		}
@@ -801,7 +814,7 @@ final class FLCustomizer {
 	 */
 	static private function _clear_css_cache( $all = false ) {
 
-		if ( 'inline' == FLTheme::get_asset_enqueue_method() ) {
+		if ( 'inline' === FLTheme::get_asset_enqueue_method() ) {
 				update_option( 'fl-theme-skin', '' );
 				update_option( 'fl-theme-customizer', '' );
 				update_option( 'fl-theme-editor', '' );
@@ -879,7 +892,7 @@ final class FLCustomizer {
 			$css = FLCSS::compress_css( $css );
 		}
 
-		if ( 'inline' == FLTheme::get_asset_enqueue_method() ) {
+		if ( 'inline' === FLTheme::get_asset_enqueue_method() ) {
 			// write css to db
 			FLTheme::update_cached_css( $css_slug, $css );
 			return $css;
@@ -946,6 +959,8 @@ final class FLCustomizer {
 			'submenu-indicator'        => 'enable' === $mods['fl-nav-submenu-indicator'],
 			'footer-widgets'           => 'disabled' !== $mods['fl-footer-widgets-display'],
 			'footer'                   => 'none' !== $mods['fl-footer-layout'],
+			'bigcommerce'              => function_exists( 'bigcommerce' ),
+			'bigcommerce-buttons'      => function_exists( 'bigcommerce' ) && 'custom' === $mods['fl-button-style'],
 			'woocommerce'              => 'disabled' !== $mods['fl-woo-css'] && class_exists( 'WooCommerce' ),
 			'the-events-calendar'      => defined( 'TRIBE_EVENTS_FILE' ),
 			'blocks'                   => true,
@@ -995,7 +1010,7 @@ final class FLCustomizer {
 		$breakpoints = FLTheme::get_theme_breakpoints();
 
 		// Layout
-		$boxed                     = 'boxed' == $mods['fl-layout-width'];
+		$boxed                     = 'boxed' === $mods['fl-layout-width'];
 		$shadow_size               = $mods['fl-layout-shadow-size'];
 		$shadow_color              = $mods['fl-layout-shadow-color'];
 		$vars['body-padding']      = $boxed ? $mods['fl-layout-spacing'] . 'px 0' : '0';
@@ -1050,13 +1065,13 @@ final class FLCustomizer {
 			$vars['title-transform'] = $mods['fl-heading-font-format'];
 		}
 
-		$responsive_mods = self::_get_resposive_mods();
+		$responsive_mods = self::_get_responsive_mods();
 
 		foreach ( $responsive_mods as $var => $mod_data ) {
 			foreach ( array( 'desktop', 'medium', 'mobile' ) as $device ) {
-				if ( 'desktop' != $device ) {
+				if ( 'desktop' !== $device ) {
 					$option_key = $mod_data['key'] . '_' . $device;
-					$var_key    = 'desktop' != $device ? $device . '-' . $var : '';
+					$var_key    = 'desktop' !== $device ? $device . '-' . $var : '';
 				} else {
 					$option_key = $mod_data['key'];
 					$var_key    = $var;
@@ -1159,11 +1174,11 @@ final class FLCustomizer {
 		$vars['header-logo-top-spacing'] = $mods['fl-header-logo-top-spacing'] . 'px';
 
 		// Right Nav, Left Nav, Vertical Nav, Centered Inline Logo Nav Colors
-		if ( 'right' == $mods['fl-header-layout'] ||
-			'left' == $mods['fl-header-layout'] ||
-			'vertical-left' == $mods['fl-header-layout'] ||
-			'vertical-right' == $mods['fl-header-layout'] ||
-			'centered-inline-logo' == $mods['fl-header-layout']
+		if ( 'right' === $mods['fl-header-layout'] ||
+			'left' === $mods['fl-header-layout'] ||
+			'vertical-left' === $mods['fl-header-layout'] ||
+			'vertical-right' === $mods['fl-header-layout'] ||
+			'centered-inline-logo' === $mods['fl-header-layout']
 		) {
 			$vars['nav-bg-color']       = $vars['header-bg-color'];
 			$vars['nav-bg-grad']        = 0;
@@ -1181,6 +1196,8 @@ final class FLCustomizer {
 			$vars['nav-fg-link-color']  = FLColor::hex( array( $mods['fl-nav-link-color'], $vars['text-color'] ) );
 			$vars['nav-fg-hover-color'] = FLColor::hex( array( $mods['fl-nav-hover-color'], $vars['nav-fg-color'] ) );
 		}
+
+		$vars['header-logo-max-height'] = isset( $mods['fl-logo-max-height'] ) ? ( $mods['fl-logo-max-height'] . 'px ' ) : '46px';
 
 		// Nav Dropdown Colors
 		$vars['nav-dropdown-bg-color'] = FLColor::hex( array( $vars['nav-bg-color'], $vars['body-bg-color'] ) );
@@ -1223,10 +1240,10 @@ final class FLCustomizer {
 		}
 
 		// Custom Blog Sidebar Size
-		$vars['custom-sidebar-size'] = 'custom' == $mods['fl-blog-sidebar-size'] ? $mods['fl-blog-custom-sidebar-size'] . '%' : 0;
+		$vars['custom-sidebar-size'] = 'custom' === $mods['fl-blog-sidebar-size'] ? $mods['fl-blog-custom-sidebar-size'] . '%' : 0;
 
 		// Custom WooCommerce Sidebar Size
-		$vars['custom-woo-sidebar-size'] = 'custom' == $mods['fl-woo-sidebar-size'] ? $mods['fl-woo-custom-sidebar-size'] . '%' : 0;
+		$vars['custom-woo-sidebar-size'] = 'custom' === $mods['fl-woo-sidebar-size'] ? $mods['fl-woo-custom-sidebar-size'] . '%' : 0;
 
 		// Inputs Colors
 		$vars['input-bg-color']           = FLColor::hex( array( $vars['content-bg-color-2'], $vars['body-bg-color-2'], '#fcfcfc' ) );
@@ -1268,10 +1285,10 @@ final class FLCustomizer {
 
 		// WooCommerce
 		if ( FLTheme::is_plugin_active( 'woocommerce' ) ) {
-			$vars['woo-cats-add-button'] = 'hidden' == $mods['fl-woo-cart-button'] ? 'none' : 'inline-block';
+			$vars['woo-cats-add-button'] = 'hidden' === $mods['fl-woo-cart-button'] ? 'none' : 'inline-block';
 		}
 
-		if ( true == apply_filters( 'fl_enable_fa5_pro', false ) ) {
+		if ( true === apply_filters( 'fl_enable_fa5_pro', false ) ) {
 			$vars['font-awesome-family'] = "'Font Awesome 5 Pro'";
 		} else {
 			$vars['font-awesome-family'] = "'Font Awesome 5 Free'";
@@ -1292,7 +1309,7 @@ final class FLCustomizer {
 	/**
 	 * @since 1.7.3
 	 */
-	static public function _get_resposive_mods() {
+	static public function _get_responsive_mods() {
 
 		// Responsive controls style
 		$responsive_mods = array(

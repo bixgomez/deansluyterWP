@@ -17,7 +17,6 @@
 		init: function()
 		{
 			this._bind();
-			this._initRetinaImages();
 		},
 
 		/**
@@ -31,11 +30,6 @@
 		{
 			// Base Framework Nav Toggles
 			$( '.fl-framework-base .navbar-toggle, .fl-framework-base-4 .navbar-toggle' ).on( 'click', this.navbarToggleClick );
-
-			// Mobile Logo
-			if ( ! ( $( 'html.fl-builder-edit' ).length != 0 ) ) {
-				this._initMobileHeaderLogo();
-			}
 
 			// Top Nav Drop Downs
 			if($('.fl-page-bar-nav ul.sub-menu').length != 0) {
@@ -90,9 +84,6 @@
 				$(window).on('resize', $.throttle(500, this._shrinkHeaderEnable));
 				this._shrinkHeaderInit();
 				this._shrinkHeaderEnable();
-				$('.fl-page-header').imagesLoaded( function() {
-					$(window).trigger('resize')
-				});
 			}
 
 			// Fixed Header (Fade In)
@@ -105,9 +96,6 @@
 			if( ($('body.fl-fixed-header').length != 0) && !($('html.fl-builder-edit').length != 0) ) {
 				$(window).on('resize', $.throttle(500, this._fixedHeader));
 				this._fixedHeader();
-				$('.fl-page-header').imagesLoaded( function() {
-					$(window).trigger('resize')
-				});
 			}
 
 			// Hide Header Until Scroll
@@ -229,7 +217,7 @@
 						height = image.height();
 					}
 
-					image.css( 'max-height', height );
+				//image.css( 'max-height', height );
 					image.width( width );
 					image.attr( 'src', retinaSrc );
 				};
@@ -284,10 +272,8 @@
 
 					if ( '' != mobileSrc ) {
 						tmpImage.onload = function() {
-							image.width( tmpImage.width );
 							image.attr( 'src', mobileSrc );
 						};
-
 						tmpImage.src = src;
 						image.show();
 					}
@@ -434,6 +420,29 @@
 					subToggles.on('click', FLTheme._navSubMenuToggleClick);
 				}
 				else {
+					navItems.keydown( function(e){
+						if ( 9 === e.keyCode ) {
+							el = $(this)
+							focused = el.find(':focus')
+							if( focused.parent().is(':last-child') ) {
+								sub  = focused.parent().find('ul.sub-menu').first()
+								mega = focused.parent().parent().parent().parent().parent().hasClass('mega-menu')
+								mega_last = focused.parent().parent().parent().is(':last-child' )
+
+								if ( sub.length > 0 ) {
+									sub.trigger('mouseenter')
+								} else {
+									if ( ! mega || mega_last ) {
+										el.trigger('mouseleave')
+									}
+								}
+							}
+							parent = focused.closest('ul.sub-menu').parent()
+							if ( ! parent.hasClass('fl-sub-menu-open') ) {
+								focused.trigger('mouseenter')
+							}
+						}
+					} );
 					navItems.hover(FLTheme._navItemMouseover, FLTheme._navItemMouseout);
 				}
 			}
@@ -494,7 +503,7 @@
 		{
 			var nav 		= $('.fl-page-nav .navbar-nav'),
 				targetId 	= typeof e !== 'undefined' ? $(e.target).prop('hash') : window.location.hash,
-				targetId    = targetId.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" ),
+				targetId  = targetId.replace( /(:|\.|\[|\]|,|=|@|\/)/g, "\\$1" ),
 				currentLink = targetId.length ? nav.find('a[href*=\\'+ targetId +']:not([href=\\#])') : null;
 
 			if ( currentLink != null && $('body').find(targetId).length > 0 ) {
@@ -502,6 +511,7 @@
 				currentLink.parent().addClass('current-menu-item');
 			}
 		},
+
 
 		/**
 		 * Callback for when the mouse leaves an item
@@ -635,20 +645,27 @@
 		 * @since  1.5.3
 		 * @return void
 		 */
-		_toggleForMobile: function( e ){
-			var nav 	= $('.fl-page-nav .fl-page-nav-collapse'),
-				href 	= $(this).attr('href'),
-				targetId = '';
+		 _toggleForMobile: function( e ){
+ 			var nav 	= $('.fl-page-nav .fl-page-nav-collapse'),
+ 				href 	= $(this).attr('href'),
+ 				targetId = '';
 
-			if ( href !== '#' ) {
-				targetId = href.split('#')[1];
+ 			if ( href !== '#' ) {
+ 				targetId = href.split('#')[1];
 
-				if ( $('body').find('#'+  targetId).length > 0 ) {
-					e.preventDefault();
-					nav.collapse('hide');
-				}
-			}
-		},
+ 				if ( $('body').find('#'+  targetId).length > 0 ) {
+ 					/**
+ 					 * Make sure bootstrap collapse is available before using it.
+ 					 */
+ 					if ( ! $.isFunction(nav.collapse) ) {
+ 						el = $(this).parent().closest('nav').find( '.navbar-toggle')
+ 						el.trigger('click')
+ 					} else {
+ 						nav.collapse('hide');
+ 					}
+ 				}
+ 			}
+ 		},
 
 		/**
 		 * Shows or hides the nav search form.
@@ -982,6 +999,11 @@
 			}
 			else {
 				header.css( 'position', 'initial' );
+			}
+
+			// Fix animations.
+			if ( 'undefined' != typeof Waypoint ) {
+				Waypoint.refreshAll();
 			}
 		},
 
@@ -1453,5 +1475,11 @@
 	$(function(){
 		FLTheme.init();
 	});
+
+	// Mobile Logo
+	if ( ! ( $( 'html.fl-builder-edit' ).length !== 0 ) ) {
+		FLTheme._initMobileHeaderLogo();
+	}
+	FLTheme._initRetinaImages();
 
 })(jQuery);

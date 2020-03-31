@@ -105,7 +105,7 @@
 			controls: [ 'fl-logo-text', 'fl-theme-tagline', 'fl-logo-font-family', 'fl-logo-font-weight', 'fl-logo-font-size' ],
 			callback: function( val ) { return 'text' == val; }
 		},{
-			controls: [ 'fl-logo-image', 'fl-logo-image-retina', 'fl-sticky-header-logo', 'fl-mobile-header-logo' ],
+			controls: [ 'fl-logo-image', 'fl-logo-image-retina', 'fl-sticky-header-logo', 'fl-mobile-header-logo', 'fl-logo-max-height' ],
 			callback: function( val ) {
 				var fixedHeader  = api( 'fl-fixed-header' ).get(),
 					sitckyLogo   = api.control.has( 'fl-sticky-header-logo' ) ? api.control( 'fl-sticky-header-logo' ).container : null,
@@ -196,6 +196,14 @@
 		'fl-fixed-header': [{
 			controls: [ 'fl-hide-until-scroll-header', 'fl-scroll-distance' ],
 			callback: function( val ) { return 'hidden' == val; }
+		},{
+			controls: [ 'fl-logo-max-height' ],
+			callback: function( val ) {
+
+			    var fixedHeader = api( 'fl-fixed-header' ).get();
+				
+				return ( ('fadein' == fixedHeader) || ('shrink' == fixedHeader) );
+			}
 		},{
 			controls: [ 'fl-layout-spacing' ],
 			callback: function( val ) {
@@ -371,6 +379,11 @@
 			callback: function( val ) {
 				return ( 'custom' === val ) && ( 'none' !== api( 'fl-button-border-style' ).get() );
 			}
+		},{
+			controls: [ 'bigcommerce_button_color', 'bigcommerce_button_text_color' ],
+			callback: function( val ) {
+					return '' === val;
+				},
 		}],
 
 		'fl-button-border-style': [{
