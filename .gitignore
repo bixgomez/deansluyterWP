@@ -22,3 +22,6 @@ wordpress/sitemap.xml.gz
 /.idea/workspace.xml
 node_modules
 wp-config.php
+
+*.sql
+*.sql.gz
