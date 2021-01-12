@@ -34,3 +34,7 @@
 .headline__subtitle {
     display: none;
 }
+
+.newsletter-toaster {
+    display: none;
+}
