@@ -196,8 +196,8 @@ function constant_contact_maybe_display_exceptions_notice() {
  * @since 1.2.0
  */
 function constant_contact_optin_ajax_handler() {
-
-	$optin = filter_var( $_REQUEST['optin'], FILTER_SANITIZE_STRING );
+	$optin = filter_input( INPUT_GET, 'optin', FILTER_SANITIZE_STRING );
+	$optin = empty( $optin ) ? filter_input( INPUT_POST, 'optin', FILTER_SANITIZE_STRING ) : $optin;
 
 	if ( 'on' !== $optin ) {
 		wp_send_json_success( [ 'opted-in' => 'off' ] );
@@ -218,8 +218,9 @@ add_action( 'wp_ajax_constant_contact_optin_ajax_handler', 'constant_contact_opt
  * @since 1.2.0
  */
 function constant_contact_privacy_ajax_handler() {
+	$agreed = filter_input( INPUT_GET, 'privacy_agree', FILTER_SANITIZE_STRING );
+	$agreed = empty( $agreed ) ? filter_input( INPUT_POST, 'privacy_agree', FILTER_SANITIZE_STRING ) : $agreed;
 
-	$agreed = filter_var( $_REQUEST['privacy_agree'], FILTER_SANITIZE_STRING );
 	update_option( 'ctct_privacy_policy_status', $agreed );
 
 	wp_send_json_success( [ 'updated' => 'true' ] );
@@ -269,16 +270,14 @@ function constant_contact_review_ajax_handler() {
 add_action( 'wp_ajax_constant_contact_review_ajax_handler', 'constant_contact_review_ajax_handler' );
 
 /**
- * Process potential custom Constant Contact Forms action urls.
+ * Perform custom form processing.
  *
- * @since 1.2.3
+ * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
+ * @since  1.9.0
  *
- * @throws Exception
- *
- * @return bool|array
+ * @return mixed Results of form processing, false if no processing performed.
  */
-function ctct_custom_form_action_processing() {
-
+function constant_contact_process_form_custom() {
 	$ctct_id = filter_input( INPUT_POST, 'ctct-id', FILTER_VALIDATE_INT );
 
 	if ( false === $ctct_id ) {
@@ -291,22 +290,24 @@ function ctct_custom_form_action_processing() {
 
 	return constant_contact()->process_form->process_form();
 }
-add_action( 'wp_head', 'ctct_custom_form_action_processing' );
+add_action( 'wp_head', 'constant_contact_process_form_custom' );
 
 /**
- * Determine if we have any Constant Contact Forms published.
+ * Check if any published Constant Contact forms exist.
  *
- * @since 1.2.5
+ * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
+ * @since  1.9.0
  *
- * @return bool
+ * @return bool Whether published forms exist.
  */
-function ctct_has_forms() {
+function constant_contact_has_forms() {
 	$args  = [
 		'post_type'      => 'ctct_forms',
 		'post_status'    => 'publish',
 		'posts_per_page' => 1,
 	];
 	$forms = new WP_Query( $args );
+
 	return $forms->have_posts();
 }
 
@@ -384,7 +385,7 @@ function constant_contact_clean_url( $url = '' ) {
  * @return bool
  */
 function constant_contact_debugging_enabled() {
-	$debugging_enabled = ctct_get_settings_option( '_ctct_logging', '' );
+	$debugging_enabled = constant_contact_get_option( '_ctct_logging', '' );
 
 	if ( apply_filters( 'constant_contact_force_logging', false ) ) {
 		$debugging_enabled = 'on';
@@ -415,11 +416,7 @@ function constant_contact_maybe_log_it( $log_name, $error, $extra_data = '' ) {
 	$logging_file = constant_contact()->logger_location;
 
 	// Create logging file and directory if they don't exist.
-	if ( ! file_exists( $logging_file ) ) {
-		constant_contact()->logging->create_log_folder();
-		constant_contact()->logging->create_log_index_file();
-		constant_contact()->logging->create_log_file();
-	}
+	constant_contact()->logging->initialize_logging();
 
 	if ( ! is_writable( $logging_file ) ) {
 		return;
@@ -571,7 +568,7 @@ function constant_contact_emails_disabled( $form_id = 0 ) {
 		$disabled = true;
 	}
 
-	$global_form_disabled = ctct_get_settings_option( '_ctct_disable_email_notifications', '' );
+	$global_form_disabled = constant_contact_get_option( '_ctct_disable_email_notifications', '' );
 	if ( 'on' === $global_form_disabled ) {
 		$disabled = true;
 	}
@@ -630,7 +627,7 @@ function constant_contact_get_css_customization( $form_id, $customization_key = 
 		}
 	}
 
-	$global_setting = ctct_get_settings_option( $customization_key );
+	$global_setting = constant_contact_get_option( $customization_key );
 
 	return ! empty( $global_setting ) ? $global_setting : '';
 }
@@ -661,7 +658,7 @@ function constant_contact_privacy_policy_content() {
  *
  * @since 1.6.0
  *
- * @param string $status Status value to set
+ * @param string $status Status value to set.
  */
 function constant_contact_set_has_exceptions( $status = 'true' ) {
 	update_option( 'ctct_exceptions_exist', $status );
@@ -690,7 +687,7 @@ function constant_contact_location_and_line( $location = '', $line = '' ) {
 /**
  * Get posts containing specified form ID.
  *
- * @since NEXT
+ * @since 1.8.0
  *
  * @param  int $form_id Form ID.
  * @return array        Array of posts containing the form ID.
@@ -723,7 +720,7 @@ function constant_contact_get_posts_by_form( $form_id ) {
 /**
  * Get links and info on widgets containing specified form ID.
  *
- * @since  NEXT
+ * @since  1.8.0
  *
  * @param  int $form_id Form ID.
  * @return array        Array of widgets containing the form ID.
@@ -739,7 +736,7 @@ function constant_contact_get_widgets_by_form( $form_id ) {
 		$widgets = array_filter( get_option( "widget_{$widget_type}", [] ), function( $value ) use ( $data ) {
 			if ( 'ctct_form' === $data['type'] ) {
 				return absint( $value['ctct_form_id'] ) === $data['form_id'];
-			} else if ( 'text' === $data['type'] ) {
+			} elseif ( 'text' === $data['type'] ) {
 				if ( ! isset( $value['text'] ) || false === strpos( $value['text'], '[ctct' ) ) {
 					return false;
 				}
@@ -748,7 +745,7 @@ function constant_contact_get_widgets_by_form( $form_id ) {
 			return false;
 		} );
 		array_walk( $widgets, 'constant_contact_walk_widget_references', $widget_type );
-		$return  = array_merge( $return, $widgets );
+		$return = array_merge( $return, $widgets );
 	}
 
 	return $return;
@@ -758,7 +755,7 @@ function constant_contact_get_widgets_by_form( $form_id ) {
  * Walker callback for widget references of deleted forms.
  *
  * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
- * @since  NEXT
+ * @since  1.8.0
  *
  * @param  array  $value Array of current widget settings.
  * @param  string $key   Current widget key.
@@ -767,11 +764,11 @@ function constant_contact_get_widgets_by_form( $form_id ) {
 function constant_contact_walk_widget_references( array &$value, $key, $type ) {
 	global $wp_registered_sidebars, $wp_registered_widgets;
 
-	$widget_id  = "{$type}-{$key}";
-	$sidebars   = array_keys( array_filter( get_option( 'sidebars_widgets', [] ), function( $sidebar ) use ( $widget_id ) {
-		return is_array( $sidebar ) && in_array( $widget_id, $sidebar );
+	$widget_id = "{$type}-{$key}";
+	$sidebars  = array_keys( array_filter( get_option( 'sidebars_widgets', [] ), function( $sidebar ) use ( $widget_id ) {
+		return is_array( $sidebar ) && in_array( $widget_id, $sidebar, true );
 	} ) );
-	$value = [
+	$value     = [
 		'type'    => 'widget',
 		'widget'  => $type,
 		'url'     => admin_url( 'widgets.php' ),
@@ -784,7 +781,7 @@ function constant_contact_walk_widget_references( array &$value, $key, $type ) {
 /**
  * Check for affected posts and widgets for the newly trashed form post type.
  *
- * @since NEXT
+ * @since 1.8.0
  *
  * @param int $form_id Form ID being trashed.
  * @return void
@@ -807,7 +804,7 @@ add_action( 'trash_ctct_forms', 'constant_contact_check_for_affected_forms_on_tr
 /**
  * Remove saved references to deleted form if restored from trash.
  *
- * @since  NEXT
+ * @since  1.8.0
  *
  * @param  int $post_id Post ID being restored.
  * @return void
@@ -828,7 +825,7 @@ add_action( 'untrashed_post', 'constant_contact_remove_form_references_on_restor
 /**
  * Determine whether to display the deleted forms notice in admin.
  *
- * @since  NEXT
+ * @since  1.8.0
  *
  * @return bool Whether to display the deleted forms notice.
  */

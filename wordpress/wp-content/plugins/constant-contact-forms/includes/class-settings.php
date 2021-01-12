@@ -1,4 +1,4 @@
-<?php // phpcs:ignore -- Class name okay, PSR-4.
+<?php // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName -- Class name okay, PSR-4.
 /**
  * Constant Contact Settings class.
  *
@@ -36,7 +36,7 @@ class ConstantContact_Settings {
 	/**
 	 * Settings page metabox titles by id.
 	 *
-	 * @since NEXT
+	 * @since 1.8.0
 	 * @var   array|null
 	 */
 	private $metabox_titles;
@@ -85,15 +85,16 @@ class ConstantContact_Settings {
 
 		add_filter( 'preprocess_comment', [ $this, 'process_optin_comment_form' ] );
 		add_filter( 'authenticate', [ $this, 'process_optin_login_form' ], 10, 3 );
+		add_filter( 'user_register', [ $this, 'process_optin_register_form' ], 10, 1 );
 		add_action( 'cmb2_save_field__ctct_logging', [ $this, 'maybe_init_logs' ], 10, 3 );
-		add_filter( 'ctct_custom_spam_message', [ $this, 'get_spam_error_message' ], 10, 2 );
+		add_filter( 'constant_contact_custom_spam_message', [ $this, 'get_spam_error_message' ], 10, 2 );
 	}
 
 	/**
 	 * Add CMB2 hook overrides specific to individual metaboxes.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @return void
 	 */
@@ -160,10 +161,11 @@ class ConstantContact_Settings {
 	 * @return boolean If we are on the settings page or not.
 	 */
 	public function on_settings_page() {
-
 		global $pagenow;
 
-		return ( 'edit.php' === $pagenow && isset( $_GET['page'] ) && $this->key === $_GET['page'] ); // phpcs:ignore -- Okay accessing of $_GET.
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+
+		return ( 'edit.php' === $pagenow && ! empty( $page ) && $this->key === $page );
 	}
 
 	/**
@@ -189,7 +191,7 @@ class ConstantContact_Settings {
 	 * Remove secondary settings page menu items.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 */
 	public function remove_extra_menu_items() {
 		foreach ( array_keys( $this->metabox_titles ) as $cmb_key ) {
@@ -207,7 +209,7 @@ class ConstantContact_Settings {
 	 * Override $plugin_page global to ensure "general" menu item active for other settings pages.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  string $file The parent file.
 	 * @return string       The parent file.
@@ -215,7 +217,7 @@ class ConstantContact_Settings {
 	public function select_primary_menu_item( $file ) {
 		global $plugin_page;
 
-		$plugin_page = false !== strpos( $plugin_page, $this->key ) ? "{$this->key}_general" : $plugin_page; // phpcs:ignore -- Okay overriding of WP global
+		$plugin_page = false !== strpos( $plugin_page, $this->key ) ? "{$this->key}_general" : $plugin_page; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- OK overriding of WP global.
 
 		return $file;
 	}
@@ -224,7 +226,7 @@ class ConstantContact_Settings {
 	 * Display options page with CMB2 tabs.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  CMB2_Options_Hookup $cmb_options The CMB2_Options_Hookup object.
 	 */
@@ -255,7 +257,7 @@ class ConstantContact_Settings {
 	 * Get all option tabs for navigation on CMB2 settings page.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  CMB2_Options_Hookup $cmb_options The CMB2_Options_Hookup object.
 	 * @return array                            Array of option tabs.
@@ -269,7 +271,7 @@ class ConstantContact_Settings {
 				continue;
 			}
 
-			$cmb_key = array_search( $cmb->prop( 'tab_title' ), $this->metabox_titles );
+			$cmb_key = array_search( $cmb->prop( 'tab_title' ), $this->metabox_titles, true );
 
 			if ( false === $cmb_key ) {
 				continue;
@@ -286,7 +288,7 @@ class ConstantContact_Settings {
 	 * Get currently selected tab.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @return string Current tab.
 	 */
@@ -300,7 +302,7 @@ class ConstantContact_Settings {
 	 * Get link to CMB tab.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  string $option_key CMB tab key.
 	 * @return string             URL to CMB tab.
@@ -313,7 +315,7 @@ class ConstantContact_Settings {
 	 * Get args for current CMB.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  string $cmb_id Current CMB ID.
 	 * @return array          CMB args.
@@ -336,7 +338,7 @@ class ConstantContact_Settings {
 	 * Register 'General' settings tab fields.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 */
 	protected function register_fields_general() {
 		$cmb = new_cmb2_box( $this->get_cmb_args( 'general' ) );
@@ -446,7 +448,7 @@ class ConstantContact_Settings {
 		);
 
 		$cmb->add_field( [
-			'name'        => esc_html__( 'CSS Classes', 'constant-contact_forms' ),
+			'name'        => esc_html__( 'CSS Classes', 'constant-contact-forms' ),
 			'id'          => '_ctct_form_custom_classes',
 			'type'        => 'text',
 			'description' => esc_html__(
@@ -480,7 +482,7 @@ class ConstantContact_Settings {
 	 * Register 'Spam Control' (incl. Google reCAPTCHA) settings tab fields.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 */
 	protected function register_fields_spam() {
 		$cmb = new_cmb2_box( $this->get_cmb_args( 'spam' ) );
@@ -556,7 +558,7 @@ class ConstantContact_Settings {
 	 * Register 'Support' settings tab fields.
 	 *
 	 * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
-	 * @since  NEXT
+	 * @since  1.8.0
 	 */
 	protected function register_fields_support() {
 		$cmb = new_cmb2_box( $this->get_cmb_args( 'support' ) );
@@ -609,7 +611,7 @@ class ConstantContact_Settings {
 	 */
 	public function check_if_optin_should_show( $type ) {
 
-		$available_areas = ctct_get_settings_option( '_ctct_optin_forms', [] );
+		$available_areas = constant_contact_get_option( '_ctct_optin_forms', [] );
 
 		if ( ! is_array( $available_areas ) ) {
 			return false;
@@ -666,8 +668,8 @@ class ConstantContact_Settings {
 			return;
 		}
 
-		$saved_label = ctct_get_settings_option( '_ctct_optin_label', '' );
-		$list        = ctct_get_settings_option( '_ctct_optin_list', '' );
+		$saved_label = constant_contact_get_option( '_ctct_optin_label', '' );
+		$list        = constant_contact_get_option( '_ctct_optin_list', '' );
 		$label       = $saved_label ?: esc_html__( 'Sign up to our newsletter.', 'constant-contact-forms' );
 		?>
 		<p class="ctct-optin-wrapper" style="padding: 0 0 1em 0;">
@@ -676,7 +678,6 @@ class ConstantContact_Settings {
 				<?php echo esc_attr( $label ); ?>
 			</label>
 			<?php echo wp_kses_post( constant_contact()->display->get_disclose_text() ); ?>
-			<?php wp_nonce_field( 'ct_ct_add_to_optin', 'ct_ct_optin' ); ?>
 		</p>
 		<?php
 
@@ -691,17 +692,9 @@ class ConstantContact_Settings {
 	 * @return array Comment form data.
 	 */
 	public function process_optin_comment_form( $comment_data ) {
+		$ctct_optin_list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
 
-		if ( ! isset( $_POST['ctct_optin_list'] ) ) {
-			return $comment_data;
-		}
-
-		if ( ! isset( $_POST['ct_ct_optin'] ) ) {
-			return $comment_data;
-		}
-
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ct_ct_optin'] ) ), 'ct_ct_add_to_optin' ) ) {
-			constant_contact_maybe_log_it( 'Nonces', 'process_optin_comment_form() nonce failed to verify.' );
+		if ( empty( $ctct_optin_list ) ) {
 			return $comment_data;
 		}
 
@@ -722,15 +715,14 @@ class ConstantContact_Settings {
 
 			$name    = isset( $comment_data['comment_author'] ) ? $comment_data['comment_author'] : '';
 			$website = isset( $comment_data['comment_author_url'] ) ? $comment_data['comment_author_url'] : '';
+			$list    = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
 
-			if ( ! isset( $_POST['ctct_optin_list'] ) ) { // phpcs:ignore -- Okay accessing of $_POST.
+			if ( empty( $list ) ) {
 				return $comment_data;
 			}
 
-			$list = sanitize_text_field( wp_unslash( $_POST['ctct_optin_list'] ) ); // phpcs:ignore -- Okay accessing of $_POST.
-
 			$args = [
-				'list'       => $list,
+				'list'       => sanitize_text_field( wp_unslash( $list ) ),
 				'email'      => sanitize_email( $comment_data['comment_author_email'] ),
 				'first_name' => sanitize_text_field( $name ),
 				'last_name'  => '',
@@ -754,17 +746,9 @@ class ConstantContact_Settings {
 	 * @return object|array CTCT return API for contact or original $user array.
 	 */
 	public function process_optin_login_form( $user, $username, $password ) {
+		$ctct_optin_list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
 
-		if ( ! isset( $_POST['ctct_optin_list'] ) ) {
-			return $user;
-		}
-
-		if ( ! isset( $_POST['ct_ct_optin'] ) ) {
-			return $user;
-		}
-
-		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ct_ct_optin'] ) ), 'ct_ct_add_to_optin' ) ) {
-			constant_contact_maybe_log_it( 'Nonces', 'process_optin_login_form() nonce failed to verify.' );
+		if ( empty( $ctct_optin_list ) ) {
 			return $user;
 		}
 
@@ -774,6 +758,86 @@ class ConstantContact_Settings {
 
 		return $this->process_user_data_for_optin( $user, $username );
 	}
+
+
+	/**
+	 * Sends contact to CTCT if optin checked on register.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $user_id ID of user just registered.
+	 * @param int Pass in user ID.
+	 */
+	public function process_optin_register_form( $user_id ) {
+
+		if ( ! isset( $_POST['ctct_optin_list'] ) ) {
+			return $user_id;
+		}
+
+		if ( empty( $user_id ) ) {
+			return $user_id;
+		}
+
+		return $this->process_user_data_register_for_optin( $user_id );
+	}
+
+	/**
+	 * Process contact for CTCT on register.
+	 *
+	 * @author Scott Anderson <scott.anderson@webdevstudios.com>
+	 * @since  1.9.0
+	 * @param int $user_id ID of user just registered.
+	 * @param int Pass in user ID.
+	 */
+	private function process_user_data_register_for_optin( $user_id ) {
+		$this->add_user_to_list( get_user_by( 'ID', $user_id ) );
+		return $user_id;
+	}
+
+	/**
+	 * Sends user data to CTCT.
+	 * Updated form of process_user_data_for_optin to be more re-usable. Old function not refactored due to public visibility setting.
+	 *
+	 * @author Scott Anderson <scott.anderson@webdevstudios.com>
+	 * @since  1.9.0
+	 * @param object $user     WP user object.
+	 */
+	private function add_user_to_list( $user ) {
+
+		$email = '';
+		$name  = '';
+
+		if ( $user && isset( $user->data, $user->data->user_email ) ) {
+			$email = sanitize_email( $user->data->user_email );
+		}
+
+		if ( $user && isset( $user->data, $user->data->display_name ) ) {
+			$name = sanitize_text_field( $user->data->display_name );
+		}
+
+		if ( ! isset( $_POST['ctct_optin_list'] ) ) { // phpcs:ignore -- Okay accessing of $_POST.
+			return;
+		}
+
+		$list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
+
+		if ( empty( $list ) ) {
+			return;
+		}
+
+		if ( $email ) {
+			$args = [
+				'email'      => $email,
+				'list'       => sanitize_text_field( wp_unslash( $list ) ),
+				'first_name' => $name,
+				'last_name'  => '',
+			];
+
+			constantcontact_api()->add_contact( $args );
+		}
+
+	}
+
 
 	/**
 	 * Sends user data to CTCT.
@@ -785,36 +849,7 @@ class ConstantContact_Settings {
 	 * @return object Passed in $user object.
 	 */
 	public function process_user_data_for_optin( $user, $username ) {
-
-		$user_data = get_user_by( 'login', $username );
-		$email     = '';
-		$name      = '';
-
-		if ( $user_data && isset( $user_data->data, $user_data->data->user_email ) ) {
-			$email = sanitize_email( $user_data->data->user_email );
-		}
-
-		if ( $user_data && isset( $user_data->data, $user_data->data->display_name ) ) {
-			$name = sanitize_text_field( $user_data->data->display_name );
-		}
-
-		if ( ! isset( $_POST['ctct_optin_list'] ) ) { // phpcs:ignore -- Okay accessing of $_POST.
-			return $user;
-		}
-
-		$list = sanitize_text_field( wp_unslash( $_POST['ctct_optin_list'] ) ); // phpcs:ignore -- Okay accessing of $_POST.
-
-		if ( $email ) {
-			$args = [
-				'email'      => $email,
-				'list'       => $list,
-				'first_name' => $name,
-				'last_name'  => '',
-			];
-
-			constantcontact_api()->add_contact( $args );
-		}
-
+		$this->add_user_to_list( get_user_by( 'login', $username ) );
 		return $user;
 	}
 
@@ -915,7 +950,7 @@ class ConstantContact_Settings {
 						<h2 class="ctct-logo"><img src="<?php echo esc_url( constant_contact()->url . '/assets/images/constant-contact-logo.png' ); ?>" alt="<?php echo esc_attr_x( 'Constant Contact logo', 'img alt text', 'constant-contact-forms' ); ?>" /></h2>
 					</div>
 					<div class="ctct-modal-body ctct-privacy-modal-body">
-						<?php echo constant_contact_privacy_policy_content(); // phpcs:ignore -- XSS Ok. ?>
+						<?php echo constant_contact_privacy_policy_content(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- XSS OK. ?>
 					</div><!-- modal body -->
 					<div id="ctct-modal-footer-privacy" class="ctct-modal-footer ctct-modal-footer-privacy">
 						<a class="button button-blue ctct-connect" data-agree="true"><?php esc_html_e( 'Agree', 'constant-contact-forms' ); ?></a>
@@ -946,9 +981,7 @@ class ConstantContact_Settings {
 			return;
 		}
 
-		$this->plugin->logging->create_log_folder();
-		$this->plugin->logging->create_log_index_file();
-		$this->plugin->logging->create_log_file();
+		$this->plugin->logging->initialize_logging();
 	}
 
 	/**
@@ -1008,27 +1041,30 @@ class ConstantContact_Settings {
 }
 
 /**
- * Wrapper function around cmb2_get_option.
+ * Retrieve option value.
  *
- * @since 1.0.0
+ * Wrapper for `cmb2_get_option` to provide fallback when that function is not available.
  *
- * @param string $key     Options array key.
- * @param string $default Default value if no option exists.
- * @return mixed Option value.
+ * @author Rebekah Van Epps <rebekah.vanepps@webdevstudios.com>
+ * @since  1.9.0
+ *
+ * @param  string $key     Option key.
+ * @param  mixed  $default Default option value.
+ * @return mixed           Option value.
  */
-function ctct_get_settings_option( $key = '', $default = null ) {
+function constant_contact_get_option( $key = '', $default = null ) {
 	if ( function_exists( 'cmb2_get_option' ) ) {
 		return cmb2_get_option( constant_contact()->settings->key, $key, $default );
 	}
 
-	$opts = get_option( constant_contact()->settings->key, $key, $default );
-	$val  = $default;
+	$options = get_option( constant_contact()->settings->key, $key, $default );
+	$value   = $default;
 
 	if ( 'all' === $key ) {
-		$val = $opts;
-	} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
-		$val = $opts[ $key ];
+		$value = $options;
+	} elseif ( is_array( $options ) && array_key_exists( $key, $options ) && false !== $options[ $key ] ) {
+		$value = $options[ $key ];
 	}
 
-	return $val;
+	return $value;
 }
