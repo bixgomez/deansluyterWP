@@ -112,14 +112,6 @@ img {
 	height: auto;
 }
 
-.woocommerce button.pswp__button {
-	position: absolute;
-	top: 50%;
-	margin-top: -50px;
-	width: 70px;
-	height: 100px;
-}
-
 /* Accessibility
 ----------------------------------------------------------- */
 
@@ -971,29 +963,103 @@ input[type=text].fl-search-input {
 	}
 }
 
+/* WooCommerce Pages
+---------------------------------------------------------- */
+.woocommerce-account .woocommerce-Address {
+    max-width: none;
+}
+
 /* Buttons
 ----------------------------------------------------------- */
 /* WooCommerce Buttons */
 
-.woocommerce-page .fl-page a.button,
-.woocommerce-page .fl-page a.button:visited,
-.woocommerce .product a.button,
-.woocommerce .product a.button:visited,
-.woocommerce-page .fl-page button.button,
-.woocommerce-page .fl-page button.button:visited {
-	color: @button-color;
-	background: @button-bg-color;
-	font-size: @button-font-size;
-	line-height: @button-line-height;
+.fl-page .fl-module span.onsale {
+	color: @accent-fg-color;
+	background: @accent-color;
+	font-size: 13px;
+	font-weight: normal;
+	left: 10px;
+	margin: 0;
+	padding: 2px 13px;
+	right: auto;
+	text-shadow: none;
+	top: 10px;
+	min-height: 3.236em;
+    min-width: 3.236em;
+    position: absolute;
+    text-align: center;
+    line-height: 3.236;
+    z-index: 9;
+	.fl-box-shadow(none);
+	.fl-border-radius(0);
 }
 
-.woocommerce-page .fl-page a.button:hover,
-.woocommerce-page .fl-page button.button:hover {
-	color: @button-hover-color;
-	background: @button-bg-hover-color;
-	font-size: @button-font-size;
-	line-height: @button-line-height;
+.fl-page {
+	.fl-module-woocommerce a.button,
+	.fl-module-woocommerce button.button.alt,
+	.fl-post-module-woo-button a.button {
+		.fl-woo-button-inactive-styles();
+	}
+
+	.fl-module-woocommerce a.button:hover,
+	.fl-module-woocommerce button.button.alt:hover,
+	.fl-post-module-woo-button a.button:hover {
+		.fl-woo-button-hover-styles();
+	}
+
+	.fl-module-woocommerce button.button:disabled, 
+	.fl-module-woocommerce button.button:disabled[disabled],
+	.fl-module-woocommerce button.alt.disabled {
+		padding: 6px 12px;
+	}
 }
+
+.woocommerce-page {
+	ul.products li.product a.button,
+	.woocommerce-message a.button,
+	.woocommerce-message a.button.wc-forward,
+	.woocommerce a.button.wc-forward,
+	button.button,
+	button.button.alt,
+	a.button,
+	a.button.alt,
+	.woocommerce button[type=submit],
+	button[type=submit].alt.disabled {
+		.fl-woo-button-inactive-styles();
+	}
+
+	button.button:disabled, 
+	button.button:disabled[disabled],
+	button.alt.disabled {
+		padding: 6px 12px;
+	}
+
+	ul.products li.product a.button:hover,
+	.woocommerce-message a.button:hover,
+	button.button:hover,
+	button.button.alt:hover,
+	a.button.alt:hover,
+	a.button:hover,
+	.woocommerce button[type=submit]:hover,
+	button[type=submit].alt.disabled:hover {
+		.fl-woo-button-hover-styles();
+	}
+}
+
+/* WooCommerce Gallery Photo Swipe Navigation */
+.woocommerce-page .pswp--open button.pswp__button:active,
+.woocommerce-page .pswp--open button.pswp__button:focus {
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	width: 70px;
+	height: 100px;
+}
+
+.woocommerce form .form-row .input-checkbox {
+    position: static;
+}
+
 
 /* Builder Buttons */
 a.fl-button,
@@ -1004,8 +1070,7 @@ a.fl-button:visited {
 	border: 1px solid darken(@accent-color, 12%);
 }
 a.fl-button:hover,
-.fl-builder-content a.fl-button:hover,
-.fl-builder-content .woocommerce a.button:hover {
+.fl-builder-content a.fl-button:hover {
 	color: @button-hover-color;
 	background: @button-bg-hover-color;
 }
@@ -1015,12 +1080,21 @@ a.fl-button:visited * {
 	color: @button-color;
 }
 
+a.fl-button:hover * {
+	color: @button-hover-color;
+}
+
 a.fl-button:hover,
-a.button:hover,
-.woocommerce a.button:hover { 
+a.button:hover {
 	color: @button-hover-color;
 	background-color: @button-bg-hover-color;
 	border: 1px solid darken(@accent-hover-color, 12%);
+}
+
+/* Fix WooCommerce Button wonky on hover. */
+.woocommerce a.button,
+.woocommerce a.button:hover {
+	border: 1px solid transparent;
 }
 
 /* Gutenberg Buttons */
@@ -1035,7 +1109,7 @@ input[type=button],
 input[type=submit] {
 	background: @accent-color;
 	color: @accent-fg-color;
-	font-size: @button-font-size; 
+	font-size: @button-font-size;
 	line-height: @button-line-height;
 	padding: 6px 12px;
 	font-weight: normal;
@@ -1620,5 +1694,12 @@ img.mfp-img {
 				width: @content-width;
 			}
 		}
+	}
+}
+
+body.fl-framework-base-4,
+body.fl-framework-bootstrap-4 {
+	nav a.no-menu {
+		display:block;
 	}
 }
