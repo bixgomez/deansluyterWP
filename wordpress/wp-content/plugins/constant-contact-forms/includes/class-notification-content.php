@@ -53,9 +53,9 @@ class ConstantContact_Notification_Content {
 				<?php
 					printf(
 
-						// translators: Placeholder will hold "Constan Contact Forms" with <strong> tags.
+						// translators: Placeholder will hold "Constant Contact Forms" with <strong> tags.
 						esc_attr__( 'Get the most out of the %s plugin &mdash; use it with an active Constant Contact account.', 'constant-contact-forms' ),
-						'<strong>' . esc_attr__( 'Constant Contact Forms' ) . '</strong>'
+						'<strong>' . esc_attr__( 'Constant Contact Forms', 'constant-contact-forms' ) . '</strong>'
 					);
 				?>
 			</p>
@@ -179,8 +179,8 @@ class ConstantContact_Notification_Content {
 	public static function exceptions() {
 		return sprintf(
 			/* Translators: placeholders will be html `<a>` links. */
-			esc_html__( 'Constant Contact Forms has experienced issues that may need addressed and functionality may be missing. Please enable the "Support" checkbox in the %1$sConstant Contact settings%2$s and start a %3$sforum support thread%4$s. Our support team will aid with further steps.', 'constant-contact-forms' ),
-			sprintf( '<a href="%s">', esc_url( admin_url( 'edit.php?post_type=ctct_forms&page=ctct_options_settings' ) ) ),
+			esc_html__( 'Constant Contact Forms has experienced issues that may need addressed and functionality may be missing. Please enable the "Support" checkbox under the Support tab in %1$sConstant Contact settings%2$s and start a %3$sforum support thread%4$s. Our support team will aid with further steps.', 'constant-contact-forms' ),
+			sprintf( '<a href="%s">', esc_url( admin_url( 'edit.php?post_type=ctct_forms&page=ctct_options_settings_support' ) ) ),
 			'</a>',
 			sprintf( '<a href="%s" target="_blank">', esc_url( 'https://wordpress.org/support/topic/constant-contact-forms-has-experienced-issues-that-need-addressed-admin-notice/' ) ),
 			'</a>'
@@ -190,7 +190,7 @@ class ConstantContact_Notification_Content {
 	/**
 	 * Admin notice regarding deleted forms.
 	 *
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @return string Deleted forms notice HTML.
 	 */
@@ -214,7 +214,7 @@ class ConstantContact_Notification_Content {
 	/**
 	 * Display deleted form references HTML.
 	 *
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  int   $form_id    Current form ID.
 	 * @param  array $references Current form references.
@@ -228,7 +228,7 @@ class ConstantContact_Notification_Content {
 		);
 
 		$reference_keys = array_keys( $references );
-		$last_key = array_pop( $reference_keys );
+		$last_key       = array_pop( $reference_keys );
 
 		array_walk( $references, function( $value, $key, $last_key ) {
 			if ( 'post' === $value['type'] ) {
@@ -240,7 +240,7 @@ class ConstantContact_Notification_Content {
 					esc_html( $value['id'] ),
 					esc_html( $key === $last_key ? '' : ', ' )
 				);
-			} else if ( 'widget' === $value['type'] ) {
+			} elseif ( 'widget' === $value['type'] ) {
 				printf(
 					/* Translators: 1: URL to widgets admin screen, 2: current widget name, 3: generic widget text, 4: current widget title, 5: preposition, 6: specific sidebar name, 7: separator between links. */
 					'<a href="%1$s">%2$s %3$s "%4$s" %5$s %6$s</a>%7$s',
@@ -341,7 +341,7 @@ add_filter( 'constant_contact_notifications', 'constant_contact_exceptions_throw
 /**
  * Add notification on form deletion if instances of that form appear as shortcodes or widgets.
  *
- * @since  NEXT
+ * @since  1.8.0
  *
  * @param  array $notifications Array of notifications to be shown.
  * @return array                Array of notifications to be shown.

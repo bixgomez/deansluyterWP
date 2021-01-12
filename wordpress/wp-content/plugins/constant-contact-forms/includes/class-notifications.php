@@ -55,7 +55,7 @@ class ConstantContact_Notifications {
 	/**
 	 * Option name for deleted forms, containing IDs for post and widget instances of forms.
 	 *
-	 * @since NEXT
+	 * @since 1.8.0
 	 *
 	 * @var string
 	 */
@@ -342,7 +342,7 @@ class ConstantContact_Notifications {
 
 		$is_true = ( ( 'true' === $option ) || ( '1' === $option ) );
 
-		return $is_true ?: false ;
+		return $is_true ?: false;
 	}
 
 	/**
@@ -438,7 +438,7 @@ class ConstantContact_Notifications {
 	 *
 	 * Redirect to current page with dismissal query args removal to avoid potentially re-dismissing notices unintentionally.
 	 *
-	 * @since  NEXT
+	 * @since  1.8.0
 	 *
 	 * @param  string $key Notice option key.
 	 */
