@@ -1,0 +1,36 @@
+.header_skin_life .nav-icons {
+    display: none;
+}
+
+#wm-ipp-base {
+    display: none !important;
+}
+
+.entry--blog .entry__header .share-bar {
+    display: none !important;
+}
+
+.share-bar__item {
+    display: none;
+}
+
+.entry .extra-content {
+    display: none;
+}
+
+#conversations {
+    display: none;
+}
+
+.tag-cloud {
+    display: none;
+}
+
+#modulous_mobileweb_taboola {
+    display: none;
+}
+
+
+.headline__subtitle {
+    display: none;
+}
