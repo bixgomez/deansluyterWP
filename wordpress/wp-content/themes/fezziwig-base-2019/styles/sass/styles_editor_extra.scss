@@ -77,10 +77,36 @@ body.is-fullscreen-mode .edit-post-layout__content {
   margin-right: -(2 * $block-margin);
 }
 
-.editor-styles-wrapper .editor-block-list__layout,
-.editor-styles-wrapper .editor-post-title {
+.block-editor__typewriter {
   padding-left: $editor-margin-left;
   padding-right: $editor-margin-right;
+}
+
+.editor-styles-wrapper .editor-block-list__layout,
+.editor-styles-wrapper .editor-post-title {
+  //padding-left: $editor-margin-left;
+  //padding-right: $editor-margin-right;
+}
+
+.components-popover.block-editor-block-list__block-popover .components-popover__content .block-editor-block-contextual-toolbar,
+.components-popover.block-editor-block-list__block-popover .components-popover__content .block-editor-block-list__block-selection-button {
+  margin-bottom: -2px;
+  border: 2px solid #1e1e1e;
+}
+
+.editor-styles-wrapper .wp-block {
+  border: 2px dashed rgba(#000, .125);
+
+  &:hover {
+    border: 2px solid rgba(#000, .125);;
+    background-color: rgba(#FFF, .5);
+  }
+
+  &.is-selected,
+  &.is-selected:hover {
+    border: 2px solid #1e1e1e;
+    background-color: rgba(#FFF, .75);
+  }
 }
 
 .editor-styles-wrapper .editor-writing-flow {
