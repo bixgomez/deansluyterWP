@@ -43,7 +43,7 @@ echo 'FLBuilderConfig              = ' . FLBuilderUtils::json_encode( apply_filt
 	'brandingIcon'               => FLBuilderModel::get_branding_icon(),
 	'url'                        => get_permalink(),
 	'editUrl'                    => add_query_arg( 'fl_builder', '', get_permalink() ),
-	'shortlink'                  => add_query_arg( 'fl_builder', '', FLBuilderUtils::get_safe_url() ),
+	'shortlink'                  => add_query_arg( 'fl_builder', '', FLBuilderUtils::get_safe_url( $post_id ) ),
 	'previewUrl'                 => add_query_arg( 'fl_builder_preview', '', get_permalink() ),
 	'layoutHasDraftedChanges'    => FLBuilderModel::layout_has_drafted_changes(),
 	'panelData'                  => FLBuilderUIContentPanel::get_panel_data(),
@@ -52,6 +52,7 @@ echo 'FLBuilderConfig              = ' . FLBuilderUtils::json_encode( apply_filt
 	'keyboardShortcuts'          => FLBuilder::get_keyboard_shortcuts(),
 	'isCustomizer'               => is_customize_preview(),
 	'showToolbar'                => is_customize_preview() ? false : true,
+	'showOutlinePanel'           => apply_filters( 'fl_builder_outline_panel_enabled', true ),
 	'shouldRefreshOnPublish'     => FLBuilder::should_refresh_on_publish(),
 	'googleFontsUrl'             => apply_filters( 'fl_builder_google_fonts_domain', '//fonts.googleapis.com/' ) . 'css?family=',
 	'wp_editor'                  => FLBuilder::get_wp_editor(),
@@ -71,11 +72,23 @@ echo 'FLBuilderConfig              = ' . FLBuilderUtils::json_encode( apply_filt
 		'image' => 'image',
 		'video' => 'video',
 	) ),
+	'recentIcons'                => apply_filters( 'fl_builder_recent_icons', get_option( 'fl_plugin_recent_icons', array() ) ),
 	'themerLayoutsUrl'           => admin_url( '/edit.php?post_type=fl-theme-layout' ),
 	'userCaps'                   => array(
 		'unfiltered_html'        => current_user_can( 'unfiltered_html' ),
 		'global_unfiltered_html' => defined( 'DISALLOW_UNFILTERED_HTML' ) && DISALLOW_UNFILTERED_HTML ? true : false,
 	),
+	'responsiveIgnore'           => apply_filters( 'fl_builder_responsive_ignore', array(
+		'fl-builder-preview',
+		'fl-theme-builder',
+		'/wp-includes/',
+		'/wp-admin/',
+		'admin-bar-inline-css',
+		'ace-tm',
+		'ace_editor.css',
+	)),
+	'wooActive'                  => class_exists( 'WooCommerce' ) ? true : false,
+	'defaultImageSize'           => apply_filters( 'fl_builder_default_image_select_size', 'full' ),
 ) ) ) . ';';
 
 /**
@@ -105,6 +118,7 @@ echo 'FLBuilderStrings             = ' . FLBuilderUtils::json_encode( apply_filt
 	'codeErrorFix'                   => esc_attr__( 'Fix Errors', 'fl-builder' ),
 	'codeErrorIgnore'                => esc_attr__( 'Save With Errors', 'fl-builder' ),
 	'codeErrorDetected'              => esc_html__( 'We detected a possible issue here:', 'fl-builder' ),
+	'childColumn'                    => esc_attr__( 'Child Column', 'fl-builder' ),
 	'column'                         => esc_attr__( 'Column', 'fl-builder' ),
 	'contentSliderSelectLayout'      => esc_attr__( 'Please select either a background layout or content layout before submitting.', 'fl-builder' ),
 	'contentSliderTransitionWarn'    => esc_attr__( 'Transition value should be lower than Delay value.', 'fl-builder' ),
@@ -133,6 +147,7 @@ echo 'FLBuilderStrings             = ' . FLBuilderUtils::json_encode( apply_filt
 	'enterValidYear'                 => esc_attr__( 'Error! Please enter a valid year.', 'fl-builder' ),
 	'errorMessage'                   => esc_attr__( 'Beaver Builder caught the following JavaScript error. If Beaver Builder is not functioning as expected the cause is most likely this error. Please help us by disabling all plugins and testing Beaver Builder while reactivating each to determine if the issue is related to a third party plugin.', 'fl-builder' ),
 	'fieldLoading'                   => esc_attr__( 'Field Loading...', 'fl-builder' ),
+	'fontAwesome'                    => esc_attr( FLBuilderFontAwesome::error_text() ),
 	'fullSize'                       => esc_attr__( 'Full Size', 'fl-builder' ),
 	'getHelp'                        => esc_attr__( 'Get Help', 'fl-builder' ),
 	'global'                         => esc_attr_x( 'Global', 'Indicator for global node templates.', 'fl-builder' ),
@@ -235,7 +250,7 @@ echo 'FLBuilderStrings             = ' . FLBuilderUtils::json_encode( apply_filt
 		'message' => sprintf( esc_attr__( 'These settings contain sensitive code that is not allowed for your user role (%s).', 'fl-builder' ), FLBuilderUtils::get_current_user_role() ),
 		'global'  => esc_attr__( 'These settings contain sensitive code that is not allowed as DISALLOW_UNFILTERED_HTML has been set globally via wp-config.', 'fl-builder' ),
 		// translators: %s : Link to Docs
-		'footer'  => sprintf( esc_attr__( 'See [%s] for more information.', 'fl-builder' ), '<a target="_blank" href="https://docs.wpbeaverbuilder.com/beaver-builder/troubleshooting/common-issues/error-settings-not-saved">link</a>' ),
+		'footer'  => sprintf( esc_attr__( 'See the %s for more information.', 'fl-builder' ), sprintf( '<a style="color:#00A0D2" target="_blank" href="https://docs.wpbeaverbuilder.com/beaver-builder/troubleshooting/common-issues/error-settings-not-saved">%s</a>', __( 'Knowledge Base', 'fl-builder' ), 'fl-builder' ) ),
 	),
 	'savedStatus'                    => array(
 		'saving'               => esc_attr__( 'Saving...', 'fl-builder' ),

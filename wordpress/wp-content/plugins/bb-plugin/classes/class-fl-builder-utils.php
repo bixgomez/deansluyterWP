@@ -87,7 +87,7 @@ final class FLBuilderUtils {
 			$data = json_decode( $data );
 		}
 
-		// Decode object properies or array values.
+		// Decode object properties or array values.
 		if ( is_object( $data ) || is_array( $data ) ) {
 
 			foreach ( $data as $key => $val ) {
@@ -282,13 +282,13 @@ final class FLBuilderUtils {
 	/**
 	 * @since 2.4
 	 */
-	public static function get_safe_url() {
+	public static function get_safe_url( $post_id ) {
 
 		global $post;
 
 		$_original = $post;
 
-		$status = $post->post_status;
+		setup_postdata( $post_id );
 
 		$post->post_status = 'draft';
 
@@ -322,5 +322,12 @@ final class FLBuilderUtils {
 			}
 			return 'Unknown';
 		}
+	}
+
+	/**
+	 * @since 2.5
+	 */
+	public static function update_option( $option, $value, $autoload = false ) {
+		return update_option( $option, $value, $autoload );
 	}
 }

@@ -238,7 +238,7 @@ class ConstantContact_Lists {
 		 */
 		$query = new WP_Query( apply_filters( 'constant_contact_lists_query_for_sync', [
 			'post_type'              => 'ctct_lists',
-			'posts_per_page'         => 100,
+			'posts_per_page'         => 1000, // phpcs:ignore WordPress.WP.PostsPerPage
 			'no_found_rows'          => true,
 			'update_post_term_cache' => false,
 			'fields'                 => 'ids',
@@ -272,10 +272,10 @@ class ConstantContact_Lists {
 
 		if ( $lists_to_insert && is_array( $lists_to_insert ) ) {
 
-			if ( count( $lists_to_insert ) >= 150 ) {
+			if ( count( $lists_to_insert ) >= 1001 ) {
 				$this->plugin->updates->add_notification( 'too_many_lists' );
 
-				$lists_to_insert = array_chunk( $lists_to_insert, 100 );
+				$lists_to_insert = array_chunk( $lists_to_insert, 1000 );
 				if ( isset( $lists_to_insert[0] ) ) {
 					$lists_to_insert = $lists_to_insert[0];
 				}
@@ -807,7 +807,7 @@ class ConstantContact_Lists {
 	 */
 	public function add_force_sync_button( $views ) {
 
-		$link = wp_nonce_url( add_query_arg( [ 'ctct_list_sync' => 'true' ] ), 'ctct_reysncing', 'ctct_resyncing' );
+		$link = wp_nonce_url( add_query_arg( [ 'ctct_list_sync' => 'true' ] ), 'ctct_resyncing', 'ctct_resyncing' );
 
 		$views['sync'] = '<strong><a href="' . $link . '">' . __( 'Sync Lists with Constant Contact', 'constant-contact-forms' ) . '</a></strong>';
 
@@ -825,7 +825,7 @@ class ConstantContact_Lists {
 
 		$ctct_resyncing = filter_input( INPUT_GET, 'ctct_resyncing', FILTER_SANITIZE_STRING );
 
-		if ( ! isset( $ctct_resyncing ) || ! is_admin() ) {
+		if ( ! isset( $ctct_resyncing ) || ! wp_verify_nonce( $ctct_resyncing, 'ctct_resyncing' ) || ! is_admin() ) {
 			return;
 		}
 

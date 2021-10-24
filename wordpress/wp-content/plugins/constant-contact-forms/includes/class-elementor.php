@@ -5,7 +5,7 @@
  * @package ConstantContact
  * @subpackage Elementor
  * @author Constant Contact
- * @since NEXT
+ * @since 1.11.0
  *
  * phpcs:disable WebDevStudios.All.RequireAuthor -- Don't require author tag in docblocks.
  */
@@ -13,14 +13,14 @@
 /**
  * This class get's everything up an running for Elementor support.
  *
- * @since NEXT
+ * @since 1.11.0
  */
 class ConstantContact_Elementor {
 
 	/**
 	 * Parent plugin class.
 	 *
-	 * @since NEXT
+	 * @since 1.11.0
 	 * @var object
 	 */
 	protected $plugin;
@@ -28,7 +28,7 @@ class ConstantContact_Elementor {
 	/**
 	 * Constructor.
 	 *
-	 * @since NEXT
+	 * @since 1.11.0
 	 *
 	 * @param object $plugin Parent plugin.
 	 */
@@ -40,7 +40,7 @@ class ConstantContact_Elementor {
 	/**
 	 * Register Hooks
 	 *
-	 * @since  NEXT
+	 * @since 1.10.0
 	 */
 	private function hooks() {
 		add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widget' ] );
@@ -49,7 +49,7 @@ class ConstantContact_Elementor {
 	/**
 	 * Registers all Elementor Widgets
 	 *
-	 * @since  NEXT
+	 * @since 1.10.0
 	 */
 	public function register_widget() {
 		require_once( __DIR__ . '/widgets/elementor-widget.php' );

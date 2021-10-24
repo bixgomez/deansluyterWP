@@ -68,7 +68,7 @@ final class FLBuilder {
 	 * @since 2.1
 	 */
 	static public $fa4_url     = '';
-	static public $fa5_pro_url = 'https://pro.fontawesome.com/releases/v5.15.1/css/all.css';
+	static public $fa5_pro_url = 'https://pro.fontawesome.com/releases/v5.15.3/css/all.css';
 
 	/**
 	 * Initializes hooks.
@@ -232,7 +232,7 @@ final class FLBuilder {
 		}
 
 		/**
-		 * Allow users to overide the locale.
+		 * Allow users to override the locale.
 		 * @see fl_set_ui_locale
 		 * @since 2.2.4
 		 */
@@ -269,7 +269,7 @@ final class FLBuilder {
 	 * Alias method for registering a template data file with the builder.
 	 *
 	 * @since 1.8
-	 * @param sting $path The directory path to the template data file.
+	 * @param string $path The directory path to the template data file.
 	 * @return void
 	 */
 	static public function register_templates( $path, $args = array() ) {
@@ -604,11 +604,12 @@ final class FLBuilder {
 					if ( 'video_service' == $row->settings->bg_video_source ) {
 
 						$video_data = FLBuilderUtils::get_video_data( do_shortcode( $row->settings->bg_video_service_url ) );
-
-						if ( 'youtube' == $video_data['type'] ) {
-							wp_enqueue_script( 'youtube-player' );
-						} elseif ( 'vimeo' == $video_data['type'] ) {
-							wp_enqueue_script( 'vimeo-player' );
+						if ( isset( $video_data['type'] ) ) {
+							if ( 'youtube' == $video_data['type'] ) {
+								wp_enqueue_script( 'youtube-player' );
+							} elseif ( 'vimeo' == $video_data['type'] ) {
+								wp_enqueue_script( 'vimeo-player' );
+							}
 						}
 					}
 				}
@@ -686,7 +687,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to add dependencies to the dependency array when the main builder layout CSS file is enqueued using wp_enqueue_style.
 		 * @see fl_builder_layout_style_dependencies
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$css_deps  = apply_filters( 'fl_builder_layout_style_dependencies', array() );
 		$css_media = apply_filters( 'fl_builder_layout_style_media', 'all' );
@@ -772,6 +773,94 @@ final class FLBuilder {
 	}
 
 	/**
+	 * Register common JS vendors
+	 * This is primarily for consistent sharing with Assistant.
+	 *
+	 * @return void
+	 */
+	static public function register_shared_vendors() {
+		global $wp_version;
+
+		$ver        = FL_BUILDER_VERSION;
+		$css_build  = plugins_url( '/css/build/', FL_BUILDER_FILE );
+		$js_vendors = plugins_url( '/js/vendors/', FL_BUILDER_FILE );
+		$js_build   = plugins_url( '/js/build/', FL_BUILDER_FILE );
+		$tag        = '.bundle.min';
+		$vendor_tag = '.min';
+		// @beaverbuilder/app-core
+		$app_core_deps = array( 'react', 'redux', 'react-router-dom', 'wp-i18n' );
+		// @beaverbuilder/fluid
+		$fluid_deps = array(
+			'react',
+			'react-dom',
+			'redux',
+			'react-router-dom',
+			'framer-motion',
+			'react-laag',
+			'wp-i18n',
+			'bb-icons',
+		);
+
+		if ( self::is_debug() ) {
+			$tag        = '.bundle';
+			$vendor_tag = '';
+		}
+
+		// React polyfill for older versions of WordPress.
+		if ( version_compare( $wp_version, '5.2', '<=' ) ) {
+
+			// React
+			wp_deregister_script( 'react' );
+			wp_enqueue_script( 'react', "{$js_vendors}react{$vendor_tag}.js", array(), $ver, true );
+
+			// React-DOM
+			wp_deregister_script( 'react-dom' );
+			wp_enqueue_script( 'react-dom', "{$js_vendors}react-dom{$vendor_tag}.js", array(), $ver, true );
+
+			// @beaverbuilder/app-core
+			$app_core_deps = array( 'react', 'redux', 'react-router-dom' );
+			// @beaverbuilder/fluid
+			$fluid_deps = array(
+				'react',
+				'react-dom',
+				'redux',
+				'react-router-dom',
+				'framer-motion',
+				'react-laag',
+				'bb-icons',
+			);
+			if ( ! wp_script_is( 'wp-i18n', 'registered' ) ) {
+				wp_enqueue_script( 'fl-wp-i18n', "{$js_vendors}i18n-polyfill.js" );
+			}
+		}
+
+		/**
+		 * Shared Vendors
+		 * These vendor bundles are special in that they attach a global reference to themselves on the FL.vendors object.
+		 */
+
+		// redux
+		wp_register_script( 'redux', "{$js_vendors}redux.min.js", array(), $ver, false );
+
+		// react-router-dom
+		wp_register_script( 'react-router-dom', "{$js_vendors}react-router-dom.min.js", array( 'react' ), $ver, false );
+
+		// framer-motion
+		wp_register_script( 'framer-motion', "{$js_build}vendor-framer-motion{$tag}.js", array( 'react', 'react-dom' ), $ver, false );
+
+		// react-laag
+		wp_register_script( 'react-laag', "{$js_build}vendor-react-laag{$tag}.js", array( 'react' ), $ver, false );
+
+		wp_register_script( 'bb-app-core', "{$js_build}vendor-bb-app-core{$tag}.js", $app_core_deps, $ver, false );
+
+		// @beaverbuilder/icons
+		wp_register_script( 'bb-icons', "{$js_build}vendor-bb-icons{$tag}.js", array( 'react' ), $ver, false );
+
+		wp_register_script( 'bb-fluid', "{$js_build}vendor-bb-fluid{$tag}.js", $fluid_deps, $ver, false );
+		wp_register_style( 'bb-fluid', "{$css_build}vendor-bb-fluid{$tag}.css", array(), $ver, null );
+	}
+
+	/**
 	 * Register and enqueue the styles and scripts for the builder UI.
 	 *
 	 * @since 1.7.4
@@ -788,6 +877,9 @@ final class FLBuilder {
 			$ver     = FL_BUILDER_VERSION;
 			$css_url = plugins_url( '/css/', FL_BUILDER_FILE );
 			$js_url  = plugins_url( '/js/', FL_BUILDER_FILE );
+
+			// Register React and other vendor bundles
+			self::register_shared_vendors();
 
 			/* Frontend builder styles */
 			wp_enqueue_style( 'dashicons' );
@@ -811,10 +903,10 @@ final class FLBuilder {
 				// skins need to come after default ui styles
 				wp_enqueue_style( 'fl-builder-ui-skin-dark', $css_url . 'fl-builder-ui-skin-dark.css', array(), $ver );
 
-				wp_enqueue_style( 'fl-builder-bundle', $css_url . 'build/builder.bundle.css', array( 'fl-fluid' ), $ver );
+				wp_enqueue_style( 'fl-builder-system', $css_url . 'build/builder.bundle.css', array( 'bb-fluid' ), $ver );
 			} else {
 				wp_enqueue_style( 'fl-builder-min', $css_url . 'fl-builder.min.css', array(), $ver );
-				wp_enqueue_style( 'fl-builder-bundle', $css_url . 'build/builder.bundle.min.css', array(), $ver );
+				wp_enqueue_style( 'fl-builder-system', $css_url . 'build/builder.bundle.min.css', array( 'bb-fluid' ), $ver );
 			}
 
 			/* Custom Icons */
@@ -823,14 +915,6 @@ final class FLBuilder {
 			/* RTL Support */
 			if ( is_rtl() ) {
 				wp_enqueue_style( 'fl-builder-rtl', $css_url . 'fl-builder-rtl.css', array(), $ver );
-			}
-
-			// React polyfill for older versions of WordPress.
-			if ( version_compare( $wp_version, '5.2', '<=' ) ) {
-				wp_deregister_script( 'react' );
-				wp_deregister_script( 'react-dom' );
-				wp_enqueue_script( 'react', $js_url . 'build/react.bundle.js', array(), $ver, true );
-				wp_enqueue_script( 'react-dom', $js_url . 'build/react-dom.bundle.js', array(), $ver, true );
 			}
 
 			/* We have custom versions of these that fixes bugs. */
@@ -877,31 +961,8 @@ final class FLBuilder {
 				wp_enqueue_script( 'select2', $js_url . 'select2.min.js', array(), $ver );
 			}
 
-			// Register FLUID library - Checks if Assistant has already registered a copy.
-			if (
-				! wp_script_is( 'fl-fluid', 'enqueued' ) &&
-				! wp_script_is( 'fl-fluid', 'registered' ) &&
-				! wp_script_is( 'fl-fluid', 'to_do' ) &&
-				! wp_script_is( 'fl-fluid', 'done' )
-			) {
-
-				if ( self::is_debug() ) {
-					$fluid_js  = 'build/fluid.bundle.js';
-					$fluid_css = 'build/fluid.bundle.css';
-				} else {
-					$fluid_js  = 'build/fluid.bundle.min.js';
-					$fluid_css = 'build/fluid.bundle.min.css';
-				}
-				// if < 5.0 we get an lodash conflict and fluid will not enqueue
-				if ( version_compare( $wp_version, '5.2', '<=' ) ) {
-					wp_register_script( 'fl-fluid', $js_url . $fluid_js, array( 'react', 'react-dom' ), $ver, false );
-				} else {
-					wp_register_script( 'fl-fluid', $js_url . $fluid_js, array( 'react', 'react-dom', 'lodash' ), $ver, false );
-				}
-				wp_register_style( 'fl-fluid', $css_url . $fluid_css, array(), $ver, null );
-			}
-
 			// Enqueue individual builder scripts if WP_DEBUG is on.
+			$bundle_deps = array( 'react', 'react-dom', 'bb-app-core', 'bb-fluid' );
 			if ( self::is_debug() ) {
 
 				wp_enqueue_script( 'fl-color-picker', $js_url . 'fl-color-picker.js', array(), $ver );
@@ -917,8 +978,8 @@ final class FLBuilder {
 				wp_enqueue_script( 'fl-builder-responsive-preview', $js_url . 'fl-builder-responsive-preview.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-services', $js_url . 'fl-builder-services.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array(), $ver );
-				wp_enqueue_script( 'fl-builder-ui', $js_url . 'fl-builder-ui.js', array( 'fl-builder', 'mousetrap', 'fl-fluid' ), $ver );
-				wp_enqueue_script( 'fl-builder-ui-main-menu', $js_url . 'fl-builder-ui-main-menu.js', array( 'fl-builder-ui', 'fl-fluid' ), $ver );
+				wp_enqueue_script( 'fl-builder-ui', $js_url . 'fl-builder-ui.js', array( 'fl-builder', 'mousetrap' ), $ver );
+				wp_enqueue_script( 'fl-builder-ui-main-menu', $js_url . 'fl-builder-ui-main-menu.js', array( 'fl-builder-ui' ), $ver );
 				wp_enqueue_script( 'fl-builder-ui-panel-content', $js_url . 'fl-builder-ui-panel-content-library.js', array( 'fl-builder-ui' ), $ver );
 				wp_enqueue_script( 'fl-builder-ui-settings-forms', $js_url . 'fl-builder-ui-settings-forms.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-ui-settings-copy-paste', $js_url . 'fl-builder-ui-settings-copy-paste.js', array(), $ver );
@@ -927,11 +988,11 @@ final class FLBuilder {
 				wp_enqueue_script( 'fl-builder-search', $js_url . 'fl-builder-search.js', array( 'jquery' ), $ver );
 				wp_enqueue_script( 'fl-builder-save-manager', $js_url . 'fl-builder-save-manager.js', array( 'jquery' ), $ver );
 				wp_enqueue_script( 'fl-builder-history-manager', $js_url . 'fl-builder-history-manager.js', array(), $ver );
-				wp_enqueue_script( 'fl-builder-bundle', $js_url . 'build/builder.bundle.js', array( 'fl-fluid' ), $ver, true );
+				wp_enqueue_script( 'fl-builder-system', $js_url . 'build/builder.bundle.js', $bundle_deps, $ver, true );
 			} else {
 
-				wp_enqueue_script( 'fl-builder-min', $js_url . 'fl-builder.min.js', array( 'jquery', 'mousetrap', 'fl-fluid' ), $ver );
-				wp_enqueue_script( 'fl-builder-bundle', $js_url . 'build/builder.bundle.min.js', array( 'fl-fluid' ), $ver, true );
+				wp_enqueue_script( 'fl-builder-min', $js_url . 'fl-builder.min.js', array( 'jquery', 'mousetrap' ), $ver );
+				wp_enqueue_script( 'fl-builder-system', $js_url . 'build/builder.bundle.min.js', $bundle_deps, $ver, true );
 			}
 
 			/* Additional module styles and scripts */
@@ -946,6 +1007,11 @@ final class FLBuilder {
 					wp_enqueue_script( $handle, $props[0], $props[1], $props[2], $props[3] );
 				}
 			}
+
+			/**
+			 * Enqueue the canvas script for handling dom manipulation.
+			 */
+			self::enqueue_canvas();
 		}
 		wp_add_inline_style( 'admin-bar', '#wp-admin-bar-fl-builder-frontend-edit-link .ab-icon:before { content: "\f116" !important; top: 2px; margin-right: 3px; }' );
 		$args = array(
@@ -965,6 +1031,32 @@ final class FLBuilder {
 		);
 		wp_localize_script( 'fl-builder-min', 'crash_vars', $args );
 		wp_localize_script( 'fl-builder', 'crash_vars', $args );
+	}
+
+	/**
+	 * Enqueue the canvas API
+	 *
+	 * @since 2.5
+	 * @return void
+	 */
+	static public function enqueue_canvas() {
+		global $wp_the_query;
+
+		$ver     = FL_BUILDER_VERSION;
+		$js_url  = plugins_url( '/js/build/', FL_BUILDER_FILE );
+		$post_id = is_object( $wp_the_query->post ) ? $wp_the_query->post->ID : null;
+
+		if ( self::is_debug() ) {
+			wp_enqueue_script( 'fl-builder-canvas', $js_url . 'canvas.bundle.js', array(), $ver, true );
+		} else {
+			wp_enqueue_script( 'fl-builder-canvas', $js_url . 'canvas.bundle.min.js', array(), $ver, true );
+		}
+
+		// FLBuilderCanvasConfig
+		$args = array(
+			'postId' => $post_id,
+		);
+		wp_localize_script( 'fl-builder-canvas', 'FLBuilderCanvasConfig', $args );
 	}
 
 	/**
@@ -1003,6 +1095,7 @@ final class FLBuilder {
 			// Skin
 			$user_settings = FLBuilderUserSettings::get();
 			$classes[]     = 'fl-builder-ui-skin--' . $user_settings['skin'];
+			$classes[]     = 'fluid-color-scheme-' . $user_settings['skin'];
 
 			// Draft changes
 			if ( FLBuilderModel::layout_has_drafted_changes() ) {
@@ -1600,6 +1693,11 @@ final class FLBuilder {
 			),
 		) );
 
+		// Check if Assistant is at least v0.6.0
+		if ( isset( $buttons['fl-assistant'] ) && defined( 'FL_ASSISTANT_VERSION' ) ) {
+			$buttons['fl-assistant']['show'] = version_compare( FL_ASSISTANT_VERSION, '0.6', '>=' );
+		}
+
 		echo '<div class="fl-builder-bar-actions">';
 		$i = 0;
 
@@ -1728,6 +1826,8 @@ final class FLBuilder {
 		// Force the builder to use this post ID.
 		FLBuilderModel::set_post_id( $post_id );
 
+		$layout_type = empty( $attrs['data-type'] ) ? '' : $attrs['data-type'];
+
 		// Build the attributes string.
 		$attr_string = '';
 		/**
@@ -1756,7 +1856,7 @@ final class FLBuilder {
 		 * @see fl_builder_before_render_content
 		 */
 		do_action( 'fl_builder_before_render_content' );
-		echo '<' . $tag . ' class="' . self::render_content_classes() . '" data-post-id="' . $post_id . '"' . $attr_string . '>';
+		echo '<' . $tag . ' class="' . self::render_content_classes( $layout_type ) . '" data-post-id="' . $post_id . '"' . $attr_string . '>';
 		self::render_nodes();
 		echo '</' . $tag . '>';
 		/**
@@ -1863,9 +1963,10 @@ final class FLBuilder {
 	 * Renders the CSS classes for the main content div tag.
 	 *
 	 * @since 1.6.4
+	 * @param string $layout_type
 	 * @return string
 	 */
-	static public function render_content_classes() {
+	static public function render_content_classes( $layout_type = '' ) {
 		global $wp_the_query;
 
 		$post_id = FLBuilderModel::get_post_id();
@@ -1885,7 +1986,7 @@ final class FLBuilder {
 			}
 		}
 
-		return apply_filters( 'fl_builder_content_classes', $classes );
+		return apply_filters( 'fl_builder_content_classes', $classes, $layout_type );
 	}
 
 	/**
@@ -2042,8 +2143,8 @@ final class FLBuilder {
 	 * @param object $settings The settings data.
 	 * @return array
 	 */
-	static public function render_settings( $form = array(), $settings ) {
-		return FLBuilderUISettingsForms::render_settings( $form, $settings );
+	static public function render_settings( $form, $settings ) {
+		return FLBuilderUISettingsForms::render_settings( (array) $form, $settings );
 	}
 
 	/**
@@ -2170,7 +2271,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to work with the custom class a user adds to a row under Row Settings > Advanced > Class.
 		 * @see fl_builder_row_custom_class
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$custom_class = apply_filters( 'fl_builder_row_custom_class', $row->settings->class, $row );
 		$overlay_bgs  = array( 'photo', 'parallax', 'slideshow', 'video' );
@@ -2429,7 +2530,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to work with the custom class a user adds to a column under Column Settings > Advanced > Class.
 		 * @see fl_builder_column_custom_class
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$custom_class    = apply_filters( 'fl_builder_column_custom_class', $col->settings->class, $col );
 		$overlay_bgs     = array( 'photo' );
@@ -2642,7 +2743,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to work with the custom class a user adds to a module in the Class field on the Advanced tab.
 		 * @see fl_builder_module_custom_class
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$custom_class = apply_filters( 'fl_builder_module_custom_class', $module->settings->class, $module );
 		$active       = FLBuilderModel::is_builder_active();
@@ -2768,8 +2869,8 @@ final class FLBuilder {
 		$global_settings = FLBuilderModel::get_global_settings();
 		$layout_settings = FLBuilderModel::get_layout_settings();
 
-		echo '<style id="fl-builder-global-css">' . $global_settings->css . '</style>';
-		echo '<style id="fl-builder-layout-css">' . $layout_settings->css . '</style>';
+		echo '<style id="fl-builder-global-css">' . self::maybe_do_shortcode( $global_settings->css ) . '</style>';
+		echo '<style id="fl-builder-layout-css">' . self::maybe_do_shortcode( $layout_settings->css ) . '</style>';
 	}
 
 	/**
@@ -2912,7 +3013,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to modify the CSS that is compiled and cached for each builder layout.
 		 * @see fl_builder_render_css
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$css = apply_filters( 'fl_builder_render_css', $css, $nodes, $global_settings, $include_global );
 
@@ -3071,7 +3172,7 @@ final class FLBuilder {
 	 */
 	static public function rewrite_css_cache_urls( $content ) {
 		if ( FLBuilderModel::is_ssl() ) {
-			$content = str_ireplace( 'http:', 'https:', $content );
+			$content = preg_replace( '#http:\/\/(.*\.(?:png|jpe?g|gif|webp|svg))#', 'https://$1', $content );
 		}
 
 		return $content;
@@ -3403,7 +3504,7 @@ final class FLBuilder {
 		/**
 		 * Use this filter to modify the JavaScript that is compiled and cached for each builder layout.
 		 * @see fl_builder_render_js
-		 * @link https://kb.wpbeaverbuilder.com/article/117-plugin-filter-reference
+		 * @link https://docs.wpbeaverbuilder.com/beaver-builder/developer/tutorials-guides/common-beaver-builder-filter-examples
 		 */
 		$js = apply_filters( 'fl_builder_render_js', $js, $nodes, $global_settings, $include_global );
 
@@ -3683,7 +3784,7 @@ final class FLBuilder {
 		$ext = pathinfo( $file['name'], PATHINFO_EXTENSION );
 
 		$regex = array(
-			'photo' => '#(jpe?g|png|gif|bmp|tiff?)#i',
+			'photo' => '#(jpe?g|png|gif|bmp|tiff?|webp)#i',
 			'video' => '#(mp4|m4v|webm)#i',
 		);
 
@@ -3749,12 +3850,13 @@ final class FLBuilder {
 	}
 
 	static public function get_fa5_version() {
-		$data = glob( FL_BUILDER_DIR . 'fonts/fontawesome/*' );
-		return basename( $data[0] );
+
+		return FLBuilderFontAwesome::latest_supported();
 	}
 
 	static public function fa5_pro_enabled() {
-		$enabled = apply_filters( 'fl_enable_fa5_pro', false );
+		$enabled = FLBuilderFontAwesome::is_pro_enabled( apply_filters( 'fl_enable_fa5_pro', false ) );
+
 		// if filter was set to true return true anyway.
 		if ( $enabled ) {
 			return true;
@@ -3763,8 +3865,8 @@ final class FLBuilder {
 		if ( is_multisite() && FLBuilderAdminSettings::multisite_support() ) {
 			// if switched...
 			if ( $GLOBALS['switched'] ) {
-				if ( get_blog_option( $GLOBALS['_wp_switched_stack'][0], '_fl_builder_enabled_templates' ) ) {
-					// overide enabled...
+				if ( get_blog_option( $GLOBALS['_wp_switched_stack'][0], '_fl_builder_enable_fa_pro' ) ) {
+					// override enabled...
 					return get_blog_option( $GLOBALS['_wp_switched_stack'][0], '_fl_builder_enable_fa_pro' );
 				} else {
 					return get_option( '_fl_builder_enable_fa_pro' );
@@ -3778,6 +3880,31 @@ final class FLBuilder {
 			}
 		}
 		return FLBuilderModel::get_admin_settings_option( '_fl_builder_enable_fa_pro' );
+	}
+
+	/**
+	 * @since 2.4.2
+	 */
+	static public function fa5_kit_url() {
+
+		if ( is_multisite() && FLBuilderAdminSettings::multisite_support() ) {
+			// if switched...
+			if ( $GLOBALS['switched'] ) {
+				if ( get_blog_option( $GLOBALS['_wp_switched_stack'][0], '_fl_builder_kit_fa_pro' ) ) {
+					// override enabled...
+					return get_blog_option( $GLOBALS['_wp_switched_stack'][0], '_fl_builder_kit_fa_pro' );
+				} else {
+					return get_option( '_fl_builder_kit_fa_pro' );
+				}
+			}
+
+			// were not switched...
+			if ( ! get_option( '_fl_builder_enabled_icons' ) ) {
+				$id = defined( 'BLOG_ID_CURRENT_SITE' ) ? BLOG_ID_CURRENT_SITE : 1;
+				return get_blog_option( $id, '_fl_builder_kit_fa_pro' );
+			}
+		}
+		return FLBuilderModel::get_admin_settings_option( '_fl_builder_kit_fa_pro' );
 	}
 
 	/**
