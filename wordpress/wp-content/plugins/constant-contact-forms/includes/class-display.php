@@ -540,8 +540,7 @@ class ConstantContact_Display {
 	 */
 	public function build_honeypot_field() {
 		return sprintf(
-			'<div class="ctct_usage"><label for="ctct_usage_field">%s</label><input type="text" value="" name="ctct_usage_field" class="ctct_usage_field" tabindex="-1" /></div>',
-			esc_html__( 'Constant Contact Use.', 'constant-contact-forms' )
+			'<div class="ctct_usage"><label for="ctct_usage_field">%s</label><input type="text" value="" id="ctct_usage_field" name="ctct_usage_field" class="ctct_usage_field" tabindex="-1" /></div>', esc_html__( 'Constant Contact Use. Please leave this field blank.', 'constant-contact-forms' )
 		);
 	}
 
@@ -730,7 +729,7 @@ class ConstantContact_Display {
 			case 'checkbox':
 				return $this->checkbox( $name, $map, $value, $desc, $req, $field_error, $form_id, $label_placement, $instance );
 			case 'submit':
-				return $this->input( 'submit', $name, $map, $value, $desc, $req, false, $field_error );
+				return $this->input( 'submit', $name, $map, $value, $desc, $req, false, $field_error, $form_id, $label_placement, $instance );
 			case 'address':
 				return $this->address( $name, $map, $value, $desc, $req, $field_error, $label_placement, $instance );
 			case 'anniversery':
@@ -995,12 +994,17 @@ class ConstantContact_Display {
 		$field_key             = sanitize_title( $id );
 		$field_id              = "{$field_key}_{$instance}_{$id_salt}";
 		$input_inline_styles   = '';
+		$tel_regex_pattern     = '';
 		$label_placement_class = 'ctct-label-' . $label_placement;
 		$specific_form_styles  = $this->specific_form_styles;
 		$inline_font_styles    = $this->get_inline_font_color();
 
 		if ( 'submit' === $type ) {
 			$input_inline_styles = $this->get_submit_inline_styles();
+		}
+
+		if ( 'tel' === $type ) {
+			$tel_regex_pattern = '^[0-9\-\+\.()]*';
 		}
 
 		$type     = sanitize_text_field( $type );
@@ -1070,8 +1074,17 @@ class ConstantContact_Display {
 			$class_attr = 'class="' . implode( ' ', $classes ) . '"';
 		}
 
-		/* translators: 1: Required text, 2: Field type, 3: Field name, 4: Inline styles, 5: Field value, 6: Max length, 7: Placeholder, 8: Field class(es), 9: Field ID. */
-		$field   = '<input %1$s type="%2$s" name="%3$s" %4$s value="%5$s" %6$s %7$s %8$s %9$s />';
+		$tel_pattern_title = apply_filters( 'constant_contact_tel_pattern_title', esc_html__( 'numbers, dashes, pluses, periods, and parentheses', 'constant-contact-forms' ) );
+
+		// Button field type do not need a placeholder.
+		$placeholder = '';
+
+		if ( 'submit' !== $type ) {
+			$placeholder = "placeholder=\"{$label}\"";
+		}
+
+		/* translators: 1: Required text, 2: Field type, 3: Field name, 4: Inline styles, 5: Field value, 6: Max length, 7: Placeholder, 8: Field class(es), 9: Field ID., 10: Tel Regex Pattern. */
+		$field   = '<input %1$s type="%2$s" name="%3$s" %4$s value="%5$s" %6$s %7$s %8$s %9$s %10$s />';
 		$markup .= sprintf(
 			$field,
 			$req_text,
@@ -1080,9 +1093,10 @@ class ConstantContact_Display {
 			$input_inline_styles,
 			$value,
 			$max_length,
-			"placeholder=\"{$label}\"",
+			$placeholder,
 			$class_attr,
-			"id=\"{$field_id}\""
+			"id=\"{$field_id}\"",
+			$tel_regex_pattern ? "pattern=\"{$tel_regex_pattern}\" title=\"{$tel_pattern_title}\"" : ''
 		);
 
 		// Reassign because if we want "field only", like for hidden inputs, we need to still pass a value that went through sprintf().
@@ -1231,7 +1245,7 @@ class ConstantContact_Display {
 
 		// If only one list displayed, hide input.
 		if ( 'lists' === $key_pieces[0] && $count <= 1 ) {
-			$markup = "<div style='display:none;'>{$markup}</div>";
+			$markup = "<div class='ctct-list-selector' style='display:none;'>{$markup}</div>";
 		}
 
 		return $markup;
@@ -1373,8 +1387,8 @@ class ConstantContact_Display {
 		$street   = esc_html__( 'Street Address', 'constant-contact-forms' );
 		$line_2   = esc_html__( 'Address Line 2', 'constant-contact-forms' );
 		$city     = esc_html__( 'City', 'constant-contact-forms' );
-		$state    = esc_html__( 'State', 'constant-contact-forms' );
-		$zip      = esc_html__( 'ZIP Code', 'constant-contact-forms' );
+		$state    = apply_filters( 'constant_contact_address_state', esc_html__( 'State', 'constant-contact-forms' ) );
+		$zip      = apply_filters( 'constant_contact_address_zip_code', esc_html__( 'ZIP Code', 'constant-contact-forms' ) );
 
 		$v_street = isset( $value['street_address'] ) ? $value['street_address'] : '';
 		$v_line_2 = isset( $value['line_2_address'] ) ? $value['line_2_address'] : '';
@@ -1784,9 +1798,10 @@ class ConstantContact_Display {
 			$req_label = $this->display_required_indicator();
 		}
 
-		$return   = '<p class="' . implode( ' ', $classes ) . '">';
-		$label    = '<span class="' . $label_placement_class . '"><label for="' . esc_attr( $field_id ) . '">' . esc_attr( $name ) . ' ' . $req_label . '</label></span>';
-		$textarea = '<textarea class="' . esc_attr( implode( ' ', $textarea_classes ) ) . '" ' . $req_text . ' name="' . esc_attr( $map ) . '" id="' . esc_attr( $field_id ) . '" placeholder="' . esc_attr( $desc ) . '" ' . $extra_attrs . '>' . esc_html( $value ) . '</textarea>';
+		$return            = '<p class="' . implode( ' ', $classes ) . '">';
+		$label             = '<span class="' . $label_placement_class . '"><label for="' . esc_attr( $field_id ) . '">' . esc_attr( $name ) . ' ' . $req_label . '</label></span>';
+		$textarea          = '<textarea class="' . esc_attr( implode( ' ', $textarea_classes ) ) . '" ' . $req_text . ' name="' . esc_attr( $map ) . '" id="' . esc_attr( $field_id ) . '" placeholder="' . esc_attr( $desc ) . '" ' . $extra_attrs . '>' . esc_html( $value ) . '</textarea>';
+		$instructions_span = '<span class="ctct-textarea-warning-label">' . esc_html__( 'Limit 500 Characters', 'constant-contact-forms' ) . '</span>';
 
 		if ( 'top' === $label_placement || 'left' === $label_placement || 'hidden' === $label_placement ) {
 			$return .= $label . $textarea;
@@ -1795,6 +1810,8 @@ class ConstantContact_Display {
 		if ( 'right' === $label_placement || 'bottom' === $label_placement ) {
 			$return .= $textarea . $label;
 		}
+
+		$return .= $instructions_span;
 
 		if ( $field_error ) {
 			$return .= '<span class="ctct-field-error"><label for="' . esc_attr( $field_id ) . '">' . esc_attr( __( 'Error: Please correct your entry.', 'constant-contact-forms' ) ) . '</label></span>';
@@ -1853,7 +1870,7 @@ class ConstantContact_Display {
 		return apply_filters(
 			'constant_contact_disclose',
 			sprintf(
-				'<div class="ctct-disclosure" style="%s"><hr><sub>%s</sub></div>',
+				'<div class="ctct-disclosure" style="%s"><hr><small>%s</small></div>',
 				esc_attr( $this->get_inline_font_color() ),
 				$this->get_inner_disclose_text() ) );
 	}
@@ -1866,18 +1883,25 @@ class ConstantContact_Display {
 	 * @return string
 	 */
 	public function get_inner_disclose_text() {
-		return sprintf(
-			// Translators: placeholder will hold company info for site owner.
-			__(
-				'By submitting this form, you are consenting to receive marketing emails from: %1$s. You can revoke your consent to receive emails at any time by using the SafeUnsubscribe&reg; link, found at the bottom of every email. %2$s', 'constant-contact-forms'
-			),
-			$this->plugin->api->get_disclosure_info(),
-			sprintf(
-				'<a href="%s" target="_blank">%s</a>',
-				esc_url( 'https://www.constantcontact.com/legal/service-provider' ),
-				esc_html__( 'Emails are serviced by Constant Contact', 'constant-contact-forms' )
-			)
-		);
+
+		$alternative_legal_text = constant_contact_get_option( '_ctct_alternative_legal_text' );
+
+		if ( empty( $alternative_legal_text ) ) {
+			return sprintf(
+				// Translators: placeholder will hold company info for site owner.
+				__(
+					'By submitting this form, you are consenting to receive marketing emails from: %1$s. You can revoke your consent to receive emails at any time by using the SafeUnsubscribe&reg; link, found at the bottom of every email. %2$s', 'constant-contact-forms'
+				),
+				$this->plugin->api->get_disclosure_info(),
+				sprintf(
+					'<a href="%s" target="_blank">%s</a>',
+					esc_url( 'https://www.constantcontact.com/legal/service-provider' ),
+					esc_html__( 'Emails are serviced by Constant Contact', 'constant-contact-forms' )
+				)
+			);
+		}
+
+		return $alternative_legal_text;
 	}
 
 	/**

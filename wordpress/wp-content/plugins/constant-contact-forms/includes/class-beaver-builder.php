@@ -5,7 +5,7 @@
  * @package ConstantContact
  * @subpackage Beaver Builder
  * @author Constant Contact
- * @since NEXT
+ * @since 1.11.0
  *
  * phpcs:disable WebDevStudios.All.RequireAuthor -- Don't require author tag in docblocks.
  */
@@ -13,14 +13,14 @@
 /**
  * This class get's everything up an running for Beaver Builder support.
  *
- * @since NEXT
+ * @since 1.11.0
  */
 class ConstantContact_Beaver_Builder {
 
 	/**
 	 * Parent plugin class.
 	 *
-	 * @since NEXT
+	 * @since 1.11.0
 	 * @var object
 	 */
 	protected $plugin;
@@ -28,7 +28,7 @@ class ConstantContact_Beaver_Builder {
 	/**
 	 * Constructor.
 	 *
-	 * @since NEXT
+	 * @since 1.11.0
 	 *
 	 * @param object $plugin Parent plugin.
 	 */
@@ -42,7 +42,7 @@ class ConstantContact_Beaver_Builder {
 	/**
 	 * Registers Beaver Builder Modules
 	 *
-	 * @since  NEXT
+	 * @since 1.10.0
 	 */
 	public function register_bb_modules() {
 		FLBuilder::register_module( 'CCForm', array(
@@ -76,7 +76,7 @@ class ConstantContact_Beaver_Builder {
 	/**
 	 * Provides all Constant Contact Forms current Published.
 	 *
-	 * @since  NEXT
+	 * @since 1.10.0
 	 */
 	private function get_form_options () {
 

@@ -234,7 +234,7 @@ class ConstantContact_Settings {
 		$tabs    = $this->get_option_tabs( $cmb_options );
 		$current = $this->get_current_tab();
 		?>
-		<div class="wrap cmb2-options-page option-<?php echo esc_attr( $cmb_options->option_key ); ?>">
+		<div class="wrap cmb2-options-page ctct-page-wrap option-<?php echo esc_attr( $cmb_options->option_key ); ?>">
 			<?php if ( get_admin_page_title() ) : ?>
 				<h2><?php echo wp_kses_post( get_admin_page_title() ); ?></h2>
 			<?php endif; ?>
@@ -323,7 +323,7 @@ class ConstantContact_Settings {
 	protected function get_cmb_args( $cmb_id ) {
 		return [
 			'id'           => "{$this->metabox_id}_{$cmb_id}",
-			'title'        => esc_html__( 'Constant Contact Forms Settings', 'constant-contact-forms' ),
+			'title'        => esc_html__( 'Settings', 'constant-contact-forms' ),
 			'menu_title'   => esc_html__( 'Settings', 'constant-contact-forms' ),
 			'object_types' => [ 'options-page' ],
 			'option_key'   => "{$this->key}_{$cmb_id}",
@@ -343,12 +343,20 @@ class ConstantContact_Settings {
 	protected function register_fields_general() {
 		$cmb = new_cmb2_box( $this->get_cmb_args( 'general' ) );
 
+		$before_analytics = sprintf(
+			/* translators: 1: Opening heading tag, 2: opt-in section heading, 3: closing heading tag */
+			'%1$s%2$s%3$s',
+			'<h2>',
+			esc_html__( 'General Settings', 'constant-contact-forms' ),
+			'</h2>'
+		);
 		$cmb->add_field( [
 			'name' => esc_html__( 'Google Analytics&trade; tracking opt-in.', 'constant-contact-forms' ),
 			'id'   => '_ctct_data_tracking',
 			'type' => 'checkbox',
 			'desc' => __( 'Allow Constant Contact to use Google Analytics&trade; to track your usage across the Constant Contact Forms plugin.<br/> NOTE &mdash; Your website and users will not be tracked. See our <a href="https://www.endurance.com/privacy"> Privacy Statement</a> information about what is and is not tracked.', 'constant-contact-forms' ),
-		] );
+			'before_row' => $before_analytics,
+			] );
 
 		if ( constant_contact()->api->is_connected() ) {
 
@@ -396,7 +404,7 @@ class ConstantContact_Settings {
 				$cmb->add_field( [
 					'name'             => esc_html__( 'Add subscribers to', 'constant-contact-forms' ),
 					'id'               => '_ctct_optin_list',
-					'type'             => 'select',
+					'type'             => 'multicheck',
 					'show_option_none' => false,
 					'default'          => esc_html__( 'Select a list', 'constant-contact-forms' ),
 					'options'          => $lists,
@@ -476,6 +484,21 @@ class ConstantContact_Settings {
 				'constant-contact-forms'
 			),
 		] );
+
+		$cmb->add_field( [
+			'name'       => esc_html__( 'Disable Constant Contact CSS', 'constant-contact-forms' ),
+			'desc'       => esc_html__( 'Disables Constant Contact stylesheets from loading on the frontend. Note you may need to clear server and client cache to see changes go into effect.', 'constant-contact-forms' ),
+			'id'         => '_ctct_disable_css',
+			'type'       => 'checkbox',
+		] );
+
+		$cmb->add_field( [
+			'name'       => esc_html__( 'Alternative Disclaimer Text', 'constant-contact-forms' ),
+			'desc'       => esc_html__( 'Override default sign-up disclaimer text. (Supports HTML)', 'constant-contact-forms' ),
+			'id'         => '_ctct_alternative_legal_text',
+			'type'       => 'textarea',
+		] );
+		
 	}
 
 	/**
@@ -493,7 +516,7 @@ class ConstantContact_Settings {
 			'<h2>',
 			esc_html__( 'Google reCAPTCHA', 'constant-contact-forms' ),
 			'</h2>',
-			'<div class="discover-recaptcha">',
+			'<div class="description">',
 			esc_html__( 'Learn more and get an ', 'constant-contact-forms' ),
 			'<a href="https://www.google.com/recaptcha/intro/" target="_blank">',
 			esc_html__( 'API site key', 'constant-contact-forms' ),
@@ -669,14 +692,19 @@ class ConstantContact_Settings {
 		}
 
 		$saved_label = constant_contact_get_option( '_ctct_optin_label', '' );
-		$list        = constant_contact_get_option( '_ctct_optin_list', '' );
+
+		$lists = $this->get_optin_list_options();
 		$label       = $saved_label ?: esc_html__( 'Sign up to our newsletter.', 'constant-contact-forms' );
+
 		?>
 		<p class="ctct-optin-wrapper" style="padding: 0 0 1em 0;">
-			<label for="ctct_optin">
-				<input type="checkbox" value="<?php echo esc_attr( $list ); ?>" class="checkbox" id="ctct_optin" name="ctct_optin_list" />
-				<?php echo esc_attr( $label ); ?>
-			</label>
+			<p><?php echo esc_attr( $label ); ?></p>
+			<?php foreach ( $lists as $key => $list ) { ?>
+				<label for="ctct_optin_<?php echo esc_attr( $key ); ?>">
+					<input type="checkbox" value="<?php echo esc_attr( $key ); ?>" class="checkbox" id="ctct_optin_<?php echo esc_attr( $key ); ?>" name="ctct_optin_list[]" /> <?php echo esc_attr( $list ); ?>
+				</label>
+				<br/>
+			<?php } ?>
 			<?php echo wp_kses_post( constant_contact()->display->get_disclose_text() ); ?>
 		</p>
 		<?php
@@ -692,9 +720,9 @@ class ConstantContact_Settings {
 	 * @return array Comment form data.
 	 */
 	public function process_optin_comment_form( $comment_data ) {
-		$ctct_optin_list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
+		$ctct_optin_lists = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-		if ( empty( $ctct_optin_list ) ) {
+		if ( empty( $ctct_optin_lists ) ) {
 			return $comment_data;
 		}
 
@@ -715,21 +743,23 @@ class ConstantContact_Settings {
 
 			$name    = isset( $comment_data['comment_author'] ) ? $comment_data['comment_author'] : '';
 			$website = isset( $comment_data['comment_author_url'] ) ? $comment_data['comment_author_url'] : '';
-			$list    = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
+			$lists    = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-			if ( empty( $list ) ) {
+			if ( empty( $lists ) ) {
 				return $comment_data;
 			}
 
-			$args = [
-				'list'       => sanitize_text_field( wp_unslash( $list ) ),
-				'email'      => sanitize_email( $comment_data['comment_author_email'] ),
-				'first_name' => sanitize_text_field( $name ),
-				'last_name'  => '',
-				'website'    => sanitize_text_field( $website ),
-			];
+			foreach ( $lists as $list ) {
+				$args = [
+					'list'       => sanitize_text_field( wp_unslash( $list ) ),
+					'email'      => sanitize_email( $comment_data['comment_author_email'] ),
+					'first_name' => sanitize_text_field( $name ),
+					'last_name'  => '',
+					'website'    => sanitize_text_field( $website ),
+				];
+				constantcontact_api()->add_contact( $args );
+			}
 
-			constantcontact_api()->add_contact( $args );
 		}
 
 		return $comment_data;
@@ -746,9 +776,9 @@ class ConstantContact_Settings {
 	 * @return object|array CTCT return API for contact or original $user array.
 	 */
 	public function process_optin_login_form( $user, $username, $password ) {
-		$ctct_optin_list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
+		$ctct_optin_lists = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-		if ( empty( $ctct_optin_list ) ) {
+		if ( empty( $ctct_optin_lists ) ) {
 			return $user;
 		}
 
@@ -770,7 +800,9 @@ class ConstantContact_Settings {
 	 */
 	public function process_optin_register_form( $user_id ) {
 
-		if ( ! isset( $_POST['ctct_optin_list'] ) ) {
+		$ctct_optin_lists = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+
+		if ( empty( $ctct_optin_lists ) ) {
 			return $user_id;
 		}
 
@@ -819,21 +851,22 @@ class ConstantContact_Settings {
 			return;
 		}
 
-		$list = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING );
+		$lists = filter_input( INPUT_POST, 'ctct_optin_list', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 
-		if ( empty( $list ) ) {
+		if ( empty( $lists ) ) {
 			return;
 		}
 
 		if ( $email ) {
-			$args = [
-				'email'      => $email,
-				'list'       => sanitize_text_field( wp_unslash( $list ) ),
-				'first_name' => $name,
-				'last_name'  => '',
-			];
-
-			constantcontact_api()->add_contact( $args );
+			foreach ( $lists as $list ) {
+				$args = [
+					'email'      => $email,
+					'list'       => sanitize_text_field( wp_unslash( $list ) ),
+					'first_name' => $name,
+					'last_name'  => '',
+				];
+				constantcontact_api()->add_contact( $args );
+			}
 		}
 
 	}
@@ -1038,6 +1071,33 @@ class ConstantContact_Settings {
 	private function get_default_spam_error() {
 		return __( 'We do not think you are human', 'constant-contact-forms' );
 	}
+
+	/**
+	 * Returns formated list of available lists during opt-in.
+	 *
+	 * @author Scott Anderson <scott.anderson@webdevstudios.com>
+	 * @since  1.12.0
+	 *
+	 * @return array
+	 */
+	private function get_optin_list_options() {
+		$lists = constant_contact_get_option( '_ctct_optin_list', '' );
+
+		$formatted_lists = [];
+		foreach ( $lists as $list_id ) {
+
+			$list_args = array(
+				'numberposts' => 1,
+				'post_type'   => 'ctct_lists',
+				'meta_key'    => '_ctct_list_id',
+				'meta_value'  => $list_id
+			);
+			$list = get_posts( $list_args );
+
+			$formatted_lists[ $list_id ] = $list[0]->post_title;
+		}
+		return $formatted_lists;
+	}
 }
 
 /**
@@ -1067,4 +1127,15 @@ function constant_contact_get_option( $key = '', $default = null ) {
 	}
 
 	return $value;
+}
+
+/**
+ * Returns whether frontend css should be disabled or not.
+ *
+ * @author Scott Anderson <scott.anderson@webdevstudios.com>
+ * @since 1.10.0
+ * @return bool
+ */
+function disable_frontend_css() {
+	return 'on' === constant_contact_get_option( '_ctct_disable_css' );
 }

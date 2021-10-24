@@ -2,7 +2,7 @@
 
 /**
  * A module that adds a simple subscribe form to your layout
- * with third party optin integration.
+ * with third party opt-in integration.
  *
  * @since 1.5.2
  */
@@ -157,6 +157,10 @@ class FLSubscribeFormModule extends FLBuilderModule {
 				$result = array(
 					'error' => __( 'You must accept the Terms and Conditions.', 'fl-builder' ),
 				);
+			}
+
+			if ( ! isset( $settings->service ) ) {
+				$result['error'] = __( 'There was an error subscribing. Please try again.', 'fl-builder' );
 			}
 
 			// Validate reCAPTCHA first if enabled

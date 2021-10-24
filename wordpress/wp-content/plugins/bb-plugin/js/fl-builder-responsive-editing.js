@@ -75,8 +75,8 @@
 			FLBuilder.addHook( 'preview-init', this._switchAllSettingsToCurrentMode );
 			FLBuilder.addHook( 'responsive-editing-switched', this._showSize );
 
-			$( 'body' ).delegate( '.fl-field-responsive-toggle', 'click', this._settingToggleClicked );
-			$( 'body' ).delegate( '.fl-responsive-preview-message button', 'click', this._previewToggleClicked );
+			$( 'body' ).on( 'click', '.fl-field-responsive-toggle', this._settingToggleClicked );
+			$( 'body' ).on( 'click', '.fl-responsive-preview-message button', this._previewToggleClicked );
 		},
 
 		/**
@@ -89,17 +89,16 @@
 		_initMediaQueries: function()
 		{
 			// Don't simulate media queries for stylesheets that match these paths.
-			FLBuilderSimulateMediaQuery.ignore( [
-				FLBuilderConfig.pluginUrl,
-				FLBuilderConfig.relativePluginUrl,
-				'fl-builder-preview',
-				'fl-theme-builder',
-				'/wp-includes/',
-				'/wp-admin/',
-				'admin-bar-inline-css',
-				'ace-tm',
-				'ace_editor.css'
-			] );
+			FLBuilderSimulateMediaQuery.ignore(
+				[
+					FLBuilderConfig.pluginUrl,
+					FLBuilderConfig.relativePluginUrl
+				]
+			)
+			ignorelist = $.map(FLBuilderConfig.responsiveIgnore, function(value, index) {
+				return [value];
+			});
+			FLBuilderSimulateMediaQuery.ignore( ignorelist );
 
 			// Reparse stylesheets that match these paths on each update.
 			FLBuilderSimulateMediaQuery.reparse( [
@@ -107,6 +106,7 @@
 				FLBuilderConfig.postId + '-layout-draft-partial.css',
 				FLBuilderConfig.postId + '-layout-preview.css',
 				FLBuilderConfig.postId + '-layout-preview-partial.css',
+				FLBuilderConfig.postId + '-inline-css',
 				'fl-builder-global-css',
 				'fl-builder-layout-css'
 			] );
@@ -328,10 +328,10 @@
 			var paddingDefaultID    = '#fl-field-padding .fl-field-responsive-setting-default',
 				paddingDefault      = {
 					'values'        : {
-						'top'       : $( paddingDefaultID + ' input[ name="padding_top" ]').val(), 
-						'right'     : $( paddingDefaultID + ' input[ name="padding_right" ]').val(), 
-						'bottom'    : $( paddingDefaultID + ' input[ name="padding_bottom" ]').val(), 
-						'left'      : $( paddingDefaultID + ' input[ name="padding_left" ]').val(), 
+						'top'       : $( paddingDefaultID + ' input[ name="padding_top" ]').val(),
+						'right'     : $( paddingDefaultID + ' input[ name="padding_right" ]').val(),
+						'bottom'    : $( paddingDefaultID + ' input[ name="padding_bottom" ]').val(),
+						'left'      : $( paddingDefaultID + ' input[ name="padding_left" ]').val(),
 					},
 					'placeholders'  : {
 						'top'       : $( paddingDefaultID + ' input[ name="padding_top" ]').attr('placeholder'),
@@ -343,10 +343,10 @@
 				paddingMediumID     = '#fl-field-padding .fl-field-responsive-setting-medium',
 				paddingMedium       = {
 					'values'        : {
-						'top'       : $( paddingMediumID + ' input[ name="padding_top_medium" ]').val(), 
-						'right'     : $( paddingMediumID + ' input[ name="padding_right_medium" ]').val(), 
-						'bottom'    : $( paddingMediumID + ' input[ name="padding_bottom_medium" ]').val(), 
-						'left'      : $( paddingMediumID + ' input[ name="padding_left_medium" ]').val(), 
+						'top'       : $( paddingMediumID + ' input[ name="padding_top_medium" ]').val(),
+						'right'     : $( paddingMediumID + ' input[ name="padding_right_medium" ]').val(),
+						'bottom'    : $( paddingMediumID + ' input[ name="padding_bottom_medium" ]').val(),
+						'left'      : $( paddingMediumID + ' input[ name="padding_left_medium" ]').val(),
 					},
 					'placeholders'  : {
 						'top'       : '',
@@ -358,10 +358,10 @@
 				paddingResponsiveID  = '#fl-field-padding .fl-field-responsive-setting-responsive',
 				paddingResponsive    = {
 					'values'        : {
-						'top'       : $( paddingMediumID + ' input[ name="padding_top_responsive" ]').val(), 
-						'right'     : $( paddingMediumID + ' input[ name="padding_right_responsive" ]').val(), 
-						'bottom'    : $( paddingMediumID + ' input[ name="padding_bottom_responsive" ]').val(), 
-						'left'      : $( paddingMediumID + ' input[ name="padding_left_responsive" ]').val(), 
+						'top'       : $( paddingMediumID + ' input[ name="padding_top_responsive" ]').val(),
+						'right'     : $( paddingMediumID + ' input[ name="padding_right_responsive" ]').val(),
+						'bottom'    : $( paddingMediumID + ' input[ name="padding_bottom_responsive" ]').val(),
+						'left'      : $( paddingMediumID + ' input[ name="padding_left_responsive" ]').val(),
 					},
 					'placeholders'  : {
 						'top'       : '',
@@ -373,10 +373,10 @@
 				marginDefaultID     = '#fl-field-margin .fl-field-responsive-setting-default',
 				marginDefault       = {
 					'values'        : {
-						'top'       : $( marginDefaultID + ' input[ name="margin_top" ]').val(), 
-						'right'     : $( marginDefaultID + ' input[ name="margin_right" ]').val(), 
-						'bottom'    : $( marginDefaultID + ' input[ name="margin_bottom" ]').val(), 
-						'left'      : $( marginDefaultID + ' input[ name="margin_left" ]').val(), 
+						'top'       : $( marginDefaultID + ' input[ name="margin_top" ]').val(),
+						'right'     : $( marginDefaultID + ' input[ name="margin_right" ]').val(),
+						'bottom'    : $( marginDefaultID + ' input[ name="margin_bottom" ]').val(),
+						'left'      : $( marginDefaultID + ' input[ name="margin_left" ]').val(),
 					},
 					'placeholders'  : {
 						'top'       : $( marginDefaultID + ' input[ name="margin_top" ]').attr('placeholder'),
@@ -388,10 +388,10 @@
 				marginMediumID      = '#fl-field-margin .fl-field-responsive-setting-medium',
 				marginMedium        = {
 					'values'        : {
-						'top'       : $( marginMediumID + ' input[ name="margin_top_medium" ]').val(), 
-						'right'     : $( marginMediumID + ' input[ name="margin_right_medium" ]').val(), 
-						'bottom'    : $( marginMediumID + ' input[ name="margin_bottom_medium" ]').val(), 
-						'left'      : $( marginMediumID + ' input[ name="margin_left_medium" ]').val(), 
+						'top'       : $( marginMediumID + ' input[ name="margin_top_medium" ]').val(),
+						'right'     : $( marginMediumID + ' input[ name="margin_right_medium" ]').val(),
+						'bottom'    : $( marginMediumID + ' input[ name="margin_bottom_medium" ]').val(),
+						'left'      : $( marginMediumID + ' input[ name="margin_left_medium" ]').val(),
 					},
 					'placeholders'	: {
 						'top'       : marginDefault.values.top ? marginDefault.values.top : marginDefault.placeholders.top,
@@ -403,10 +403,10 @@
 				marginResponsiveID  = '#fl-field-margin .fl-field-responsive-setting-responsive',
 				marginResponsive    = {
 					'values'        : {
-						'top'       : $( marginResponsiveID + ' input[ name="margin_top_responsive" ]').val(), 
-						'right'     : $( marginResponsiveID + ' input[ name="margin_right_responsive" ]').val(), 
-						'bottom'    : $( marginResponsiveID + ' input[ name="margin_bottom_responsive" ]').val(), 
-						'left'      : $( marginResponsiveID + ' input[ name="margin_left_responsive" ]').val(), 
+						'top'       : $( marginResponsiveID + ' input[ name="margin_top_responsive" ]').val(),
+						'right'     : $( marginResponsiveID + ' input[ name="margin_right_responsive" ]').val(),
+						'bottom'    : $( marginResponsiveID + ' input[ name="margin_bottom_responsive" ]').val(),
+						'left'      : $( marginResponsiveID + ' input[ name="margin_left_responsive" ]').val(),
 					},
 					'placeholders'  : {
 						'top'       : '',

@@ -151,7 +151,7 @@ class FLContactFormModule extends FLBuilderModule {
 		$recaptcha_response = isset( $_POST['recaptcha_response'] ) ? $_POST['recaptcha_response'] : false;
 		$terms_checked      = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
 
-		$subject     = ( isset( $_POST['subject'] ) ? $_POST['subject'] : __( 'Contact Form Submission', 'fl-builder' ) );
+		$subject     = ( isset( $_POST['subject'] ) ? stripslashes( $_POST['subject'] ) : __( 'Contact Form Submission', 'fl-builder' ) );
 		$admin_email = get_option( 'admin_email' );
 		$site_name   = get_option( 'blogname' );
 		$response    = array(
@@ -212,13 +212,14 @@ class FLContactFormModule extends FLBuilderModule {
 			}
 
 			$fl_contact_from_email = ( isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : null );
-			$fl_contact_from_name  = ( isset( $_POST['name'] ) ? $_POST['name'] : '' );
+			$fl_contact_from_name  = ( isset( $_POST['name'] ) ? stripslashes( $_POST['name'] ) : '' );
 
 			if ( isset( $_POST['name'] ) ) {
 				$site_name = apply_filters( 'fl_contact_form_from', $site_name, $_POST['name'] );
 			}
 
-			$headers = array(
+			$site_name = str_replace( '&amp;', '&', $site_name );
+			$headers   = array(
 				'From: ' . $site_name . ' <' . $admin_email . '>',
 				'Reply-To: ' . $fl_contact_from_name . ' <' . $fl_contact_from_email . '>',
 			);
@@ -227,21 +228,21 @@ class FLContactFormModule extends FLBuilderModule {
 			$template = '';
 
 			if ( isset( $_POST['name'] ) ) {
-				$template .= "Name: $_POST[name] \r\n";
+				$template .= __( 'Name', 'fl-builder' ) . ': ' . stripslashes( $_POST['name'] ) . "\r\n";
 			}
 			if ( isset( $_POST['email'] ) ) {
-				$template .= "Email: $_POST[email] \r\n";
+				$template .= __( 'Email', 'fl-builder' ) . ': ' . stripslashes( $_POST['email'] ) . "\r\n";
 			}
 			if ( isset( $_POST['phone'] ) ) {
-				$template .= "Phone: $_POST[phone] \r\n";
+				$template .= __( 'Phone', 'fl-builder' ) . ': ' . stripslashes( $_POST['phone'] ) . "\r\n";
 			}
 
-			$template .= __( 'Message', 'fl-builder' ) . ": \r\n" . $_POST['message'];
+			$template .= __( 'Message', 'fl-builder' ) . ": \r\n" . stripslashes( $_POST['message'] );
 
 			// Double check the mailto email is proper and no validation error found, then send.
 			if ( $mailto && false === $response['error'] ) {
 
-				$subject = esc_html( do_shortcode( $subject ) );
+				$subject = do_shortcode( $subject );
 				$mailto  = esc_html( do_shortcode( $mailto ) );
 				/**
 				 * Before sending with wp_mail()
