@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Custom Beaver Builder Custom Modules
+ * Plugin Name: Custom Beaver Builder Modules
  * Plugin URI: https://illusio.com
  * Description: A plugin for custom builder modules.
  * Version: 1.0
