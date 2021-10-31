@@ -33,16 +33,19 @@ window.GFConstantContactSettings = null;
                     url: ajaxurl,
                     data: {
                         action: 'gfconstantcontact_get_auth_url',
+                        nonce: gform_constantcontact_pluginsettings_strings.ajax_nonce,
                         custom_app_key: appKey,
                         custom_app_secret: appSecret
                     },
-                    success: function (response) {
-                        if (response !== '') {
-                            window.location.href = response;
-                        } else {
-                            window.location.href = self.pageURL + '&auth_error=true';
+                    success: function( response ) {
+                        if ( response.success ) {
+                            window.location.href = response.data;
                         }
-                    }
+                        else {
+                            window.location.href = self.pageURL +
+                                '&auth_error=true';
+                        }
+                    },
                 });
             }
         }
@@ -68,7 +71,10 @@ window.GFConstantContactSettings = null;
                     async: false,
                     url: ajaxurl,
                     dataType: 'json',
-                    data: {action: 'gfconstantcontact_deauthorize'},
+                    data: {
+                        action: 'gfconstantcontact_deauthorize',
+                        nonce: gform_constantcontact_pluginsettings_strings.ajax_nonce
+                    },
                     success: function (response) {
                         if (response.success) {
                             window.location.href = self.pageURL;

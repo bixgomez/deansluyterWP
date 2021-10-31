@@ -171,6 +171,8 @@ class GF_ConstantContact extends GFFeedAddOn {
 
 		parent::init();
 
+		add_filter( 'gform_settings_header_buttons', array( $this, 'filter_gform_settings_header_buttons' ), 99 );
+
 		$this->add_delayed_payment_support(
 			array(
 				'option_label' => esc_html__( 'Subscribe contact to Constant Contact only when payment is received.', 'gravityformsconstantcontact' ),
@@ -232,6 +234,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 					'auth'         => esc_html__( "Do you use your Constant Contact account ONLY for this website?\n\nIf not, please set up a custom app.", 'gravityformsconstantcontact' ),
 					'disconnect'   => esc_html__( 'Are you sure you want to disconnect from Constant Contact?', 'gravityformsconstantcontact' ),
 					'settings_url' => admin_url( 'admin.php?page=gf_settings&subview=' . $this->get_slug() ),
+					'ajax_nonce'   => wp_create_nonce( 'gfconstantcontact_ajax' ),
 				),
 			),
 		);
@@ -270,38 +273,37 @@ class GF_ConstantContact extends GFFeedAddOn {
 	}
 
 	/**
+	 * Return the plugin's icon for the plugin/form settings menu.
+	 *
+	 * @since 1.4
+	 *
+	 * @return string
+	 */
+	public function get_menu_icon() {
+
+		return file_get_contents( $this->get_base_path() . '/images/menu-icon.svg' );
+
+	}
+
+	/**
 	 * Maybe save access token.
 	 *
-	 * @since  1.0
+	 * @since 1.0
+	 * @since 1.4 Added CSRF nonce (the state param).
+	 *
+	 * @return void
 	 */
 	public function plugin_settings_page() {
-
-		// If access token is provided, save it.
-		if ( rgget( 'auth_payload' ) ) {
-			// Get current plugin settings.
-			$settings = $this->get_plugin_settings();
-
-			$tokens = json_decode( base64_decode( rgget( 'auth_payload' ) ), true );
-
-			// Add access token to plugin settings.
-			$settings['auth_token'] = array(
-				'access_token'  => $tokens['access_token'],
-				'refresh_token' => $tokens['refresh_token'],
-				'date_created'  => time(),
-			);
-
-			// Save plugin settings.
-			$this->update_plugin_settings( $settings );
-			GFCommon::add_message( esc_html__( 'Constant Contact settings have been updated.', 'gravityformsconstantcontact' ) );
-
+		// Check the state value.
+		if ( rgget( 'state' ) && ! wp_verify_nonce( rgget( 'state' ), $this->get_authentication_state_action() ) ) {
+			GFCommon::add_error_message( esc_html__( 'Unable to connect to Constant Contact due to mismatched state.', 'gravityformsconstantcontact' ) );
 		}
 
-		// If error is provided, display message.
-		if ( rgget( 'auth_error' ) ) {
+		$auth_payload = rgget( 'auth_payload' );
 
+		if ( $auth_payload == 'false' ) {
 			// Add error message.
 			GFCommon::add_error_message( esc_html__( 'Unable to connect to Constant Contact.', 'gravityformsconstantcontact' ) );
-
 		}
 
 		return parent::plugin_settings_page();
@@ -331,16 +333,29 @@ class GF_ConstantContact extends GFFeedAddOn {
 						'type'              => 'auth_token',
 						'feedback_callback' => array( $this, 'initialize_api' ),
 					),
-					array(
-						'type'     => 'save',
-						'value'    => esc_html__( 'Connect to Constant Contact', 'gravityformsconstantcontact' ),
-						'messages' => array(
-							'success' => esc_html__( 'Constant Contact settings have been updated.', 'gravityformsconstantcontact' ),
-						),
-					),
 				),
 			),
 		);
+
+	}
+
+	/**
+	 * Hide submit button on plugin settings page.
+	 *
+	 * @since 1.4
+	 *
+	 * @param string $html
+	 *
+	 * @return string
+	 */
+	public function filter_gform_settings_header_buttons( $html = '' ) {
+
+		// If this is not the plugin settings page, return.
+		if ( ! $this->is_plugin_settings( $this->get_slug() ) ) {
+			return $html;
+		}
+
+		return '';
 
 	}
 
@@ -502,6 +517,12 @@ class GF_ConstantContact extends GFFeedAddOn {
 				'field_type' => array( 'phone', 'text' ),
 			),
 			array(
+				'name'       => 'mobile_number',
+				'label'      => __( 'Mobile Phone Number', 'gravityformsconstantcontact' ),
+				'required'   => false,
+				'field_type' => array( 'phone', 'text' ),
+			),
+			array(
 				'name'       => 'work_number',
 				'label'      => __( 'Work Phone Number', 'gravityformsconstantcontact' ),
 				'required'   => false,
@@ -642,10 +663,15 @@ class GF_ConstantContact extends GFFeedAddOn {
 
 			} else {
 
-				$html .= '<div class="alert_red" style="padding:20px; padding-top:5px;">';
-				$html .= '<h4>' . esc_html__( 'SSL Certificate Required', 'gravityformsconstantcontact' ) . '</h4>';
-				$html .= sprintf( esc_html__( 'Make sure you have an SSL certificate installed and enabled, then %1$sclick here to continue%2$s.', 'gravityformsconstantcontact' ), '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=gravityformsconstantcontact', 'https' ) . '">', '</a>' );
-				$html .= '</div>';
+				$headline  = esc_html__( 'SSL Certificate Required', 'gravityformsconstantcontact' ) . '</h4>';
+				$paragraph = sprintf( esc_html__( 'Make sure you have an SSL certificate installed and enabled, then %1$sclick here to continue%2$s.', 'gravityformsconstantcontact' ), '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=gravityformsconstantcontact', 'https' ) . '">', '</a>' );
+
+				if ( version_compare( GFForms::$version, '2.5-dev-1', '<' ) ) {
+					$html .= sprintf( '<div class="alert_red" style="padding:20px; padding-top:5px;"><h4>%s</h4>%s</div>', $headline, $paragraph );
+				} else {
+					$html .= sprintf( '<div class="alert gforms_note_error">%s<br />%s</div>', $headline, $paragraph );
+				}
+
 			}
 		}
 
@@ -671,16 +697,14 @@ class GF_ConstantContact extends GFFeedAddOn {
 			return '';
 		}
 
-
-		$html  = '<div class="alert_yellow" style="padding:15px; padding-top:5px;">';
-		$html .= '<h4>' . esc_html__( 'An application must be created with Constant Contact to get your API Key and App Secret. The app should be dedicated to this website, please do not use the same app with multiple sites.', 'gravityformsconstantcontact' ) . '</h4>';
+		$html  = '<h4>' . esc_html__( 'An application must be created with Constant Contact to get your API Key and App Secret. The app should be dedicated to this website, please do not use the same app with multiple sites.', 'gravityformsconstantcontact' ) . '</h4>';
 		$html .= '<ol>';
 		$html .= '<li>' . sprintf( esc_html__( 'Login to the %1$sConstant Contact V3 Portal%2$s and create a "New Application".', 'gravityformsconstantcontact' ), '<a href="https://app.constantcontact.com/pages/dma/portal" target="_blank">', '</a>' ) . '</li>';
 		$html .= '<li>' . esc_html__( 'Enter "Gravity Forms" for the application name and click "Save".', 'gravityformsconstantcontact' ) . '</li>';
 		$html .= '<li>' . esc_html__( 'Copy your Constant Contact API Key and paste it into the API Key field below.', 'gravityformsconstantcontact' ) . '</li>';
 		$html .= '<li>' . esc_html__( 'Click the "Generate Secret" button, go through the secret generation process and paste the resulted key in the "App Secret" field below.', 'gravityformsconstantcontact' ) . '</li>';
 		$html .= '<li>' . sprintf( esc_html__( 'Paste the URL %s into the Redirect URI field and click "Save" in the top right corner of the screen.', 'gravityformsconstantcontact' ), '<strong>' . $this->get_redirect_uri() . '</strong>' ) . '</li>';
-		$html .= '</ol></div>';
+		$html .= '</ol>';
 
 		return $html;
 	}
@@ -693,8 +717,12 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 */
 	public function custom_app_settings() {
 
+		$html = '';
+
 		// Open custom app table.
-		$html = '<table class="form-table">';
+		if ( version_compare( GFForms::$version, '2.5-dev-1', '<' ) ) {
+			$html .= '<table class="form-table">';
+		}
 
 		ob_start();
 
@@ -722,15 +750,12 @@ class GF_ConstantContact extends GFFeedAddOn {
 		ob_end_clean();
 
 		// Display auth button.
-		$html .= '<tr><td></td><td>';
+		$html .= version_compare( GFForms::$version, '2.5-dev-1', '<' ) ? '<tr><td></td><td>' : '';
 		$html .= sprintf(
-			'<a href="#" class="button" id="gform_constantcontact_custom_auth_button">%1$s</a>',
+			'<button type="button" class="primary button large" id="gform_constantcontact_custom_auth_button">%1$s</button>',
 			esc_html__( 'Connect to Constant Contact', 'gravityformsconstantcontact' )
 		);
-		$html .= '</td></tr>';
-
-		// Close custom app table.
-		$html .= '</table>';
+		$html .= version_compare( GFForms::$version, '2.5-dev-1', '<' ) ? '</td></tr></table>' : '';
 
 		return $html;
 
@@ -780,7 +805,8 @@ class GF_ConstantContact extends GFFeedAddOn {
 	/**
 	 * Get Constant Contact authentication URL.
 	 *
-	 * @since  1.0
+	 * @since 1.0
+	 * @since 1.4 Used nonce as the state value.
 	 *
 	 * @param string $app_key Constant Contact app key.
 	 *
@@ -807,7 +833,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 			'client_id'     => $app_key,
 			'scope'         => 'contact_data',
 			'redirect_uri'  => urlencode( $this->get_redirect_uri() ),
-			'state'         => 'gravityformsconstantcontact',
+			'state'         => wp_create_nonce( $this->get_authentication_state_action() ),
 		);
 
 		// Add parameters to OAuth url.
@@ -1042,6 +1068,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 						);
 						break;
 					case 'home_number':
+					case 'mobile_number':
 					case 'work_number':
 						$subscriber_details['phone_numbers'][] = array(
 							'phone_number' => $field_value,
@@ -1140,8 +1167,9 @@ class GF_ConstantContact extends GFFeedAddOn {
 			}
 		}
 
-		$contact = $this->api->contact_exists( $subscriber_details['email_address']['address'] );
-		$action  = ( $contact ) ? 'updated' : 'added';
+		$contact    = $this->api->contact_exists( $subscriber_details['email_address']['address'] );
+		$contact_id = is_wp_error( $contact ) ? false : rgar( $contact, 'contact_id', false );
+		$action     = ( $contact_id ) ? 'updated' : 'added';
 
 		// Log the subscriber to be added or updated.
 		$this->log_debug( __METHOD__ . "(): Subscriber to be {$action}: " . print_r( $subscriber_details, true ) );
@@ -1154,7 +1182,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 		}
 
 		// Add or update subscriber.
-		$result = $this->api->update_contact( $subscriber_details, rgar( $contact, 'contact_id' ) );
+		$result = $this->api->update_contact( $subscriber_details, $contact_id );
 
 		if ( is_wp_error( $result ) ) {
 			$this->log_debug( __METHOD__ . '(): API errors when attempting subscription: ' . print_r( $result->get_error_messages(), true ) );
@@ -1183,6 +1211,16 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 * @since  1.0
 	 */
 	public function ajax_deauthorize() {
+		// Verify nonce.
+		if ( false === wp_verify_nonce( rgget( 'nonce' ), 'gfconstantcontact_ajax' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Access denied.', 'gravityformsconstantcontact' ) ) );
+		}
+
+		// If user is not authorized, exit.
+		if ( ! GFCommon::current_user_can_any( $this->_capabilities_settings_page ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Access denied.', 'gravityformsconstantcontact' ) ) );
+		}
+
 		$settings = $this->get_plugin_settings();
 
 		// Log that we revoked the access token.
@@ -1204,25 +1242,35 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 * @since 1.0
 	 */
 	public function ajax_get_auth_url() {
+		// Verify nonce.
+		if ( false === wp_verify_nonce( rgget( 'nonce' ), 'gfconstantcontact_ajax' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Access denied.', 'gravityformsconstantcontact' ) ) );
+		}
+
+		// If user is not authorized, exit.
+		if ( ! GFCommon::current_user_can_any( $this->_capabilities_settings_page ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Access denied.', 'gravityformsconstantcontact' ) ) );
+		}
+
 		$settings                      = $this->get_plugin_settings();
 		$settings['custom_app_key']    = sanitize_text_field( rgget( 'custom_app_key' ) );
 		$settings['custom_app_secret'] = sanitize_text_field( rgget( 'custom_app_secret' ) );
 
 		$this->update_plugin_settings( $settings );
 
-		echo $this->get_auth_url( $settings['custom_app_key'] );
-		die();
+		wp_send_json_success( $this->get_auth_url( $settings['custom_app_key'] ) );
 	}
 
 	/**
 	 * Request auth tokens from Constant Contact API.
 	 *
 	 * @since 1.0
+	 * @since 1.4 Check if the state matches the value in the settings.
 	 *
 	 * @return bool|void
 	 */
 	public function request_access_token() {
-		if ( rgblank( rgget( 'code' ) ) || rgget( 'state' ) !== 'gravityformsconstantcontact' ) {
+		if ( rgblank( rgget( 'code' ) ) || rgget( 'subview' ) || ! wp_verify_nonce( rgget( 'state' ), $this->get_authentication_state_action() ) ) {
 			return;
 		}
 
@@ -1231,16 +1279,36 @@ class GF_ConstantContact extends GFFeedAddOn {
 		$tokens = $this->get_tokens();
 
 		if ( ! empty( $tokens['access_token'] ) && ! empty( $tokens ) ) {
-			// Add access token to redirect URL.
+			// Get current plugin settings.
+			$settings = $this->get_plugin_settings();
+
+			// Add access token to plugin settings.
+			$settings['auth_token'] = array(
+				'access_token'  => $tokens['access_token'],
+				'refresh_token' => $tokens['refresh_token'],
+				'date_created'  => time(),
+			);
+
+			// Save plugin settings.
+			$this->update_plugin_settings( $settings );
+
+			// Redirect to the Constant Contact settings page.
 			$redirect_url = add_query_arg(
 				array(
-					'auth_payload' => base64_encode( wp_json_encode( $tokens ) ),
+					'auth_payload' => 'true',
+					'state'        => rgget( 'state' ),
 				),
 				$settings_url
 			);
 		} else {
 			// Add error flag to redirect URL.
-			$redirect_url = add_query_arg( array( 'auth_error' => 'true' ), $settings_url );
+			$redirect_url = add_query_arg(
+				array(
+					'auth_payload' => 'false',
+					'state'        => rgget( 'state' ),
+				),
+				$settings_url
+			);
 		}
 
 		wp_safe_redirect( $redirect_url );
@@ -1433,5 +1501,16 @@ class GF_ConstantContact extends GFFeedAddOn {
 		}
 
 		return isset( $subscriber_details['custom_fields'] ) ? $subscriber_details['custom_fields'] : array();
+	}
+
+	/**
+	 * Get the authentication state, which was created from a wp nonce.
+	 *
+	 * @since 1.4
+	 *
+	 * @return string
+	 */
+	public function get_authentication_state_action() {
+		return 'gform_constantcontact_authentication_state';
 	}
 }
