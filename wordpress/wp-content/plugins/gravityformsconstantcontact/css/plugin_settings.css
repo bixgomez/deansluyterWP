@@ -4,7 +4,7 @@
 }
 
 #tab_gravityformsconstantcontact table.gforms_form_settings > tbody > tr:last-child,
-#auth_token {
+#gform-settings-save {
     display: none;
 }
 
