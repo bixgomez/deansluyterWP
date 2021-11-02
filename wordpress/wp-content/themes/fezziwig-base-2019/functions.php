@@ -266,6 +266,7 @@ add_action( 'after_setup_theme', 'fezziwig_image_sizes' );
 function fezziwig_image_sizes() {
   add_image_size( 'homepage feature mobile', 600, 300, TRUE );
   add_image_size( 'homepage feature desktop', 400, 250, TRUE );
+  add_image_size( 'book-cover--teaser', 300, 4000, FALSE );
 }
 
 //Page Slug Body Class
