@@ -25,11 +25,11 @@ while ( have_posts() ) :
 	$related_books = get_field('related_books');
 
 	if( $featured_book ):
-		echo '<div class="featured-book">';
+		echo '<div class="featured-book-wrapper">';
 		$post = $featured_book;
 			setup_postdata($post);
-			get_template_part('template-parts/book-teaser', get_post_format());
-		wp_reset_postdata();
+			get_template_part('template-parts/featured-book', get_post_format());
+		  wp_reset_postdata();
 		echo '</div>';
 	endif;
 

@@ -3,6 +3,25 @@
     "title": "Post Type: Book",
     "fields": [
         {
+            "key": "field_6180d0fc69b1e",
+            "label": "Subtitle",
+            "name": "subtitle",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_617f0d745b422",
             "label": "Quotes",
             "name": "quotes",
@@ -137,10 +156,10 @@
             ]
         },
         {
-            "key": "field_5c6e58ed38b97",
-            "label": "Release Date",
-            "name": "release_date",
-            "type": "date_picker",
+            "key": "field_6180d11b69b1f",
+            "label": "Additional Text",
+            "name": "additional_text",
+            "type": "wysiwyg",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -149,9 +168,12 @@
                 "class": "",
                 "id": ""
             },
-            "display_format": "F j, Y",
-            "return_format": "m\/d\/Y",
-            "first_day": 1
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 1,
+            "delay": 0,
+            "wysiwyg_height": 3
         }
     ],
     "location": [
@@ -171,5 +193,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1635716676
+    "modified": 1635832164
 }
