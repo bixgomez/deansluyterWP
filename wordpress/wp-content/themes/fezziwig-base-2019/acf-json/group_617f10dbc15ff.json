@@ -3,10 +3,10 @@
     "title": "Related Content",
     "fields": [
         {
-            "key": "field_617f10eb41deb",
-            "label": "Related Books",
-            "name": "related_books",
-            "type": "repeater",
+            "key": "field_617f8505835d7",
+            "label": "Featured Book",
+            "name": "featured_book",
+            "type": "post_object",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -15,35 +15,36 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "",
-            "min": 0,
-            "max": 0,
-            "layout": "table",
-            "button_label": "",
-            "sub_fields": [
-                {
-                    "key": "field_617f113041dec",
-                    "label": "Related Book",
-                    "name": "related_book",
-                    "type": "post_object",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "post_type": [
-                        "book"
-                    ],
-                    "taxonomy": "",
-                    "allow_null": 0,
-                    "multiple": 0,
-                    "return_format": "object",
-                    "ui": 1
-                }
-            ]
+            "post_type": [
+                "book"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 0,
+            "return_format": "object",
+            "ui": 1
+        },
+        {
+            "key": "field_617f5b1bf8920",
+            "label": "Related Books",
+            "name": "related_books",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "book"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 1,
+            "return_format": "object",
+            "ui": 1
         }
     ],
     "location": [
@@ -63,5 +64,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1635717497
+    "modified": 1635747130
 }
