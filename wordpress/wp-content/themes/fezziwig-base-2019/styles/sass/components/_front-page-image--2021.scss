@@ -1,8 +1,8 @@
 .front-page-header--wrapper {
   font-size: 1vw;
 
-  @include breakpoint(1400px) {
-    font-size: 14px;
+  @include breakpoint(1300px) {
+    font-size: 13px;
     display: flex;
     justify-content: center;
     // background-color: $color--primary-dark;
