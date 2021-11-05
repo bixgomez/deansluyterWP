@@ -24,7 +24,7 @@
     height: 70em;
 
     @include breakpoint($sm) {
-      width: 70em;
+      width: 67em;
       height: 50em;
     }
   }
@@ -39,7 +39,7 @@
     align-items: flex-start;
 
     @include breakpoint($sm) {
-      width: 30em;
+      width: 33em;
       height: 50em;
     }
   }
@@ -110,7 +110,8 @@ a.new-book-link {
   text-transform: uppercase;
 
   @include breakpoint($sm) {
-    font-size: 1.5em;
+    // font-size: 1.5em;
+    font-size: 1.7em;
   }
 
   .new-book-link__text {
