@@ -5227,7 +5227,7 @@ final class FLBuilderModel {
 	 */
 	static public function delete_user_template( $template_id = null ) {
 		if ( isset( $template_id ) ) {
-			wp_delete_post( $template_id, true );
+			wp_trash_post( $template_id, true );
 		}
 	}
 
@@ -5684,13 +5684,14 @@ final class FLBuilderModel {
 
 			foreach ( $nodes as $node_id => $node ) {
 
-				$nodes[ $node_id ]->template_id      = $template_id;
-				$nodes[ $node_id ]->template_node_id = $node_id;
-
-				if ( $node_id == $root_node->node ) {
-					$nodes[ $node_id ]->template_root_node = true;
-				} elseif ( isset( $nodes[ $node_id ]->template_root_node ) ) {
-					unset( $nodes[ $node_id ]->template_root_node );
+				if ( false == $nodes[ $node_id ]->global ) {
+					$nodes[ $node_id ]->template_id      = $template_id;
+					$nodes[ $node_id ]->template_node_id = $node_id;
+					if ( $node_id == $root_node->node ) {
+						$nodes[ $node_id ]->template_root_node = true;
+					} elseif ( isset( $nodes[ $node_id ]->template_root_node ) ) {
+						unset( $nodes[ $node_id ]->template_root_node );
+					}
 				}
 			}
 		} else {
@@ -5814,7 +5815,7 @@ final class FLBuilderModel {
 		self::unlink_global_node_template_from_all_posts( $template_post_id );
 
 		// Delete the template post.
-		wp_delete_post( $template_post_id, true );
+		wp_trash_post( $template_post_id, true );
 	}
 
 	/**

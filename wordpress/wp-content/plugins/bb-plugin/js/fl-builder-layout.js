@@ -684,8 +684,8 @@
 					player.setVolume(0);
 				}
 				else if ("yes" === enableAudio ) {
-					// Chrome and Safari have audio policy restrictions for autoplay videos.
-					if ( ua.indexOf("Safari") > -1 || ua.indexOf("Chrome") > -1 ) {
+					// Chrome, Safari, Firefox have audio policy restrictions for autoplay videos.
+					if ( ua.indexOf("Safari") > -1 || ua.indexOf("Chrome") > -1 || ua.indexOf("Firefox") > -1 ) {
 						player.setVolume(0);
 						audioButton.show();
 					}
