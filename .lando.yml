@@ -1,4 +1,4 @@
-name: dean-sluyter-wp
+name: deansluyter
 recipe: wordpress
 config:
   webroot: ./wordpress
