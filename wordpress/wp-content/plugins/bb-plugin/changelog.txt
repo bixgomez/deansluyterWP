@@ -1,3 +1,45 @@
+<h4>2.5.2.1- 02/11/2022</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+		<li>Improve compatibility with FontAwesome 6 and our icon picker when using the official FontAwesome plugin</li>
+		<li>Revert Button module: Fix border Style not working if width not specified as it was causing border settings to not be respected in some situations</li>
+</ul>
+
+<h4>2.5.2- 02/10/2022</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+		<li>Menu module: add submenu indicators on mobile</li>
+		<li>Content Slider: Focus on slide when editing</li>
+		<li>Login Module: Add new option for redirect</li>
+		<li>WPCLI: Add duplicate function</li>
+		<li>Prevent WP Post Page Clone plugin from adding duplicate links to posts/pages where BB is used to prevent it breaking our data</li>
+		<li>Add pop-up when upload_path is set to alert user of the issue as it will prevent the UI from working</li>
+		<li>Add database collation info to our debug mode output</li>
+		<li>If user templates are deleted in the UI, they now go to the trash first to ensure consistency with WP functions</li>
+</ul>
+
+<p><strong>Bug Fixes</strong></p>
+<ul>
+		<li>Menu module: fix padding on menu items with a sub-menu</li>
+		<li>Button module: Fix border Style not working if width not specified</li>
+		<li>Photo module: Caption causes the image to go out of their container</li>
+		<li>Number Counter: fix animation not starting when number is not shown</li>
+		<li>Menu module: Fix both menus opening upon clicking on the menu button</li>
+		<li>Fix background video's Audio Control Not Shown in Firefox</li>
+		<li>Video Module: fix other video types showing as selectable when they are not supported</li>
+		<li>Fix PHP Notice WP_Scripts::localize was called incorrectly</li>
+		<li>Photo Module: Ensure the same sizes are shown in Photo module and Gallery Module lightbox option</li>
+		<li>Fix Global column disappearing from UI after saving row as global</li>
+		<li>Button Group module: Fix responsive alignment not working on vertical layout</li>
+		<li>Posts Module: Hide TEC options when post type selected is not the TEC post type</li>
+		<li>Pricing table: fix features preview not working properly</li>
+		<li>Pricing table:  fix features display in Safari</li>
+		<li>Sanitize Site URLs for our use to prevent it from breaking the UI</li>
+		<li>Fix notice: Warning: Undefined variable $widget_class</li>
+		<li>Fix glitch with select2 where it won't stay open when clicking in some cases</li>
+		<li>Remove a PHP comment that was triggering some hosts' security protection to delete the file which resulted in the Outline Panel not working</li>
+</ul>
+
 <h4>2.5.1.3 - 02/1/2022</h4>
 <p><strong>Hot Fix</strong></p>
 <ul>

@@ -1114,6 +1114,9 @@ final class FLBuilderCompatibility {
 			if ( isset( $actions['duplicate_post'] ) ) {
 				unset( $actions['duplicate_post'] );
 			}
+			if ( isset( $actions['clone'] ) ) {
+				unset( $actions['clone'] );
+			}
 		}
 		return $actions;
 	}
