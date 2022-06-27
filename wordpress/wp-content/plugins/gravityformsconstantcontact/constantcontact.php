@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms Constant Contact Add-On
 Plugin URI: https://gravityforms.com
 Description: Integrates Gravity Forms with Constant Contact allowing form submissions to be automatically sent to your Constant Contact account.
-Version: 1.5
+Version: 1.6
 Author: Gravity Forms
 Author URI: https://gravityforms.com
 License: GPL-3.0+
@@ -11,7 +11,7 @@ Text Domain: gravityformsconstantcontact
 Domain Path: /languages
 
 ------------------------------------------------------------------------
-Copyright 2019-2020 Rocketgenius, Inc.
+Copyright 2019-2022 Rocketgenius, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ along with this program.  If not, see http://www.gnu.org/licenses.
 
 
 // Defines the current version of the Gravity Forms Constant Contact Add-On.
-define( 'GF_CONSTANTCONTACT_VERSION', '1.5' );
+define( 'GF_CONSTANTCONTACT_VERSION', '1.6' );
 
 define( 'GF_CONSTANTCONTACT_MIN_GF_VERSION', '2.2' );
 
