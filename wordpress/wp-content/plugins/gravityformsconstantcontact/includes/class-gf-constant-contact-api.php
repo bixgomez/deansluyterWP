@@ -145,6 +145,7 @@ class GF_ConstantContact_API {
 				'access_token'  => $auth_token['access_token'],
 				'refresh_token' => $auth_token['refresh_token'],
 				'date_created'  => time(),
+				'expires_in'    => $auth_token['expires_in'],
 			);
 
 			$this->auth_token = $auth_token;

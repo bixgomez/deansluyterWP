@@ -25,6 +25,18 @@ class GF_ConstantContact extends GFFeedAddOn {
 	private static $_instance = null;
 
 	/**
+	 * Version of this add-on which requires reauthentication with the API.
+	 *
+	 * Anytime updates are made to this class that requires a site to reauthenticate Gravity Forms with Constant Contact, this
+	 * constant should be updated to the value of GF_ConstantContact::$version.
+	 *
+	 * @since 1.6
+	 *
+	 * @see GF_ConstantContact::$version
+	 */
+	const LAST_REAUTHENTICATION_VERSION = '1.5.1';
+
+	/**
 	 * Defines the version of the Gravity Forms Constant Contact Add-On Add-On.
 	 *
 	 * @since 1.0
@@ -205,6 +217,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 		parent::init_admin();
 
 		add_action( 'admin_init', array( $this, 'request_access_token' ) );
+		add_action( 'admin_notices', array( $this, 'display_notices' ) );
 	}
 
 	/**
@@ -825,13 +838,13 @@ class GF_ConstantContact extends GFFeedAddOn {
 		}
 
 		// Get base OAuth URL.
-		$auth_url = 'https://api.cc.email/v3/idfed';
+		$auth_url = 'https://authz.constantcontact.com/oauth2/default/v1/authorize';
 
 		// Prepare OAuth URL parameters.
 		$auth_params = array(
 			'response_type' => 'code',
 			'client_id'     => $app_key,
-			'scope'         => 'contact_data',
+			'scope'         => 'contact_data+offline_access',
 			'redirect_uri'  => urlencode( $this->get_redirect_uri() ),
 			'state'         => wp_create_nonce( $this->get_authentication_state_action() ),
 		);
@@ -966,8 +979,9 @@ class GF_ConstantContact extends GFFeedAddOn {
 		// Assign API library to instance.
 		$this->api = $ctct;
 
-		// The token is expired after 7200 seconds it's used.
-		if ( time() > $auth_token['date_created'] + 7199 ) {
+		// If the token has an expiry time from Constant Contact, use that. Legacy tokens prior to March 31, 2022 expire 7200 seconds after being used.
+		$time_to_expiration = ( ! empty( $auth_token['expires_in'] ) ) ? $auth_token['expires_in'] : 7199;
+		if ( time() > $auth_token['date_created'] + $time_to_expiration ) {
 			// Log that authentication test failed.
 			$this->log_debug( __METHOD__ . '(): API tokens expired, start refreshing.' );
 
@@ -1256,6 +1270,9 @@ class GF_ConstantContact extends GFFeedAddOn {
 		$settings['custom_app_key']    = sanitize_text_field( rgget( 'custom_app_key' ) );
 		$settings['custom_app_secret'] = sanitize_text_field( rgget( 'custom_app_secret' ) );
 
+		// Set the API authentication version.
+		$settings['reauth_version'] = self::LAST_REAUTHENTICATION_VERSION;
+
 		$this->update_plugin_settings( $settings );
 
 		wp_send_json_success( $this->get_auth_url( $settings['custom_app_key'] ) );
@@ -1287,6 +1304,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 				'access_token'  => $tokens['access_token'],
 				'refresh_token' => $tokens['refresh_token'],
 				'date_created'  => time(),
+				'expires_in'    => $tokens['expires_in'],
 			);
 
 			// Save plugin settings.
@@ -1327,7 +1345,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 	public function get_tokens( $refresh_token = '' ) {
 		// Get base OAuth URL.
 		$code     = rgget( 'code' );
-		$auth_url = 'https://idfed.constantcontact.com/as/token.oauth2';
+		$auth_url = ( ! $this->requires_api_reauthentication() ) ? 'https://authz.constantcontact.com/oauth2/default/v1/token' : 'https://idfed.constantcontact.com/as/token.oauth2';
 
 		// Prepare OAuth URL parameters.
 		if ( empty( $code ) ) {
@@ -1375,6 +1393,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 		return array(
 			'access_token'  => rgar( $response_body, 'access_token' ),
 			'refresh_token' => rgar( $response_body, 'refresh_token' ),
+			'expires_in'    => rgar( $response_body, 'expires_in' ),
 		);
 	}
 
@@ -1512,5 +1531,46 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 */
 	public function get_authentication_state_action() {
 		return 'gform_constantcontact_authentication_state';
+	}
+
+	/**
+	 * Check whether this add-on needs to be reauthenticated with the Constant Contact API.
+	 *
+	 * @since 1.6
+	 *
+	 * @return bool
+	 */
+	private function requires_api_reauthentication() {
+		$settings = $this->get_plugin_settings();
+
+		return ! empty( $settings ) && version_compare( rgar( $settings, 'reauth_version' ), self::LAST_REAUTHENTICATION_VERSION, '<' );
+	}
+
+	/**
+	 * Display a notification in the admin if Gravity Forms needs to reauthenticate with Constant Contact.
+	 *
+	 * @since 1.6
+	 */
+	public function display_notices() {
+		if ( ! $this->requires_api_reauthentication() ) {
+			return;
+		}
+
+		$message = sprintf(
+		/* translators: 1: open <a> tag, 2: close </a> tag */
+			esc_html__(
+				'On March 31, 2022, Constant Contact is ending support for their previous authorization management service, which can result in outdated applications no longer being able to connect. %1$sPlease update your Constant Contact application%3$s using %2$sthese instructions%3$s and connect using your new application to ensure the continued functionality of your form feeds.',
+				'gravityformsconstantcontact'
+			),
+			'<a href="' . $this->get_plugin_settings_url() . '">',
+			'<a href="https://developer.constantcontact.com/api_guide/auth_update_apps.html">',
+			'</a>'
+		)
+		?>
+
+		<div class="gf-notice notice notice-error">
+			<p><?php echo wp_kses( $message, array( 'a' => array( 'href' => true ) ) ); ?></p>
+		</div>
+		<?php
 	}
 }
