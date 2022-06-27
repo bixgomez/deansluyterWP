@@ -17,11 +17,9 @@
   <div class="section-outer section-outer--footer">
     <footer class="section section--footer">
       <div class="section-inner section-inner--footer">
-
         <div class="site-info">
           Copyright © 1998–<?php echo date("Y"); ?> by Dean Sluyter
         </div><!-- .site-info -->
-
       </div>
     </footer>
   </div>
