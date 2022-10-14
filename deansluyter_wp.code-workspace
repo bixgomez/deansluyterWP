@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "wordpress"
+			"path": "."
 		},
 		{
-			"path": "wordpress/wp-content/themes/deansluyter_2019"
+			"path": "wordpress/wp-content/themes/fezziwig-base-2019"
 		}
 	],
 	"settings": {
