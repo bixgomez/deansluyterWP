@@ -582,7 +582,12 @@ class Replace
         }
 
         if ('find_replace' === $this->intent) {
-            $this->diff_interpreter->compute(DiffEntity::create($original, $subject, $this->column, is_object($this->row) ? reset($this->row) : null));
+            $row = null;
+            if (is_object($this->row) ) {
+                $get_vars = function_exists('get_mangled_object_vars') ? get_mangled_object_vars($this->row) : $this->row;
+                $row      = reset($get_vars);
+            }
+            $this->diff_interpreter->compute(DiffEntity::create($original, $subject, $this->column, $row));
         }
 
         return $subject;
@@ -852,14 +857,19 @@ class Replace
      * @throws \DI\NotFoundException
      */
     public function validate_regex_pattern() {
-        $_POST = $this->http_helper->convert_json_body_to_post();
-
+       $_POST = $this->http_helper->convert_json_body_to_post();
+        if (isset($_POST['pattern'])) {
+            $pattern = Util::safe_wp_unslash($_POST['pattern']);
+            if (Util::is_regex_pattern_valid( $pattern ) === false) {
+                return $this->http->end_ajax(false);
+            }
+        }
         $key_rules = array(
-            'pattern' => 'string',
+            'pattern' => 'regex',
         );
 
         $state_data = $this->migration_state_manager->set_post_data( $key_rules );
-        return $this->http->end_ajax( Util::is_regex_pattern_valid( $state_data['pattern'] ) );
+        return $this->http->end_ajax(isset($state_data['pattern']) === true);
     }
 
     public function register_rest_routes() {
