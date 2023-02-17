@@ -434,7 +434,7 @@
 		{
 			if(typeof wp.heartbeat != 'undefined') {
 
-				wp.heartbeat.interval(30);
+				wp.heartbeat.interval(120);
 
 				wp.heartbeat.enqueue('fl_builder_post_lock', {
 					post_id: FLBuilderConfig.postId
@@ -921,7 +921,8 @@
 
 			/* Loop Settings Fields */
 			$('body').on( 'change', '.fl-loop-data-source-select select[name=data_source]', FLBuilder._loopDataSourceChange);
-			$('body').on( 'change', '.fl-custom-query select[name="post_type[]"]', FLBuilder._customQueryPostTypeChange);
+			$('body').on( 'change', '.fl-custom-query select[name=post_type]', FLBuilder._customQueryPostTypeChange);
+			$('body').on( 'change', '.fl-custom-query select[name="post_type[]"]', FLBuilder._customQueryPostTypesChange);
 
 			/* Text Fields - Add Predefined Value Selector */
 			$('body').on( 'change', '.fl-text-field-add-value', FLBuilder._textFieldAddValueSelectChange);
@@ -5874,7 +5875,8 @@
 		 */
 		_addModuleComplete: function( response )
 		{
-			var data = FLBuilder._jsonParse( response );
+			var data             = FLBuilder._jsonParse( response ),
+			    showSettingsForm = false;
 
 			// Setup a preview layout if we have one.
 			if ( data.layout ) {
@@ -5894,8 +5896,13 @@
 			if ( $( 'form.fl-builder-settings' ).length || data.global ) {
 				if ( data.layout ) {
 					FLBuilder._renderLayout( data.layout );
+					showSettingsForm = true;
 				}
 			} else {
+				showSettingsForm = true;
+			}
+
+			if ( showSettingsForm ) {
 				FLBuilder._showModuleSettings( data, function() {
 					$( '.fl-builder-module-settings' ).data( 'new-module', '1' );
 				} );
@@ -7039,7 +7046,7 @@
 
 				// Dispatch to store
 				const actions = FL.Builder.data.getLayoutActions()
-				const callback = FLBuilder._saveSettingsComplete.bind( this, render, preview )
+				const callback = FLBuilder._saveSettingsComplete.bind( this, render )
 				actions.updateNodeSettings( nodeId, settings, callback )
 
 				// Trigger the hook.
@@ -7105,19 +7112,19 @@
 		 * @access private
 		 * @method _saveSettingsComplete
 		 * @param {Boolean} render Whether the layout should render after saving.
-		 * @param {Object} preview The preview object for this settings save.
 		 * @param {String} response The layout data from the server.
 		 */
-		_saveSettingsComplete: function( render, preview, response )
+		_saveSettingsComplete: function( render, response )
 		{
 			var data 	 	= FLBuilder._jsonParse( response ),
 				type	 	= data.layout.nodeType,
 				moduleType	= data.layout.moduleType,
 				hook	 	= 'didSave' + type.charAt(0).toUpperCase() + type.slice(1) + 'SettingsComplete',
+				preview		= FLBuilder.preview,
 				callback 	= function() {
 					if (preview && data.layout.partial && data.layout.nodeId === preview.nodeId && !FLBuilder._publishAndRemain ) {
 						preview.clear();
-						preview = null;
+						FLBuilder.preview = null;
 					}
 					FLBuilder._publishAndRemain = false;
 				};
@@ -9628,6 +9635,22 @@
 		},
 
 		/**
+		 * Callback for when the post types of a custom query changes.
+		 *
+		 * @since 2.6.2
+		 * @access private
+		 * @method _customQueryPostTypesChange
+		 */
+		_customQueryPostTypesChange: function()
+		{
+			var postTypes = $(this).val();
+			$('.fl-custom-query-filter').hide();
+			for ( val of postTypes ) {
+				$('.fl-custom-query-' + val + '-filter').show();
+			}
+		},
+
+		/**
 		 * Callback for when the post type of a custom query changes.
 		 *
 		 * @since 1.2.3
@@ -9636,11 +9659,9 @@
 		 */
 		_customQueryPostTypeChange: function()
 		{
-			var postTypes = $(this).val();
+			var val = $(this).val();
 			$('.fl-custom-query-filter').hide();
-			for ( val of postTypes ) {
-				$('.fl-custom-query-' + val + '-filter').show();
-			}
+			$('.fl-custom-query-' + val + '-filter').show();
 		},
 
 		/* Ordering Fields
