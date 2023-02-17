@@ -167,7 +167,7 @@ final class FLBuilderModel {
 	 */
 	static private $node_template_types = array();
 
-	static private $get_user_templates_cache = false;
+	static private $get_user_templates_cache = array();
 
 	/**
 	 * Initialize hooks.
@@ -1667,6 +1667,43 @@ final class FLBuilderModel {
 		}
 
 		return $defaults;
+	}
+
+	/**
+	 * Get the placeholder data for node spacing breakpoint fields.
+	 *
+	 * @since 2.6
+	 * @param string $type The type of node.
+	 * @param string $property Either padding or margins.
+	 * @param string $size The breakpoint size key.
+	 * @return object
+	 */
+	static public function get_node_spacing_breakpoint_placeholders( $type, $property, $size ) {
+		$global_settings = self::get_global_settings();
+		$sizes           = array( 'large', 'medium', 'responsive' );
+		$fallbacks       = array_reverse( array_slice( $sizes, 0, array_search( $size, $sizes ) ) );
+		$sides           = array( 'top', 'right', 'bottom', 'left' );
+		$placeholders    = array();
+
+		foreach ( $sides as $side ) {
+			$key                   = $type . '_' . $property . '_' . $side . '_' . $size;
+			$placeholders[ $side ] = '';
+
+			if ( '' === $global_settings->{ $key } ) {
+				foreach ( $fallbacks as $fallback ) {
+					$fallback_key = $type . '_' . $property . '_' . $side . '_' . $fallback;
+
+					if ( '' !== $global_settings->{ $fallback_key } ) {
+						$placeholders[ $side ] = $global_settings->{ $fallback_key };
+						break;
+					}
+				}
+			} else {
+				$placeholders[ $side ] = $global_settings->{ $key };
+			}
+		}
+
+		return $placeholders;
 	}
 
 	/**
@@ -4756,8 +4793,6 @@ final class FLBuilderModel {
 		 */
 		if ( apply_filters( 'fl_builder_enable_small_data_mode', false ) ) {
 
-			$data = self::clean_layout_data( $data );
-
 			if ( 'published' === $status ) {
 				foreach ( $data as $node_id => $node ) {
 					if ( isset( $node->settings ) ) {
@@ -4765,7 +4800,6 @@ final class FLBuilderModel {
 					}
 				}
 			}
-			$data = self::slash_settings( $data );
 		} else {
 			$data = self::slash_settings( self::clean_layout_data( $data ) );
 		}
@@ -5088,6 +5122,8 @@ final class FLBuilderModel {
 		// Rerender the assets for this layout.
 		FLBuilder::render_assets();
 
+		self::cleanup_post_data( $post_id );
+
 		/**
 		 * This action allows you to hook into after the data is saved for a layout.
 		 * @see fl_builder_after_save_layout
@@ -5114,12 +5150,28 @@ final class FLBuilderModel {
 			self::save_layout( false );
 		}
 
+		self::cleanup_post_data( $post_id, false );
+
 		/**
 		 * After draft is saved.
 		 * @see fl_builder_after_save_draft
 		 */
 		do_action( 'fl_builder_after_save_draft', $post_id, $post_status );
 	}
+
+	static public function cleanup_post_data( $post_id, $history = true ) {
+
+		// remove any post lock
+		delete_post_meta( $post_id, '_edit_lock' );
+
+		if ( ! $history ) {
+			return;
+		}
+
+		// delete old states
+		FLBuilderHistoryManager::delete_states( $post_id );
+	}
+
 
 	/**
 	 * Duplicates a layout for WPML when the copy from original

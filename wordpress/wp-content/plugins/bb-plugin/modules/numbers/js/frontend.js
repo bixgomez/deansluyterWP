@@ -17,12 +17,12 @@ var FLBuilderNumber;
 		this.startNumber         = parseFloat( ( 'undefined' !== typeof window["number_module_" + settings.id] ) ? window["number_module_" + settings.id].start_number : settings.start_number );
 		this.number              = parseFloat( ( 'undefined' !== typeof window["number_module_" + settings.id] ) ? window["number_module_" + settings.id].number : settings.number );
 		this.max                 = parseFloat( ( 'undefined' !== typeof window["number_module_" + settings.id] ) ? window["number_module_" + settings.id].max : settings.max );
+		this.locale              = ( 'undefined' !== typeof window["number_module_" + settings.id] ) ? window["number_module_" + settings.id].locale : 'en_US';
 		this.speed               = settings.speed;
 		this.delay               = settings.delay;
 		this.breakPoints         = settings.breakPoints;
 		this.currentBrowserWidth = $( window ).width();
 		this.animated            = false;
-		this.format              = settings.format;
 
 		// initialize the menu
 		this._initNumber();
@@ -39,7 +39,6 @@ var FLBuilderNumber;
 		max                     : 0,
 		speed                   : 0,
 		delay                   : 0,
-		format                  : {},
 
 		_initNumber: function(){
 
@@ -88,11 +87,11 @@ var FLBuilderNumber;
 
 			var $number    = $( this.wrapperClass ).find( '.fl-number-string' ),
 				$string    = $number.find( '.fl-number-int' ),
-				number     = parseInt( $string.data( 'number' ) ),
+				number     = parseFloat( $string.data( 'number' ) ),
 				current    = 0,
 				self       = this,
-				startNum   = parseInt( $string.data( 'start-number' ) ),
-				endNum     = parseInt( $string.data( 'number' ) ),
+				startNum   = parseFloat( $string.data( 'start-number' ) ),
+				endNum     = parseFloat( $string.data( 'number' ) ),
 				countUp    = startNum < endNum,
 				startStep  = countUp ? startNum : endNum,
 				endStep    = countUp ? endNum : startNum,
@@ -100,7 +99,7 @@ var FLBuilderNumber;
 				counterNum = startNum;
 
 			if ( ! this.animated ) {
-	
+
 				$string.prop( 'Counter', startStep ).animate({
 					Counter: endStep
 				}, {
@@ -108,15 +107,25 @@ var FLBuilderNumber;
 					easing: 'swing',
 					step: function (now, fx) {
 						counterNum = Math.ceil(this.Counter);
-
 						if (countUp) {
 							stepNum = counterNum;
 						} else {
 							stepNum = (startStep + endStep - counterNum);
 						}
-						$string.text( stepNum );
+						locale  = self.locale.replace('_', '-' );
+						stepNumText = new Intl.NumberFormat(locale).format(stepNum)
+						if ( countUp ) {
+							if ( stepNum < endStep ) {
+								$string.text( stepNumText );
+							}
+						} else {
+							$string.text( stepNumText );
+						}
 					},
 					complete: function() {
+						locale  = self.locale.replace('_', '-' );
+						endNum = new Intl.NumberFormat(locale).format(endNum)
+						$string.text( endNum );
 						self.animated = true;
 					}
 				});
@@ -137,7 +146,7 @@ var FLBuilderNumber;
 				max    = parseInt( total ),
 			    startPct = 0,
 				endPct =  max;
-			
+
 			if (val < 0) { val = 0;}
 			if (val > max) { val = max;}
 
@@ -165,13 +174,13 @@ var FLBuilderNumber;
 		_triggerBar: function(){
 
 			var $bar       = $( this.wrapperClass ).find( '.fl-number-bar' ),
-				startNum   = parseInt( $(this.wrapperClass).find('.fl-number-int').data('start-number') ), 
+				startNum   = parseInt( $(this.wrapperClass).find('.fl-number-int').data('start-number') ),
 				number     = parseInt( $(this.wrapperClass).find('.fl-number-int').data('number') ),
 				total      = parseInt( $(this.wrapperClass).find('.fl-number-int').data('total') ),
 				initWidth  = 0,
 				finalWidth = 0;
 
-			// total is also equal to this.max 
+			// total is also equal to this.max
 			if ( isNaN( total ) || total <= 0 ) {
 				return;
 			}
@@ -184,7 +193,7 @@ var FLBuilderNumber;
 
 			initWidth = Math.ceil( (startNum / total) * 100 );
 			finalWidth = Math.ceil( (number / total) * 100 );
-			
+
 			// Set the initial indicator bar value.
 			$bar.css('width', initWidth + '%');
 
@@ -199,32 +208,7 @@ var FLBuilderNumber;
 					}
 				});
 			}
-		},
-
-		_formatNumber: function( n, fx ){
-			var rgx	= /(\d+)(\d{3})/,
-				num = fx.end.toString().split('.'),
-				decLimit = 0;
-
-			if ( 1 == num.length ) {
-				n = parseInt( n );
-			}
-			else if ( num.length > 1 ) {
-				decLimit = num[1].length > 2 ? 2 : num[1].length;
-			}
-
-			n += '';
-			x  = n.split('.');
-			x1 = x[0];
-			x2 = x.length > 1 ? parseFloat( parseFloat( '.' + x[1] ).toFixed( decLimit ) ) : '';
-			x2 = '' != x2 ? this.format.decimal + x2.toString().split('.').pop() : '';
-
-			while ( rgx.test( x1 ) ) {
-				x1 = x1.replace(rgx, '$1' + this.format.thousands_sep + '$2');
-			}
-
-			return x1 + x2;
-		},
+		}
 	};
 
 })(jQuery);
