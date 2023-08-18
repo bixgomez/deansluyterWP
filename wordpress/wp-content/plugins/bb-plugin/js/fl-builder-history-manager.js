@@ -98,7 +98,7 @@
 			if ( this.rendering || ! this.states.length ) {
 				return
 			}
-			if ( $( '.fl-builder-settings:visible' ).length ) {
+			if ( $( '.fl-builder-settings:visible', window.parent.document ).length ) {
 				return
 			}
 
@@ -177,6 +177,16 @@
 						position: 0,
 					} )
 				} )
+			} else if ( this.states.length < 1 ) {
+				FLBuilderConfig.mainMenu.history.items.push( {
+					eventName: 'historyItemClicked',
+					type: 'event',
+					label: wp.template( 'fl-history-list-item' )( {
+						label: 'No history found',
+						current: 0,
+						position: 0,
+					} )
+				} )
 			}
 
 			if ( undefined !== FLBuilder.MainMenu ) {
@@ -214,9 +224,9 @@
 		itemClicked: function( e, item ) {
 			var button = $( item ).find( '.fl-history-list-item' )
 			var position = button.attr( 'data-position' )
-			var current = $( '.fl-history-list-item[data-current=1]' )
+			var current = $( '.fl-history-list-item[data-current=1]', window.parent.document )
 
-			if ( $( '.fl-builder-settings:visible' ).length ) {
+			if ( $( '.fl-builder-settings:visible', window.parent.document ).length ) {
 				FLBuilder._closeNestedSettings()
 				FLBuilder._lightbox.close()
 			}

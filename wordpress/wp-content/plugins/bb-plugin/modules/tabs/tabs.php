@@ -31,6 +31,14 @@ class FLTabsModule extends FLBuilderModule {
 		// exclude current post
 		$settings->exclude_self = 'yes';
 
+		if ( ! isset( $settings->content_type ) ) {
+			$settings->content_type = 'post_content';
+		}
+
+		if ( ! isset( $settings->more_link ) ) {
+			$settings->more_link = 'hide';
+		}
+
 		return $settings;
 	}
 
@@ -55,6 +63,60 @@ class FLTabsModule extends FLBuilderModule {
 			echo apply_filters( 'the_content', get_the_content( null, false, $post_id ) );
 		}
 	}
+
+	/**
+	 * @method render_excerpt
+	 */
+	public function render_excerpt( $post_id ) {
+		add_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+		add_filter( 'excerpt_more', array( $this, 'set_custom_excerpt_more' ), 9999 );
+		echo '<p>' . get_the_excerpt( $post_id ) . '</p>';
+		remove_filter( 'excerpt_more', array( $this, 'set_custom_excerpt_more' ), 9999 );
+		remove_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+	}
+
+	/**
+	 * @method render_more_link
+	 */
+	public function render_more_link( $post_id, $more_link_text = '' ) {
+
+		if ( empty( $more_link_text ) ) {
+			return;
+		}
+
+		$html   = array();
+		$html[] = '<div><a class="fl-tabs-post-more-link"';
+		$html[] = 'href="' . esc_url( get_the_permalink() ) . '"';
+		$html[] = 'title="' . the_title_attribute( array( 'echo' => false ) ) . '">';
+		$html[] = $more_link_text;
+		$html[] = '</a></div>';
+		echo join( '', $html );
+	}
+
+	/**
+	 * Set the Post Excerpt
+	 *
+	 * @since 2.7.1
+	 * @return void
+	 */
+	public function set_custom_excerpt_length( $length ) {
+		$exept_length = strval( $this->settings->excerpt_length );
+		if ( trim( $exept_length ) === '' ) {
+			return $length;
+		}
+		return intval( $exept_length );
+	}
+
+	/**
+	 * Set custom 'more' text for the Post Excerpt.
+	 *
+	 * @since 2.7.1
+	 * @return void
+	 */
+	public function set_custom_excerpt_more( $more ) {
+		return $this->settings->excerpt_more_text;
+	}
+
 }
 
 /**
@@ -64,7 +126,7 @@ FLBuilder::register_module('FLTabsModule', array(
 	'items' => array(
 		'title'    => __( 'Items', 'fl-builder' ),
 		'sections' => array(
-			'general' => array(
+			'general'      => array(
 				'title'  => '',
 				'fields' => array(
 					'source' => array(
@@ -77,7 +139,7 @@ FLBuilder::register_module('FLTabsModule', array(
 						),
 						'toggle'  => array(
 							'post'    => array(
-								'sections' => array( 'post' ),
+								'sections' => array( 'post', 'post_display' ),
 							),
 							'content' => array(
 								'sections' => array( 'content' ),
@@ -87,11 +149,65 @@ FLBuilder::register_module('FLTabsModule', array(
 					),
 				),
 			),
-			'post'    => array(
+			'post'         => array(
 				'title' => __( 'Post', 'fl-builder' ),
 				'file'  => FL_BUILDER_DIR . 'includes/ui-simple-loop.php',
 			),
-			'content' => array(
+			'post_display' => array(
+				'title'  => __( 'Display', 'fl-builder' ),
+				'fields' => array(
+					'content_type'      => array(
+						'type'    => 'select',
+						'label'   => __( 'Content Type', 'fl-builder' ),
+						'default' => 'post_content',
+						'options' => array(
+							'post_content' => __( 'Post Content', 'fl-builder' ),
+							'post_excerpt' => __( 'Post Excerpt', 'fl-builder' ),
+						),
+						'toggle'  => array(
+							'post_excerpt' => array(
+								'fields' => array( 'excerpt_length', 'excerpt_more_text', 'more_link', 'more_link_text' ),
+							),
+						),
+					),
+					'excerpt_length'    => array(
+						'type'    => 'unit',
+						'units'   => array( 'words' ),
+						'label'   => __( 'Excerpt Length', 'fl-builder' ),
+						'default' => '',
+						'slider'  => array(
+							'min'  => 0,
+							'max'  => 1000,
+							'step' => 1,
+						),
+					),
+					'excerpt_more_text' => array(
+						'type'    => 'text',
+						'label'   => __( 'Excerpt More Text', 'fl-builder' ),
+						'default' => __( '...', 'fl-builder' ),
+					),
+					'more_link'         => array(
+						'type'    => 'select',
+						'label'   => __( 'More Link', 'fl-builder' ),
+						'default' => 'hide',
+						'options' => array(
+							'show' => __( 'Show', 'fl-builder' ),
+							'hide' => __( 'Hide', 'fl-builder' ),
+						),
+						'toggle'  => array(
+							'show' => array(
+								'fields' => array( 'more_link_text' ),
+							),
+						),
+					),
+					'more_link_text'    => array(
+						'type'    => 'text',
+						'label'   => __( 'More Link Text', 'fl-builder' ),
+						'default' => __( 'Read More', 'fl-builder' ),
+					),
+				),
+			),
+			'content'      => array(
 				'title'  => __( 'Custom Content', 'fl-builder' ),
 				'fields' => array(
 					'items' => array(
@@ -164,16 +280,15 @@ FLBuilder::register_module('FLTabsModule', array(
 						),
 					),
 					'active_tab'     => array(
-						'type'        => 'unit',
-						'label'       => 'Active Tab',
-						'default'     => '1',
-						'placeholder' => '1',
-						'slider'      => array(
+						'type'    => 'unit',
+						'label'   => 'Active Tab',
+						'default' => '1',
+						'slider'  => array(
 							'min'  => 1,
 							'max'  => 50,
 							'step' => 1,
 						),
-						'help'        => __( 'Value should not exceed the total number of tab items.', 'fl-builder' ),
+						'help'    => __( 'If value set exceeds number of tabs, the first tab will be used.  If set to 0 or blank, there will be no active tab on load.', 'fl-builder' ),
 					),
 					'tabs_on_mobile' => array(
 						'type'    => 'select',

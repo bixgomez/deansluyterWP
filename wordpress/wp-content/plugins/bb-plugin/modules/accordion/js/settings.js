@@ -11,6 +11,8 @@
 			var form      = $('.fl-builder-settings'),
 				labelSize   = form.find('select[name=label_size]'),
 				itemSpacing = form.find('input[name=item_spacing]'),
+				source       = form.find('select[name=source]'),
+				contentType  = form.find('select[name=content_type]'),
 				icon1        = form.find( 'input[name=label_active_icon]' ),
 				icon2        = form.find( 'input[name=label_icon]' );
 
@@ -21,7 +23,33 @@
 			labelSize.on('change', this._previewLabelSize);
 			itemSpacing.on('input', this._previewItemSpacing);
 
+			this._setMoreLink();
+			source.on( 'change', this._setMoreLink );
+			contentType.on( 'change', this._setMoreLink );
 			this._previewContent();
+		},
+
+		_setMoreLink: function(e) {
+			var form  = $( '.fl-builder-settings' ),
+				contentSource = form.find( 'select[name=source]' ).val(),
+				contentType = form.find( 'select[name=content_type]' ).val(),
+				excerptLengthField = form.find('#fl-field-excerpt_length'),
+				excerptMoreTextField = form.find('#fl-field-excerpt_more_text'),
+				moreLinkField = form.find('#fl-field-more_link'),
+				moreLinkTextField = form.find('#fl-field-more_link_text'),
+				showExcerpt = ( 'post' === contentSource && 'post_excerpt' === contentType );
+			
+			if ( showExcerpt ) {
+				excerptLengthField.show();
+				excerptMoreTextField.show();
+				moreLinkField.show();
+				moreLinkTextField.show();
+			} else {
+				excerptLengthField.hide();
+				excerptMoreTextField.hide();
+				moreLinkField.hide();
+				moreLinkTextField.hide();
+			}
 		},
 
 		_flipSettings: function() {

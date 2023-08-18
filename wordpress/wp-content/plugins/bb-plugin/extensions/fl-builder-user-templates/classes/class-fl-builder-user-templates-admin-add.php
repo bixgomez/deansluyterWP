@@ -33,9 +33,9 @@ final class FLBuilderUserTemplatesAdminAdd {
 		$action  = __( 'Add', 'fl-builder' );
 
 		if ( 'fl-builder-add-new' == $page ) {
-			wp_enqueue_style( 'fl-jquery-tiptip', FL_BUILDER_URL . 'css/jquery.tiptip.css', array(), $version );
-			wp_enqueue_script( 'fl-jquery-tiptip', FL_BUILDER_URL . 'js/jquery.tiptip.min.js', array( 'jquery' ), $version, true );
-			wp_enqueue_script( 'jquery-validate', FL_BUILDER_URL . 'js/jquery.validate.min.js', array(), $version, true );
+			wp_enqueue_style( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'css/jquery.tiptip.css', array(), $version );
+			wp_enqueue_script( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'js/jquery.tiptip.min.js', array( 'jquery' ), $version, true );
+			wp_enqueue_script( 'jquery-validate', FLBuilder::plugin_url() . 'js/jquery.validate.min.js', array(), $version, true );
 			wp_enqueue_style( $slug . 'add', $url . 'css/' . $slug . 'add.css', array(), $version );
 			wp_enqueue_script( $slug . 'add', $url . 'js/' . $slug . 'add.js', array(), $version, true );
 
@@ -63,7 +63,7 @@ final class FLBuilderUserTemplatesAdminAdd {
 	 */
 	static public function render() {
 		$modules       = FLBuilderModel::get_categorized_modules();
-		$selected_type = isset( $_GET['fl-builder-template-type'] ) ? $_GET['fl-builder-template-type'] : '';
+		$selected_type = isset( $_GET['fl-builder-template-type'] ) ? sanitize_key( $_GET['fl-builder-template-type'] ) : '';
 
 		$types = apply_filters( 'fl_builder_user_templates_add_new_types', array(
 			100 => array(
