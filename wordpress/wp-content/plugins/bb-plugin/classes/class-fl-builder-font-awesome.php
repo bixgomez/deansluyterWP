@@ -118,7 +118,7 @@ final class FLBuilderFontAwesome {
 
 			$icons = array();
 			foreach ( $set['icons'] as $icon ) {
-				if ( strstr( $icon, $text ) ) {
+				if ( strstr( strtolower( $icon ), strtolower( $text ) ) ) {
 					$icons[] = array(
 						'tag'    => $icon,
 						'label'  => $icon,

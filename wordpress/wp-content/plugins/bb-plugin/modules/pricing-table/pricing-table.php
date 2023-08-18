@@ -1,6 +1,6 @@
 <?php
 
-define( 'FL_PRICING_TABLE_URL', FL_BUILDER_URL . 'modules/pricing-table/' );
+define( 'FL_PRICING_TABLE_URL', FLBuilder::plugin_url() . 'modules/pricing-table/' );
 
 /**
  * @class FLPricingTableModule
@@ -135,7 +135,7 @@ class FLPricingTableModule extends FLBuilderModule {
 
 			// Convert Price Size to Price Typography.
 			if ( ! empty( $pricing_column->price_size ) && empty( $pricing_column->price_typography->font_size->length ) ) {
-				if ( ! empty( $pricing_column->price_typography ) ) {
+				if ( ! empty( $pricing_column->price_typography ) && is_object( $settings->pricing_columns[ $i ]->price_typography ) ) {
 					$settings->pricing_columns[ $i ]->price_typography->font_size->length = empty( $pricing_column->price_size ) ? '31' : $pricing_column->price_size;
 					$settings->pricing_columns[ $i ]->price_typography->font_size->unit   = empty( $pricing_column->price_size_unit ) ? 'px' : $pricing_column->price_size_unit;
 				}
@@ -143,7 +143,7 @@ class FLPricingTableModule extends FLBuilderModule {
 
 			// Convert Title Size to Title Typography
 			if ( ! empty( $pricing_column->title_size ) && empty( $pricing_column->title_typography->font_size->length ) ) {
-				if ( ! empty( $pricing_column->price_typography ) ) {
+				if ( ! empty( $pricing_column->price_typography ) && is_object( $settings->pricing_columns[ $i ]->title_typography ) ) {
 					$settings->pricing_columns[ $i ]->title_typography->font_size->length = empty( $pricing_column->title_size ) ? '24' : $pricing_column->title_size;
 					$settings->pricing_columns[ $i ]->title_typography->font_size->unit   = empty( $pricing_column->title_size_unit ) ? 'px' : $pricing_column->title_size_unit;
 				}
