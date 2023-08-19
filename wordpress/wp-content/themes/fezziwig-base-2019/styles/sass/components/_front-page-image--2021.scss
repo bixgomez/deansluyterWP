@@ -113,6 +113,7 @@ a.new-book-link {
     text-shadow: 0 0 0.75em rgba(white, 0.75);
     line-height: 1;
     font-size: 2.5em;
+    transition: text-shadow 0.25s linear;
   }
 
   &:before {
@@ -127,6 +128,7 @@ a.new-book-link {
     background-size: contain;
     background-repeat: no-repeat;
     margin: 2.5em auto 1em;
+    transition: box-shadow 0.25s linear;
   }
 
   &:after {
@@ -149,7 +151,7 @@ a.new-book-link {
     }
 
     &:before {
-      box-shadow: 0 0 2.5em rgba(white, 0.75);
+      box-shadow: 0 0 2.5em rgba(white, 0.5);
     }
   }
 }
