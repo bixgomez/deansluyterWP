@@ -251,12 +251,14 @@ final class FLBuilderLoop {
 			if ( count( $settings->custom_field ) == 1 ) {
 
 				if ( isset( $settings->custom_field[0]->filter_meta_key ) && ! empty( $settings->custom_field[0]->filter_meta_key ) ) {
-					$args['meta_key'] = untrailingslashit( $settings->custom_field[0]->filter_meta_key );
+					$filter_arr        = array();
+					$filter_arr['key'] = untrailingslashit( $settings->custom_field[0]->filter_meta_key );
 					if ( 'EXISTS' != $settings->custom_field[0]->filter_meta_compare && 'NOT EXISTS' != $settings->custom_field[0]->filter_meta_compare ) {
-						$args['meta_value'] = untrailingslashit( $settings->custom_field[0]->filter_meta_value );
+						$filter_arr['value'] = do_shortcode( untrailingslashit( $settings->custom_field[0]->filter_meta_value ) );
 					}
-					$args['meta_type']    = $settings->custom_field[0]->filter_meta_type;
-					$args['meta_compare'] = $settings->custom_field[0]->filter_meta_compare;
+					$filter_arr['type']    = $settings->custom_field[0]->filter_meta_type;
+					$filter_arr['compare'] = $settings->custom_field[0]->filter_meta_compare;
+					$args['meta_query'][]  = $filter_arr;
 				}
 			} else {
 				if ( isset( $settings->custom_field_relation ) ) {
@@ -266,7 +268,7 @@ final class FLBuilderLoop {
 							$filter_arr        = array();
 							$filter_arr['key'] = untrailingslashit( $fields->filter_meta_key );
 							if ( 'EXISTS' != $fields->filter_meta_compare && 'NOT EXISTS' != $fields->filter_meta_compare ) {
-								$filter_arr['value'] = untrailingslashit( $fields->filter_meta_value );
+								$filter_arr['value'] = do_shortcode( untrailingslashit( $fields->filter_meta_value ) );
 							}
 							$filter_arr['type']    = $fields->filter_meta_type;
 							$filter_arr['compare'] = $fields->filter_meta_compare;

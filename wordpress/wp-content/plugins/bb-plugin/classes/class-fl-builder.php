@@ -380,7 +380,7 @@ final class FLBuilder {
 				$mce_css .= ',';
 			}
 
-			$mce_css .= FL_BUILDER_URL . 'css/editor.css';
+			$mce_css .= FLBuilder::plugin_url() . 'css/editor.css';
 		}
 
 		return $mce_css;
@@ -510,8 +510,8 @@ final class FLBuilder {
 	 */
 	static public function register_layout_styles_scripts() {
 		$ver     = FL_BUILDER_VERSION;
-		$css_url = FL_BUILDER_URL . 'css/';
-		$js_url  = FL_BUILDER_URL . 'js/';
+		$css_url = FLBuilder::plugin_url() . 'css/';
+		$js_url  = FLBuilder::plugin_url() . 'js/';
 		$min     = ( self::is_debug() ) ? '' : '.min';
 
 		// Register additional CSS
@@ -522,7 +522,7 @@ final class FLBuilder {
 
 		// Register icon CDN CSS
 		wp_register_style( 'font-awesome-5', self::get_fa5_url(), array(), $ver );
-		wp_register_style( 'font-awesome', FL_BUILDER_URL . 'fonts/fontawesome/' . self::get_fa5_version() . '/css/v4-shims.min.css', array( 'font-awesome-5' ), $ver );
+		wp_register_style( 'font-awesome', FLBuilder::plugin_url() . 'fonts/fontawesome/' . self::get_fa5_version() . '/css/v4-shims.min.css', array( 'font-awesome-5' ), $ver );
 
 		wp_register_style( 'foundation-icons', 'https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css', array(), $ver );
 
@@ -788,9 +788,9 @@ final class FLBuilder {
 		global $wp_version;
 
 		$ver        = FL_BUILDER_VERSION;
-		$css_build  = FL_BUILDER_URL . 'css/build/';
-		$js_vendors = FL_BUILDER_URL . 'js/vendors/';
-		$js_build   = FL_BUILDER_URL . 'js/build/';
+		$css_build  = FLBuilder::plugin_url() . 'css/build/';
+		$js_vendors = FLBuilder::plugin_url() . 'js/vendors/';
+		$js_build   = FLBuilder::plugin_url() . 'js/build/';
 		$tag        = '.bundle.min';
 		$vendor_tag = '.min';
 		// @beaverbuilder/app-core
@@ -873,16 +873,16 @@ final class FLBuilder {
 	 * @return void
 	 */
 	static public function enqueue_ui_styles_scripts() {
+		global $post, $wpdb;
+
 		if ( FLBuilderModel::is_builder_active() ) {
-			global $wp_the_query;
-			global $wp_version;
+
+			$ver     = FL_BUILDER_VERSION;
+			$css_url = FLBuilder::plugin_url() . 'css/';
+			$js_url  = FLBuilder::plugin_url() . 'js/';
 
 			// Remove wp admin bar top margin
 			remove_action( 'wp_head', '_admin_bar_bump_cb' );
-
-			$ver     = FL_BUILDER_VERSION;
-			$css_url = FL_BUILDER_URL . 'css/';
-			$js_url  = FL_BUILDER_URL . 'js/';
 
 			// Register React and other vendor bundles
 			self::register_shared_vendors();
@@ -985,6 +985,7 @@ final class FLBuilder {
 				wp_enqueue_script( 'fl-builder-responsive-preview', $js_url . 'fl-builder-responsive-preview.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-services', $js_url . 'fl-builder-services.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array(), $ver );
+				wp_enqueue_script( 'fl-builder-ui-iframe', $js_url . 'fl-builder-ui-iframe.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-ui', $js_url . 'fl-builder-ui.js', array( 'fl-builder', 'mousetrap' ), $ver );
 				wp_enqueue_script( 'fl-builder-ui-main-menu', $js_url . 'fl-builder-ui-main-menu.js', array( 'fl-builder-ui' ), $ver );
 				wp_enqueue_script( 'fl-builder-ui-panel-content', $js_url . 'fl-builder-ui-panel-content-library.js', array( 'fl-builder-ui' ), $ver );
@@ -1019,53 +1020,55 @@ final class FLBuilder {
 			 * Enqueue the canvas script for handling dom manipulation.
 			 */
 			self::enqueue_canvas();
+			$kb_link   = sprintf( "<a class='link' target='_blank' href='https://docs.wpbeaverbuilder.com/beaver-builder/troubleshooting/debugging/known-beaver-builder-incompatibilities'>%s</a>", __( 'Knowledge Base', 'fl-builder' ) );
+			$support   = sprintf( "<a class='link' target='_blank' href='https://www.wpbeaverbuilder.com/beaver-builder-support/'>%s</a>", __( 'Support ticket', 'fl-builder' ) );
+			$updates   = self::get_available_updates();
+			$revisions = wp_count_posts( 'revision' );
+			$revisions = $revisions->inherit;
+			$revpage   = $wpdb->get_var( $wpdb->prepare( "SELECT count(ID) from $wpdb->posts WHERE post_type = 'revision' AND post_parent = %d", $post->ID ) );
+			$args      = array(
+				'product'     => FLBuilderModel::get_branding(),
+				'white_label' => FLBuilderModel::is_white_labeled(),
+
+				/**
+				 * Custom info text for crash popup.
+				 * @see fl_builder_crash_white_label_text
+				 */
+				'labeled_txt' => apply_filters( 'fl_builder_crash_white_label_text', '' ),
+				'vars'        => array(
+					'PHP Version'      => phpversion(),
+					'Memory Limit'     => FL_Debug::safe_ini_get( 'memory_limit' ),
+					'Usage'            => FLBuilderUtils::formatbytes( memory_get_usage() ),
+					'Peak'             => FLBuilderUtils::formatbytes( memory_get_peak_usage() ),
+					'URL'              => get_permalink(),
+					'Builder Version'  => FL_BUILDER_VERSION . $updates['builder'],
+					'Theme Version'    => ( defined( 'FL_THEME_VERSION' ) ) ? FL_THEME_VERSION . $updates['theme'] : 'Not active/installed.',
+					'Themer Version'   => ( defined( 'FL_THEME_BUILDER_VERSION' ) ) ? FL_THEME_BUILDER_VERSION . $updates['themer'] : 'Not active/installed.',
+					'Revisions Total'  => $revisions,
+					'Revisions Layout' => $revpage,
+					'WP_DEBUG'         => WP_DEBUG ? 'Enabled' : 'Disabled',
+					'max_input_vars'   => FL_Debug::safe_ini_get( 'max_input_vars' ),
+					'modsecfix'        => FLBuilderUtils::is_modsec_fix_enabled() ? 'Enabled' : 'Disabled',
+				),
+				'strings'     => array(
+					'intro'        => __( 'has detected a plugin conflict that is preventing the page from saving.', 'fl-builder' ),
+					'try'          => __( 'Try to fix it yourself now', 'fl-builder' ),
+					/* translators: %s: link to documentation */
+					'troubleshoot' => sprintf( __( 'If you want to troubleshoot further, you can check our %s for plugins we know to be incompatible. Then deactivate your plugins one by one while you try to save the page in the Beaver Builder editor.<br />When the page saves normally, you have identified the plugin causing the conflict.', 'fl-builder' ), $kb_link ),
+					'contact'      => __( 'If you contact Beaver Builder Support, we need to know what the error is in the JavaScript console in your browser.', 'fl-builder' ),
+					'step_one'     => __( 'Step One', 'fl-builder' ),
+					'step_two'     => __( 'Step Two', 'fl-builder' ),
+					'if_contact'   => __( 'If you contact Beaver Builder Support, we need to know what the error is in the JavaScript console in your browser.', 'fl-builder' ),
+					/* translators: %s: link to support form */
+					'contact'      => sprintf( __( 'Copy the errors you find there and submit them with your %s. It saves us having to ask you that as a second step.', 'fl-builder' ), $support ),
+					'hand'         => __( 'Need a helping hand?', 'fl-builder' ),
+				),
+			);
+
+			wp_localize_script( 'fl-builder-min', 'crash_vars', $args );
+			wp_localize_script( 'fl-builder', 'crash_vars', $args );
 		}
 		wp_add_inline_style( 'admin-bar', '#wp-admin-bar-fl-builder-frontend-edit-link .ab-icon:before { content: "\f116" !important; top: 2px; margin-right: 3px; }' );
-
-		$kb_link   = sprintf( "<a class='link' target='_blank' href='https://docs.wpbeaverbuilder.com/beaver-builder/troubleshooting/debugging/known-beaver-builder-incompatibilities'>%s</a>", __( 'Knowledge Base', 'fl-builder' ) );
-		$support   = sprintf( "<a class='link' target='_blank' href='https://www.wpbeaverbuilder.com/beaver-builder-support/'>%s</a>", __( 'Support ticket', 'fl-builder' ) );
-		$updates   = self::get_available_updates();
-		$revisions = wp_count_posts( 'revision' );
-		$revisions = $revisions->inherit;
-		$args      = array(
-			'product'     => FLBuilderModel::get_branding(),
-			'white_label' => FLBuilderModel::is_white_labeled(),
-
-			/**
-			 * Custom info text for crash popup.
-			 * @see fl_builder_crash_white_label_text
-			 */
-			'labeled_txt' => apply_filters( 'fl_builder_crash_white_label_text', '' ),
-			'vars'        => array(
-				'PHP Version'     => phpversion(),
-				'Memory Limit'    => FL_Debug::safe_ini_get( 'memory_limit' ),
-				'Usage'           => FLBuilderUtils::formatbytes( memory_get_usage() ),
-				'Peak'            => FLBuilderUtils::formatbytes( memory_get_peak_usage() ),
-				'URL'             => get_permalink(),
-				'Builder Version' => FL_BUILDER_VERSION . $updates['builder'],
-				'Theme Version'   => ( defined( 'FL_THEME_VERSION' ) ) ? FL_THEME_VERSION . $updates['theme'] : 'Not active/installed.',
-				'Themer Version'  => ( defined( 'FL_THEME_BUILDER_VERSION' ) ) ? FL_THEME_BUILDER_VERSION . $updates['themer'] : 'Not active/installed.',
-				'Revisions'       => $revisions,
-				'max_input_vars'  => FL_Debug::safe_ini_get( 'max_input_vars' ),
-				'modsecfix'       => FLBuilderUtils::is_modsec_fix_enabled() ? 'Enabled' : 'Disabled',
-			),
-			'strings'     => array(
-				'intro'        => __( 'has detected a plugin conflict that is preventing the page from saving.', 'fl-builder' ),
-				'try'          => __( 'Try to fix it yourself now', 'fl-builder' ),
-				/* translators: %s: link to documentation */
-				'troubleshoot' => sprintf( __( 'If you want to troubleshoot further, you can check our %s for plugins we know to be incompatible. Then deactivate your plugins one by one while you try to save the page in the Beaver Builder editor.<br />When the page saves normally, you have identified the plugin causing the conflict.', 'fl-builder' ), $kb_link ),
-				'contact'      => __( 'If you contact Beaver Builder Support, we need to know what the error is in the JavaScript console in your browser.', 'fl-builder' ),
-				'step_one'     => __( 'Step One', 'fl-builder' ),
-				'step_two'     => __( 'Step Two', 'fl-builder' ),
-				'if_contact'   => __( 'If you contact Beaver Builder Support, we need to know what the error is in the JavaScript console in your browser.', 'fl-builder' ),
-				/* translators: %s: link to support form */
-				'contact'      => sprintf( __( 'Copy the errors you find there and submit them with your %s. It saves us having to ask you that as a second step.', 'fl-builder' ), $support ),
-				'hand'         => __( 'Need a helping hand?', 'fl-builder' ),
-			),
-		);
-
-		wp_localize_script( 'fl-builder-min', 'crash_vars', $args );
-		wp_localize_script( 'fl-builder', 'crash_vars', $args );
 	}
 
 	static private function get_available_updates() {
@@ -1112,7 +1115,7 @@ final class FLBuilder {
 		global $wp_the_query;
 
 		$ver     = FL_BUILDER_VERSION;
-		$js_url  = FL_BUILDER_URL . 'js/build/';
+		$js_url  = FLBuilder::plugin_url() . 'js/build/';
 		$post_id = is_object( $wp_the_query->post ) ? $wp_the_query->post->ID : null;
 
 		if ( self::is_debug() ) {
@@ -1188,6 +1191,16 @@ final class FLBuilder {
 			$has_new_notifications = FLBuilderNotifications::get_notifications();
 			if ( ! $has_new_notifications['read'] ) {
 				$classes[] = 'fl-builder-has-new-notifications';
+			}
+
+			// Main UI shell
+			if ( isset( $_GET['fl_builder_ui'] ) ) {
+				$classes[] = 'fl-builder-ui';
+			}
+
+			// IFrame UI shell
+			if ( isset( $_GET['fl_builder_ui_iframe'] ) ) {
+				$classes[] = 'fl-builder-ui-iframe';
 			}
 		}
 
@@ -1989,7 +2002,7 @@ final class FLBuilder {
 			 * @see fl_builder_after_render_shortcodes
 			 * @since 2.2.4
 			 */
-			$content = apply_filters( 'fl_builder_after_render_shortcodes', $content );
+			$content = apply_filters( 'fl_builder_after_render_shortcodes', $content, $layout_type, $post_id );
 		}
 
 		// Add srcset attrs to images with the class wp-image-<ID>.
@@ -2423,7 +2436,7 @@ final class FLBuilder {
 				$attrs['class'][] = 'fl-row-align-' . $row->settings->content_alignment;
 			}
 
-			if ( isset( $row->settings->margin_top ) && (int) $row->settings->margin_top < 0 ) {
+			if ( isset( $row->settings->aspect_ratio ) && '' !== $row->settings->aspect_ratio && isset( $row->settings->margin_top ) && (int) $row->settings->margin_top < 0 ) {
 				$attrs['class'][] = 'fl-row-overlap-top';
 			}
 		}
@@ -2439,6 +2452,18 @@ final class FLBuilder {
 				$attrs['class'][] = 'fl-row-overlap-top';
 			}
 		}
+		if ( ! empty( $row->settings->full_height ) && 'default' == $row->settings->full_height ) {
+
+			$attrs['class'][] = 'fl-row-default-height';
+
+			if ( isset( $row->settings->content_alignment ) ) {
+				$attrs['class'][] = 'fl-row-align-' . $row->settings->content_alignment;
+			}
+
+			if ( isset( $row->settings->aspect_ratio ) && '' !== $row->settings->aspect_ratio && isset( $row->settings->margin_top ) && (int) $row->settings->margin_top < 0 ) {
+				$attrs['class'][] = 'fl-row-overlap-top';
+			}
+		}
 		if ( in_array( $row->settings->bg_type, $overlay_bgs ) ) {
 			if ( 'color' === $row->settings->bg_overlay_type && ! empty( $row->settings->bg_overlay_color ) ) {
 				$attrs['class'][] = 'fl-row-bg-overlay';
@@ -2447,7 +2472,13 @@ final class FLBuilder {
 			}
 		}
 		if ( ! empty( $row->settings->responsive_display ) ) {
-			$attrs['class'][] = 'fl-visible-' . $row->settings->responsive_display;
+			$breakpoints = explode( ',', $row->settings->responsive_display );
+
+			if ( 4 > count( $breakpoints ) ) {
+				foreach ( $breakpoints as $breakpoint ) {
+					$attrs['class'][] = 'fl-visible-' . $breakpoint;
+				}
+			}
 		}
 		if ( is_array( $row->settings->animation ) && ! empty( $row->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $row->settings->animation['style'];
@@ -2627,8 +2658,14 @@ final class FLBuilder {
 					$attrs['class'][] = 'fl-col-group-custom-width';
 				}
 			}
-			if ( isset( $col->settings->responsive_order ) && 'reversed' == $col->settings->responsive_order ) {
-				if ( ! in_array( 'fl-col-group-responsive-reversed', $attrs['class'] ) ) {
+			if ( isset( $col->settings->responsive_order ) && '' !== $col->settings->responsive_order ) {
+				$enabled_devices = explode( ',', $col->settings->responsive_order );
+
+				if ( in_array( 'medium', $enabled_devices ) && ! in_array( 'fl-col-group-medium-reversed', $attrs['class'] ) ) {
+					$attrs['class'][] = 'fl-col-group-medium-reversed';
+				}
+
+				if ( in_array( 'mobile', $enabled_devices ) && ! in_array( 'fl-col-group-responsive-reversed', $attrs['class'] ) ) {
 					$attrs['class'][] = 'fl-col-group-responsive-reversed';
 				}
 			}
@@ -2705,6 +2742,11 @@ final class FLBuilder {
 				$attrs['class'][] = 'fl-col-small-full-width';
 			}
 		}
+		if ( isset( $col->settings->size_responsive ) && ! empty( $col->settings->size_responsive ) ) {
+			if ( ! in_array( 'fl-col-small-custom-width', $attrs['class'] ) ) {
+				$attrs['class'][] = 'fl-col-small-custom-width';
+			}
+		}
 		if ( count( $nested ) > 0 ) {
 			$attrs['class'][] = 'fl-col-has-cols';
 		}
@@ -2716,7 +2758,13 @@ final class FLBuilder {
 			}
 		}
 		if ( ! empty( $col->settings->responsive_display ) ) {
-			$attrs['class'][] = 'fl-visible-' . $col->settings->responsive_display;
+			$breakpoints = explode( ',', $col->settings->responsive_display );
+
+			if ( 4 > count( $breakpoints ) ) {
+				foreach ( $breakpoints as $breakpoint ) {
+					$attrs['class'][] = 'fl-visible-' . $breakpoint;
+				}
+			}
 		}
 		if ( is_array( $col->settings->animation ) && ! empty( $col->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $col->settings->animation['style'];
@@ -2912,7 +2960,13 @@ final class FLBuilder {
 
 		// Classes
 		if ( ! empty( $module->settings->responsive_display ) ) {
-			$attrs['class'][] = 'fl-visible-' . $module->settings->responsive_display;
+			$breakpoints = explode( ',', $module->settings->responsive_display );
+
+			if ( 4 > count( $breakpoints ) ) {
+				foreach ( $breakpoints as $breakpoint ) {
+					$attrs['class'][] = 'fl-visible-' . $breakpoint;
+				}
+			}
 		}
 		if ( is_array( $module->settings->animation ) && ! empty( $module->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $module->settings->animation['style'];
@@ -3848,7 +3902,7 @@ final class FLBuilder {
 
 		// Add the path legacy vars (FLBuilderLayoutConfig.paths should be used instead).
 		$js .= "var wpAjaxUrl = '" . admin_url( 'admin-ajax.php' ) . "';";
-		$js .= "var flBuilderUrl = '" . FL_BUILDER_URL . "';";
+		$js .= "var flBuilderUrl = '" . FLBuilder::plugin_url() . "';";
 
 		// Layout config object.
 		ob_start();
@@ -4106,7 +4160,7 @@ final class FLBuilder {
 	 * @return string
 	 */
 	static public function default_image_html( $classes ) {
-		return sprintf( '<img src="%s" class="%s" />', FL_BUILDER_URL . 'img/no-image.png', $classes );
+		return sprintf( '<img src="%s" class="%s" />', FLBuilder::plugin_url() . 'img/no-image.png', $classes );
 	}
 
 	/**
@@ -4137,7 +4191,7 @@ final class FLBuilder {
 		 * This will also enqueue the CSS from the CDN.
 		 * @see fl_enable_fa5_pro
 		 */
-		$url = ( self::fa5_pro_enabled() ) ? self::$fa5_pro_url : FL_BUILDER_URL . 'fonts/fontawesome/' . self::get_fa5_version() . '/css/all.min.css';
+		$url = ( self::fa5_pro_enabled() ) ? self::$fa5_pro_url : FLBuilder::plugin_url() . 'fonts/fontawesome/' . self::get_fa5_version() . '/css/all.min.css';
 
 		/**
 		 * Filter FA5 URL for enqueue.
@@ -4259,6 +4313,10 @@ final class FLBuilder {
 			</script>
 			<?php
 		}
+	}
+
+	static public function plugin_url( $path = '/' ) {
+		return esc_url( plugins_url( $path, FL_BUILDER_FILE ) );
 	}
 
 	/**
