@@ -19,6 +19,9 @@ final class FLBuilderUpdate {
 	}
 
 	public static function maybe_reregister_license( $current, $saved ) {
+		if ( ! class_exists( 'FLUpdater' ) ) {
+			return;
+		}
 		$license = FLUpdater::get_subscription_license();
 		if ( '' !== $license ) {
 			FLUpdater::save_subscription_license( '' );

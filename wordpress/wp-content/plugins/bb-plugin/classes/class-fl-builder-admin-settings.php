@@ -130,10 +130,10 @@ final class FLBuilderAdminSettings {
 	 */
 	static public function styles_scripts() {
 		// Styles
-		wp_enqueue_style( 'fl-builder-admin-settings', FL_BUILDER_URL . 'css/fl-builder-admin-settings.css', array(), FL_BUILDER_VERSION );
-		wp_enqueue_style( 'jquery-multiselect', FL_BUILDER_URL . 'css/jquery.multiselect.css', array(), FL_BUILDER_VERSION );
-		wp_enqueue_style( 'fl-jquery-tiptip', FL_BUILDER_URL . 'css/jquery.tiptip.css', array(), FL_BUILDER_VERSION );
-		wp_enqueue_style( 'fl-admin-notify', FL_BUILDER_URL . 'css/simple-notify.min.css', array(), FL_BUILDER_VERSION );
+		wp_enqueue_style( 'fl-builder-admin-settings', FLBuilder::plugin_url() . 'css/fl-builder-admin-settings.css', array(), FL_BUILDER_VERSION );
+		wp_enqueue_style( 'jquery-multiselect', FLBuilder::plugin_url() . 'css/jquery.multiselect.css', array(), FL_BUILDER_VERSION );
+		wp_enqueue_style( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'css/jquery.tiptip.css', array(), FL_BUILDER_VERSION );
+		wp_enqueue_style( 'fl-admin-notify', FLBuilder::plugin_url() . 'css/simple-notify.min.css', array(), FL_BUILDER_VERSION );
 
 		if ( FLBuilder::fa5_pro_enabled() ) {
 			if ( '' !== get_option( '_fl_builder_kit_fa_pro' ) ) {
@@ -144,11 +144,11 @@ final class FLBuilderAdminSettings {
 			}
 		}
 		// Scripts
-		wp_enqueue_script( 'fl-builder-admin-settings', FL_BUILDER_URL . 'js/fl-builder-admin-settings.js', array( 'fl-jquery-tiptip' ), FL_BUILDER_VERSION );
-		wp_enqueue_script( 'jquery-actual', FL_BUILDER_URL . 'js/jquery.actual.min.js', array( 'jquery' ), FL_BUILDER_VERSION );
-		wp_enqueue_script( 'jquery-multiselect', FL_BUILDER_URL . 'js/jquery.multiselect.js', array( 'jquery' ), FL_BUILDER_VERSION );
-		wp_enqueue_script( 'fl-jquery-tiptip', FL_BUILDER_URL . 'js/jquery.tiptip.min.js', array( 'jquery' ), FL_BUILDER_VERSION, true );
-		wp_enqueue_script( 'fl-admin-notify', FL_BUILDER_URL . 'js/simple-notify.min.js', array(), FL_BUILDER_VERSION );
+		wp_enqueue_script( 'fl-builder-admin-settings', FLBuilder::plugin_url() . 'js/fl-builder-admin-settings.js', array( 'fl-jquery-tiptip' ), FL_BUILDER_VERSION );
+		wp_enqueue_script( 'jquery-actual', FLBuilder::plugin_url() . 'js/jquery.actual.min.js', array( 'jquery' ), FL_BUILDER_VERSION );
+		wp_enqueue_script( 'jquery-multiselect', FLBuilder::plugin_url() . 'js/jquery.multiselect.js', array( 'jquery' ), FL_BUILDER_VERSION );
+		wp_enqueue_script( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'js/jquery.tiptip.min.js', array( 'jquery' ), FL_BUILDER_VERSION, true );
+		wp_enqueue_script( 'fl-admin-notify', FLBuilder::plugin_url() . 'js/simple-notify.min.js', array(), FL_BUILDER_VERSION );
 		// Media Uploader
 		wp_enqueue_media();
 	}
@@ -296,8 +296,9 @@ final class FLBuilderAdminSettings {
 		$sorted_data = array();
 
 		foreach ( $item_data as $key => $data ) {
-			$data['key']                      = $key;
-			$sorted_data[ $data['priority'] ] = $data;
+			$priority                 = self::check_priority( $data['priority'], $sorted_data );
+			$data['key']              = $key;
+			$sorted_data[ $priority ] = $data;
 		}
 
 		ksort( $sorted_data );
@@ -307,6 +308,16 @@ final class FLBuilderAdminSettings {
 				echo '<li><a href="#' . $data['key'] . '">' . $data['title'] . '</a></li>';
 			}
 		}
+	}
+
+	/**
+	 * @since 2.7
+	 */
+	static public function check_priority( $priority, $sorted_data ) {
+		if ( isset( $sorted_data[ $priority ] ) ) {
+			$priority = self::check_priority( $priority + 1, $sorted_data );
+		}
+		return $priority;
 	}
 
 	/**
@@ -451,6 +462,7 @@ final class FLBuilderAdminSettings {
 		self::clear_cache();
 		self::debug();
 		self::global_edit();
+		self::theme_code_edit();
 		self::beta();
 		self::uninstall();
 
@@ -788,6 +800,31 @@ final class FLBuilderAdminSettings {
 				$options->css = $css;
 				$options->js  = $js;
 				FLBuilderUtils::update_option( '_fl_builder_settings', $options );
+			}
+		}
+	}
+
+	/**
+	 * Update Theme Code
+	 *
+	 * @since 2.6
+	 * @access private
+	 * @return void
+	 */
+	static private function theme_code_edit() {
+		if ( ! FLBuilderAdmin::current_user_can_access_settings() ) {
+			return;
+		} elseif ( isset( $_POST['fl-theme-opts-nonce'] ) && wp_verify_nonce( $_POST['fl-theme-opts-nonce'], 'debug' ) ) {
+			if ( get_transient( 'fl_debug_mode' ) || ( defined( 'FL_ENABLE_META_CSS_EDIT' ) && FL_ENABLE_META_CSS_EDIT ) ) {
+				$theme_codes = array(
+					'fl-js-code',
+					'fl-head-code',
+					'fl-header-code',
+					'fl-footer-code',
+				);
+				foreach ( $theme_codes as $key ) {
+					set_theme_mod( $key, stripslashes( $_POST[ $key ] ) );
+				}
 			}
 		}
 	}

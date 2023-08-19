@@ -1,16 +1,18 @@
 === Constant Contact Forms ===
-Contributors:      constantcontact, webdevstudios, tw2113, znowebdev, ggwicz, ravedev, oceas, dcooney
+Contributors:      constantcontact, webdevstudios, tw2113, znowebdev, ggwicz, ravedev, oceas, dcooney, newyorkerlaura
 Tags: capture, contacts, constant contact, constant contact form, constant contact newsletter, constant contact official, contact forms, email, form, forms, marketing, mobile, newsletter, opt-in, plugin, signup, subscribe, subscription, widget
 Requires at least: 5.2.0
-Tested up to:      6.0
-Stable tag:        1.13.0
+Tested up to:      6.2.2
+Stable tag:        2.1.0
 License:           GPLv3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
-Requires PHP:      5.6
+Requires PHP:      7.4
 
 The official Constant Contact plugin adds a contact form to your WordPress site to quickly capture information from visitors.
 
 == Description ==
+
+Please note: Version 2.0.0 of this plugin is a significant release, including both security and feature updates. After updating to version 2.0.0, you will be required to reconnect the plugin to your Constant Contact account & reselect the lists associated with your forms.
 
 ##Work smarter, not harder. The Constant Contact Way
 Create branded emails, build a website, sell online, and make it easy for people to find you—all from one place.
@@ -43,6 +45,45 @@ https://www.youtube.com/watch?v=Qqb0_zcRKnM
 
 == Changelog ==
 
+= 2.1.0 =
+* Fixed: Option saving process for Multisite installs.
+* Fixed: Further touchups and fixes around reported security vulnerabilities.
+* Fixed: Prevent potential issues with `lists` property and contact actions.
+* Fixed: Compatibility with other oAuth2 based services. Specifically: Site Kit at this time.
+* Updated: Obfuscated API values in debug logs.
+* Updated: Adjusted account information lookup frequency. Reduced to every 12 hours.
+* Updated: Adjusted and fixed up details around custom field usage and needing unique labels.
+
+= 2.0.3 =
+* Updated: Resolution for fatal errors regarding autoloading.
+* Updated: Further security fixes for reported issues.
+
+= 2.0.2 =
+* Updated: Rate limits on API requests. Should help address list sync issues.
+* Added: Notifications of issues with list fetching with API version 3. Shorter transient cache time.
+* Added: More conditions to show "APIv3 upgrade needed" notice while needed.
+
+= 2.0.1 =
+* Fixed: Fatal error regarding objects and arrays upon update to 2.0.0
+
+= 2.0.0 =
+* Updated: Plugin has been migrated to use Constant Contact API version 3.0. This will require new authentication workflow.
+* Updated: Addressed security issues with regards to opt-in notification.
+* Updated: Added support to check for DISABLE_WP_CRON constant usage and bypass cron scheduling if true.
+* Fixed: moved "Edit form" link to outside the `<form>` markup.
+* Fixed: Custom color choices were not applying to all parts of form text output.
+
+= 1.14.1 =
+* Fixed: Backport of security issue originally fixed in 2.0.0 release.
+
+= 1.14.0 =
+* Fixed: Issues around email submissions with "some+value@email.com" based addresses.
+* Fixed: Compatibility with Elementor Widget registration
+* Added: Notice regarding upcoming API changes in a later major plugin version.
+* Added: Compatibility with Cleantalk Spam Protect
+* Added: Extra compatibility with Akismet Spam protection
+* Updated: CMB2 internal library to 2.10.1
+
 = 1.13.0 =
 * Fixed: get_optin_list_options() defaults to an empty array instead of an empty string
 * Fixed: Prevent "CTCT has experienced issues" notifications for "503 Service Not Available" errors
@@ -53,7 +94,6 @@ https://www.youtube.com/watch?v=Qqb0_zcRKnM
 * Updated: Add noopener noreferrer to blank links
 * Updated: Refactor multiple translated strings
 * Updated: Added error messages on form submissions upon API faliures
-
 
 == Frequently Asked Questions ==
 
@@ -84,6 +124,5 @@ You will need to make the connection to Constant Contact using the credentials o
 ### Error: Please select at least one list to subscribe to.
 Some users are experiencing errors when upgrading from an older version of the plugin. If you are receiving an error "Please select at least one list to subscribe to" on your form submissions we recommend "Sync Lists with Constant Contact", this can be found in your admin dashboard Contact Form > Lists. If problem still persists we recommend recreating the form from scratch.
 
-
 == Upgrade Notice ==
--  None
+* We will soon be releasing a version of Constant Contact Forms that has a major upgrade to our API behind the scenes. Information will be provided at the time to help ease the process. You should not need to recreate any existing forms, but will need to re-authenticate.
