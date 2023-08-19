@@ -1,13 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "wordpress/wp-content/themes/fezziwig-base-2019"
-		}
-	],
-	"settings": {
-		"git.ignoreLimitWarning": true
-	}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "wordpress/wp-content/themes/fezziwig-base-2019"
+    },
+    {
+      "path": "wordpress/wp-content/themes/fezziwig-base-2019/styles"
+    }
+  ],
+  "settings": {
+    "git.ignoreLimitWarning": true
+  }
 }
