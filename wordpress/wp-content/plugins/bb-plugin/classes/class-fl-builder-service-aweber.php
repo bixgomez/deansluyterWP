@@ -273,7 +273,7 @@ final class FLBuilderServiceAWeber extends FLBuilderService {
 			);
 
 			if ( isset( $settings->tags ) ) {
-				$data['tags'] = array( $settings->tags );
+				$data['tags'] = array_map( 'trim', explode( ',', $settings->tags ) );
 			}
 
 			if ( $name ) {

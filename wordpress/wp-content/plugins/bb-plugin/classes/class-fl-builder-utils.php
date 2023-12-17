@@ -336,7 +336,7 @@ final class FLBuilderUtils {
 	 */
 	public static function sanitize_aspect_css( $setting ) {
 		$setting = str_replace( ':', '/', $setting );
-		if ( ! preg_match( '#^(auto|inherit|initial|unset)$|^(?:auto)?\s?([0-9]+\s?\/\s?[0-9]+)|^[1]$#', $setting ) ) {
+		if ( ! preg_match( '#^(auto|inherit|initial|unset)$|^(?:auto)?\s?([0-9\.]+\s?\/\s?[0-9\.]+)|^[1]$#', $setting ) ) {
 			return '';
 		}
 		return $setting;

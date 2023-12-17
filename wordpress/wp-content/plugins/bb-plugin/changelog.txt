@@ -1,15 +1,125 @@
+<h4>2.7.4.1 - 12/15/2023</h4>
+<strong>Hotfix</strong>
+<ul>
+	<li>Fix gradients not displaying at all breakpoints (#3060)</li>
+</ul>
+
+<h4>2.7.4 - 12/14/2023</h4>
+<strong>Enhancements</strong>
+<ul>
+	<li>Performance: Optimize Template loading in the UI (#3038)</li>
+	<li>Code Editor: Shortcodes no longer trigger errors in Ace Editor when Shortcode support in CSS/JS is enabled (#2872)</li>
+	<li>Node CSS/JS: HTML now detected in JS when Shortcode support in CSS/JS is not enabled (#2929)</li>
+	<li>Saved Nodes: category will now be added to the HTML in the WP Admin as a class (#2806)</li>
+	<li>Post Module: add JS trigger event <code>gridScrollComplete</code> to module wrapper for load more and scroll pagination (#1558)</li>
+	<li>Aspect Ratio: Now allows float values (#2981)</li>
+</ul>
+
+<strong>Bug Fixes</strong>
+<ul>
+	<li>WP 6.4: Fix 404 if launching BB on a new post/page with no title (#3040)</li>
+	<li>Safe Mode: images are no longer cropped (#2662)</li>
+	<li>Fix equal columns width issue at small breakpoint (#3011)</li>
+	<Li>Fix fatal error with PHP 8.2 if column CSS array key does not exist (#2983)</li>
+	<li>Accordion Module: Fix live preview of label text color (#2992)</li>
+	<li>Callout Module: If no text is added, container divs are not added (#2961)</li>
+	<li>Post Module: Fix pagination on a page with the same slug as the post type being displayed (#2774)</li>
+	<li>Post Carousel Module: Fix JS error if Move Slides option is set to blank (#3041)</li>
+	<li>Subscribe Module: Fix Aweber integration with multiple tags (#2985)</li>
+	<li>Video Module: Fix invalid date in structured data (#3005)</li>
+</ul>
+
+<h4>2.7.3.2 - 11/15/2023</h4>
+<strong>Hotfix</strong>
+<ul>
+	<li>WP 6.4+: Fix extra space at the top of the UI (#3018)</li>
+	<li>WP 6.4+: Fix JS and pagination issues with modules that use <code>imagesloaded</code> script (#3021)</li>
+</ul>
+
+<h4>2.7.3.1 - 10/18/2023</h4>
+<strong>Hotfix</strong>
+<ul>
+	<li> Revert fix pagination not working on a page with the same slug as the post type being displayed because it is creating issues with WooCommerce pagination</li>
+	<li>Tabs Module: Fix content from the first tab displaying in all tabs if a slideshow module is rendered in a tab #2968</li>
+</ul>
+
+<h4>2.7.3 - 10/11/2023</h4>
+<strong>Enhancements</strong>
+<ul>
+	<li>Add Outline Panel to the tour (#2917)</li>
+	<li>Subscribe Module: Rename SendInBlue to Brevo due to their rebrand (#2899)</li>
+</ul>
+
+<strong>Bug Fixes</strong>
+<ul>
+	<li>A11y: Fix focus issues with tabbing through the page (#2492)</li>
+	<li>A11y: Fix accordion not opening when tabbing through accordion items (#1041)</li>
+	<li>Tabs Module: Fix active tab option not working when dynamic content is used (#2936)</li>
+	<li>Tabs Module: When all tabs are closed on mobile, fix first item having active styling applied (#2933)</li>
+	<li>Fix RGBA values not always displaying correctly in the color picker (#2922)</li>
+	<li>Subscribe Module: Brevo (Formerly SendInBlue) service now shows up to 50 lists (#2922)</li>
+	<li>Fix column width always rendering as 100% when Column Max Width option is enabled in Global Settings (#2888)</li>
+	<li>Outline Panel: Fix context menu being inaccessible for items at the very bottom of the page (#2850)</li>
+	<li>Fix duplicating nodes quickly creating additional greyed out clones (#2845)</li>
+	<li>Posts Module: Fix pagination not working on a page with the same slug as the post type being displayed (#2774)</li>
+	<li>Fix compatibility with ClassicPress 2.0 (#2752)</li>
+	<li>Accordion Module: Fix accordion not staying open when clicked when it is inside of a Tabs module (#2492)</li>
+	<li>Fix not being able to edit a saved module if it had 0 margins (#1989)</li>
+	<li>Post Slider Module: Fix deprecated warning notice in PHP 8.2 (#2914)</li>
+	<li>Fix Shortcode content rendering inside text module when clicking the shortcode(#2935)</li>
+</ul>
+
+<h4>2.7.2.2 - 09/28/2023</h4>
+<strong>Hotfix</strong>
+<ul>
+	<li>Prevent low privileged user roles from editing node CSS/JS, layout CSS/JS and having access to Global Settings (#2889)</li>
+	<li>Fix issue with calculation of input vars not being correct when displaying the AJAX error pop-up (#2886)</li>
+	<li>Fix tour not initiating properly on a new site and styling/placement issues (#2905 & #2919)</li>
+</ul>
+
+<h4>2.7.2 - 08/24/2023</h4>
+<strong>Requirements</strong>
+<ul>
+	<li>PHP 7 now required for this and future updates of Beaver Builder.  WordPress dropped support for PHP 5.6 in WordPress 6.3 and we are following that(#2767)<li>
+</ul>
+
+
+<strong>Enhancements</strong>
+<ul>
+	<li>When shortcodes in CSS/JS is enabled, enable for node CSS/JS also (#2832)</li>
+	<li>Developer: Add new hooks <code>fl_builder_before_render_column</code> & <code>fl_builder_after_render_column</code> (#1647)</li>
+	<li>Prevent redirect to ?fl_builder when iFrame is disabled and you try to load the iFrame UI builder UI via direct URL (#2764)</li>
+	<li>Rename Reusable Blocks group to WordPress Patterns due to rename in WP 6.3 (#2761)</li>
+	<li>Accessibility: You can now escape out of submenus in Menu Module (#2496)</li>
+	<li>Row BackGround Videos: Show fallback photo while Vimeo video loads (#151)</li>
+</ul>
+
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Fix UI freezing after adding a custom row shape (#2841)</li>
+	<li>Fix conflicts with Appointment Hour Booking and LearnDash when iFrame UI enabled (#2837 & 2743)</li>
+	<li>Fix dragging a saved node when search in content panel is active (#2799)</li>
+	<li>Hide Advanced settings in WP Admin for Network Admin (#2762)</li>
+	<li>Posts Module: Fix loading text not being translatable (#2770)</li>
+	<li>Fix font family select scrolling down the page when iFrame UI is disabled (#2747)</li>
+	<li>Fix images going outside the container on small devices when reverse stacking is set (#2754)</li>
+	<li>Video Module: Fix lightbox when using YouTube Privacy Enhanced Mode (#2688)</li>
+	<li>ACF: Fix ACF Text editors not loading correctly in ACF Blocks used in our UI (#2823)</li>
+	<li>Fix scroll bar freezing when clicked in Content panel (#2875)</li>
+</ul>
+
 <h4>2.7.1.1 - 07/27/2023</h4>
 <strong>Hotfix</strong>
 <ul>
 	<li>Fix fatal error with Pricing Table module when using PHP 8+ (#2790)</li>
-	<li>Fix selecting visibility for XL breakpoint only also selecting Large when you re-open settings (#2800)</li>	
+	<li>Fix selecting visibility for XL breakpoint only also selecting Large when you re-open settings (#2800)</li>
 </ul>
 
 <h4>2.7.1 - 07/06/2023</h4>
 <strong>Enhancements</strong>
 <ul>
 	<li>Remove the word "Settings" from Row and Column settings to be consistent with modules (#2698)</li>
- 	
+
 </ul>
 
 <strong>Bug Fixes</strong>
@@ -685,7 +795,7 @@
 <p><strong>Bug Fixes</strong></p>
 <ul>
 	<li>Fix Saved templates not appearing after import when overriding Templates on a Multi-Site/Network Setup</li>
-	<li>Fix Outline Panel showing empty when you save a module for re-use on a layout and then open it up for editing from the content panel</li>
+	<li>Fix Outline Panel showing empty when you save a module for reuse on a layout and then open it up for editing from the content panel</li>
 	<li>TEC: Fix the BB UI not working on Events when the Block Editor is enabled for Events and the Default Events Template is used in TEC settings</li>
 </ul>
 
@@ -1885,7 +1995,7 @@ Fixed default text still appearing even after being removed</li>
 	<li>Removed references to Font Awesome 4, if its still needed by a module or the theme a shim will load to map icons to FA5.</li>
 	<li>Added option to set placeholder text in Subscribe Module.</li>
 	<li>Added order by random option to Content Slider Module.</li>
-	<li>Added santization to global settings on save.</li>
+	<li>Added sanitization to global settings on save.</li>
 	<li>New filter <code>fl_post_grid_disable_schema</code> to disable all schema in Post Grid Module.</li>
 	<li>When restoring a layout revision the JS and CSS are now included in the revision.</li>
 	<li>Added general post counts to debug info page.</li>

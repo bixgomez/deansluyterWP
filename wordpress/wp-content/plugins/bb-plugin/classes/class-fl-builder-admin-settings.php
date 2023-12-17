@@ -295,6 +295,10 @@ final class FLBuilderAdminSettings {
 
 		$sorted_data = array();
 
+		if ( is_network_admin() ) {
+			unset( $item_data['advanced'] );
+		}
+
 		foreach ( $item_data as $key => $data ) {
 			$priority                 = self::check_priority( $data['priority'], $sorted_data );
 			$data['key']              = $key;

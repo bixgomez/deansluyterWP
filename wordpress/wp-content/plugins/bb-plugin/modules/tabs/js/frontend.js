@@ -5,6 +5,7 @@
 		this.settings 	= settings;
 		this.nodeClass  = '.fl-node-' + settings.id;
 		this.tabsOnMobile = settings.tabsOnMobile;
+		this.activeTab = settings.activeTab;
 		this._init();
 	};
 
@@ -159,20 +160,26 @@
 		},
 
 		_setupTabs: function() {
+			index = this.activeTab - 1;
+			if ( index < 0 ) {
+				index = 0;
+			}
+			// $( this.nodeClass ).find('.fl-tabs-panel-content[data-index="' + index + '"]').addClass('fl-tab-active');
 			var winWidth = $(window).width(),
-				activeTabContent = $( this.nodeClass + ' .fl-tabs-panel-content.fl-tab-active' ),	
+				activeTabContent = $( this.nodeClass + ' .fl-tabs-panel-content.fl-tab-active' ),
 				activeTabPanel = activeTabContent.parent(),
 				activeTabLabelIcon = activeTabPanel.find('i'),
 				smallBreakPoint = FLBuilderLayoutConfig.breakpoints.small,
 				mediumBreakPoint = FLBuilderLayoutConfig.breakpoints.medium;
-		
+
 			if ( winWidth <= smallBreakPoint && 'close-all' == this.tabsOnMobile ) {
 				activeTabContent.hide();
 				activeTabLabelIcon.addClass('fa-plus');
-			} else if ( winWidth >= mediumBreakPoint ) {
+				activeTabPanel.find('.fl-tab-active').removeClass('fl-tab-active').attr('aria-hidden', 'true');
+			} else if ( winWidth >= smallBreakPoint ) {
 				activeTabContent.show();
 				activeTabLabelIcon.removeClass('fa-plus');
-			} 
+			}
 		},
 	};
 

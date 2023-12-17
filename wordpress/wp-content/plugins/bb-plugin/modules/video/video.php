@@ -158,9 +158,13 @@ class FLVideoModule extends FLBuilderModule {
 					$video_url = 'https://vimeo.com/' . $vid_id;
 				} elseif ( strstr( $settings->embed_code, 'facebook.com' ) ) {
 					$video_url = $this->get_video_id( 'facebook', $settings->embed_code );
-				} elseif ( strstr( $settings->embed_code, 'youtube.com' ) || strstr( $settings->embed_code, 'youtu.be' ) ) {
-					$vid_id    = $this->get_video_id( 'youtube', $settings->embed_code );
-					$video_url = 'https://youtube.com/watch?v=' . $vid_id;
+				} elseif ( strstr( $settings->embed_code, 'youtube' ) || strstr( $settings->embed_code, 'youtu.be' ) ) {
+					$vid_id = $this->get_video_id( 'youtube', $settings->embed_code );
+					if ( strstr( $settings->embed_code, 'youtube-nocookie' ) ) {
+						$video_url = 'https://youtube-nocookie.com/embed/' . $vid_id;
+					} else {
+						$video_url = 'https://youtube.com/watch?v=' . $vid_id;
+					}
 				} else {
 					$video_url = '';
 				}
@@ -183,7 +187,7 @@ class FLVideoModule extends FLBuilderModule {
 		$id      = '';
 		$regex   = '';
 
-		$youtube_regex  = '~(?:(?:<iframe [^>]*src=")?|(?:(?:<object .*>)?(?:<param .*</param>)*(?:<embed [^>]*src=")?)?)?(?:https?:\/\/(?:[\w]+\.)*(?:youtu\.be/| youtube\.com| youtube-nocookie\.com)(?:\S*[^\w\-\s])?([\w\-]{11})[^\s]*)"?(?:[^>]*>)?(?:</iframe>|</embed></object>)?~ix';
+		$youtube_regex  = '#(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})#ix';
 		$vimeo_regex    = '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/videos?)?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix';
 		$facebook_regex = '/(?<=src=").*?(?=[\*"])/';
 
@@ -272,7 +276,7 @@ class FLVideoModule extends FLBuilderModule {
 			$markup .= sprintf( '<meta itemprop="name" content="%s" />', esc_attr( $settings->name ) );
 		}
 		if ( ! empty( $settings->up_date ) ) {
-			$markup .= sprintf( '<meta itemprop="uploadDate" content="%s" />', esc_attr( $settings->up_date ) );
+			$markup .= sprintf( '<meta itemprop="uploadDate" content="%s" />', esc_attr( gmdate( DATE_ATOM, strtotime( $settings->up_date ) ) ) );
 		}
 		if ( ! empty( $settings->thumbnail_src ) ) {
 			$markup .= sprintf( '<meta itemprop="thumbnailUrl" content="%s" />', $settings->thumbnail_src );

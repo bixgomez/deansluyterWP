@@ -14,7 +14,8 @@
 				medium 	   : '<?php echo $settings->match_height_medium; ?>',
 				responsive : '<?php echo $settings->match_height_responsive; ?>'
 			},
-			isRTL: <?php echo is_rtl() ? 'true' : 'false'; ?>
+			isRTL: <?php echo is_rtl() ? 'true' : 'false'; ?>,
+			loadingText: '<?php echo isset( $settings->more_btn_loading ) && '' !== $settings->more_btn_loading ? esc_attr( $settings->more_btn_loading ) : esc_attr( __( 'Loading...', 'fl-builder' ) ); ?>'
 		});
 
 		<?php if ( 'grid' == $settings->layout ) : ?>

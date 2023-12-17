@@ -109,7 +109,7 @@ class FLPhotoModule extends FLBuilderModule {
 		$this->delete();
 
 		// Do a crop.
-		if ( ! empty( $this->settings->crop ) ) {
+		if ( ! empty( $this->settings->crop ) && ! isset( $_GET['safemode'] ) ) {
 
 			$editor = $this->_get_editor();
 

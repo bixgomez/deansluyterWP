@@ -168,13 +168,12 @@
 					prefill         : true,
 					bufferPx        : 200,
 					loading         : {
-						msgText         : 'Loading',
+						msgText         : this.settings.loadingText,
 						finishedMsg     : '',
 						img             : FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-grey.gif',
 						speed           : 1
 					}
 				};
-
 			// Define path since Infinitescroll incremented our custom pagination '/paged-2/2/' to '/paged-3/2/'.
 			if ( pagePattern.test( path ) ) {
 				scrollData.path = function( currPage ){
@@ -231,6 +230,10 @@
 			this.currPage++;
 
 			this._removeLoadMoreButton();
+
+			// trigger an event
+			node = $(wrap).closest('.fl-module-post-grid').data('node')
+			$('.fl-node-' + node).trigger( 'gridScrollComplete', this );
 		},
 
 		_infiniteScrollLoadMore: function()

@@ -9,6 +9,7 @@
 		autoStart : <?php echo $settings->auto_play; ?>,
 		auto : true,
 		adaptiveHeight: true,
+		ariaLive: false,
 		pause : <?php echo $settings->pause * 1000; ?>,
 		mode : '<?php echo $settings->transition; ?>',
 		autoDirection: '<?php echo $settings->direction; ?>',

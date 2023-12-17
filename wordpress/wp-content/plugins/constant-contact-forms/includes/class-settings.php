@@ -124,8 +124,6 @@ class ConstantContact_Settings {
 		add_action( 'signup_extra_fields', [ $this, 'optin_form_field_registration' ] );
 		add_action( 'login_head', [ $this, 'optin_form_field_login_css' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'scripts' ] );
-
-		add_action( 'admin_footer', [ $this, 'privacy_notice_markup' ] );
 	}
 
 	/**
@@ -346,21 +344,6 @@ class ConstantContact_Settings {
 	protected function register_fields_general() {
 		$cmb = new_cmb2_box( $this->get_cmb_args( 'general' ) );
 
-		$before_analytics = sprintf(
-			'<h2>%s</h2>',
-			esc_html__( 'General Settings', 'constant-contact-forms' )
-		);
-
-		$cmb->add_field(
-			[
-				'name'       => esc_html__( 'Google Analytics&trade; tracking opt-in.', 'constant-contact-forms' ),
-				'id'         => '_ctct_data_tracking',
-				'type'       => 'checkbox',
-				'desc'       => __( 'Allow Constant Contact to use Google Analytics&trade; to track your usage across the Constant Contact Forms plugin.<br/> NOTE &mdash; Your website and users will not be tracked. See our <a href="https://www.endurance.com/privacy"> Privacy Statement</a> information about what is and is not tracked.', 'constant-contact-forms' ),
-				'before_row' => $before_analytics,
-			]
-		);
-
 		if ( constant_contact()->api->is_connected() ) {
 
 			$cmb->add_field(
@@ -380,10 +363,12 @@ class ConstantContact_Settings {
 			$cmb->add_field(
 				[
 					'name'       => esc_html__( 'Bypass Constant Contact cron scheduling', 'constant-contact-forms' ),
-					'desc'       => esc_html__( 'This option will send form entries to Constant Contact right away instead of holding for one minute delay.', 'constant-contact-forms' ),
+					'desc'       => esc_html__( 'Version 2.3.0 introduces bypassing by default for all submissions. This setting is disabled. It will be removed in a future version.', 'constant-contact-forms' ),
 					'id'         => '_ctct_bypass_cron',
 					'type'       => 'checkbox',
 					'before_row' => '<hr/>',
+					'default'    => 'on',
+					'attributes' => [ 'disabled' => true ],
 				]
 			);
 
@@ -1013,50 +998,6 @@ class ConstantContact_Settings {
 		}
 
 		throw new Exception( 'Invalid property: ' . $field );
-	}
-
-	/**
-	 * Returns the status of our privacy policy acceptance.
-	 *
-	 * @since 1.2.0
-	 *
-	 * @return bool
-	 */
-	public function privacy_policy_status() {
-		$status = get_option( 'ctct_privacy_policy_status', '' );
-		return ! ( '' === $status || 'false' === $status );
-	}
-
-	/**
-	 * Outputs the markup for the privacy policy modal popup.
-	 *
-	 * @since 1.2.0
-	 * @return void
-	 */
-	public function privacy_notice_markup() {
-		if ( ! constant_contact()->is_constant_contact() ) {
-			return;
-		}
-		$complete_url = wp_nonce_url( admin_url(), 'optin-privacy', 'modal_privacy' );
-		?>
-		<div id="ctct-privacy-modal" class="ctct-modal">
-			<div class="ctct-modal-dialog" role="document">
-				<div class="ctct-modal-content">
-					<div class="ctct-modal-header">
-						<a href="#" class="ctct-modal-close" aria-hidden="true">&times;</a>
-						<h2 class="ctct-logo"><img src="<?php echo esc_url( constant_contact()->url . '/assets/images/constant-contact-logo.png' ); ?>" alt="<?php echo esc_attr_x( 'Constant Contact logo', 'img alt text', 'constant-contact-forms' ); ?>" /></h2>
-					</div>
-					<div class="ctct-modal-body ctct-privacy-modal-body">
-						<?php echo constant_contact_privacy_policy_content(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- XSS OK. ?>
-					</div><!-- modal body -->
-					<div id="ctct-modal-footer-privacy" class="ctct-modal-footer ctct-modal-footer-privacy">
-						<a href="<?php echo esc_url( $complete_url ); ?>" class="button button-blue ctct-connect" data-agree="true"><?php esc_html_e( 'Agree', 'constant-contact-forms' ); ?></a>
-						<a href="<?php echo esc_url( $complete_url ); ?>" class="button no-bg" data-agree="false"><?php esc_html_e( 'Disagree', 'constant-contact-forms' ); ?></a>
-					</div>
-				</div><!-- .modal-content -->
-			</div><!-- .modal-dialog -->
-		</div>
-		<?php
 	}
 
 	/**

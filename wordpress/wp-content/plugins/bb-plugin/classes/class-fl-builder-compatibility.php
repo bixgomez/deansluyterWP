@@ -35,6 +35,7 @@ final class FLBuilderCompatibility {
 		add_action( 'template_redirect', array( __CLASS__, 'fix_klaviyo_themer_layout' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'aggiungi_script_instafeed_owl' ), 1000 );
 		add_action( 'template_redirect', array( __CLASS__, 'fix_happyfoxchat' ) );
+		add_action( 'template_redirect', array( __CLASS__, 'fix_adminbar' ) );
 		add_action( 'tribe_events_pro_widget_render', array( __CLASS__, 'tribe_events_pro_widget_render_fix' ), 10, 3 );
 		add_action( 'wp_footer', array( __CLASS__, 'fix_woo_short_description_footer' ) );
 		add_action( 'save_post', array( __CLASS__, 'fix_seopress' ), 9 );
@@ -57,6 +58,7 @@ final class FLBuilderCompatibility {
 		add_action( 'pre_get_posts', array( __CLASS__, 'hide_tribe_child_recurring_events' ) );
 		add_action( 'wp_print_scripts', array( __CLASS__, 'convert_box_bb' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'yith_woocommerce_affiliates' ), 20 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_jquery_dialog' ) );
 
 		// Filters
 		add_filter( 'fl_builder_is_post_editable', array( __CLASS__, 'bp_pages_support' ), 11, 2 );
@@ -1305,6 +1307,26 @@ final class FLBuilderCompatibility {
 	public static function fix_iubenda( $options ) {
 		$options['parse'] = isset( $_GET['fl_builder'] ) ? false : $options['parse'];
 		return $options;
+	}
+
+	/**
+	 * Fix jQuery Dialog Style from interfering with our iFrame UI
+	 * Fixes conflict with Appointment Hour Booking and LearnDash
+	 */
+	public static function fix_jquery_dialog() {
+		if ( class_exists( 'FLBuilderModel' ) && FLBuilderUIIFrame::is_ui_request() ) {
+			wp_deregister_style( 'wp-jquery-ui-dialog' );
+		}
+	}
+
+	/**
+	 * Fix admin bar styles in WP 6.4
+	 * @since 2.8
+	 */
+	public static function fix_adminbar() {
+		if ( isset( $_REQUEST['fl_builder'] ) ) {
+			remove_action( 'wp_enqueue_scripts', 'wp_enqueue_admin_bar_bump_styles' );
+		}
 	}
 }
 FLBuilderCompatibility::init();

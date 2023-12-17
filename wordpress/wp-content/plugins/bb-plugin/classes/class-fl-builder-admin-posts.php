@@ -37,7 +37,7 @@ final class FLBuilderAdminPosts {
 		// Limit meta box to certain post types.
 		$post_types = array( 'post', 'page' );
 
-		if ( in_array( $post_type, FLBuilderModel::get_post_types() ) ) {
+		if ( in_array( $post_type, FLBuilderModel::get_post_types() ) && ( current_user_can( 'delete_others_posts' ) || FLBuilderModel::user_has_unfiltered_html() ) ) {
 				add_meta_box(
 					'fl_css_js',
 					__( 'Builder CSS/JS', 'fl-builder' ),

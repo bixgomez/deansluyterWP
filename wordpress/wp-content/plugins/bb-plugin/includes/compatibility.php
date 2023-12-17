@@ -299,7 +299,7 @@ function fl_ordered_post_grid( $data ) {
 			});
 			$parent_node[ $parent_id ] = $parent;
 
-			// Priorize row ordering
+			// Prioritize row ordering
 			if ( 'row' == $type ) {
 				foreach ( $parent['node'] as $node_id => $node ) {
 					if ( ! in_array( $node_id, $ordered_nodes ) ) {

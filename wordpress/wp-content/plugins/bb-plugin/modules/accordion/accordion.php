@@ -232,6 +232,19 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'label'   => __( 'More Link Text', 'fl-builder' ),
 						'default' => __( 'Read More', 'fl-builder' ),
 					),
+					'expand_on_tab'     => array(
+						'type'    => 'select',
+						'label'   => __( 'Expand on Tab', 'fl-builder' ),
+						'default' => '0',
+						'options' => array(
+							'1' => __( 'Yes', 'fl-builder' ),
+							'0' => __( 'No', 'fl-builder' ),
+						),
+						'help'    => __( 'Expand Accordion using the Tab key.', 'fl-builder' ),
+						'preview' => array(
+							'type' => 'none',
+						),
+					),
 					'collapse'          => array(
 						'type'    => 'select',
 						'label'   => __( 'Collapse Inactive', 'fl-builder' ),
@@ -325,7 +338,7 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'     => 'css',
-							'selector' => '.fl-accordion-button',
+							'selector' => '.fl-accordion-button a, .fl-accordion-button-icon',
 							'property' => 'color',
 						),
 					),

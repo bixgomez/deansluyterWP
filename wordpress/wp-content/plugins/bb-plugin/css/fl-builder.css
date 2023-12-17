@@ -3110,6 +3110,11 @@ button.fl-builder-button.fl-builder-bar-title-caret:focus {
 	opacity: 1;
 }
 
+/* Content */
+.fl-builder-content-editing .fl-module {
+	min-height: 40px;
+}
+
 /* @endgroup Drag and Drop */
 
 /* @group Actions Lightbox
@@ -5086,7 +5091,6 @@ input[type=number].fl-field-popup-slider-focus {
 }
 body > span.select2-container.select2-container--open {
     z-index: 9999999;
-	position: fixed !important;
 }
 
 /* Multiple Photo Fields */
@@ -5854,6 +5858,9 @@ body > .fl-builder-tour-dimmed {
 }
 .popover-navigation button {
 	min-height: 36px;
+}
+.popover[class*="tour-"] .popover-navigation [data-role="end"] {
+	float: none;
 }
 /* @endgroup Help */
 

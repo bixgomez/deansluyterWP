@@ -1579,7 +1579,7 @@ $.magnificPopup.registerModule(IFRAME_NS, {
 		// we don't care and support only one default type of URL by default
 		patterns: {
 			youtube: {
-				index: 'youtube.com',
+				index: 'youtube.com/',
 				id: 'v=',
 				src: '//www.youtube.com/embed/%id%?autoplay=1'
 			},
@@ -1587,6 +1587,11 @@ $.magnificPopup.registerModule(IFRAME_NS, {
 				index: 'youtu.be',
 				id: '/',
 				src: '//www.youtube.com/embed/%id%?autoplay=1',
+			},
+			youtube_nocookie: {
+				index: 'youtube-nocookie.com',
+				id: '/',
+				src: '//www.youtube-nocookie.com/embed/%id%?autoplay=1',
 			},
 			vimeo: {
 				index: 'vimeo.com/',
@@ -1624,7 +1629,6 @@ $.magnificPopup.registerModule(IFRAME_NS, {
 		getIframe: function(item, template) {
 			var embedSrc = item.src;
 			var iframeSt = mfp.st.iframe;
-
 			$.each(iframeSt.patterns, function() {
 				if(embedSrc.indexOf( this.index ) > -1) {
 					if(this.id) {

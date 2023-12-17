@@ -20,9 +20,12 @@ class Mailin_Rest
     /**
     * Do CURL request with authorization
     */
-    private function do_request($resource,$method,$input)
+    private function do_request($resource,$method,$input, $limit = false )
     {
         $called_url = $this->base_url."/".$resource;
+        if ( 'contacts/lists' === $resource ) {
+          $called_url .= '?limit=50';
+        }
         $ch = curl_init($called_url);
         $auth_header = 'api-key:'.$this->api_key;
         $content_header = "Content-Type:application/json";
@@ -36,7 +39,7 @@ class Mailin_Rest
         $data = curl_exec($ch);
         if(curl_errno($ch))
         {
-            echo 'Curl error: ' . curl_error($ch). '\n';
+            error_log( 'Curl error: ' . curl_error($ch). '\n' );
         }
         curl_close($ch);
         return json_decode($data,true);
@@ -63,7 +66,7 @@ class Mailin_Rest
     }
     public function get_lists($page_limit)
     {
-        return $this->get("contacts/lists",json_encode(array("limit"=>$page_limit, "offset"=>0)));
+        return $this->get( 'contacts/lists',json_encode( array(), $page_limit ) );
     }
     public function create_update_user($email,$attributes,$blacklisted,$listid,$update_enabled,$listid_unlink,$blacklisted_sms)
     {

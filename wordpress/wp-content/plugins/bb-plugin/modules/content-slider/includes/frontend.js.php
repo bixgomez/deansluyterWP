@@ -26,6 +26,7 @@
 
 		var slider = $('.fl-node-<?php echo $id; ?> .fl-content-slider-wrapper').delay(1000).bxSlider({
 			adaptiveHeight: true,
+			ariaLive: false,
 			startSlide: sliderIndex ? sliderIndex : 0,
 			auto: autoPlay && false === sliderIndex ? true : false,
 			autoHover: <?php echo ( $settings->auto_hover ) ? 'true' : 'false'; ?>,

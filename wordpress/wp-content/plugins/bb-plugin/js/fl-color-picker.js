@@ -268,8 +268,8 @@ var FLBuilderColorPicker;
 	 */
 	flBuilderParseColorValue = function( val ) {
 		var value = val.replace(/\s+/g, ''),
-		    alpha = ( value.indexOf('rgba') !== -1 ) ? parseFloat( value.replace(/^.*,(.+)\)/, '$1') * 100 ) : 100,
-			rgba  = ( alpha < 100 ) ? true : false;
+			rgba  = ( value.indexOf('rgba') !== -1 ) ? true : false,
+		    alpha = rgba ? parseFloat( value.replace(/^.*,(.+)\)/, '$1') * 100 ) : 100;
 
 		return { value: value, alpha: alpha, rgba: rgba };
 	}

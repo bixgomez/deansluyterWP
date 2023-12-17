@@ -76,6 +76,7 @@ class ConstantContact_API {
 
 		add_action( 'init', [ $this, 'cct_init' ] );
 		add_action( 'refresh_token_job', [ $this, 'refresh_token' ] );
+		add_action( 'ctct_access_token_acquired', [ $this, 'clear_missed_api_requests' ] );
 	}
 
 	/**
@@ -98,7 +99,10 @@ class ConstantContact_API {
 			empty( $this->access_token )
 		) {
 
-			$this->acquire_access_token();
+			$success = $this->acquire_access_token();
+			if ( $success ) {
+				update_option( 'ctct_access_token_timestamp', time() );
+			}
 		}
 
 		// custom scheduling based on the expiry time returned with access token
@@ -121,6 +125,13 @@ class ConstantContact_API {
 		} else {
 			wp_unschedule_hook( 'refresh_token_job' );
 		}
+
+		if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) {
+			if ( $this->access_token_maybe_expired() ) {
+				$this->refresh_token();
+			}
+		}
+
 	}
 
 	/**
@@ -149,7 +160,10 @@ class ConstantContact_API {
 		if ( constant_contact()->connect->e_get( '_ctct_access_token' ) ) {
 			$token .= constant_contact()->connect->e_get( '_ctct_access_token' );
 		} else {
-			$this->acquire_access_token();
+			$success = $this->acquire_access_token();
+			if ( $success ) {
+				update_option( 'ctct_access_token_timestamp', time() );
+			}
 		}
 
 		return $token;
@@ -196,6 +210,11 @@ class ConstantContact_API {
 			try {
 
 				$acct_data = $this->cc()->get_account_info();
+				if ( array_key_exists( 'error_key', $acct_data ) && 'unauthorized' === $acct_data['error_key'] ) {
+					$this->refresh_token();
+
+					$acct_data = $this->cc()->get_account_info();
+				}
 
 				if ( $acct_data ) {
 					set_transient( 'constant_contact_acct_info', $acct_data, 12 * HOUR_IN_SECONDS );
@@ -241,7 +260,13 @@ class ConstantContact_API {
 		if ( false === $contacts ) {
 			try {
 				$contacts = $this->cc()->get_contacts( $this->get_api_token() );
-				set_transient( 'ctct_contact', $contacts, 1 * HOUR_IN_SECONDS );
+				if ( array_key_exists( 'error_key', $contacts ) && 'unauthorized' === $contacts['error_key'] ) {
+					$this->refresh_token();
+
+					$contacts = $this->cc()->get_contacts( $this->get_api_token() );
+				}
+
+				set_transient( 'ctct_contact', $contacts, 1 * DAY_IN_SECONDS );
 				return $contacts;
 			} catch ( CtctException $ex ) {
 				add_filter( 'constant_contact_force_logging', '__return_true' );
@@ -293,6 +318,13 @@ class ConstantContact_API {
 
 				$results = $this->cc()->get_lists();
 				$lists = $results['lists'] ?? [];
+
+				if ( array_key_exists( 'error_key', $results ) && 'unauthorized' === $results['error_key'] ) {
+					$this->refresh_token();
+
+					$results = $this->cc()->get_lists();
+					$lists   = $results['lists'] ?? [];
+				}
 
 				if ( ! empty( $lists ) && is_array( $lists ) ) {
 					set_transient( 'ctct_lists', $lists, 1 * HOUR_IN_SECONDS );
@@ -409,7 +441,13 @@ class ConstantContact_API {
 		if ( false === $list ) {
 			try {
 				$list = $this->cc()->get_list( $id );
-				set_transient( 'ctct_lists_' . $id, $list, 1 * HOUR_IN_SECONDS );
+				if ( array_key_exists( 'error_key', $list ) && 'unauthorized' === $list['error_key'] ) {
+					$this->refresh_token();
+
+					$list = $this->cc()->get_list( $id );
+				}
+
+				set_transient( 'ctct_lists_' . $id, $list, 1 * DAY_IN_SECONDS );
 				return $list;
 			} catch ( CtctException $ex ) {
 				add_filter( 'constant_contact_force_logging', '__return_true' );
@@ -454,6 +492,11 @@ class ConstantContact_API {
 
 		try {
 			$list = $this->cc()->get_list( esc_attr( $new_list['id'] ) );
+			if ( array_key_exists( 'error_key', $list ) && 'unauthorized' === $list['error_key'] ) {
+				$this->refresh_token();
+
+				$list = $this->cc()->get_list( esc_attr( $new_list['id'] ) );
+			}
 		} catch ( CtctException $ex ) {
 			add_filter( 'constant_contact_force_logging', '__return_true' );
 			$extra        = constant_contact_location_and_line( __METHOD__, __LINE__ );
@@ -551,6 +594,10 @@ class ConstantContact_API {
 			$list->status = apply_filters( 'constant_contact_list_status', 'HIDDEN' );
 
 			$return_list = $this->cc()->update_list( $list );
+			if ( array_key_exists( 'error_key', $return_list ) && 'unauthorized' === $return_list['error_key'] ) {
+				$this->refresh_token();
+				$return_list = $this->cc()->update_list( $list );
+			}
 		} catch ( CtctException $ex ) {
 			add_filter( 'constant_contact_force_logging', '__return_true' );
 			$extra        = constant_contact_location_and_line( __METHOD__, __LINE__ );
@@ -592,6 +639,10 @@ class ConstantContact_API {
 
 		try {
 			$list = $this->cc()->delete_list( $updated_list['id'] );
+			if ( array_key_exists( 'error_key', $list ) && 'unauthorized' === $list['error_key'] ) {
+				$this->refresh_token();
+				$list = $this->cc()->delete_list( $updated_list['id'] );
+			}
 		} catch ( CtctException $ex ) {
 			add_filter( 'constant_contact_force_logging', '__return_true' );
 			$extra        = constant_contact_location_and_line( __METHOD__, __LINE__ );
@@ -654,6 +705,25 @@ class ConstantContact_API {
 			}
 
 			$return_contact = $this->create_update_contact( $list, $email, $new_contact, $form_id );
+			if ( array_key_exists( 'error_key', $return_contact ) && 'unauthorized' === $return_contact['error_key'] ) {
+				$this->refresh_token();
+
+				$return_contact = $this->create_update_contact( $list, $email, $new_contact, $form_id );
+				if ( array_key_exists( 'error_key', $return_contact ) ) {
+					// At this point, something is likely going on,
+					// so after the 2nd attempt, we will log the attempt for later.
+					$this->log_missed_api_request(
+						'contact_add_update',
+						[
+							'list'    => $list,
+							'email'   => $email,
+							'contact' => $new_contact,
+							'form_id' => $form_id
+						]
+					);
+					constant_contact_maybe_log_it( 'API', 'A failed API attempt was caught and will be retried after reconnection.' );
+				}
+			}
 
 		} catch ( CtctException $ex ) {
 			add_filter( 'constant_contact_force_logging', '__return_true' );
@@ -845,6 +915,7 @@ class ConstantContact_API {
 				case 'city_address':
 				case 'state_address':
 				case 'zip_address':
+				case 'country_address':
 					if ( null === $address ) {
 						$address = [];
 					}
@@ -862,11 +933,15 @@ class ConstantContact_API {
 							break;
 						case 'state_address':
 							$address['state']   = $value;
-							$address['country'] = 'United States';
+							if ( empty( $address['country'] ) ) {
+								$address['country'] = 'United States';
+							}
 							break;
 						case 'zip_address':
 							$address['postal_code'] = $value;
 							break;
+						case 'country_address':
+							$address['country'] = $value;
 					}
 					break;
 				case 'birthday_month':
@@ -932,7 +1007,7 @@ class ConstantContact_API {
 		} // End foreach.
 
 		if ( ! empty( $streets ) ) {
-			$address['street_address'] = implode( ', ', $streets );
+			$address['street'] = implode( ', ', $streets );
 		}
 
 		if ( null !== $address ) {
@@ -1246,7 +1321,7 @@ class ConstantContact_API {
 	 */
 	public function acquire_access_token(): bool {
 
-		$code_state = constant_contact_get_option( '_ctct_form_state_authcode', '' );
+		$code_state = (string) constant_contact_get_option( '_ctct_form_state_authcode', '' );
 
 		parse_str( $code_state, $parsed_code_state );
 		$parsed_code_state = array_values( $parsed_code_state );
@@ -1254,7 +1329,7 @@ class ConstantContact_API {
 		if ( empty( $parsed_code_state[0] ) || empty( $parsed_code_state[1] ) ) {
 			$this->status_code = 0;
 			$this->last_error  = 'Invalid state or auth code!';
-
+			constant_contact_maybe_log_it( 'Error: ', $this->last_error );
 			return false;
 		} else {
 			$code  = $parsed_code_state[0];
@@ -1266,6 +1341,7 @@ class ConstantContact_API {
 		if ( ( $state ?? 'undefined' ) != $expected_state ) {
 			$this->status_code = 0;
 			$this->last_error  = 'state is not correct';
+			constant_contact_maybe_log_it( 'Error: ', $this->last_error );
 			return false;
 		}
 		// Create full request URL
@@ -1287,7 +1363,25 @@ class ConstantContact_API {
 			'headers' => $headers,
 		];
 
-		return $this->exec( $url, $options );
+		// This will be either true or false.
+		$result = $this->exec( $url, $options );
+
+		if ( false === $result ) {
+			set_transient( 'ctct_maybe_needs_reconnected', true, DAY_IN_SECONDS );
+		} else {
+
+			/**
+			 * Fires after successful access token acquisition.
+			 *
+			 * @since 2.3.0
+			 */
+			do_action( 'ctct_access_token_acquired' );
+
+			delete_transient( 'ctct_maybe_needs_reconnected' );
+		}
+
+
+		return $result;
 	}
 
 	/**
@@ -1313,7 +1407,16 @@ class ConstantContact_API {
 			'headers' => $headers,
 		];
 
-		return $this->exec( $url, $options );
+		$result = $this->exec( $url, $options );
+
+		if ( false === $result ) {
+			set_transient( 'ctct_maybe_needs_reconnected', true, DAY_IN_SECONDS );
+		} else {
+			update_option( 'ctct_access_token_timestamp', time() );
+			delete_transient( 'ctct_maybe_needs_reconnected' );
+		}
+
+		return $result;
 	}
 
 	private function set_authorization(): array {
@@ -1342,6 +1445,7 @@ class ConstantContact_API {
 			// check if the body contains error
 			if ( isset( $data['error'] ) ) {
 				$this->last_error = $data['error'] . ': ' . ( $data['error_description'] ?? 'Undefined' );
+				constant_contact_maybe_log_it( 'Error: ', $this->last_error );
 			}
 
 			if ( ! empty( $data['access_token'] ) ) {
@@ -1369,6 +1473,7 @@ class ConstantContact_API {
 		} else {
 			$this->status_code = 0;
 			$this->last_error  = $response->get_error_message();
+			constant_contact_maybe_log_it( 'Error: ', $this->last_error );
 		}
 
 		return false;
@@ -1388,6 +1493,10 @@ class ConstantContact_API {
 	 * @return bool
 	 */
 	private function has_note( $submission_data ) {
+		if ( ! is_array( $submission_data ) ) {
+			return false;
+		}
+
 		$keys = array_keys( $submission_data );
 		$has_text_area = false;
 		foreach( $keys as $key ) {
@@ -1419,6 +1528,99 @@ class ConstantContact_API {
 			}
 		}
 		return $note;
+	}
+
+	/**
+	 * Check if our current access token is expired.
+	 *
+	 * Based on access token issued timestamp + expires in timestamp and current time.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return bool
+	 */
+	private function access_token_maybe_expired() {
+
+		$issued_time = get_option( 'ctct_access_token_timestamp', '' );
+		if ( empty( $issued_time ) ) {
+			return true;
+		}
+
+		$expires_in = constant_contact()->connect->e_get( '_ctct_expires_in' );
+		if ( ! empty( $this->expires_in ) ) {
+			// Prioritize our property over the option. If this is set, it's probably fresher.
+			$expires_in = $this->expires_in;
+		}
+		$current_time = time();
+		$expiration_time = $issued_time + $expires_in;
+
+		// If we're currently above the expiration time, we're expired.
+		return $current_time >= $expiration_time;
+	}
+
+	/**
+	 * Logs a missed API request to our overall log of missed requests.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $type    API request type.
+	 * @param array  $request The request.
+	 */
+	private function log_missed_api_request( string $type, array $request ) {
+		$missed_api_requests            = get_option( 'ctct_missed_api_requests', [] );
+		$missed_api_requests[][ $type ] = $request;
+		update_option( 'ctct_missed_api_requests', $missed_api_requests );
+	}
+
+	/**
+	 * Processes the list of missed API requests after successful reconnect to the API.
+	 *
+	 * @since 2.3.0
+	 */
+	public function clear_missed_api_requests() {
+		// @TODO Make this compatible with other interactions besides just contact adds.
+		// For now we can focus on just contact.
+
+		$missed_api_requests = get_option( 'ctct_missed_api_requests', [] );
+		if ( empty( $missed_api_requests ) ) {
+			return;
+		}
+
+		$result = [];
+		foreach ( $missed_api_requests as $key => $request ) {
+			foreach ( $request as $type => $the_request ) {
+				switch ( $type ) {
+					case 'list_add':
+
+						break;
+					case 'contact_add_update':
+						$args = wp_parse_args(
+							$the_request,
+							[
+								'list'    => '',
+								'email'   => '',
+								'contact' => '',
+								'form_id' => ''
+							]
+						);
+
+						$result = $this->create_update_contact(
+							$args['list'],
+							$args['email'],
+							$args['new_contact'],
+							$args['form_id']
+						);
+						break;
+				}
+				if ( ! empty( $result ) && ! array_key_exists( 'error_key', $result ) ) {
+					unset( $missed_api_requests[ $key ] );
+				}
+			}
+		}
+
+		if ( empty( $missed_api_requests ) ) {
+			update_option( 'ctct_missed_api_requests', $missed_api_requests );
+		}
 	}
 }
 

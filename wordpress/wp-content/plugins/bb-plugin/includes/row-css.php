@@ -105,7 +105,7 @@ FLBuilderCSS::rule( array(
 
 FLBuilderCSS::rule( array(
 	'selector' => ".fl-node-$id > .fl-row-content-wrap",
-	'enabled'  => 'gradient' === $settings->bg_type && ! empty( $settings->bg_gradient_medium ) && ! empty( array_filter( $settings->bg_gradient_medium['colors'] ) ),
+	'enabled'  => 'gradient' === $settings->bg_type && ! empty( $settings->bg_gradient_medium ) && isset( $settings->bg_gradient_medium['colors'] ) && is_array( $settings->bg_gradient_medium['colors'] ) && ! empty( array_filter( $settings->bg_gradient_medium['colors'] ) ),
 	'media'    => 'medium',
 	'props'    => array(
 		'background-image' => FLBuilderColor::gradient( $settings->bg_gradient_medium ),
@@ -114,7 +114,7 @@ FLBuilderCSS::rule( array(
 
 FLBuilderCSS::rule( array(
 	'selector' => ".fl-node-$id > .fl-row-content-wrap",
-	'enabled'  => 'gradient' === $settings->bg_type && ! empty( $settings->bg_gradient_responsive ) && ! empty( array_filter( $settings->bg_gradient_responsive['colors'] ) ),
+	'enabled'  => 'gradient' === $settings->bg_type && ! empty( $settings->bg_gradient_responsive ) && isset( $settings->bg_gradient_responsive['colors'] ) && is_array( $settings->bg_gradient_responsive['colors'] ) && ! empty( array_filter( $settings->bg_gradient_responsive['colors'] ) ),
 	'media'    => 'responsive',
 	'props'    => array(
 		'background-image' => FLBuilderColor::gradient( $settings->bg_gradient_responsive ),
@@ -313,6 +313,21 @@ FLBuilderCSS::rule( array(
 		'background-image'      => $settings->bg_parallax_image_responsive_src,
 		'background-position'   => 'center center',
 		'background-attachment' => 'scroll',
+	),
+) );
+
+// Background Video Fallback
+$video_data = FLBuilderUtils::get_video_data( do_shortcode( $settings->bg_video_service_url ) );
+
+FLBuilderCSS::rule( array(
+	'selector' => ".fl-node-$id .fl-bg-video",
+	'enabled'  => 'video_service' === $settings->bg_video_source && isset( $video_data['type'] ) && 'vimeo' == $video_data['type'] && ! empty( $settings->bg_video_fallback_src ),
+	'props'    => array(
+		'background-image'      => $settings->bg_video_fallback_src,
+		'background-repeat'     => 'no-repeat',
+		'background-position'   => 'center center',
+		'background-attachment' => 'fixed',
+		'background-size'       => 'cover',
 	),
 ) );
 

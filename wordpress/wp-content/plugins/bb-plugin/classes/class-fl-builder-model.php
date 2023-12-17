@@ -765,6 +765,9 @@ final class FLBuilderModel {
 	static public function is_new_user() {
 		if ( self::is_builder_active() ) {
 
+			if ( FLBuilderUIIFrame::is_enabled() && ! FLBuilderUIIFrame::is_iframe_request() ) {
+				return false;
+			}
 			$current_user = wp_get_current_user();
 			$launched     = get_user_meta( $current_user->ID, '_fl_builder_launched', true );
 
@@ -5365,6 +5368,7 @@ final class FLBuilderModel {
 			'order'            => 'ASC',
 			'posts_per_page'   => '-1',
 			'suppress_filters' => false,
+			'fields' => 'ids',
 			'tax_query'        => array(
 				array(
 					'taxonomy' => 'fl-builder-template-type',
@@ -5378,9 +5382,8 @@ final class FLBuilderModel {
 
 		// Loop through templates posts and build the templates array.
 		foreach ( $posts as $post ) {
-
-			if ( has_post_thumbnail( $post->ID ) ) {
-				$image_data = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium_large' );
+			if ( has_post_thumbnail( $post ) ) {
+				$image_data = wp_get_attachment_image_src( get_post_thumbnail_id( $post ), 'medium_large' );
 				if ( is_array( $image_data ) ) {
 					$image = $image_data[0];
 				} else {
@@ -5391,15 +5394,15 @@ final class FLBuilderModel {
 			}
 
 			$templates[] = array(
-				'id'       => get_post_meta( $post->ID, '_fl_builder_template_id', true ),
-				'postId'   => $post->ID,
-				'name'     => $post->post_title,
+				'id'       => get_post_meta( $post, '_fl_builder_template_id', true ),
+				'postId'   => $post,
+				'name'     => get_the_title( $post ),
 				'image'    => $image,
 				'kind'     => 'template',
 				'type'     => 'user',
-				'content'  => FLBuilderModel::get_user_template_type( $post->ID ),
-				'isGlobal' => FLBuilderModel::is_post_global_node_template( $post->ID ),
-				'link'     => add_query_arg( 'fl_builder', '', get_permalink( $post->ID ) ),
+				'content'  => FLBuilderModel::get_user_template_type( $post ),
+				'isGlobal' => FLBuilderModel::is_post_global_node_template( $post ),
+				'link'     => add_query_arg( 'fl_builder', '', get_permalink( $post ) ),
 				'category' => array(),
 			);
 		}

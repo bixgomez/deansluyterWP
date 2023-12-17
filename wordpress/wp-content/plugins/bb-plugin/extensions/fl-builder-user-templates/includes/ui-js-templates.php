@@ -145,8 +145,12 @@
 					hasImage = image && !image.endsWith('blank.jpg'),
 					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
 					var globalClass = module.isGlobal ? ' fl-builder-block-global' : '';
+					catClasses = '';
+					for (key in module.category) {
+						catClasses += ' fl-builder-template-category-' + key;
+					}
 				#>
-				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}} {{hasImageClass}}" data-id="{{module.id}}">
+				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}} {{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 					<span class="fl-builder-block-content">
 						<# if ( hasImage ) { #>
 						<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -192,9 +196,13 @@
 					globalClass = module.isGlobal ? ' fl-builder-block-global' : '',
 					image = module.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '';
+					catClasses = '';
+					for (key in module.category) {
+						catClasses += ' fl-builder-template-category-' + key;
+					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-module {{globalClass}} {{hasImageClass}}" data-id="{{module.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-module {{globalClass}} {{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 				<span class="fl-builder-block-content">
 					<# if (hasImage) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
