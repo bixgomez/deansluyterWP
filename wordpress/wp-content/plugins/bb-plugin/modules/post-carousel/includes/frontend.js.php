@@ -43,9 +43,10 @@
 				adaptiveHeight: true,
 				controls: false,
 				autoHover: true,
+				ariaLive: false,
 				slideMargin: <?php echo $space_between; ?>,
 				<?php if ( isset( $settings->move_slides ) ) : ?>
-				moveSlides: <?php echo $settings->move_slides; ?>,
+				moveSlides: <?php echo (int) $settings->move_slides; ?>,
 				<?php else : ?>
 				moveSlides: 1,
 				<?php endif; ?>

@@ -197,6 +197,7 @@ final class FLBuilderAdminAdvanced {
 				'default'  => 0,
 				'callback' => array( __CLASS__, 'shortcodes_enabled' ),
 				'group'    => 'ui',
+				'description' => __( 'Error checking in the code editor is disabled when this is enabled.', 'fl-builder' ),
 				'link'     => 'https://docs.wpbeaverbuilder.com/beaver-builder/advanced-builder-techniques/shortcodes/use-shortcodes-in-tools-menu-css-or-js/',
 			),
 			'acf_blocks_enabled'     => array(
@@ -313,6 +314,10 @@ final class FLBuilderAdminAdvanced {
 
 	static private function shortcodes_enabled() {
 		add_filter( 'fl_enable_shortcode_css_js', '__return_true' );
+		add_filter( 'fl_ace_editor_settings', function( $args ) {
+			$args['useWorker'] = false;
+			return $args;
+		});
 	}
 
 	static private function disable_acf_blocks() {

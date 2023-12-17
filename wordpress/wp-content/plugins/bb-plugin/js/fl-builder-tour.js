@@ -65,7 +65,7 @@
 					{
 						animation   : false,
 						element     : '.fl-builder--content-library-panel',
-						placement   : 'left',
+						placement   : FLBuilder.PinnedUI.isPinned() ? 'right' : 'left',
 						title       : FLBuilderStrings.tourTemplatesTitle,
 						content     : FLBuilderStrings.tourTemplates,
 						onShow		: function() {
@@ -75,7 +75,7 @@
 					{
 						animation   : false,
 						element     : '.fl-builder--content-library-panel',
-						placement   : 'left',
+						placement   : FLBuilder.PinnedUI.isPinned() ? 'right' : 'left',
 						title       : FLBuilderStrings.tourAddRowsTitle,
 						content     : FLBuilderStrings.tourAddRows,
 						onShow      : function() {
@@ -85,7 +85,7 @@
 					{
 						animation   : false,
 						element     : '.fl-builder--content-library-panel',
-						placement   : 'left',
+						placement   : FLBuilder.PinnedUI.isPinned() ? 'right' : 'left',
 						title       : FLBuilderStrings.tourAddContentTitle,
 						content     : FLBuilderStrings.tourAddContent,
 						onShow      : function() {
@@ -135,12 +135,24 @@
 					},
 					{
 						animation   : false,
+						element     : '[title="Outline"]',
+						placement   : 'left',
+						title       : FLBuilderStrings.tourOutlinePanelTitle,
+						content     : FLBuilderStrings.tourOutlinePanel,
+						onShow      : function() {
+							FLBuilderTour._dimSection( 'body' );
+							FL.Builder.togglePanel('outline');
+						}
+					},
+					{
+						animation   : false,
 						element     : '.fl-builder-bar-title',
 						placement   : 'bottom',
 						title       : FLBuilderStrings.tourToolsButtonTitle,
 						content     : FLBuilderStrings.tourToolsButton,
 						onShow      : function() {
 							FLBuilderTour._dimSection( 'body' );
+							FL.Builder.togglePanel('outline');
 						}
 					},
 					{

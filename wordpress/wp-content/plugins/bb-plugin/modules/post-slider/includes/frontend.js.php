@@ -37,6 +37,7 @@
 				adaptiveHeight: true,
 				controls: false,
 				autoHover: true,
+				ariaLive: false,
 				onSlideBefore: function(ele, oldIndex, newIndex) {
 					$('.fl-node-<?php echo $id; ?> .fl-post-slider-navigation a').addClass('disabled');
 					$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').addClass('disabled');

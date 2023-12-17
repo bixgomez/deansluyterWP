@@ -1334,7 +1334,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						),
 						'toggle'  => array(
 							'load_more' => array(
-								'sections' => array( 'more_btn_general', 'more_btn_icon', 'more_btn_style', 'more_btn_text', 'more_btn_colors', 'more_btn_border' ),
+								'sections' => array( 'more_btn_general', 'more_btn_icon', 'more_btn_style', 'more_btn_text', 'more_btn_colors', 'more_btn_border', 'more_btn_loading' ),
 							),
 						),
 					),
@@ -1365,10 +1365,16 @@ FLBuilder::register_module('FLPostGridModule', array(
 			'more_btn_general' => array(
 				'title'  => __( 'Load More Button', 'fl-builder' ),
 				'fields' => array(
-					'more_btn_text' => array(
+					'more_btn_text'    => array(
 						'type'    => 'text',
 						'label'   => __( 'Button Text', 'fl-builder' ),
 						'default' => __( 'Load More', 'fl-builder' ),
+					),
+					'more_btn_loading' => array(
+						'type'        => 'text',
+						'label'       => __( 'Loading text', 'fl-builder' ),
+						'default'     => '',
+						'placeholder' => __( 'Loading...', 'fl-builder' ),
 					),
 				),
 			),

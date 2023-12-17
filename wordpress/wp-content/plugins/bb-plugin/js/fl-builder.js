@@ -1897,7 +1897,7 @@
 			FLBuilder._updateLayout();
 
 			if ( FLBuilder._shapesEdited === true ) {
-				window.location.reload(true);
+				window.parent.location.reload(true);
 			}
 		},
 
@@ -3707,6 +3707,7 @@
 
 			clone.addClass( 'fl-node-' + nodeId + '-clone fl-builder-node-clone' );
 			clone.find( '.fl-block-overlay' ).remove();
+			clone.removeAttr( 'data-node' );
 			row.after( clone );
 			FLBuilder._showNodeLoading( nodeId + '-clone' );
 
@@ -4542,6 +4543,7 @@
 
 			clone.addClass( 'fl-node-' + nodeId + '-clone fl-builder-node-clone' );
 			clone.find( '.fl-block-overlay' ).remove();
+			clone.removeAttr( 'data-node' );
 			col.after( clone );
 
 			FLBuilder._showNodeLoading( nodeId + '-clone' );
@@ -5614,7 +5616,9 @@
 			// Setup clone
 			clone.addClass( 'fl-node-' + id + '-clone fl-builder-node-clone' );
 			clone.find( '.fl-block-overlay' ).remove();
+			clone.removeAttr( 'data-node' );
 			module.after( clone );
+
 			// Show Loader
 			FLBuilder._showNodeLoading( id + '-clone' );
 
@@ -7751,7 +7755,11 @@
 
 				val = editor.getSession().getValue();
 
-				if( global_layout && hasError && null !== val.match( /<\/iframe>|<\/script>/gm ) ) {
+				if( global_layout && hasError && null !== val.match( /<\/iframe>|<\/script>|<meta/gm ) ) {
+					saveBtn.addClass( 'fl-builder-settings-error' );
+					saveBtn.on( 'click', FLBuilder._showCodeFieldCriticalError );
+				}
+				if ( hasError && settings.find( '#fl-builder-settings-section-bb_js_code' ).length > 0 ) {
 					saveBtn.addClass( 'fl-builder-settings-error' );
 					saveBtn.on( 'click', FLBuilder._showCodeFieldCriticalError );
 				}
@@ -9441,6 +9449,12 @@
 					FLBuilder._initEditorField.call( this, window );
 				} );
 			}
+
+			if ( 'undefined' !== typeof window.parent.acf ) {
+				window.parent.acf.add_filter( 'wysiwyg_tinymce_settings', function( mceInit, id ) {
+					return $.extend( {}, tinyMCEPreInit.mceInit.flbuildereditor, mceInit );
+				} )
+			}
 		},
 
 		/**
@@ -10270,19 +10284,19 @@
 			// Prevent ModSecurity false positives if our fix is enabled.
 			if ( 'undefined' != typeof data.settings ) {
 				data.settings = FLBuilder._ajaxModSecFix( $.extend( true, {}, data.settings ) );
+				data.settings = FLBuilder._inputVarsCheck( data.settings );
 			}
 			if ( 'undefined' != typeof data.node_settings ) {
 				data.node_settings = FLBuilder._ajaxModSecFix( $.extend( true, {}, data.node_settings ) );
+				data.node_settings = FLBuilder._inputVarsCheck( data.node_settings );
 			}
 
 			if ( 'undefined' != typeof data.node_preview ) {
 				data.node_preview = FLBuilder._ajaxModSecFix( $.extend( true, {}, data.node_preview ) );
+				data.node_preview = FLBuilder._inputVarsCheck( data.node_preview );
 			}
 
-			data.settings      = FLBuilder._inputVarsCheck( data.settings );
-			data.node_settings = FLBuilder._inputVarsCheck( data.node_settings );
-
-			if ( 'error' === data.settings || 'error' === data.node_settings ) {
+			if ( 'error' === data.settings || 'error' === data.node_settings || 'error' === data.node_preview ) {
 				return 0;
 			}
 
@@ -10324,10 +10338,15 @@
 
 		_inputVarsCheck: function( o ) {
 
-			var maxInput = FLBuilderConfig.MaxInputVars || 0;
+			let maxInput = FLBuilderConfig.MaxInputVars || 0;
+			let debug    = FLBuilderConfig.debug || false;
+			let data     = JSON.stringify(o).match(/[^\\]":/g) || {};
+			let count    = data.length;
 
-			if ( 'undefined' != typeof o && maxInput > 0 ) {
-				count = $.map( o, function(n, i) { return i; }).length;
+			if ( 'undefined' != typeof count ) {
+				if ( debug ) {
+					console.log('Debug: Input Vars ' + count + '/' + maxInput );
+				}
 				if ( count > maxInput ) {
 					FLBuilder.alert( '<h1 style="font-size:2em;text-align:center">Critical Issue</h1><br />The number of settings being saved (' + count + ') exceeds the PHP Max Input Vars setting (' + maxInput + ').<br />Please contact your host to have this value increased, the default is 1000.' );
 					console.log( 'Vars Count: ' + count );

@@ -124,6 +124,12 @@ class FLCalloutModule extends FLBuilderModule {
 	 * @method render_title
 	 */
 	public function render_title() {
+		$title = trim( $this->settings->title );
+
+		if ( empty( $title ) ) {
+			return;
+		}
+
 		echo '<' . $this->settings->title_tag . ' class="fl-callout-title">';
 
 		if ( ! empty( $this->settings->link ) && 'icon' === $this->settings->image_type ) {
@@ -139,7 +145,7 @@ class FLCalloutModule extends FLBuilderModule {
 		}
 
 		echo '<span' . ( empty( $this->settings->link ) ? ' class="fl-callout-title-text"' : '' ) . '>';
-		echo $this->settings->title;
+		echo $title;
 		echo '</span>';
 
 		if ( 'right-title' === $this->settings->icon_position ) {
@@ -154,12 +160,17 @@ class FLCalloutModule extends FLBuilderModule {
 	}
 
 	/**
-	 * @method render_text
+	 * @method get_text_content
 	 */
-	public function render_text() {
+	public function get_text_content() {
 		global $wp_embed;
+		$html = '';
 
-		echo '<div class="fl-callout-text">' . FLBuilderUtils::wpautop( $wp_embed->autoembed( $this->settings->text ), $this ) . '</div>';
+		$text_content = FLBuilderUtils::wpautop( $wp_embed->autoembed( $this->settings->text ), $this );
+		if ( ! empty( $text_content ) ) {
+			$html = '<div class="fl-callout-text">' . $text_content . '</div>';
+		}
+		return $html;
 	}
 
 	/**
@@ -183,12 +194,15 @@ class FLCalloutModule extends FLBuilderModule {
 	}
 
 	/**
-	 * @method render_link
+	 * @method get_link
 	 */
-	public function render_link() {
+	public function get_link() {
+		$html = '';
+
 		if ( 'link' == $this->settings->cta_type ) {
-			echo '<a href="' . $this->settings->link . '" ' . $this->get_rel() . ' target="' . $this->settings->link_target . '" class="fl-callout-cta-link">' . $this->settings->cta_text . '</a>';
+			$html = '<a href="' . $this->settings->link . '" ' . $this->get_rel() . ' target="' . $this->settings->link_target . '" class="fl-callout-cta-link">' . $this->settings->cta_text . '</a>';
 		}
+		return $html;
 	}
 
 	/**
@@ -216,13 +230,42 @@ class FLCalloutModule extends FLBuilderModule {
 	}
 
 	/**
-	 * @method render_button
+	 * @method get_button
 	 */
-	public function render_button() {
+	public function get_button() {
+		$html = '';
+
 		if ( 'button' == $this->settings->cta_type ) {
+			ob_start();
 			echo '<div class="fl-callout-button">';
 			FLBuilder::render_module_html( 'button', $this->get_button_settings() );
 			echo '</div>';
+			$html = ob_get_clean();
+		}
+
+		return $html;
+	}
+
+	/**
+	 * @method render_text_content
+	 */
+	public function render_text_content() {
+		$text   = $this->get_text_content();
+		$link   = $this->get_link();
+		$button = $this->get_button();
+
+		if ( $text || $link || $button ) {
+			$wrapper_open  = '<div class="fl-callout-text-wrap">';
+			$wrapper_close = '</div>';
+
+			$html   = [];
+			$html[] = $wrapper_open;
+			$html[] = $text;
+			$html[] = $link;
+			$html[] = $button;
+			$html[] = $wrapper_close;
+
+			echo join( '', $html );
 		}
 	}
 

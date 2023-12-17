@@ -1,7 +1,7 @@
 ( function( $ ) {
 
 	FLBuilder.registerModuleHelper( 'acf-block', {
-		
+
 		init: function() {
 			acf.doAction( 'append' );
 

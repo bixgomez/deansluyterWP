@@ -13,10 +13,10 @@ class FLReusableBlockModule extends FLBuilderModule {
 	 */
 	public function __construct() {
 		parent::__construct( array(
-			'name'            => __( 'Reusable Block', 'fl-builder' ),
-			'description'     => __( 'Display a reusable block.', 'fl-builder' ),
-			'group'           => __( 'Reusable Blocks', 'fl-builder' ),
-			'category'        => __( 'Reusable Blocks', 'fl-builder' ),
+			'name'            => __( 'WordPress Pattern', 'fl-builder' ),
+			'description'     => __( 'Display a WordPress Pattern.', 'fl-builder' ),
+			'group'           => __( 'WordPress Patterns', 'fl-builder' ),
+			'category'        => __( 'WordPress Patterns', 'fl-builder' ),
 			'icon'            => 'layout.svg',
 			'editor_export'   => true,
 			'partial_refresh' => true,
@@ -41,7 +41,7 @@ class FLReusableBlockModule extends FLBuilderModule {
 		if ( count( $posts ) ) {
 			$blocks = array( __( 'Choose...', 'fl-builder' ) );
 		} else {
-			$blocks = array( __( 'No reusable blocks found!', 'fl-builder' ) );
+			$blocks = array( __( 'No WordPress Patterns found!', 'fl-builder' ) );
 		}
 
 		foreach ( $posts as $post ) {
@@ -64,7 +64,7 @@ FLBuilder::register_module( 'FLReusableBlockModule', array(
 				'fields' => array(
 					'block_id' => array(
 						'type'    => 'select',
-						'label'   => __( 'Reusable Block', 'fl-builder' ),
+						'label'   => __( 'WordPress Pattern', 'fl-builder' ),
 						'options' => 'FLReusableBlockModule::get_options',
 					),
 				),
@@ -74,8 +74,8 @@ FLBuilder::register_module( 'FLReusableBlockModule', array(
 ) );
 
 /**
- * Register module aliases for each reusable block in the
- * Reusable Block group so they can be dragged in like modules.
+ * Register module aliases for each WordPress Pattern (formerly called Reusable Block) in the
+ * WordPress Patterns group so they can be dragged in like modules.
  */
 function fl_register_reusable_block_aliases() {
 	if ( ! FLBuilderModel::is_builder_active() ) {
@@ -93,9 +93,9 @@ function fl_register_reusable_block_aliases() {
 		FLBuilder::register_module_alias( 'fl-reusable-block-' . $post->ID, array(
 			'module'      => 'reusable-block',
 			'name'        => $post->post_title,
-			'description' => __( 'Display a reusable block.', 'fl-builder' ),
-			'group'       => __( 'Reusable Blocks', 'fl-builder' ),
-			'category'    => __( 'Reusable Blocks', 'fl-builder' ),
+			'description' => __( 'Display a WordPress Pattern.', 'fl-builder' ),
+			'group'       => __( 'WordPress Patterns', 'fl-builder' ),
+			'category'    => __( 'WordPress Patterns', 'fl-builder' ),
 			'icon'        => 'layout.svg',
 			'settings'    => array(
 				'block_id' => "block-{$post->ID}",

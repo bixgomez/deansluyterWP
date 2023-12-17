@@ -167,6 +167,7 @@
         */
         initScroller: function() {
             this.$el.nanoScroller({
+				documentContext: window.parent.document,
 				alwaysVisible: true,
 				preventPageScrolling: true,
 				paneClass: 'fl-nanoscroller-pane',
@@ -571,6 +572,7 @@
             noButtonContent = $(tempContent.replace(buttonContent, '')).html();
             
             $(this.$el).parent().find('.fl-content-panel-saved-view-content').html( noButtonContent );
+            FLBuilder._initSortables();
         },
 
     });

@@ -542,7 +542,7 @@ final class FLBuilder {
 		wp_register_script( 'youtube-player', 'https://www.youtube.com/iframe_api', array(), $ver, true );
 		wp_register_script( 'vimeo-player', 'https://player.vimeo.com/api/player.js', array(), $ver, true );
 		wp_deregister_script( 'imagesloaded' );
-		wp_register_script( 'imagesloaded', includes_url( 'js/imagesloaded.min.js' ), array( 'jquery' ) );
+		wp_register_script( 'imagesloaded', $js_url . 'jquery.imagesloaded.min.js', array( 'jquery' ), $ver, true );
 	}
 
 	/**
@@ -813,7 +813,7 @@ final class FLBuilder {
 		}
 
 		// React polyfill for older versions of WordPress.
-		if ( version_compare( $wp_version, '5.2', '<=' ) ) {
+		if ( version_compare( $wp_version, '5.2', '<=' ) || function_exists( 'classicpress_version' ) ) {
 
 			// React
 			wp_deregister_script( 'react' );
@@ -961,6 +961,7 @@ final class FLBuilder {
 			wp_enqueue_script( 'jquery-validate', $js_url . 'jquery.validate.min.js', array(), $ver );
 			wp_enqueue_script( 'clipboard', $js_url . 'clipboard.min.js', array(), $ver );
 			wp_enqueue_script( 'bootstrap-tour', $js_url . 'bootstrap-tour-standalone.min.js', array(), $ver );
+			wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array(), $ver );
 			wp_enqueue_script( 'ace', $js_url . 'ace/ace.js', array(), $ver );
 			wp_enqueue_script( 'ace-language-tools', $js_url . 'ace/ext-language_tools.js', array(), $ver );
 			wp_enqueue_script( 'mousetrap', $js_url . 'mousetrap-custom.js', array(), $ver );
@@ -984,7 +985,6 @@ final class FLBuilder {
 				wp_enqueue_script( 'fl-builder-responsive-editing', $js_url . 'fl-builder-responsive-editing.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-responsive-preview', $js_url . 'fl-builder-responsive-preview.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-services', $js_url . 'fl-builder-services.js', array(), $ver );
-				wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-ui-iframe', $js_url . 'fl-builder-ui-iframe.js', array(), $ver );
 				wp_enqueue_script( 'fl-builder-ui', $js_url . 'fl-builder-ui.js', array( 'fl-builder', 'mousetrap' ), $ver );
 				wp_enqueue_script( 'fl-builder-ui-main-menu', $js_url . 'fl-builder-ui-main-menu.js', array( 'fl-builder-ui' ), $ver );
@@ -1411,23 +1411,26 @@ final class FLBuilder {
 			'accessory' => isset( $key_shortcuts['responsiveEditing'] ) ? $key_shortcuts['responsiveEditing']['keyLabel'] : null,
 		);
 
-		$tools_view['items'][40] = array(
-			'type' => 'separator',
-		);
+		if ( current_user_can( 'delete_others_posts' ) || FLBuilderModel::user_has_unfiltered_html() ) {
+			$tools_view['items'][40] = array(
+				'type' => 'separator',
+			);
 
-		$tools_view['items'][50] = array(
-			'label'     => __( 'Layout CSS & Javascript', 'fl-builder' ),
-			'type'      => 'event',
-			'eventName' => 'showLayoutSettings',
-			'accessory' => isset( $key_shortcuts['showLayoutSettings'] ) ? $key_shortcuts['showLayoutSettings']['keyLabel'] : null,
-		);
-
-		$tools_view['items'][60] = array(
-			'label'     => __( 'Global Settings', 'fl-builder' ),
-			'type'      => 'event',
-			'eventName' => 'showGlobalSettings',
-			'accessory' => isset( $key_shortcuts['showGlobalSettings'] ) ? $key_shortcuts['showGlobalSettings']['keyLabel'] : null,
-		);
+			$tools_view['items'][50] = array(
+				'label'     => __( 'Layout CSS & Javascript', 'fl-builder' ),
+				'type'      => 'event',
+				'eventName' => 'showLayoutSettings',
+				'accessory' => isset( $key_shortcuts['showLayoutSettings'] ) ? $key_shortcuts['showLayoutSettings']['keyLabel'] : null,
+			);
+		}
+		if ( current_user_can( 'delete_others_posts' ) ) {
+			$tools_view['items'][60] = array(
+				'label'     => __( 'Global Settings', 'fl-builder' ),
+				'type'      => 'event',
+				'eventName' => 'showGlobalSettings',
+				'accessory' => isset( $key_shortcuts['showGlobalSettings'] ) ? $key_shortcuts['showGlobalSettings']['keyLabel'] : null,
+			);
+		}
 
 		if ( $is_lite || defined( 'FL_THEME_BUILDER_VERSION' ) ) {
 			$tools_view['items'][65] = array(
@@ -1663,6 +1666,11 @@ final class FLBuilder {
 				'keyCode' => 'shift+t',
 			),
 		);
+
+		if ( ! current_user_can( 'delete_others_posts' ) ) {
+			unset( $data['showGlobalSettings'] );
+			unset( $data['showLayoutSettings'] );
+		}
 
 		$data = apply_filters( 'fl_builder_keyboard_shortcuts', $data );
 
@@ -2693,7 +2701,19 @@ final class FLBuilder {
 		$visible = FLBuilderModel::is_node_visible( $col );
 
 		if ( $active || $visible ) {
+			/**
+			 * Before rendering a column
+			 * @see fl_builder_before_render_column
+			 */
+			do_action( 'fl_builder_before_render_column', $col );
+
 			include FL_BUILDER_DIR . 'includes/column.php';
+
+			/**
+			 * After rendering a column
+			 * @see fl_builder_after_render_column
+			 */
+			do_action( 'fl_builder_after_render_column', $col );
 		} else {
 			/**
 			 * Fires in place of a hidden column.

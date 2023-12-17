@@ -10,6 +10,8 @@ class FLPostSliderModule extends FLBuilderModule {
 	 */
 	public $query = null;
 
+	private $post_slides = array();
+
 	/**
 	 * @method __construct
 	 */
@@ -167,10 +169,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	public function _build_posts_array() {
 
 		// checks if the post_slides array is cached
-		if ( ! isset( $this->post_slides ) ) {
-
-			// if not, create it
-			$this->post_slides = array();
+		if ( empty( $this->post_slides ) ) {
 
 			// check if we have selected posts
 			if ( ! isset( $this->settings->posts_post_matching ) || 1 !== $this->settings->posts_post_matching ) {

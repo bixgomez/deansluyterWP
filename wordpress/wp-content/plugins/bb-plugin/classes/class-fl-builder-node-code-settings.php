@@ -36,12 +36,13 @@ final class FLBuilderNodeCodeSettings {
 		}
 	}
 
+
 	public static function filter_settings_fields( $form, $slug ) {
-		if ( 'row' === $slug || 'col' === $slug ) {
+		if ( 'row' === $slug || 'col' === $slug && ( current_user_can( 'delete_others_posts' ) || FLBuilderModel::user_has_unfiltered_html() ) ) {
 			$form['tabs']['advanced']['sections']['bb_css_code'] = self::get_css_field_config();
 			$form['tabs']['advanced']['sections']['bb_js_code']  = self::get_js_field_config();
 		}
-		if ( 'module_advanced' === $slug ) {
+		if ( 'module_advanced' === $slug && ( current_user_can( 'delete_others_posts' ) || FLBuilderModel::user_has_unfiltered_html() ) ) {
 			$form['sections']['bb_css_code'] = self::get_css_field_config();
 			$form['sections']['bb_js_code']  = self::get_js_field_config();
 		}
@@ -94,7 +95,7 @@ final class FLBuilderNodeCodeSettings {
 					// Load scssphp libs
 					require_once FL_BUILDER_DIR . 'includes/vendor/sass/autoload.php';
 					$code     = ".fl-node-$node_id {\n";
-					$code    .= $node->settings->bb_css_code;
+					$code    .= FLBuilder::maybe_do_shortcode( $node->settings->bb_css_code );
 					$code    .= '}';
 					$compiler = new ScssPhp\ScssPhp\Compiler();
 					try {
@@ -113,7 +114,7 @@ final class FLBuilderNodeCodeSettings {
 	public static function filter_layout_js( $js, $nodes ) {
 		$all_nodes = array_merge( $nodes['rows'], $nodes['columns'], $nodes['modules'] );
 		foreach ( $all_nodes as $node ) {
-			$js .= self::get_node_js( $node );
+			$js .= FLBuilder::maybe_do_shortcode( self::get_node_js( $node ) );
 		}
 		return $js;
 	}

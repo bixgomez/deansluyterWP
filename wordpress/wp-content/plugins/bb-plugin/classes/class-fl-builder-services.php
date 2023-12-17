@@ -139,7 +139,7 @@ final class FLBuilderServices {
 		),
 		'sendinblue'              => array(
 			'type'  => 'autoresponder',
-			'name'  => 'SendinBlue',
+			'name'  => 'Brevo ( Formerly SendinBlue )',
 			'class' => 'FLBuilderServiceSendinBlue',
 		),
 		'sendy'                   => array(

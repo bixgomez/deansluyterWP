@@ -82,6 +82,7 @@ final class FLBuilderLoop {
 		add_filter( 'redirect_canonical', __CLASS__ . '::override_canonical', 1, 2 );
 		add_filter( 'pre_handle_404', __CLASS__ . '::pre_404_pagination', 1, 2 );
 		add_filter( 'paginate_links', __CLASS__ . '::filter_paginate_links', 1 );
+		// add_filter( 'rewrite_rules_array', __CLASS__ . '::rewrite_rules_array' );
 	}
 
 	/**
@@ -544,6 +545,11 @@ final class FLBuilderLoop {
 			return;
 		}
 
+		// Fix CPT and page conflict with the same slug
+		if ( ! $args->has_archive ) {
+			add_rewrite_rule( "{$post_type}/{$wp_rewrite->pagination_base}/([0-9]{1,})/?$", "index.php?pagename=$post_type" . '&paged=$matches[1]', 'top' );
+		}
+
 		// Get our custom pagination if sets.
 		$custom_paged = self::get_custom_paged();
 
@@ -935,6 +941,50 @@ final class FLBuilderLoop {
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Rewrite rule fixes
+	 *
+	 * @since 2.7.3
+	 */
+	static public function rewrite_rules_array( $rules ) {
+		$ordered_rules = array();
+		$output_rules  = array();
+		$post_types    = get_post_types(
+			array(
+				'public'      => true,
+				'_builtin'    => false,
+				'has_archive' => false,
+			), 'objects'
+		);
+
+		foreach ( $post_types as $type ) {
+			$has_page = get_page_by_path( '/' . $type->name . '/', OBJECT, 'page' );
+			if ( ! $has_page ) {
+				continue;
+			}
+
+			foreach ( $rules as $pattern => $rewrite ) {
+				if ( strpos( $pattern, "{$type->name}/" ) === 0 ) {
+					$ordered_rules[ $pattern ] = $rewrite;
+					unset( $rules[ $pattern ] );
+				}
+			}
+		}
+
+		if ( ! empty( $ordered_rules ) ) {
+			foreach ( $rules as $pattern => $rewrite ) {
+				$output_rules[ $pattern ] = $rewrite;
+				if ( '(.?.+?)/page/?([0-9]{1,})/?$' === $pattern ) {
+					foreach ( $ordered_rules as $ordered_key => $ordered_rule ) {
+						$output_rules[ $ordered_key ] = $ordered_rule;
+					}
+				}
+			}
+		}
+
+		return ! empty( $output_rules ) ? $output_rules : $rules;
 	}
 
 	/**

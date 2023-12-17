@@ -714,7 +714,8 @@
 	};
 
 	$( function() {
-		PinnedUI.init();
+		FLBuilder.PinnedUI = PinnedUI;
+		FLBuilder.PinnedUI.init();
 	} );
 
 } )( jQuery );

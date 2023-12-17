@@ -137,6 +137,7 @@
 		_initMenu: function(){
 			this._setupSubmenu();
 			this._menuOnFocus();
+			this._menuOnEscape();
 			this._submenuOnClick();
 			if ( $( this.nodeClass ).length && this.type == 'horizontal' ) {
 				this._initMegaMenus();
@@ -200,14 +201,20 @@
 
 				$('.fl-menu .focus').removeClass('focus');
 
-				$menuItem.addClass('focus')
 				$parents.addClass('focus')
 
+				if ( ! $menuItem.closest('.fl-has-submenu').hasClass('escaped') ) {
+					$menuItem.addClass('focus')
+				}
+				else {
+					$menuItem.closest('.fl-has-submenu').removeClass('focus escaped')
+				}
 			}, this ) ).on( 'focusout', 'a', $.proxy( function( e ){
 				var el            = $(e.target).parent(),
 		            $megaMenu     = el.closest( '.mega-menu' ),
 		            $megaLastItem = $megaMenu.find('> .sub-menu > .menu-item:last-child'),
-					isLastChild   = ! $megaMenu.length && el.is(':last-child' );
+					$lastItem     = el.parents('.fl-has-submenu:last').find('.menu-item:last'),
+					isLastChild   = ! $megaMenu.length && el.is( $lastItem );
 
 		        if( $megaMenu.length ) {
 					isLastChild = el.is( $megaLastItem ) || el.is( $megaLastItem.find( '.menu-item:last-child' ) );
@@ -218,11 +225,68 @@
 					cKey       = 0;
 					isShifted  = false;
 				}
+				else if ( cKey === 27 ) {
+					isLastChild = false;
+				}
 
 				if ( isLastChild ) {
 					$( e.target ).parentsUntil( this.wrapperClass ).removeClass( 'focus' );
 				}
 
+			}, this ) );
+		},
+
+		/**
+		 * Logic for submenu items when Escape key is pressed.
+		 *
+		 * @since  2.7.1
+		 * @return void
+		 */
+		_menuOnEscape: function(){
+			$( 'body' ).off('keydown').on( 'keydown', $.proxy( function( e ){
+				if ( e.which !== 27 ) {
+					return;
+				}
+
+				if ( $( e.target ).closest('.menu-item').length ) {
+					var activeSubmenu = null,
+						menuItem      = $( e.target ).closest('.menu-item'),
+						type          = menuItem.closest('.fl-menu-accordion').length ? 'accordion' : 'horizontal';
+
+					if ( 'horizontal' === type ) {
+						if ( menuItem.hasClass( 'fl-has-submenu' ) && menuItem.hasClass( 'focus' ) ) {
+							activeSubmenu = menuItem.find('> ul.sub-menu');
+						}
+						else {
+							activeSubmenu = menuItem.closest('ul.sub-menu');
+						}
+						activeSubmenu.parent().addClass('escaped');
+						activeSubmenu.parent().find('a:first').focus();
+					}
+					else {
+						if ( menuItem.hasClass( 'fl-has-submenu' ) && 'accordion' === type && menuItem.hasClass( 'fl-active' ) ) {
+							activeSubmenu = menuItem.find('> ul.sub-menu');
+						}
+						else {
+							activeSubmenu = menuItem.closest('ul.sub-menu');
+						}
+
+						activeSubmenu.slideUp(400, function(){
+							if ( menuItem.hasClass( 'fl-has-submenu' ) && menuItem.hasClass( 'fl-active' ) ) {
+								activeSubmenu.parent().last().find('a:first').focus();
+							}
+							else {
+								menuItem.removeClass('focus');
+								menuItem.parents('.menu-item').first().find('a:first').focus();
+							}
+							activeSubmenu.parent().last().removeClass( 'fl-active' );
+						});
+
+					}
+				}
+				else {
+					$('.fl-menu').find( 'li.menu-item.focus' ).last().removeClass('focus');
+				}
 			}, this ) );
 		},
 

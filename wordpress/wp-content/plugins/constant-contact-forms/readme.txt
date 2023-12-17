@@ -1,9 +1,9 @@
 === Constant Contact Forms ===
 Contributors:      constantcontact, webdevstudios, tw2113, znowebdev, ggwicz, ravedev, oceas, dcooney, newyorkerlaura
-Tags: capture, contacts, constant contact, constant contact form, constant contact newsletter, constant contact official, contact forms, email, form, forms, marketing, mobile, newsletter, opt-in, plugin, signup, subscribe, subscription, widget
+Tags: contacts, constant contact, constant contact form, constant contact newsletter, constant contact official, contact forms, forms, marketing, newsletter, signup
 Requires at least: 5.2.0
-Tested up to:      6.2.2
-Stable tag:        2.1.0
+Tested up to:      6.4
+Stable tag:        2.4.1
 License:           GPLv3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP:      7.4
@@ -24,9 +24,9 @@ https://www.youtube.com/watch?v=Qqb0_zcRKnM
 -  Effortlessly create sign-up forms to convert your site visitors into mailing list contacts.
 -  Customize data fields, so you can tailor the type of information you collect from your users.
 -  Captured email addresses will be automatically added to the Constant Contact email lists of your choosing.
+-  Have immediate access to all your Constant Contact lists to integrate with your signup forms, right from your WordPress dashboard
 
-**BONUS**: If you have a Constant Contact account, all new email addresses that you capture will be automatically added to the Constant Contact email lists of your choosing. Not a Constant Contact customer? Sign up for a [Free Trial](https://go.constantcontact.com/signup.jsp) right from the plugin.
-
+Not a Constant Contact customer? Sign up for a [Free Trial](https://go.constantcontact.com/signup.jsp) right from the plugin.
 
 ##How To Get Started.
 
@@ -36,6 +36,10 @@ https://www.youtube.com/watch?v=Qqb0_zcRKnM
 4. [Add a form anywhere on your website](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/30850-Add-a-Form-Created-with-the-Constant-Contact-Plugin-to-a-WordPress-Page-or-Blog-Post?lang).
 5. Watch as your visitors turn into lifetime contacts!
 
+## Development
+
+Development of Constant Contact Forms plugin occurs on [GitHub](https://github.com/WebDevStudios/constant-contact-forms). Please see the security policy there to report any security issues. General support should start on our [WordPress forums](https://wordpress.org/support/plugin/constant-contact-forms/)
+
 == Screenshots ==
 1. Adding a New form when connected to Constant Contact account.
 2. Viewing All Forms
@@ -44,6 +48,31 @@ https://www.youtube.com/watch?v=Qqb0_zcRKnM
 5. Basic Form
 
 == Changelog ==
+
+= 2.4.1 =
+* Fixed: White font on light gray in admin page modal popups.
+* Fixed: Prevent potential PHP fatal errors with access token fetching.
+
+= 2.4.0 =
+* Updated: Removed reliance on jQuery library for frontend scripts.
+* Updated: Individual address fields and available required fields match up to what's included.
+* Updated: Internal logging library.
+* Updated: Moved disclosure messaging to outside of the generated `<form>` tag.
+* Added: Include list name in sent admin emails.
+* Fixed: Empty list information when creating a list in WordPress Dashboard.
+* Fixed: Prevent fatal errors in functionality that checks for a note.
+
+= 2.3.0 =
+* Added: Background catch for new contact API requests that fail due to need to re-authenticate. Requests will be re-tried once newly reconnected.
+* Added: Site health integration to help with debugging and troubleshooting.
+* Updated: Removed reliance on WP Cron for sending submissions. All API submission should be run right away from now on. "Bypass cron" setting negated.
+* Updated: Amended "address" field to allow for choosing which address components to use as well as allow requiring only certain components.
+
+= 2.2.0 =
+* Added: Admin notice if its been determined that the account connection needs human intervention.
+* Updated: Revised and improved access token refreshing in the background.
+* Updated: Removed Google Analytics opt-in option.
+* Updated: Prevent Constant Contact WooCommerce lists from being imported to local lists.
 
 = 2.1.0 =
 * Fixed: Option saving process for Multisite installs.

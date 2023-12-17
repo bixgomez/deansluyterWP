@@ -17,21 +17,10 @@
 		// Image below title
 		$module->render_image( 'below-title' );
 
+		// Text Content
+		$module->render_text_content();
+
 		?>
-		<div class="fl-callout-text-wrap">
-			<?php
-
-			// Text
-			$module->render_text();
-
-			// Link CTA
-			$module->render_link();
-
-			// Button CTA
-			$module->render_button();
-
-			?>
-		</div>
 	</div>
 	<?php
 

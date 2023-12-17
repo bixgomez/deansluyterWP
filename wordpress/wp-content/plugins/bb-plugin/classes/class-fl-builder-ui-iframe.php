@@ -21,6 +21,9 @@ class FLBuilderUIIFrame {
 		$ui_request     = self::is_ui_request();
 		$iframe_request = self::is_iframe_request();
 
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
 		if ( ! self::is_enabled() ) {
 			if ( $ui_request || $iframe_request ) {
 				wp_safe_redirect( FLBuilderModel::get_edit_url() );

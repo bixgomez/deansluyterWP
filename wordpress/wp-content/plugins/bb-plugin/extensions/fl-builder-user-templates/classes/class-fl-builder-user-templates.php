@@ -384,34 +384,35 @@ final class FLBuilderUserTemplates {
 	 * @return array The filtered data.
 	 */
 	static public function filter_content_items_data( $data ) {
-		$layouts          = FLBuilderModel::get_user_templates( 'layout' );
-		$layout_templates = $layouts['templates'];
+		if ( FLBuilderModel::node_templates_enabled() ) {
+			$layouts          = FLBuilderModel::get_user_templates( 'layout' );
+			$layout_templates = $layouts['templates'];
 
-		foreach ( $layout_templates as $template ) {
-			$data['template'][] = $template;
+			foreach ( $layout_templates as $template ) {
+				$data['template'][] = $template;
+			}
+
+			$rows          = FLBuilderModel::get_user_templates( 'row' );
+			$row_templates = $rows['templates'];
+
+			foreach ( $row_templates as $template ) {
+				$data['template'][] = $template;
+			}
+
+			$cols          = FLBuilderModel::get_user_templates( 'column' );
+			$col_templates = $cols['templates'];
+
+			foreach ( $col_templates as $template ) {
+				$data['template'][] = $template;
+			}
+
+			$modules          = FLBuilderModel::get_user_templates( 'module' );
+			$module_templates = $modules['templates'];
+
+			foreach ( $module_templates as $template ) {
+				$data['template'][] = $template;
+			}
 		}
-
-		$rows          = FLBuilderModel::get_user_templates( 'row' );
-		$row_templates = $rows['templates'];
-
-		foreach ( $row_templates as $template ) {
-			$data['template'][] = $template;
-		}
-
-		$cols          = FLBuilderModel::get_user_templates( 'column' );
-		$col_templates = $cols['templates'];
-
-		foreach ( $col_templates as $template ) {
-			$data['template'][] = $template;
-		}
-
-		$modules          = FLBuilderModel::get_user_templates( 'module' );
-		$module_templates = $modules['templates'];
-
-		foreach ( $module_templates as $template ) {
-			$data['template'][] = $template;
-		}
-
 		return $data;
 	}
 

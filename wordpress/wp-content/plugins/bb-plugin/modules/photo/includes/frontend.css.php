@@ -12,7 +12,7 @@ FLBuilderCSS::responsive_rule( array(
 FLBuilderCSS::responsive_rule( array(
 	'settings'     => $settings,
 	'setting_name' => 'width',
-	'selector'     => ".fl-node-$id .fl-photo-img, .fl-node-$id .fl-photo-content",
+	'selector'     => ".fl-node-$id .fl-photo-content, .fl-node-$id .fl-photo-img",
 	'prop'         => 'width',
 ) );
 

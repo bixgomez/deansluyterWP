@@ -134,14 +134,15 @@ final class FLUpdater {
 
 				if ( isset( $response->new_version ) && version_compare( $response->new_version, $plugin_version_check, '>' ) ) {
 
-					$transient->response[ $plugin ]              = new stdClass();
-					$transient->response[ $plugin ]->slug        = $response->slug;
-					$transient->response[ $plugin ]->plugin      = $plugin;
-					$transient->response[ $plugin ]->new_version = $response->new_version;
-					$transient->response[ $plugin ]->url         = $response->homepage;
-					$transient->response[ $plugin ]->package     = $response->package;
-					$transient->response[ $plugin ]->tested      = $response->tested;
-					$transient->response[ $plugin ]->icons       = apply_filters(
+					$transient->response[ $plugin ]               = new stdClass();
+					$transient->response[ $plugin ]->slug         = $response->slug;
+					$transient->response[ $plugin ]->plugin       = $plugin;
+					$transient->response[ $plugin ]->new_version  = $response->new_version;
+					$transient->response[ $plugin ]->url          = $response->homepage;
+					$transient->response[ $plugin ]->package      = $response->package;
+					$transient->response[ $plugin ]->tested       = $response->tested;
+					$transient->response[ $plugin ]->requires_php = $response->requires_php;
+					$transient->response[ $plugin ]->icons        = apply_filters(
 						'fl_updater_icon',
 						array(
 							'1x'      => FLBuilder::plugin_url() . 'img/beaver-128.png',
@@ -188,11 +189,12 @@ final class FLUpdater {
 				if ( isset( $response->new_version ) && version_compare( $response->new_version, $theme_version_check, '>' ) ) {
 
 					$transient->response[ $this->settings['slug'] ] = array(
-						'new_version' => $response->new_version,
-						'theme'       => $this->settings['slug'],
-						'url'         => $response->homepage,
-						'package'     => $response->package,
-						'tested'      => $response->tested,
+						'new_version'  => $response->new_version,
+						'theme'        => $this->settings['slug'],
+						'url'          => $response->homepage,
+						'package'      => $response->package,
+						'tested'       => $response->tested,
+						'requires_php' => $response->requires_php,
 					);
 				} else {
 					// no update, for wp 5.5 we have to add a mock item.
@@ -244,6 +246,7 @@ final class FLUpdater {
 			$info->author        = $response->author;
 			$info->homepage      = $response->homepage;
 			$info->requires      = $response->requires;
+			$info->requires_php  = $response->requires_php;
 			$info->tested        = $response->tested;
 			$info->last_updated  = $response->last_updated;
 			$info->download_link = $response->package;
