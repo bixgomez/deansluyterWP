@@ -25,4 +25,3 @@ wp-config.php
 
 *.sql
 *.sql.gz
-.ddev
