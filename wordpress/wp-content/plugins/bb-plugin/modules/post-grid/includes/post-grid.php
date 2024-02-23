@@ -8,9 +8,9 @@
 
 	<div class="fl-post-grid-text">
 
-		<<?php echo $settings->posts_title_tag; ?> class="fl-post-grid-title" itemprop="headline">
+		<<?php echo esc_attr( $settings->posts_title_tag ); ?> class="fl-post-grid-title" itemprop="headline">
 			<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
-		</<?php echo $settings->posts_title_tag; ?>>
+		</<?php echo esc_attr( $settings->posts_title_tag ); ?>>
 
 		<?php do_action( 'fl_builder_post_grid_before_meta', $settings, $module ); ?>
 

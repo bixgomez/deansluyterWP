@@ -602,7 +602,7 @@ class FLPostGridModule extends FLBuilderModule {
 	}
 
 	public function get_posts_container() {
-		return $this->settings->posts_container;
+		return esc_attr( $this->settings->posts_container );
 	}
 
 	public function get_columns_count( $screen = 'default' ) {

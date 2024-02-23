@@ -64,6 +64,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Afacad": {
+    "variants": ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Agbalumo": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -3167,6 +3172,11 @@
   "Kalam": {
     "variants": ["300", "regular", "700"],
     "fallback": "cursive"
+  }
+}, {
+  "Kalnia": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700"],
+    "fallback": "serif"
   }
 }, {
   "Kameron": {
@@ -6279,6 +6289,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Rethink Sans": {
+    "variants": ["regular", "500", "600", "700", "800", "italic", "500italic", "600italic", "700italic", "800italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Revalia": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -6419,6 +6434,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Rubik Broken Fax": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Rubik Bubbles": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -6439,6 +6459,16 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Rubik Doodle Shadow": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Rubik Doodle Triangles": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Rubik Gemstones": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -6450,6 +6480,16 @@
   }
 }, {
   "Rubik Iso": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Rubik Lines": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Rubik Maps": {
     "variants": ["regular"],
     "fallback": "sans-serif"
   }
@@ -6485,6 +6525,11 @@
   }
 }, {
   "Rubik Puddles": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Rubik Scribble": {
     "variants": ["regular"],
     "fallback": "sans-serif"
   }

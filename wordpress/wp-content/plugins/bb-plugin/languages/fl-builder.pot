@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bb-plugin\n"
 "Report-Msgid-Bugs-To: hello@wpbeaverbuilder.com\n"
-"POT-Creation-Date: 2023-12-05 14:56:25+00:00\n"
+"POT-Creation-Date: 2023-12-20 17:26:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -200,36 +200,40 @@ msgstr ""
 msgid "Render shortcodes in CSS/JS"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:203
+#: classes/class-fl-builder-admin-advanced.php:200
+msgid "Error checking in the code editor is disabled when this is enabled."
+msgstr ""
+
+#: classes/class-fl-builder-admin-advanced.php:204
 #: modules/acf-block/acf-block.php:12 modules/acf-block/acf-block.php:13
 #: modules/acf-block/acf-block.php:118
 msgid "ACF Blocks"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:207
+#: classes/class-fl-builder-admin-advanced.php:208
 msgid "Allow blocks built with ACF to be used in the builder."
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:210
+#: classes/class-fl-builder-admin-advanced.php:211
 msgid "Collapse All Settings"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:214
+#: classes/class-fl-builder-admin-advanced.php:215
 msgid "Collapse all Settings Window setting sections"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:362
+#: classes/class-fl-builder-admin-advanced.php:363
 #: extensions/fl-builder-template-data-exporter/classes/class-fl-builder-template-data-exporter.php:49
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates.php:61
 msgid "Admin"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:363
+#: classes/class-fl-builder-admin-advanced.php:364
 #: includes/admin-settings-advanced.php:6
 msgid "Advanced Settings"
 msgstr ""
 
-#: classes/class-fl-builder-admin-advanced.php:364
+#: classes/class-fl-builder-admin-advanced.php:365
 msgid ""
 "The selected roles will be able to access the Advanced Settings. Note: user "
 "roles without the <code>manage_options</code> capability cannot access "

@@ -52,6 +52,9 @@ class GFFormDisplay {
 			GFCommon::log_debug( __METHOD__ . '(): Completed gform_pre_process.' );
 		}
 
+		// Set files that have been uploaded to temp folder
+		$files = GFFormsModel::set_uploaded_files( $form_id );
+
 		//reading form metadata
 		$form = self::maybe_add_review_page( $form );
 
@@ -92,9 +95,6 @@ class GFFormDisplay {
 		$target_page        = self::get_target_page( $form, $page_number, $field_values );
 
 		GFCommon::log_debug( "GFFormDisplay::process_form(): Source page number: {$source_page_number}. Target page number: {$target_page}." );
-
-		// Set files that have been uploaded to temp folder
-		$files = GFFormsModel::set_uploaded_files( $form_id );
 
 		$saving_for_later = rgpost( 'gform_save' ) ? true : false;
 
@@ -848,6 +848,82 @@ class GFFormDisplay {
 	}
 
 	/**
+	 * Fire the post render events for a form instance when the form is visible on the page.
+	 *
+	 * @since 2.8.4
+	 *
+	 * @param $form_id
+	 * @param $current_page
+	 *
+	 * @return string
+	 */
+	public static function post_render_script( $form_id, $current_page = 'current_page' ) {
+		$post_render_script = '
+	        const gformWrapperDiv = document.getElementById( "gform_wrapper_' . $form_id . '" );
+	        if ( gformWrapperDiv ) {
+	            const visibilitySpan = document.createElement( "span" );
+	            visibilitySpan.id = "gform_visibility_test_' . $form_id . '";
+	            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );
+	        }
+	        const visibilityTestDiv = document.getElementById( "gform_visibility_test_' . $form_id . '" );
+	        let postRenderFired = false;
+	        
+	        function triggerPostRender() {
+	            if ( postRenderFired ) {
+	                return;
+	            }
+	            postRenderFired = true;
+	            jQuery( document ).trigger( \'gform_post_render\', [' . $form_id . ', ' . $current_page . '] );
+	            gform.utils.trigger( { event: \'gform/postRender\', native: false, data: { formId: ' . $form_id . ', currentPage: ' . $current_page . ' } } );
+	            if ( visibilityTestDiv ) {
+	                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );
+	            }
+	        }
+	
+	        function debounce( func, wait, immediate ) {
+	            var timeout;
+	            return function() {
+	                var context = this, args = arguments;
+	                var later = function() {
+	                    timeout = null;
+	                    if ( !immediate ) func.apply( context, args );
+	                };
+	                var callNow = immediate && !timeout;
+	                clearTimeout( timeout );
+	                timeout = setTimeout( later, wait );
+	                if ( callNow ) func.apply( context, args );
+	            };
+	        }
+	
+	        const debouncedTriggerPostRender = debounce( function() {
+	            triggerPostRender();
+	        }, 200 );
+	
+	        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {
+	            const observer = new MutationObserver( ( mutations ) => {
+	                mutations.forEach( ( mutation ) => {
+	                    if ( mutation.type === \'attributes\' && visibilityTestDiv.offsetParent !== null ) {
+	                        debouncedTriggerPostRender();
+	                        observer.disconnect();
+	                    }
+	                });
+	            });
+	            observer.observe( document.body, {
+	                attributes: true,
+	                childList: false,
+	                subtree: true,
+	                attributeFilter: [ \'style\', \'class\' ],
+	            });
+	        } else {
+	            triggerPostRender();
+	        }
+	    ';
+
+		return str_replace( [ "\t", "\n", "\r" ], '', $post_render_script );
+	}
+
+
+	/**
 	 * Get a form for display.
 	 *
 	 * @since unknown
@@ -1276,9 +1352,7 @@ class GFFormDisplay {
 
 					$form_string .= self::get_field( $field, $field_value, false, $form, $field_values );
 
-					if ( $field->layoutSpacerGridColumnSpan && ! GFCommon::is_legacy_markup_enabled( $form ) ) {
-						$form_string .= sprintf( '<div class="spacer gfield" style="grid-column: span %d;"></div>', $field->layoutSpacerGridColumnSpan );
-					}
+					$form_string .= self::get_row_spacer( $field, $form );
 
 				}
 			}
@@ -1399,8 +1473,7 @@ class GFFormDisplay {
 						"jQuery('#gform_{$form_id}').append(contents);" .
 						"if(window['gformRedirect']) {gformRedirect();}" .
 						'}' .
-						"jQuery(document).trigger('gform_post_render', [{$form_id}, current_page]);" .
-						"gform.utils.trigger({ event: 'gform/postRender', native: false, data: { formId: {$form_id}, currentPage: current_page } });" .
+						self::post_render_script( $form_id ) .
 						'} );' .
 						'} );';
 
@@ -1444,8 +1517,7 @@ class GFFormDisplay {
 				} else {
 					$form_string      .= self::get_form_init_scripts( $form );
 					$init_script_body = 'gform.initializeOnLoaded( function() {' .
-						"jQuery(document).trigger('gform_post_render', [{$form_id}, {$current_page}]);" .
-						"gform.utils.trigger({ event: 'gform/postRender', native: false, data: { formId: {$form_id}, currentPage: {$current_page} } });" .
+						self::post_render_script( $form_id, $current_page ) .
 					'} );';
 					$form_string      .= GFCommon::get_inline_script_tag( $init_script_body );
 				}
@@ -1518,10 +1590,7 @@ class GFFormDisplay {
 		$form               = RGFormsModel::get_form_meta( $form_id );
 		$form_string        = self::get_form_init_scripts( $form );
 		$current_page       = self::get_current_page( $form_id );
-		$footer_script_body = 'gform.initializeOnLoaded( function() {' .
-			"jQuery(document).trigger('gform_post_render', [{$form_id}, {$current_page}]);" .
-			"gform.utils.trigger({ event: 'gform/postRender', native: false, data: { formId: {$form_id}, currentPage: {$current_page} } });" .
-		'} );';
+		$footer_script_body = 'gform.initializeOnLoaded( function() {' . self::post_render_script( $form_id, $current_page ) . '} );';
 		$form_string        .= GFCommon::get_inline_script_tag( $footer_script_body );
 
 		/**
@@ -5226,6 +5295,36 @@ class GFFormDisplay {
 		}
 
 		return $form_styles;
+	}
+
+	/**
+	 * Get the spacer to add to the end of the row, if needed
+	 *
+	 * @since 2.8.2
+	 *
+	 * @param array $form The current form object.
+	 * @param array $field The current field object.
+	 *
+	 * @return string
+	 */
+	public static function get_row_spacer( $field, $form ) {
+		$spacer = '';
+
+		if ( $field->layoutSpacerGridColumnSpan && ! GFCommon::is_legacy_markup_enabled( $form ) ) {
+			// check if this row needs a spacer
+			$span = intval( $field->layoutGridColumnSpan );
+			foreach ( $form['fields'] as $field2 ) {
+				if ( $field2->layoutGroupId == $field->layoutGroupId ) {
+					$span += intval( $field2->layoutGridColumnSpan );
+				}
+			}
+
+			if ( $span < 12 ) {
+				$spacer = sprintf( '<div data-fieldId="%s" class="spacer gfield" style="grid-column: span %d;" data-groupId="%s"></div>', $field->id, $field->layoutSpacerGridColumnSpan, $field->layoutGroupId );
+			}
+		}
+
+		return $spacer;
 	}
 
 }
