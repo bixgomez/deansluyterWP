@@ -1610,7 +1610,12 @@
 					href = href.replace( '&fl_builder', '' );
 				}
 
-				window.parent.location.href = href;
+				if ( window.parent.location.host === 'playground.wordpress.net' ) {
+					const meta = '<meta http-equiv="refresh" content="0; URL=\'' + href + '\'" />';
+					$( 'head', window.parent.document ).append( meta );
+				} else {
+					window.parent.location.href = href;
+				}
 			}
 		},
 
@@ -7759,7 +7764,7 @@
 					saveBtn.addClass( 'fl-builder-settings-error' );
 					saveBtn.on( 'click', FLBuilder._showCodeFieldCriticalError );
 				}
-				if ( hasError && settings.find( '#fl-builder-settings-section-bb_js_code' ).length > 0 ) {
+				if ( hasError && settings.find( '#fl-builder-settings-section-bb_js_code' ).length > 0 && 'fl-field-bb_js_code' === field.closest( '.fl-field' ).attr('ID') ) {
 					saveBtn.addClass( 'fl-builder-settings-error' );
 					saveBtn.on( 'click', FLBuilder._showCodeFieldCriticalError );
 				}

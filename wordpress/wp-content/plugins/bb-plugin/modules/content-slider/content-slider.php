@@ -178,7 +178,7 @@ class FLContentSliderModule extends FLBuilderModule {
 			echo '<div class="fl-slide-photo">';
 
 			if ( ! empty( $slide->link ) ) {
-				echo '<a href="' . $slide->link . '" target="' . $slide->link_target . '">';
+				echo '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '">';
 			}
 
 			printf( '<img %s class="fl-slide-photo-img wp-image-%s" src="%s" alt="%s" />', FLBuilderUtils::img_lazyload( 'false' ), $slide->fg_photo, $slide->fg_photo_src, esc_attr( $alt ) );
@@ -226,7 +226,7 @@ class FLContentSliderModule extends FLBuilderModule {
 				$mobile_photo_link_close = '';
 
 				if ( ! empty( $slide->link ) ) {
-					$mobile_photo_link_open  = '<a href="' . $slide->link . '" target="' . $slide->link_target . '">';
+					$mobile_photo_link_open  = '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '">';
 					$mobile_photo_link_close = '</a>';
 				}
 				echo '<div class="fl-slide-mobile-photo">';
@@ -263,7 +263,7 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_link( $slide ) {
 		if ( 'link' == $slide->cta_type ) {
-			return '<a href="' . $slide->link . '" target="' . $slide->link_target . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
+			return '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
 		}
 	}
 
