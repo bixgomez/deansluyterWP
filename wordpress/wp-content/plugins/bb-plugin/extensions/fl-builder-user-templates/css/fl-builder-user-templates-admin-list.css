@@ -15,13 +15,19 @@
 }
 
 .column-fl_global {
-	width: 10%;
+	width: 5%;
 }
 
 .column-code {
-	width: 40%;
+	width: 25%;
 }
 
 .column-code pre {
 	cursor: pointer;
+}
+.column-screenshot img {
+	height: 100px;
+}
+.column-taxonomy-fl-builder-template-category {
+	width: 10%;
 }

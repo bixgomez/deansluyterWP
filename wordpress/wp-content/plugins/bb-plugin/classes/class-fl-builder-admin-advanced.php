@@ -193,12 +193,12 @@ final class FLBuilderAdminAdvanced {
 				'description' => __( 'Show custom labels for Nodes.', 'fl-builder' ),
 			),
 			'shortcodes_enabled'     => array(
-				'label'    => __( 'Render shortcodes in CSS/JS', 'fl-builder' ),
-				'default'  => 0,
-				'callback' => array( __CLASS__, 'shortcodes_enabled' ),
-				'group'    => 'ui',
+				'label'       => __( 'Render shortcodes in CSS/JS', 'fl-builder' ),
+				'default'     => 0,
+				'callback'    => array( __CLASS__, 'shortcodes_enabled' ),
+				'group'       => 'ui',
 				'description' => __( 'Error checking in the code editor is disabled when this is enabled.', 'fl-builder' ),
-				'link'     => 'https://docs.wpbeaverbuilder.com/beaver-builder/advanced-builder-techniques/shortcodes/use-shortcodes-in-tools-menu-css-or-js/',
+				'link'        => 'https://docs.wpbeaverbuilder.com/beaver-builder/advanced-builder-techniques/shortcodes/use-shortcodes-in-tools-menu-css-or-js/',
 			),
 			'acf_blocks_enabled'     => array(
 				'label'       => __( 'ACF Blocks', 'fl-builder' ),
@@ -213,6 +213,18 @@ final class FLBuilderAdminAdvanced {
 				'callback'    => array( __CLASS__, 'collapse_default' ),
 				'group'       => 'ui',
 				'description' => __( 'Collapse all Settings Window setting sections', 'fl-builder' ),
+			),
+			'theme_colors'           => array(
+				'label'       => __( 'Load Theme Colors', 'fl-builder' ),
+				'default'     => 0,
+				'group'       => 'ui',
+				'description' => __( 'Show Theme colors in color pickers', 'fl-builder' ),
+			),
+			'core_colors'            => array(
+				'label'       => __( 'Load WordPress Colors', 'fl-builder' ),
+				'default'     => 0,
+				'group'       => 'ui',
+				'description' => __( 'Show WordPress Core colors in color pickers', 'fl-builder' ),
 			),
 		);
 		if ( FLBuilderModel::is_white_labeled() ) {
@@ -336,6 +348,22 @@ final class FLBuilderAdminAdvanced {
 		add_action( 'after_setup_theme', __CLASS__ . '::register_user_access_settings' );
 		add_action( 'wp_ajax_fl_advanced_submit', array( __CLASS__, 'advanced_submit' ) );
 		self::init_hooks();
+		self::global_styles();
+	}
+
+	/**
+	 * @since 2.8.1
+	 */
+	static public function global_styles() {
+		add_filter( 'fl_builder_global_colors_json', function( $json ) {
+			if ( ! get_option( '_fl_builder_core_colors' ) ) {
+				unset( $json['themeJSON']['color']['palette']['default'] );
+			}
+			if ( ! get_option( '_fl_builder_theme_colors' ) ) {
+				unset( $json['themeJSON']['color']['palette']['theme'] );
+			}
+			return $json;
+		});
 	}
 
 	static public function advanced_submit() {
@@ -372,7 +400,12 @@ final class FLBuilderAdminAdvanced {
 	 */
 	static private function init_hooks() {
 		foreach ( self::get_settings() as $key => $setting ) {
-			$option = get_option( "_fl_builder_{$key}", $setting['default'] );
+			$option = get_option( "_fl_builder_{$key}" );
+			// make sure option is actually set to save db queries.
+			if ( false === $option ) {
+				update_option( "_fl_builder_{$key}", $setting['default'] );
+				$option = $setting['default'];
+			}
 			if ( $option != $setting['default'] && isset( $setting['callback'] ) ) {
 				call_user_func( $setting['callback'] );
 			}

@@ -129,6 +129,37 @@ class FLMenuModule extends FLBuilderModule {
 			unset( $settings->submenu_spacing );
 		}
 
+		// link padding tweaks
+		if ( isset( $settings->link_spacing_top ) ) {
+			$settings->link_padding_top          = $settings->link_spacing_top;
+			$settings->mobile_toggle_padding_top = $settings->link_spacing_top;
+			unset( $settings->link_spacing_top );
+		}
+
+		if ( isset( $settings->link_spacing_right ) ) {
+			$settings->link_padding_right          = $settings->link_spacing_right;
+			$settings->mobile_toggle_padding_right = $settings->link_spacing_right;
+			unset( $settings->link_spacing_right );
+		}
+
+		if ( isset( $settings->link_spacing_bottom ) ) {
+			$settings->link_padding_bottom          = $settings->link_spacing_bottom;
+			$settings->mobile_toggle_padding_bottom = $settings->link_spacing_bottom;
+			unset( $settings->link_spacing_bottom );
+		}
+
+		if ( isset( $settings->link_spacing_left ) ) {
+			$settings->link_padding_left          = $settings->link_spacing_left;
+			$settings->mobile_toggle_padding_left = $settings->link_spacing_left;
+			unset( $settings->link_spacing_left );
+		}
+
+		if ( isset( $settings->link_spacing_unit ) ) {
+			$settings->link_padding_unit          = $settings->link_spacing_unit;
+			$settings->mobile_toggle_padding_unit = $settings->link_spacing_unit;
+			unset( $settings->link_spacing_unit );
+		}
+
 		if ( ! empty( $this->core_menus ) ) {
 			if ( empty( $settings->menu ) || ! in_array( $settings->menu, $this->core_menus ) ) {
 				$settings->menu = apply_filters( 'fl_builder_menu_module_core_menu', $this->core_menus[0], $settings );
@@ -194,6 +225,7 @@ class FLMenuModule extends FLBuilderModule {
 
 		if ( isset( $toggle ) && 'expanded' != $toggle ) {
 
+			ob_start();
 			if ( in_array( $toggle, array( 'hamburger', 'hamburger-label' ) ) ) {
 				$menu_icon = apply_filters( 'fl_builder_mobile_menu_icon', file_get_contents( FL_BUILDER_DIR . 'img/svg/hamburger-menu.svg' ) );
 				echo '<button class="fl-menu-mobile-toggle ' . $toggle . '" aria-label="' . esc_attr( $menu_title ) . '">';
@@ -212,6 +244,7 @@ class FLMenuModule extends FLBuilderModule {
 				echo '<button class="fl-menu-mobile-toggle text"><span class="fl-menu-mobile-toggle-label" aria-label="' . esc_attr( $menu_title ) . '">' . esc_attr( $menu_title ) . '</span></button>';
 
 			}
+			echo apply_filters( 'fl_builder_menu_toggle_button', ob_get_clean(), $this );
 		}
 	}
 
@@ -327,7 +360,7 @@ class FLMenuModule extends FLBuilderModule {
 			$items = $this->render_menu_woo_cart( $items );
 		}
 
-		if ( isset( $settings->menu_search ) && 'show' == $settings->menu_search ) {
+		if ( isset( $settings->menu_search ) && 'show' == $settings->menu_search && ! FL_BUILDER_LITE ) {
 			$items = $this->render_menu_search( $items );
 		}
 
@@ -390,7 +423,7 @@ class FLMenuModule extends FLBuilderModule {
 	public function menu_search_settings() {
 		$settings = array(
 			'layout'     => 'button',
-			'btn_text'   => '',
+			'btn_text'   => sprintf( '<span class="sr-only">%s</span>', __( 'Search', 'fl-builder' ) ),
 			'btn_action' => 'reveal',
 		);
 
@@ -900,13 +933,14 @@ FLBuilder::register_module('FLMenuModule', array(
 							'property' => 'background-color',
 						),
 					),
-					'link_spacing'        => array(
-						'type'    => 'dimension',
-						'label'   => __( 'Link Padding', 'fl-builder' ),
-						'default' => '14',
-						'units'   => array( 'px', 'em' ),
-						'slider'  => true,
-						'preview' => array(
+					'link_padding'        => array(
+						'type'       => 'dimension',
+						'label'      => __( 'Link Padding', 'fl-builder' ),
+						'default'    => '14',
+						'units'      => array( 'px', 'em' ),
+						'slider'     => true,
+						'responsive' => true,
+						'preview'    => array(
 							'type'     => 'css',
 							'selector' => '.menu a',
 							'property' => 'padding',
@@ -1221,6 +1255,18 @@ FLBuilder::register_module('FLMenuModule', array(
 							'type' => 'none',
 						),
 					),
+					'mobile_toggle_padding'        => array(
+						'type'    => 'dimension',
+						'label'   => __( 'Padding', 'fl-builder' ),
+						'default' => '14',
+						'units'   => array( 'px', 'em' ),
+						'slider'  => true,
+						'preview' => array(
+							'type'     => 'css',
+							'selector' => '.fl-menu-mobile-toggle',
+							'property' => 'padding',
+						),
+					),
 					'mobile_toggle_border'         => array(
 						'type'    => 'border',
 						'label'   => __( 'Border', 'fl-builder' ),
@@ -1251,12 +1297,13 @@ FLBuilder::register_module('FLMenuModule', array(
 						),
 					),
 					'search_btn_icon_color'       => array(
-						'type'       => 'color',
-						'default'    => '808080',
-						'label'      => __( 'Icon Color', 'fl-builder' ),
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '808080',
+						'label'       => __( 'Icon Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'property'  => 'color',
 							'selector'  => 'i.fl-button-icon.fas:before',
@@ -1264,11 +1311,12 @@ FLBuilder::register_module('FLMenuModule', array(
 						),
 					),
 					'search_btn_icon_color_hover' => array(
-						'type'       => 'color',
-						'label'      => __( 'Icon Hover Color', 'fl-builder' ),
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Icon Hover Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),

@@ -24,14 +24,17 @@ if ( ! $themer_archive_404 && $query->have_posts() ) :
 
 	$data_source = isset( $settings->data_source ) ? $settings->data_source : 'custom_query';
 	$post_type   = isset( $settings->post_type ) ? $settings->post_type : 'post';
-	$paged       = ( FLBuilderLoop::get_paged() > 0 ) ? ' fl-paged-scroll-to' : '';
+	$paged       = '';
+	if ( 'numbers' === $settings->pagination && boolval( $settings->pagination_auto_scroll ) && FLBuilderLoop::get_paged() > 0 ) {
+		$paged = ' fl-paged-scroll-to';
+	}
 	?>
-	<div class="fl-post-<?php echo $module->get_layout_slug() . $paged; ?>"<?php echo FLPostGridModule::print_schema( ' itemscope="itemscope" itemtype="' . FLPostGridModule::schema_collection_type( $data_source, $post_type ) . '"' ); ?>>
+	<div class="fl-post-<?php echo sanitize_html_class( $module->get_layout_slug() ) . $paged; ?>"<?php echo FLPostGridModule::print_schema( ' itemscope="itemscope" itemtype="' . FLPostGridModule::schema_collection_type( $data_source, $post_type ) . '"' ); ?>>
 	<?php
 
 	if ( 'li' == $module->get_posts_container() ) :
 		if ( '' != $module->settings->posts_container_ul_class ) {
-			echo '<ul class="' . $module->settings->posts_container_ul_class . '">';
+			echo '<ul class="' . sanitize_html_class( $module->settings->posts_container_ul_class ) . '">';
 		} else {
 			echo '<ul>';
 		}

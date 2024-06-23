@@ -54,10 +54,14 @@
 					var row = rows[i];
 					image = row.image,
 					hasImage = image && !image.endsWith('blank.jpg'),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 					var globalClass = row.isGlobal ? ' fl-builder-block-global' : '';
+					catClasses = '';
+					for (key in row.category) {
+						catClasses += ' fl-builder-template-category-' + key;
+					}
 				#>
-				<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}} {{hasImageClass}}" data-id="{{row.id}}">
+				<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
 					<span class="fl-builder-block-content">
 						<# if ( hasImage ) { #>
 						<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -85,7 +89,7 @@
 			</div>
 		</div>
 		<?php endif; ?>
-		<?php if ( ! FLBuilderModel::is_post_user_template( 'column' ) ) : ?>
+		<?php if ( ! FLBuilderModel::is_post_user_template( 'column' ) && ! FLBuilderModel::is_post_user_template( 'module' ) ) : ?>
 		<div id="fl-builder-blocks-saved-columns" class="fl-builder-blocks-section fl-builder-blocks-node-template">
 
 			<div class="fl-builder-blocks-section-header">
@@ -99,10 +103,14 @@
 						var column = columns[i];
 						image = column.image,
 						hasImage = image && !image.endsWith('blank.jpg'),
-						hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+						hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 						var globalClass = column.isGlobal ? ' fl-builder-block-global' : '';
+						catClasses = '';
+						for (key in column.category) {
+							catClasses += ' fl-builder-template-category-' + key;
+						}
 					#>
-					<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}} {{hasImageClass}}" data-id="{{column.id}}">
+					<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
 						<span class="fl-builder-block-content">
 							<# if ( hasImage ) { #>
 							<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -143,14 +151,14 @@
 					var module = modules[i];
 					image = module.image,
 					hasImage = image && !image.endsWith('blank.jpg'),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 					var globalClass = module.isGlobal ? ' fl-builder-block-global' : '';
 					catClasses = '';
 					for (key in module.category) {
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 				#>
-				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}} {{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
+				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 					<span class="fl-builder-block-content">
 						<# if ( hasImage ) { #>
 						<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -196,13 +204,13 @@
 					globalClass = module.isGlobal ? ' fl-builder-block-global' : '',
 					image = module.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '';
+					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
 					catClasses = '';
 					for (key in module.category) {
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-module {{globalClass}} {{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 				<span class="fl-builder-block-content">
 					<# if (hasImage) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -246,9 +254,13 @@
 					globalClass = column.isGlobal ? ' fl-builder-block-global' : '',
 					image = column.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
+					catClasses = '';
+					for (key in column.category) {
+						catClasses += ' fl-builder-template-category-' + key;
+					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-column {{globalClass}} {{hasImageClass}}" data-id="{{column.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
 				<span class="fl-builder-block-content">
 					<# if (hasImage) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -288,12 +300,16 @@
 		<# } else { #>
 			<# for( var i in rows) {
 				var row = rows[i],
-					globalClass = row.isGlobal ? 'fl-builder-block-global' : '',
+					globalClass = row.isGlobal ? ' fl-builder-block-global' : '',
 					image = row.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
-					hasImageClass = hasImage ? 'fl-builder-block-has-thumbnail' : '' ;
+					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
+					catClasses = '';
+					for (key in row.category) {
+						catClasses += ' fl-builder-template-category-' + key;
+					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-row {{globalClass}} {{hasImageClass}}" data-id="{{row.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
 				<span class="fl-builder-block-content">
 					<# if (image && !image.endsWith('blank.jpg')) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>

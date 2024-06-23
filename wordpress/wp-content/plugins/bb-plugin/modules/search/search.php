@@ -81,12 +81,26 @@ class FLSearchModule extends FLBuilderModule {
 		// Reset paged & offset parameters to prevent breaking other modules
 		remove_filter( 'fl_builder_loop_query_args', array( $this, 'remove_pagination_args' ), 10 );
 
+		// Setup excerpt length
+		if ( $settings->show_content ) {
+			global $bb_search_module_settings;
+			$bb_search_module_settings = $settings;
+			remove_all_filters( 'excerpt_length' );
+			add_filter( 'excerpt_length', array( $this, 'excerpt_length' ), 10 );
+		}
+
 		ob_start();
 		include $this->dir . '/includes/results.php';
 		$html = ob_get_clean();
 
+		remove_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 		echo $html;
 		die();
+	}
+
+	public function excerpt_length( $length ) {
+		global $bb_search_module_settings;
+		return isset( $bb_search_module_settings->content_length ) && (int) $bb_search_module_settings->content_length > 0 ? $bb_search_module_settings->content_length : 55;
 	}
 
 	/**
@@ -385,12 +399,13 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_duo_color1'    => array(
-						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button-icon.fad:before',
 							'property'  => 'color',
@@ -398,12 +413,13 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_duo_color2'    => array(
-						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button-icon.fad:after',
 							'property'  => 'color',
@@ -710,12 +726,13 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_text_color'       => array(
-						'type'       => 'color',
-						'label'      => __( 'Text Color', 'fl-builder' ),
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Text Color', 'fl-builder' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => 'a.fl-button, a.fl-button *',
 							'property'  => 'color',
@@ -723,12 +740,13 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_text_hover_color' => array(
-						'type'       => 'color',
-						'label'      => __( 'Text Hover Color', 'fl-builder' ),
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Text Hover Color', 'fl-builder' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),
@@ -743,22 +761,24 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_bg_color'         => array(
-						'type'       => 'color',
-						'label'      => __( 'Button Background Color', 'fl-builder' ),
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Button Background Color', 'fl-builder' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),
 					'btn_bg_hover_color'   => array(
-						'type'       => 'color',
-						'label'      => __( 'Button Background Hover Color', 'fl-builder' ),
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Button Background Hover Color', 'fl-builder' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),
@@ -795,12 +815,13 @@ FLBuilder::register_module('FLSearchModule', array(
 				'title'  => 'Button Icon Colors',
 				'fields' => array(
 					'btn_icon_color'       => array(
-						'type'       => 'color',
-						'default'    => '',
-						'label'      => __( 'Icon Color', 'fl-builder' ),
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'label'       => __( 'Icon Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'property'  => 'color',
 							'selector'  => 'i.fl-button-icon.fas:before',
@@ -808,11 +829,12 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 					),
 					'btn_icon_color_hover' => array(
-						'type'       => 'color',
-						'label'      => __( 'Icon Hover Color', 'fl-builder' ),
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'label'       => __( 'Icon Hover Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),
@@ -980,7 +1002,22 @@ FLBuilder::register_module('FLSearchModule', array(
 							'1' => __( 'Show', 'fl-builder' ),
 							'0' => __( 'Hide', 'fl-builder' ),
 						),
+						'toggle' => array(
+							'1' => array(
+								'fields'   => array( 'content_length' ),
+							),
+						),
 						'preview' => array(
+							'type' => 'none',
+						),
+					),
+					'content_length'      => array(
+						'type'        => 'text',
+						'label'       => __( 'Content Length (Words)', 'fl-builder' ),
+						'default'     => '55',
+						'placeholder' => '55',
+						'sanitize'    => 'absint',
+						'preview'     => array(
 							'type' => 'none',
 						),
 					),
@@ -995,14 +1032,6 @@ FLBuilder::register_module('FLSearchModule', array(
 					),
 				),
 			),
-			// 'advanced_filter'   => array(
-			// 	'title'    => '',
-			// 	'services' => 'autoresponder',
-			// 	'template' => array(
-			// 		'id'   => 'fl-builder-service-settings',
-			// 		'file' => FL_BUILDER_DIR . 'includes/ui-service-settings.php',
-			// 	),
-			// ),
 		),
 	),
 ));

@@ -61,6 +61,9 @@ final class FLUpdater {
 		} elseif ( 'theme' == $settings['type'] ) {
 			add_filter( 'pre_set_site_transient_update_themes', array( $this, 'update_check' ) );
 		}
+		add_action( 'fl_builder_cache_cleared', function() {
+			delete_transient( 'fl_get_subscription_info' );
+		} );
 	}
 
 	/**
@@ -414,10 +417,11 @@ final class FLUpdater {
 				'products'      => json_encode( self::$_products ),
 			)
 		);
-		if ( isset( $response->error ) ) {
+		if ( isset( $response->error ) && ! isset( $response->code ) ) {
 			$license = '';
 		}
 		update_site_option( 'fl_themes_subscription_email', $license );
+		delete_transient( 'fl_get_subscription_info' );
 		return $response;
 	}
 
@@ -429,14 +433,24 @@ final class FLUpdater {
 	 * @return bool
 	 */
 	static public function get_subscription_info() {
-		return self::api_request(
-			self::$_updates_api_url,
-			array(
-				'fl-api-method' => 'subscription_info',
-				'domain'        => FLUpdater::validate_domain( network_home_url() ),
-				'license'       => FLUpdater::get_subscription_license(),
-			)
-		);
+		//phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+		if ( false === ( $subscription_info = get_transient( 'fl_get_subscription_info' ) ) ) {
+			$subscription_info = self::api_request(
+				self::$_updates_api_url,
+				array(
+					'fl-api-method' => 'subscription_info',
+					'domain'        => FLUpdater::validate_domain( network_home_url() ),
+					'license'       => FLUpdater::get_subscription_license(),
+				)
+			);
+			if ( is_object( $subscription_info ) && ! isset( $subscription_info->error ) ) {
+				set_transient( 'fl_get_subscription_info', $subscription_info );
+			}
+		}
+		if ( is_object( $subscription_info ) && ! isset( $subscription_info->active ) ) {
+			$subscription_info->active = false;
+		}
+		return $subscription_info;
 	}
 
 	/**
@@ -625,23 +639,31 @@ final class FLUpdater {
 	 * @since 1.0
 	 * @access private
 	 * @param string $url The URL to get.
+	 * @param array $args
 	 * @return mixed The response or false if there is an error.
 	 */
-	static private function remote_get( $url ) {
-		$request      = wp_remote_get( $url );
+	static private function remote_get( $url, $args = array( 'timeout' => 25 ) ) {
+		$request      = wp_remote_get( $url, $args );
 		$error        = new stdClass();
-		$error->error = 'connection';
+		$error->error = 'Unknown Error';
+		$error->code  = true;
 
 		if ( is_wp_error( $request ) ) {
+			$error->error = $request->get_error_message();
 			return $error;
 		}
-		if ( wp_remote_retrieve_response_code( $request ) != 200 ) {
+
+		$response = wp_remote_retrieve_response_code( $request );
+
+		if ( 200 !== $response ) {
+			$error->error = sprintf( '%s response from server', $response );
 			return $error;
 		}
 
 		$body = wp_remote_retrieve_body( $request );
 
 		if ( is_wp_error( $body ) ) {
+			$error->error = $body->get_error_message();
 			return $error;
 		}
 

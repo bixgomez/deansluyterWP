@@ -67,7 +67,7 @@
 			}
 
 			featuresSection.on('click', featureToggleButton, this._togglePricesFeaturesClicked);
-			icon.on('change', this._flipSettings);
+			icon.on('change', this._flipSettings(form));
 			this._flipSettings( form );
 			this._toggleFields( form, moduleSettingsForm );
 		},
@@ -107,7 +107,7 @@
 
 		_flipSettings: function( form ) {
 			var icon = form.find( 'input[name=btn_icon]' );
-			
+
 			if ( -1 !== icon.val().indexOf( 'fad fa') ) {
 				$('#fl-field-btn_duo_color1').show();
 				$('#fl-field-btn_duo_color2').show();

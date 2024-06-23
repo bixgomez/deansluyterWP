@@ -183,8 +183,3 @@ ul.fl-menu-horizontal li.mega-menu > ul.sub-menu ul.sub-menu {
 	font-size: 18px;
 	padding: 10px 6px 10px 14px;
 }
-
-/* IE Fixes */
-.fl-builder-ie-11 .fl-module-menu .fl-menu-horizontal .fl-has-submenu:hover > .sub-menu {
-	z-index: 60;
-}

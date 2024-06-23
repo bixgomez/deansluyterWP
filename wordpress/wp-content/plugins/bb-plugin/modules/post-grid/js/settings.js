@@ -36,13 +36,14 @@
 				showContent = form.find( 'select[name=show_content]' ),
 				showImage = form.find( 'select[name=show_image]' ),
 				dataSource = form.find( '#fl-field-data_source' ).find('select');
-
+				userSource = form.find( '#fl-field-users' ).find('select');
 			layout.on( 'change', this._layoutChanged.bind( this ) );
 			postType.on( 'change', this._toggleEventsSection.bind( this ) );
 			postType.on( 'change', this._toggleWooCommerceSection.bind( this ) );
 			dataSource.on( 'change', this._toggleWooCommerceSection.bind( this ) );
 			showContent.on( 'change', this._showContentChanged.bind(this) );
 			showImage.on( 'change', this._featuredImageDependencyChanged.bind(this) );
+			userSource.on( 'change', this._userSourceChanged.bind(this) );
 			resizeFields.find( 'input' ).on( 'input', this._resizeLayout.bind( this ) );
 			resizeFields.find( 'select' ).on( 'change', this._resizeLayout.bind( this ) );
 			buttonBgColor.on( 'change', this._previewButtonBackground );
@@ -60,6 +61,15 @@
 		_layoutChanged: function() {
 			this._showContentChanged();
 			this._featuredImageDependencyChanged();
+		},
+
+		_userSourceChanged: function() {
+			current = $( '.fl-builder-settings' ).find( '#fl-field-users' ).find('select').val();
+			if ( 'loggedin' === current || 'author' === current ) {
+				$( '.fl-builder-settings' ).find( '#fl-field-users' ).find( '#as-selections-users' ).hide()
+			} else {
+				$( '.fl-builder-settings' ).find( '#fl-field-users' ).find( '#as-selections-users' ).show()
+			}
 		},
 
 		/**

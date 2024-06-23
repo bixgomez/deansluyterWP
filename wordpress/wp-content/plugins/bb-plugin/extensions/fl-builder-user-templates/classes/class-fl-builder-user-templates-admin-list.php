@@ -162,8 +162,10 @@ final class FLBuilderUserTemplatesAdminList {
 			return;
 		}
 		if ( in_array( $_GET['fl-builder-template-type'], array( 'row', 'column', 'module' ) ) ) {
-			$columns['fl_global'] = __( 'Global', 'fl-builder' );
-			$columns['code']      = __( 'ShortCode', 'fl-builder' );
+			$columns['fl_global']  = __( 'Global', 'fl-builder' );
+			$columns['code']       = __( 'ShortCode', 'fl-builder' );
+			$columns['screenshot'] = __( 'Screenshot', 'fl-builder' );
+			$columns['notes']      = __( 'Notes', 'fl-builder' );
 		}
 
 		if ( 'layout' === $_GET['fl-builder-template-type'] ) {
@@ -189,11 +191,17 @@ final class FLBuilderUserTemplatesAdminList {
 	 * @return array
 	 */
 	static public function add_column_content( $column, $post_id ) {
-
+		global $post;
 		if ( 'code' === $column ) {
 			$shortcode = sprintf( '[fl_builder_insert_layout id=%s]', $post_id );
 			printf( '<pre class="shortcode" data-clipboard-text="%s">%s</pre>', $shortcode, $shortcode );
 			return;
+		}
+		if ( 'notes' === $column ) {
+			echo $post->post_excerpt;
+		}
+		if ( 'screenshot' === $column ) {
+			echo get_the_post_thumbnail( $post_id, 'thumbnail', array( 'class' => 'center' ) );
 		}
 		if ( 'fl_global' != $column ) {
 			return;

@@ -555,12 +555,13 @@ FLBuilder::register_module('FLContactFormModule', array(
 						),
 					),
 					'btn_duo_color1'     => array(
-						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '#5b5b5b',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '#5b5b5b',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => 'i.fl-button-icon.fad:before',
 							'property'  => 'color',
@@ -568,12 +569,13 @@ FLBuilder::register_module('FLContactFormModule', array(
 						),
 					),
 					'btn_duo_color2'     => array(
-						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '#757575',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '#757575',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => 'i.fl-button-icon.fad:after',
 							'property'  => 'color',

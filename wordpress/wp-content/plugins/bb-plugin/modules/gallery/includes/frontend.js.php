@@ -88,6 +88,13 @@
 				verticalOffset: <?php echo ( 'below' == $settings->show_captions ) ? '35' : '0'; ?>
 			});
 		});
+
+		if ( 'undefined' !== typeof( FLBuilder ) ) {
+			FLBuilder.addHook( 'col-resize-drag', function(){
+				$( '.fl-node-<?php echo $id; ?> .fl-gallery' ).trigger( 'refreshWookmark' );
+			} );
+		}
+
 		<?php endif; ?>
 	});
 

@@ -159,8 +159,3 @@ body.rtl .fl-module-content-slider .bx-viewport {
 .bx-wrapper .bx-controls:not(.bx-has-pager) .bx-controls-auto {
 	bottom: 0;
 }
-
-/* IE Fixes */
-.fl-builder-ie-11 .fl-content-slider-navigation {
-	z-index: 55;
-}

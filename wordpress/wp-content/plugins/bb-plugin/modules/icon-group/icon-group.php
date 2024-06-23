@@ -46,6 +46,18 @@ class FLIconGroupModule extends FLBuilderModule {
 				$settings->icons[ $i ]->item_icon_bg_color = $settings->icons[ $i ]->bg_color;
 				unset( $settings->icons[ $i ]->bg_color );
 			}
+
+			// Rename 'hover_color' to 'item_icon_hover_color'
+			if ( empty( $icon->hover_color ) && ! empty( $settings->icons[ $i ]->hover_color ) ) {
+				$settings->icons[ $i ]->item_icon_hover_color = $settings->icons[ $i ]->hover_color;
+				unset( $settings->icons[ $i ]->hover_color );
+			}
+
+			// Rename 'bg_hover_color' to 'item_icon_bg_hover_color'
+			if ( empty( $icon->bg_hover_color ) && ! empty( $settings->icons[ $i ]->bg_hover_color ) ) {
+				$settings->icons[ $i ]->item_icon_bg_hover_color = $settings->icons[ $i ]->bg_hover_color;
+				unset( $settings->icons[ $i ]->bg_hover_color );
+			}
 		}
 
 		return $settings;
@@ -216,34 +228,36 @@ FLBuilder::register_settings_form('icon_group_form', array(
 				'colors' => array( // Section
 					'title'  => __( 'Item Icon Colors', 'fl-builder' ), // Section Title
 					'fields' => array( // Section Fields
-						'duo_color1'         => array(
-							'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-							'type'       => 'color',
-							'default'    => '',
-							'show_alpha' => true,
-							'show_reset' => true,
-							'preview'    => array(
+						'duo_color1'               => array(
+							'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+							'type'        => 'color',
+							'connections' => array( 'color' ),
+							'default'     => '',
+							'show_alpha'  => true,
+							'show_reset'  => true,
+							'preview'     => array(
 								'type' => 'none',
 							),
 						),
-						'duo_color2'         => array(
-							'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-							'type'       => 'color',
-							'default'    => '',
-							'show_alpha' => true,
-							'show_reset' => true,
-							'preview'    => array(
+						'duo_color2'               => array(
+							'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+							'type'        => 'color',
+							'connections' => array( 'color' ),
+							'default'     => '',
+							'show_alpha'  => true,
+							'show_reset'  => true,
+							'preview'     => array(
 								'type' => 'none',
 							),
 						),
-						'item_icon_color'    => array(
+						'item_icon_color'          => array(
 							'type'        => 'color',
 							'connections' => array( 'color' ),
 							'label'       => __( 'Item Icon Color', 'fl-builder' ),
 							'show_reset'  => true,
 							'show_alpha'  => true,
 						),
-						'hover_color'        => array(
+						'item_icon_hover_color'    => array(
 							'type'        => 'color',
 							'connections' => array( 'color' ),
 							'label'       => __( 'Item Icon Hover Color', 'fl-builder' ),
@@ -253,14 +267,14 @@ FLBuilder::register_settings_form('icon_group_form', array(
 								'type' => 'none',
 							),
 						),
-						'item_icon_bg_color' => array(
+						'item_icon_bg_color'       => array(
 							'type'        => 'color',
 							'connections' => array( 'color' ),
 							'label'       => __( 'Item Icon Background Color', 'fl-builder' ),
 							'show_reset'  => true,
 							'show_alpha'  => true,
 						),
-						'bg_hover_color'     => array(
+						'item_icon_bg_hover_color' => array(
 							'type'        => 'color',
 							'connections' => array( 'color' ),
 							'label'       => __( 'Item Icon Background Hover Color', 'fl-builder' ),

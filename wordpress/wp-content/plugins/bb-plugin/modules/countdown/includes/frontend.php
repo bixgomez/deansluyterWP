@@ -21,7 +21,7 @@
 
 	?>
 
-<div class="fl-countdown<?php echo ( 'default' == $settings->layout && 'yes' == $settings->show_separator && isset( $settings->separator_type ) ) ? ' fl-countdown-separator-' . $settings->separator_type : ''; ?>">
+<div class="fl-countdown<?php echo ( 'default' == $settings->layout && 'yes' == $settings->show_separator && isset( $settings->separator_type ) ) ? ' fl-countdown-separator-' . sanitize_html_class( $settings->separator_type ) : ''; ?>">
 
 	<?php foreach ( $counters as $class => $label ) : ?>
 		<div class="fl-countdown-number fl-countdown-<?php echo $class; ?>">

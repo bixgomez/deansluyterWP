@@ -59,6 +59,8 @@ final class FLBuilderCompatibility {
 		add_action( 'wp_print_scripts', array( __CLASS__, 'convert_box_bb' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'yith_woocommerce_affiliates' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_jquery_dialog' ) );
+		add_action( 'wp_tiny_mce_init', array( __CLASS__, 'fix_gf_tinymce' ), 9 );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'remove_tour_fix' ) );
 
 		// Filters
 		add_filter( 'fl_builder_is_post_editable', array( __CLASS__, 'bp_pages_support' ), 11, 2 );
@@ -71,7 +73,6 @@ final class FLBuilderCompatibility {
 		add_filter( 'avf_enqueue_wp_mediaelement', array( __CLASS__, 'not_load_mediaelement' ), 10, 2 );
 		add_filter( 'phpcompat_whitelist', array( __CLASS__, 'bb_compat_fix' ) );
 		add_filter( 'fl_builder_editor_content', array( __CLASS__, 'theme_post_content_fix' ) );
-		add_filter( 'fl_builder_admin_settings_post_types', array( __CLASS__, 'admin_settings_post_types_popup' ) );
 		add_filter( 'woocommerce_product_get_short_description', array( __CLASS__, 'fix_woo_short_description' ) );
 		add_filter( 'enlighter_startup', array( __CLASS__, 'enlighter_frontend_editing' ) );
 		add_filter( 'option_sumome_site_id', array( __CLASS__, 'fix_sumo' ) );
@@ -98,6 +99,7 @@ final class FLBuilderCompatibility {
 		add_filter( 'the_content', __CLASS__ . '::render_tribe_event_template', 11 );
 		add_filter( 'fl_builder_loop_query', array( __CLASS__, 'fix_tribe_events_pagination' ), 20, 2 );
 		add_filter( 'option_iubenda_cookie_law_solution', array( __CLASS__, 'fix_iubenda' ) );
+		add_filter( 'fl_builder_is_post_editable', array( __CLASS__, 'fix_theme_my_login' ) );
 	}
 
 	/**
@@ -384,17 +386,6 @@ final class FLBuilderCompatibility {
 		if ( isset( $_GET['fl_builder'] ) ) {
 			remove_action( 'wp_footer', 'hfc_add_visitor_widget' );
 		}
-	}
-
-	/**
-	 * Remove Popup-Maker post-type from admin settings post-types.
-	 * @since 2.1.7
-	 */
-	public static function admin_settings_post_types_popup( $types ) {
-		if ( class_exists( 'Popup_Maker' ) && isset( $types['popup'] ) ) {
-			unset( $types['popup'] );
-		}
-		return $types;
 	}
 
 	/**
@@ -1326,6 +1317,29 @@ final class FLBuilderCompatibility {
 	public static function fix_adminbar() {
 		if ( isset( $_REQUEST['fl_builder'] ) ) {
 			remove_action( 'wp_enqueue_scripts', 'wp_enqueue_admin_bar_bump_styles' );
+		}
+	}
+
+	public static function fix_theme_my_login( $edit ) {
+		global $wp_the_query;
+		if ( isset( $wp_the_query->post ) && is_object( $wp_the_query->post ) ) {
+			$post = $wp_the_query->post;
+			if ( 0 === $post->ID && strstr( $post->post_content, '[theme-my-login' ) ) {
+				return false;
+			}
+		}
+		return $edit;
+	}
+
+	public static function fix_gf_tinymce() {
+		if ( isset( $_REQUEST['fl_builder'] ) ) {
+			remove_action( 'wp_tiny_mce_init', array( 'GF_Field_Textarea', 'start_wp_tiny_mce_init_buffer' ) );
+		}
+	}
+
+	public static function remove_tour_fix() {
+		if ( ! FLBuilder::is_tour_enabled() ) {
+			remove_filter( 'fl_theme_framework_enqueue', array( 'FLLayout', 'fl_theme_framework_enqueue' ) );
 		}
 	}
 }

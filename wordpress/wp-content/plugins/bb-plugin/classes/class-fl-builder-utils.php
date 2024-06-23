@@ -387,6 +387,7 @@ final class FLBuilderUtils {
 
 	/**
 	 * is_post_publicly_viewable was added in 5.7 so need a pollyfill
+	 *
 	 * @since 2.8
 	 */
 	public static function is_post_publicly_viewable( $post ) {
@@ -438,4 +439,49 @@ final class FLBuilderUtils {
 		return true === apply_filters( 'is_post_status_viewable', $is_viewable, $post_status );
 	}
 
+	public static function esc_attr( $url ) {
+		$link = esc_attr( $url );
+		return str_replace( array( '&quot;', '&#039;' ), "'", $link );
+	}
+
+	public static function allowed_tags() {
+		return array(
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'div',
+			'li',
+			'ul',
+			'ol',
+			'article',
+			'section',
+			'aside',
+			'main',
+			'span',
+			'header',
+			'footer',
+		);
+	}
+
+	public static function esc_tags( $setting, $default = false ) {
+		$tags = self::allowed_tags();
+		foreach ( $tags as $tag ) {
+			if ( $tag === $setting ) {
+				return $setting;
+			}
+		}
+		return $default;
+	}
+
+	/**
+	 * Returns the column width when set to blank or zero and allows it to be overridden.
+	 *
+	 * @since 2.8.2
+	 */
+	public static function get_empty_column_width() {
+		return apply_filters( 'fl_builder_empty_column_width', '0%' );
+	}
 }

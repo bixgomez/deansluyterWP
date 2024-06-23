@@ -449,8 +449,7 @@ FLBuilder::register_settings_form('buttons_form', array(
 							'label'       => __( 'Text', 'fl-builder' ),
 							'default'     => __( 'Click Here', 'fl-builder' ),
 							'preview'     => array(
-								'type'     => 'text',
-								'selector' => '.fl-button-text',
+								'type' => 'refresh',
 							),
 							'connections' => array( 'string' ),
 						),

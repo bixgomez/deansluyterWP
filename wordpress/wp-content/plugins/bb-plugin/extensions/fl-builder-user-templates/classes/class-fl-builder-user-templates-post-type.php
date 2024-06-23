@@ -60,6 +60,7 @@ final class FLBuilderUserTemplatesPostType {
 				'revisions',
 				'page-attributes',
 				'thumbnail',
+				'excerpt',
 			),
 			'taxonomies'          => array(
 				'fl-builder-template-category',
@@ -129,6 +130,9 @@ final class FLBuilderUserTemplatesPostType {
 	 * @return void
 	 */
 	static public function register_pointer() {
+		if ( ! is_admin() ) {
+			return;
+		}
 		$admin_access = FLBuilderUserAccess::current_user_can( 'builder_admin' );
 		$update_info  = get_site_option( '_fl_builder_update_info', false );
 

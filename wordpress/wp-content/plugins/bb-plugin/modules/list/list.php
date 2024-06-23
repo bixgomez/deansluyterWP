@@ -171,7 +171,7 @@ FLBuilder::register_module(
 							'type'         => 'form',
 							'label'        => __( 'List Item', 'fl-builder' ),
 							'form'         => 'list_item_form', // ID from registered form below
-							'preview_text' => 'label', // Name of a field to use for the preview text
+							'preview_text' => array( 'heading', 'content' ),
 							'multiple'     => true,
 						),
 					),
@@ -255,10 +255,11 @@ FLBuilder::register_module(
 					'collapsed' => true,
 					'fields'    => array(
 						'heading_tag' => array(
-							'type'    => 'select',
-							'label'   => __( 'List Item Heading Tag', 'fl-builder' ),
-							'default' => 'h3',
-							'options' => array(
+							'type'     => 'select',
+							'label'    => __( 'List Item Heading Tag', 'fl-builder' ),
+							'default'  => 'h3',
+							'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h3' ),
+							'options'  => array(
 								'h1'   => __( 'h1', 'fl-builder' ),
 								'h2'   => __( 'h2', 'fl-builder' ),
 								'h3'   => __( 'h3', 'fl-builder' ),
@@ -268,7 +269,7 @@ FLBuilder::register_module(
 								'span' => __( 'span', 'fl-builder' ),
 								'div'  => __( 'div', 'fl-builder' ),
 							),
-							'help'    => __( 'The wrapper tag for the heading of each list item. Heading appears above the text content.', 'fl-builder' ),
+							'help'     => __( 'The wrapper tag for the heading of each list item. Heading appears above the text content.', 'fl-builder' ),
 						),
 						'content_tag' => array(
 							'type'    => 'select',

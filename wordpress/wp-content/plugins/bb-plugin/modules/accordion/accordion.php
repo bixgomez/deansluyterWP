@@ -405,11 +405,12 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'default' => 'fas fa-minus',
 					),
 					'duo_color1'          => array(
-						'label'      => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-accordion-button-icon i.fad:before',
 							'property'  => 'color',
@@ -417,11 +418,12 @@ FLBuilder::register_module('FLAccordionModule', array(
 						),
 					),
 					'duo_color2'          => array(
-						'label'      => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-accordion-button-icon i.fad:after',
 							'property'  => 'color',

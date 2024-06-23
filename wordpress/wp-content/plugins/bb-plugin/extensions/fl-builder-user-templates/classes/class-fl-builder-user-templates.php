@@ -159,7 +159,7 @@ final class FLBuilderUserTemplates {
 	 * @return array
 	 */
 	static public function ui_bar_buttons( $buttons ) {
-		$is_module_template = FLBuilderModel::is_post_user_template( 'module' );
+		$is_module_template = FLBuilderModel::is_post_leaf_module_template();
 
 		if ( isset( $buttons['content-panel'] ) && $is_module_template ) {
 			$buttons['content-panel']['show'] = false;
@@ -495,17 +495,13 @@ final class FLBuilderUserTemplates {
 	 */
 	static public function render_nodes( $render ) {
 		if ( FLBuilderModel::is_post_user_template( 'module' ) ) {
-			FLBuilder::render_modules();
+			$root_node = FLBuilderModel::get_node_template_root( 'module' );
+			FLBuilder::render_module( $root_node );
 			return false;
 		} elseif ( FLBuilderModel::is_post_user_template( 'column' ) ) {
-
 			$root_node = FLBuilderModel::get_node_template_root( 'column' );
-
-			// Renders the column root node.
-			if ( $root_node ) {
-				FLBuilder::render_column( $root_node );
-				return false;
-			}
+			FLBuilder::render_column( $root_node );
+			return false;
 		}
 
 		return $render;
@@ -580,6 +576,10 @@ final class FLBuilderUserTemplates {
 		if ( $global && $active ) {
 			$attrs['data-template']      = $module->template_id;
 			$attrs['data-template-node'] = $module->template_node_id;
+
+			if ( isset( $module->template_root_node ) ) {
+				$attrs['data-template-url'] = FLBuilderModel::get_node_template_edit_url( $module->template_id );
+			}
 		}
 
 		return $attrs;

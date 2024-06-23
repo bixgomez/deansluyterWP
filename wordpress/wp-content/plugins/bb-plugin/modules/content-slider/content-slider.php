@@ -131,7 +131,7 @@ class FLContentSliderModule extends FLBuilderModule {
 
 		// Background link
 		if ( ! empty( $slide->link ) && ( 'photo' == $slide->bg_layout || 'color' == $slide->bg_layout ) && 'none' == $slide->cta_type ) {
-			echo '<a class="fl-slide-bg-link" href="' . esc_attr( $slide->link ) . '" target="' . $slide->link_target . '" aria-label="' . esc_attr( $slide->title ) . '"></a>';
+			echo '<a class="fl-slide-bg-link" href="' . esc_attr( $slide->link ) . '" target="' . esc_attr( $slide->link_target ) . '" aria-label="' . esc_attr( $slide->title ) . '"></a>';
 		}
 	}
 
@@ -178,7 +178,7 @@ class FLContentSliderModule extends FLBuilderModule {
 			echo '<div class="fl-slide-photo">';
 
 			if ( ! empty( $slide->link ) ) {
-				echo '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '">';
+				echo '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . esc_attr( $slide->link_target ) . '">';
 			}
 
 			printf( '<img %s class="fl-slide-photo-img wp-image-%s" src="%s" alt="%s" />', FLBuilderUtils::img_lazyload( 'false' ), $slide->fg_photo, $slide->fg_photo_src, esc_attr( $alt ) );
@@ -226,7 +226,7 @@ class FLContentSliderModule extends FLBuilderModule {
 				$mobile_photo_link_close = '';
 
 				if ( ! empty( $slide->link ) ) {
-					$mobile_photo_link_open  = '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '">';
+					$mobile_photo_link_open  = '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . esc_attr( $slide->link_target ) . '">';
 					$mobile_photo_link_close = '</a>';
 				}
 				echo '<div class="fl-slide-mobile-photo">';
@@ -263,7 +263,7 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_link( $slide ) {
 		if ( 'link' == $slide->cta_type ) {
-			return '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . $slide->link_target . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
+			return '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . esc_attr( $slide->link_target ) . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
 		}
 	}
 
@@ -738,10 +738,11 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 					'title'  => __( 'Title', 'fl-builder' ),
 					'fields' => array(
 						'title_tag'        => array(
-							'type'    => 'select',
-							'label'   => __( 'Heading Tag', 'fl-builder' ),
-							'default' => 'h2',
-							'options' => array(
+							'type'     => 'select',
+							'label'    => __( 'Heading Tag', 'fl-builder' ),
+							'default'  => 'h2',
+							'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h2' ),
+							'options'  => array(
 								'h1' => 'h1',
 								'h2' => 'h2',
 								'h3' => 'h3',
@@ -847,12 +848,13 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							),
 						),
 						'btn_duo_color1'     => array(
-							'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-							'type'       => 'color',
-							'default'    => '',
-							'show_reset' => true,
-							'show_alpha' => true,
-							'preview'    => array(
+							'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+							'type'        => 'color',
+							'connections' => array( 'color' ),
+							'default'     => '',
+							'show_reset'  => true,
+							'show_alpha'  => true,
+							'preview'     => array(
 								'type'      => 'css',
 								'selector'  => 'i.fl-button-icon.fad:before',
 								'property'  => 'color',
@@ -860,12 +862,13 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							),
 						),
 						'btn_duo_color2'     => array(
-							'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-							'type'       => 'color',
-							'default'    => '',
-							'show_reset' => true,
-							'show_alpha' => true,
-							'preview'    => array(
+							'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+							'type'        => 'color',
+							'connections' => array( 'color' ),
+							'default'     => '',
+							'show_reset'  => true,
+							'show_alpha'  => true,
+							'preview'     => array(
 								'type'      => 'css',
 								'selector'  => 'i.fl-button-icon.fad:after',
 								'property'  => 'color',
