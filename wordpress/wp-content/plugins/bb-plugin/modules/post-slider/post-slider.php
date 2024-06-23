@@ -461,6 +461,33 @@ class FLPostSliderModule extends FLBuilderModule {
 		echo $bg;
 	}
 
+	/**
+	 * Renders the_excerpt for a post.
+	 *
+	 * @since 2.5.1
+	 * @return void
+	 */
+	public function render_excerpt() {
+		if ( ! empty( $this->settings->content_length ) ) {
+			add_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+		}
+
+		the_excerpt();
+
+		if ( ! empty( $this->settings->content_length ) ) {
+			remove_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+		}
+	}
+
+	/**
+	 * Sets the excerpt length.
+	 *
+	 * @since 2.5.1
+	 * @return void
+	 */
+	public function set_custom_excerpt_length( $length ) {
+		return $this->settings->content_length;
+	}
 }
 
 /**
@@ -692,8 +719,20 @@ FLBuilder::register_module('FLPostSliderModule', array(
 						),
 						'toggle'  => array(
 							'1' => array(
+								'fields'   => array( 'content_length' ),
 								'sections' => array( 'content_style' ),
 							),
+						),
+					),
+					'content_length' => array(
+						'type'    => 'unit',
+						'label'   => __( 'Content Length', 'fl-builder' ),
+						'default' => '',
+						'units'   => array( 'words' ),
+						'slider'  => array(
+							'min'  => 0,
+							'max'  => 1000,
+							'step' => 1,
 						),
 					),
 					'show_more_link' => array(
@@ -811,10 +850,11 @@ FLBuilder::register_module('FLPostSliderModule', array(
 				'title'  => __( 'Post Title', 'fl-builder' ),
 				'fields' => array(
 					'title_tag'         => array(
-						'type'    => 'select',
-						'label'   => __( 'Title Tag', 'fl-builder' ),
-						'default' => 'h2',
-						'options' => array(
+						'type'     => 'select',
+						'label'    => __( 'Title Tag', 'fl-builder' ),
+						'default'  => 'h2',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h2' ),
+						'options'  => array(
 							'h1' => 'h1',
 							'h2' => 'h2',
 							'h3' => 'h3',

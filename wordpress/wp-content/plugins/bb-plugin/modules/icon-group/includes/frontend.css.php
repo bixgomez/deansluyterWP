@@ -92,18 +92,18 @@ foreach ( $settings->icons as $i => $icon ) :
 		text-align: center;
 	}
 	<?php endif; ?>
-	<?php if ( isset( $icon->hover_color ) && ! empty( $icon->hover_color ) ) : ?>
+	<?php if ( isset( $icon->item_icon_hover_color ) && ! empty( $icon->item_icon_hover_color ) ) : ?>
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) i:hover,
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) i:hover:before,
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) a:hover i,
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) a:hover i:before {
-		color: <?php echo FLBuilderColor::hex_or_rgb( $icon->hover_color ); ?>;
+		color: <?php echo FLBuilderColor::hex_or_rgb( $icon->item_icon_hover_color ); ?>;
 	}
 	<?php endif; ?>
-	<?php if ( isset( $icon->bg_hover_color ) && ! empty( $icon->bg_hover_color ) ) : ?>
+	<?php if ( isset( $icon->item_icon_bg_hover_color ) && ! empty( $icon->item_icon_bg_hover_color ) ) : ?>
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) i:hover,
 	.fl-node-<?php echo $id; ?> .fl-module-content .fl-icon:nth-child(<?php echo $index; ?>) a:hover i {
-		background: <?php echo FLBuilderColor::hex_or_rgb( $icon->bg_hover_color ); ?>;
+		background: <?php echo FLBuilderColor::hex_or_rgb( $icon->item_icon_bg_hover_color ); ?>;
 	}
 	<?php endif; ?>
 

@@ -106,9 +106,9 @@ final class FLBuilderWhiteLabel {
 			);
 
 			// Save the data.
-			FLBuilderModel::update_admin_settings_option( '_fl_builder_branding', $branding, false );
-			FLBuilderModel::update_admin_settings_option( '_fl_builder_branding_icon', $branding_icon, false );
-			FLBuilderModel::update_admin_settings_option( '_fl_builder_theme_branding', $theme_data, false );
+			FLBuilderModel::update_admin_settings_option( '_fl_builder_branding', $branding, false, true );
+			FLBuilderModel::update_admin_settings_option( '_fl_builder_branding_icon', $branding_icon, false, true );
+			FLBuilderModel::update_admin_settings_option( '_fl_builder_theme_branding', $theme_data, false, true );
 		}
 	}
 

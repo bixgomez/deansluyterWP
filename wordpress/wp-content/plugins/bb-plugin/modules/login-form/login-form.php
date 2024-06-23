@@ -37,7 +37,7 @@ class FLLoginFormModule extends FLBuilderModule {
 	public function login() {
 		//	error_log( print_r( $_POST, true ) );
 		$name             = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : false;
-		$password         = isset( $_POST['password'] ) ? sanitize_text_field( $_POST['password'] ) : false;
+		$password         = isset( $_POST['password'] ) ? $_POST['password'] : false;
 		$remember         = isset( $_POST['remember'] ) ? $_POST['remember'] : false;
 		$post_id          = isset( $_POST['post_id'] ) ? $_POST['post_id'] : false;
 		$node_id          = isset( $_POST['node_id'] ) ? sanitize_text_field( $_POST['node_id'] ) : false;

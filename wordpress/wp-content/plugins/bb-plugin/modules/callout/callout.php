@@ -133,11 +133,11 @@ class FLCalloutModule extends FLBuilderModule {
 		echo '<' . $this->settings->title_tag . ' class="fl-callout-title">';
 
 		if ( ! empty( $this->settings->link ) && 'icon' === $this->settings->image_type ) {
-			echo '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" target="' . $this->settings->link_target . '" ' . $this->get_rel() . ' class="fl-callout-title-link fl-callout-title-text">';
+			echo '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" target="' . esc_attr( $this->settings->link_target ) . '" ' . $this->get_rel() . ' class="fl-callout-title-link fl-callout-title-text">';
 		}
 
 		if ( ! empty( $this->settings->link ) && 'icon' !== $this->settings->image_type ) {
-			echo '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" target="' . $this->settings->link_target . '" ' . $this->get_rel() . ' class="fl-callout-title-link fl-callout-title-text">';
+			echo '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" target="' . esc_attr( $this->settings->link_target ) . '" ' . $this->get_rel() . ' class="fl-callout-title-link fl-callout-title-text">';
 		}
 
 		if ( 'left-title' === $this->settings->icon_position ) {
@@ -200,7 +200,7 @@ class FLCalloutModule extends FLBuilderModule {
 		$html = '';
 
 		if ( 'link' == $this->settings->cta_type ) {
-			$html = '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" ' . $this->get_rel() . ' target="' . $this->settings->link_target . '" class="fl-callout-cta-link">' . $this->settings->cta_text . '</a>';
+			$html = '<a href="' . esc_url( do_shortcode( $this->settings->link ) ) . '" ' . $this->get_rel() . ' target="' . esc_attr( $this->settings->link_target ) . '" class="fl-callout-cta-link">' . $this->settings->cta_text . '</a>';
 		}
 		return $html;
 	}
@@ -375,10 +375,11 @@ FLBuilder::register_module('FLCalloutModule', array(
 						'connections' => array( 'string' ),
 					),
 					'title_tag' => array(
-						'type'    => 'select',
-						'label'   => __( 'Heading Tag', 'fl-builder' ),
-						'default' => 'h3',
-						'options' => array(
+						'type'     => 'select',
+						'label'    => __( 'Heading Tag', 'fl-builder' ),
+						'default'  => 'h3',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h3' ),
+						'options'  => array(
 							'h1' => 'h1',
 							'h2' => 'h2',
 							'h3' => 'h3',
@@ -661,12 +662,13 @@ FLBuilder::register_module('FLCalloutModule', array(
 				'title'  => __( 'Icon Colors', 'fl-builder' ),
 				'fields' => array(
 					'icon_duo_color1'     => array(
-						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-icon i.fad:before',
 							'property'  => 'color',
@@ -674,12 +676,13 @@ FLBuilder::register_module('FLCalloutModule', array(
 						),
 					),
 					'icon_duo_color2'     => array(
-						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-icon i.fad:after',
 							'property'  => 'color',
@@ -864,12 +867,13 @@ FLBuilder::register_module('FLCalloutModule', array(
 						),
 					),
 					'btn_duo_color1'     => array(
-						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button i.fad:before',
 							'property'  => 'color',
@@ -877,12 +881,13 @@ FLBuilder::register_module('FLCalloutModule', array(
 						),
 					),
 					'btn_duo_color2'     => array(
-						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button i.fad:after',
 							'property'  => 'color',

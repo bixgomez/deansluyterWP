@@ -29,7 +29,7 @@ if ( 'post' == $settings->source ) {
 				$id_in_label  = apply_filters( 'fl_tabs_id_in_label', false, $settings, $i );
 
 				if ( $id_in_label && ! empty( $settings->id ) ) {
-					$tab_label_id = $settings->id . '-label-' . $i;
+					$tab_label_id = esc_attr( $settings->id ) . '-label-' . $i;
 				}
 				?>
 				<a href="#" class="fl-tabs-label<?php if ( ($active_tab - 1) == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" data-index="<?php echo $i; ?>" aria-selected="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false';?>" aria-controls="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" aria-expanded="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false'; ?>" role="tab" tabindex="0"><?php // @codingStandardsIgnoreLine ?>
@@ -48,7 +48,7 @@ if ( 'post' == $settings->source ) {
 					$id_in_label  = apply_filters( 'fl_tabs_id_in_label', false, $settings, $i );
 
 					if ( $id_in_label && ! empty( $settings->id ) ) {
-						$tab_label_id = $settings->id . '-label-' . $i;
+						$tab_label_id = esc_attr( $settings->id ) . '-label-' . $i;
 					}
 					?>
 					<a href="#" class="fl-tabs-label<?php if ( ($active_tab - 1) == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" data-index="<?php echo $i; ?>" aria-selected="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false';?>" aria-controls="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" aria-expanded="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false'; ?>" role="tab" tabindex="0"><?php // @codingStandardsIgnoreLine ?>

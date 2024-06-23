@@ -26,7 +26,7 @@ $pricing_table_class = $module->get_pricing_table_class();
 
 		?>
 
-		<div class="fl-pricing-table-col-<?php echo $columns; ?> fl-pricing-table-wrap">
+		<div class="fl-pricing-table-col-<?php echo sanitize_html_class( $columns ); ?> fl-pricing-table-wrap">
 			<div class="fl-pricing-table-column fl-pricing-table-column-<?php echo $i; ?>">
 				<div class="fl-pricing-table-inner-wrap fl-pricing-ribbon-box">
 					<?php

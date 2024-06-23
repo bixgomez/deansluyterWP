@@ -49,6 +49,9 @@
 
 				FLBuilderLayout._reorderMenu();
 			}
+			else {
+				FLBuilderLayout._initNestedColsWidth();
+			}
 		},
 
 		/**
@@ -861,7 +864,7 @@
 
 					// Try to set the actual video dimension on 'loadedmetadata' when using URL as video source
 					vid.on('loadedmetadata', FLBuilderLayout._resizeOnLoadedMeta);
-					
+
 					return;
 				}
 
@@ -1060,7 +1063,7 @@
 								responsiveLabel = element.find( '.fl-tabs-panel-label' );
 								tabIndex 		= responsiveLabel.data( 'index' );
 								label 			= tabs.find( '.fl-tabs-labels .fl-tabs-label[data-index=' + tabIndex + ']' );
-								
+
 								label[0].click();
 								FLBuilderLayout._scrollToElement(element);
 							}, 100 );
@@ -1244,7 +1247,7 @@
 				label 			= tabs.find( '.fl-tabs-labels .fl-tabs-label[data-index=' + tabIndex + ']' );
 
 				if ( responsiveLabel.is( ':visible' ) ) {
-					
+
 					var callback = function() {
 						if ( element ) {
 							responsiveLabel.trigger( $.Event( 'click', { which: 1 } ) );
@@ -1375,6 +1378,28 @@
 		_initRowShapeLayerHeight: function () {
 			FLBuilderLayout._adjustRowShapeLayerHeight();
 			$( window ).on( 'resize', FLBuilderLayout._adjustRowShapeLayerHeight );
+		},
+
+		/**
+		 * Set parent column width of nested columns when it's zero or blank.
+		 * 
+		 * @since 2.7.4
+		 * @access private
+		 * @method _initNestedColsWidth
+		 */
+		_initNestedColsWidth: function()
+		{
+			var nestedCols = $( '.fl-col-has-cols' );
+
+			if ( nestedCols.length <= 0 ) {
+				return;
+			}
+
+			$( nestedCols ).each( function(index, col ){
+				if ( $( col ).width() <= 0 ) {
+					$( col ).css( 'width', FLBuilderLayoutConfig.emptyColWidth );
+				}
+			});
 		},
 
 		/**

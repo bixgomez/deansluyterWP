@@ -1,4 +1,4 @@
-<div class="fl-post-<?php echo $layout; ?>-image">
+<div class="fl-post-<?php echo sanitize_html_class( $layout ); ?>-image">
 	<?php do_action( 'fl_builder_post_' . $layout . '_before_image', $settings, $this ); ?>
 
 	<a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title_attribute(); ?>">

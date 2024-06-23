@@ -154,10 +154,11 @@ FLBuilder::register_module('FLCtaModule', array(
 						'connections' => array( 'string' ),
 					),
 					'title_tag' => array(
-						'type'    => 'select',
-						'label'   => __( 'Heading Tag', 'fl-builder' ),
-						'default' => 'h3',
-						'options' => array(
+						'type'     => 'select',
+						'label'    => __( 'Heading Tag', 'fl-builder' ),
+						'default'  => 'h3',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h3' ),
+						'options'  => array(
 							'h1' => 'h1',
 							'h2' => 'h2',
 							'h3' => 'h3',
@@ -360,12 +361,13 @@ FLBuilder::register_module('FLCtaModule', array(
 						),
 					),
 					'btn_duo_color1'     => array(
-						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button-icon.fad:before',
 							'property'  => 'color',
@@ -373,12 +375,13 @@ FLBuilder::register_module('FLCtaModule', array(
 						),
 					),
 					'btn_duo_color2'     => array(
-						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'show_alpha' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-button-icon.fad:after',
 							'property'  => 'color',

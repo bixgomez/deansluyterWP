@@ -79,6 +79,7 @@
 			FLBuilder.addHook( 'endEditingSession', this._clearPreview );
 			FLBuilder.addHook( 'didEnterRevisionPreview', this._clearPreview );
 			FLBuilder.addHook( 'responsiveEditing', this._menuToggleClicked );
+			FLBuilder.addHook( 'revResponsiveEditing', this._menuToggleClicked );
 			FLBuilder.addHook( 'preview-init', this._switchAllSettingsToCurrentMode );
 			FLBuilder.addHook( 'responsive-editing-switched', this._updateSizeText );
 
@@ -345,6 +346,8 @@
 
 			$( '.fl-field-responsive-toggle' ).addClass( className ).data( 'mode', mode );
 			$( '.fl-field-responsive-setting-' + mode ).css( 'display', 'inline-block' );
+
+			FLBuilder._toggleForm()
 		},
 
 		/**
@@ -507,18 +510,19 @@
 		 * @access private
 		 * @method _menuToggleClicked
 		 */
-		_menuToggleClicked: function()
+		_menuToggleClicked: function(e)
 		{
 			var mode = FLBuilderResponsiveEditing._mode;
-
+			const toggleForward = 'responsiveEditing' === e?.namespace;
+			
 			if ( 'default' == mode ) {
-				mode = 'large';
+				mode = toggleForward ? 'large' : 'responsive';
 			} else if ( 'large' == mode ) {
-				mode = 'medium';
+				mode = toggleForward ? 'medium' : 'default';
 			} else if ( 'medium' == mode ) {
-				mode = 'responsive';
+				mode = toggleForward ? 'responsive' : 'large';
 			} else {
-				mode = 'default';
+				mode = toggleForward ? 'default' : 'medium';
 			}
 
 			FLBuilder.MainMenu.hide();

@@ -62,23 +62,22 @@
 				<?php if ( $legacy ) : ?>
 					<?php _e( 'Font Awesome PRO already enabled via fl_enable_fa5_pro filter.', 'fl-builder' ); ?>
 				<?php else : ?>
-				<input type="checkbox" name="fl-enable-fa-pro" <?php echo $kit_checked; ?> /> <?php _e( 'Enable Font Awesome PRO icons.', 'fl-builder' ); ?>
+				<input type="checkbox" name="fl-enable-fa-pro" <?php echo $kit_checked; ?> /> <?php echo __( 'Enable Font Awesome PRO icons.', 'fl-builder' ) . sprintf( ' <strong>( %s )</strong>', __( 'Deprecated', 'fl-builder' ) ); ?>
 			<?php endif; ?>
 			</p>
 				<?php if ( $fa5_pro_enabled || $legacy ) : ?>
 				<p>
 				<input style="width:300px;" placeholder="https://kit.fontawesome.com/nnnnnn.js" type="text" name="fl-fa-pro-kit" value="<?php echo esc_attr( get_option( '_fl_builder_kit_fa_pro' ) ); ?>" />
-				<br /><?php _e( 'For KIT support enter the kit URL here otherwise the Pro CDN will be used.', 'fl-builder' ); ?>
-				<br /><br /><strong><?php _e( 'Note: This method is deprecated, we strongly suggest you install the official Font Awesome plugin to get access to your custom uploaded icons and all the Font Awesome 6 icon sets.', 'fl-builder' ); ?></strong>
+				<br /><br /><strong><?php _e( 'Note: This method is deprecated and no longer supported.', 'fl-builder' ); ?></strong>
 				</p>
+				<?php endif; ?>
 				<p>
+					<?php _e( 'For Pro Icons or Font Awesome 6 install the official Font Awesome plugin.', 'fl-builder' ); ?>
 					<ul>
 						<li><?php printf( '<a target="_blank" href="https://wordpress.org/plugins/font-awesome/">%s <i class="dashicons dashicons-external"></i></a>', __( 'Official Font Awesome Plugin', 'fl-builder' ) ); ?></li>
 						<li><?php printf( '<a target="_blank" href="https://fontawesome.com/v6/docs/web/use-with/wordpress/">%s <i class="dashicons dashicons-external"></i></a>', __( 'Font Awesome Plugin Documentation', 'fl-builder' ) ); ?></li>
 					</ul>
-
 				</p>
-				<?php endif; ?>
 				<hr />
 			<?php else : ?>
 				<?php $data = FLBuilderFontAwesome::get_fa_data(); ?>

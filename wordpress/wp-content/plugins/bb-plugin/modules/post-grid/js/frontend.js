@@ -201,6 +201,7 @@
 
 			if(this.settings.layout == 'columns') {
 				wrap.imagesLoaded( $.proxy( function() {
+					$( '#infscr-loading' ).remove();
 					this._gridLayoutMatchHeight();
 					elements.css('visibility', 'visible');
 				}, this ) );

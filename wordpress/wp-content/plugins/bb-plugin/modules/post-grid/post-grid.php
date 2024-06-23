@@ -738,16 +738,17 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'slider'  => true,
 					),
 					'posts_container'          => array(
-						'type'    => 'select',
-						'label'   => __( 'Posts Element', 'fl-builder' ),
-						'default' => 'div',
-						'options' => array(
+						'type'     => 'select',
+						'label'    => __( 'Posts Element', 'fl-builder' ),
+						'default'  => 'div',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'div' ),
+						'options'  => array(
 							'div'     => '&lt;div&gt;',
 							'article' => '&lt;article&gt;',
 							'li'      => '&lt;li&gt;',
 						),
-						'help'    => __( 'Optional. Choose an appropriate HTML5 content sectioning element to use for each post to improve accessibility and machine-readability.', 'fl-builder' ),
-						'toggle'  => array(
+						'help'     => __( 'Optional. Choose an appropriate HTML5 content sectioning element to use for each post to improve accessibility and machine-readability.', 'fl-builder' ),
+						'toggle'   => array(
 							'li' => array(
 								'fields' => array( 'posts_container_ul_class' ),
 							),
@@ -765,10 +766,11 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'default' => '',
 					),
 					'posts_title_tag'          => array(
-						'type'    => 'select',
-						'label'   => __( 'Posts Title Tag', 'fl-builder' ),
-						'default' => 'h2',
-						'options' => array(
+						'type'     => 'select',
+						'label'    => __( 'Posts Title Tag', 'fl-builder' ),
+						'default'  => 'h2',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h2' ),
+						'options'  => array(
 							'h1' => '&lt;h1&gt;',
 							'h2' => '&lt;h2&gt;',
 							'h3' => '&lt;h3&gt;',
@@ -776,7 +778,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 							'h5' => '&lt;h5&gt;',
 							'h6' => '&lt;h6&gt;',
 						),
-						'help'    => __( 'Optional. Choose an appropriate Heading Tag for each Post Title.', 'fl-builder' ),
+						'help'     => __( 'Optional. Choose an appropriate Heading Tag for each Post Title.', 'fl-builder' ),
 					),
 				),
 
@@ -1257,11 +1259,12 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'label' => __( 'Post Icon', 'fl-builder' ),
 					),
 					'duo_color1'    => array(
-						'label'      => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-accordion-button-icon i.fad:before',
 							'property'  => 'color',
@@ -1269,11 +1272,12 @@ FLBuilder::register_module('FLPostGridModule', array(
 						),
 					),
 					'duo_color2'    => array(
-						'label'      => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-accordion-button-icon i.fad:after',
 							'property'  => 'color',
@@ -1322,7 +1326,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 			'pagination'       => array(
 				'title'  => __( 'Pagination', 'fl-builder' ),
 				'fields' => array(
-					'pagination'         => array(
+					'pagination'             => array(
 						'type'    => 'select',
 						'label'   => __( 'Pagination Style', 'fl-builder' ),
 						'default' => 'numbers',
@@ -1333,24 +1337,36 @@ FLBuilder::register_module('FLPostGridModule', array(
 							'none'      => _x( 'None', 'Pagination style.', 'fl-builder' ),
 						),
 						'toggle'  => array(
+							'numbers'   => array(
+								'fields' => array( 'pagination_auto_scroll' ),
+							),
 							'load_more' => array(
 								'sections' => array( 'more_btn_general', 'more_btn_icon', 'more_btn_style', 'more_btn_text', 'more_btn_colors', 'more_btn_border', 'more_btn_loading' ),
 							),
 						),
 					),
-					'posts_per_page'     => array(
+					'pagination_auto_scroll' => array(
+						'type'    => 'select',
+						'label'   => __( 'Auto-scroll on Pagination', 'fl-builder' ),
+						'default' => '1',
+						'options' => array(
+							'1' => __( 'Yes', 'fl-builder' ),
+							'0' => __( 'No', 'fl-builder' ),
+						),
+					),
+					'posts_per_page'         => array(
 						'type'    => 'text',
 						'label'   => __( 'Posts Per Page', 'fl-builder' ),
 						'default' => '10',
 						'size'    => '4',
 					),
-					'no_results_message' => array(
+					'no_results_message'     => array(
 						'type'    => 'textarea',
 						'label'   => __( 'No Results Message', 'fl-builder' ),
 						'default' => __( "Sorry, we couldn't find any posts. Please try a different search.", 'fl-builder' ),
 						'rows'    => 6,
 					),
-					'show_search'        => array(
+					'show_search'            => array(
 						'type'    => 'select',
 						'label'   => __( 'Show Search', 'fl-builder' ),
 						'default' => '1',

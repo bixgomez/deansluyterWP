@@ -114,7 +114,7 @@ class FLPostCarouselModule extends FLBuilderModule {
 		$thumb_id = get_post_thumbnail_id( $id );
 		$size     = isset( $this->settings->image_size ) ? $this->settings->image_size : 'medium';
 		$img      = wp_get_attachment_image_src( $thumb_id, $size );
-		return $img[0];
+		return is_array( $img ) ? $img[0] : '';
 	}
 
 
@@ -178,6 +178,34 @@ class FLPostCarouselModule extends FLBuilderModule {
 
 		}
 
+	}
+
+	/**
+	 * Renders the_excerpt for a post.
+	 *
+	 * @since 2.5.1
+	 * @return void
+	 */
+	public function render_excerpt() {
+		if ( ! empty( $this->settings->content_length ) ) {
+			add_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+		}
+
+		the_excerpt();
+
+		if ( ! empty( $this->settings->content_length ) ) {
+			remove_filter( 'excerpt_length', array( $this, 'set_custom_excerpt_length' ), 9999 );
+		}
+	}
+
+	/**
+	 * Sets the excerpt length.
+	 *
+	 * @since 2.5.1
+	 * @return void
+	 */
+	public function set_custom_excerpt_length( $length ) {
+		return $this->settings->content_length;
 	}
 
 	/**
@@ -501,8 +529,20 @@ FLBuilder::register_module('FLPostCarouselModule', array(
 						),
 						'toggle'  => array(
 							'1' => array(
+								'fields'   => array( 'content_length' ),
 								'sections' => array( 'content_style' ),
 							),
+						),
+					),
+					'content_length' => array(
+						'type'    => 'unit',
+						'label'   => __( 'Content Length', 'fl-builder' ),
+						'default' => '',
+						'units'   => array( 'words' ),
+						'slider'  => array(
+							'min'  => 0,
+							'max'  => 1000,
+							'step' => 1,
 						),
 					),
 					'show_more_link' => array(
@@ -552,11 +592,12 @@ FLBuilder::register_module('FLPostCarouselModule', array(
 						'show_alpha'  => true,
 					),
 					'duo_color1'      => array(
-						'label'      => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Primary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-carousel-icon i.fad:before',
 							'property'  => 'color',
@@ -564,11 +605,12 @@ FLBuilder::register_module('FLPostCarouselModule', array(
 						),
 					),
 					'duo_color2'      => array(
-						'label'      => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
-						'type'       => 'color',
-						'default'    => '',
-						'show_reset' => true,
-						'preview'    => array(
+						'label'       => __( 'DuoTone Icon Secondary Color', 'fl-builder' ),
+						'type'        => 'color',
+						'connections' => array( 'color' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'preview'     => array(
 							'type'      => 'css',
 							'selector'  => '.fl-carousel-icon i.fad:after',
 							'property'  => 'color',

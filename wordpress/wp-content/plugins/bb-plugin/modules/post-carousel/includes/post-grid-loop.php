@@ -43,9 +43,11 @@
 		<?php do_action( 'fl_builder_post_carousel_grid_before_content', $settings ); ?>
 		<?php if ( $settings->show_content || $settings->show_more_link ) : ?>
 		<div class="fl-post-carousel-content">
-			<?php if ( $settings->show_content ) : ?>
-				<?php FLBuilderLoop::the_excerpt(); ?>
-			<?php endif; ?>
+			<?php
+			if ( $settings->show_content ) {
+				$module->render_excerpt();
+			}
+			?>
 			<?php if ( $settings->show_more_link ) : ?>
 			<a class="fl-post-carousel-more" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php echo $settings->more_link_text; ?></a>
 			<?php endif; ?>
