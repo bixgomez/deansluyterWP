@@ -633,7 +633,7 @@ FLBuilder::register_module('FLPostCarouselModule', array(
 							'type'  => 'css',
 							'rules' => array(
 								array(
-									'selector' => '{node} .fl-post-carousel-title a',
+									'selector' => '{node} .fl-post-carousel-text .fl-post-carousel-title, {node} .fl-post-carousel-text .fl-post-carousel-title a',
 									'property' => 'color',
 								),
 							),

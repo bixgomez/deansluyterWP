@@ -39,7 +39,10 @@
 if ( 'grid' == $layout ) {
 	// title
 	FLBuilderCSS::rule( array(
-		'selector' => ".fl-node-$id .fl-post-carousel-title a",
+		'selector' => array(
+			".fl-node-$id .fl-post-carousel-text .fl-post-carousel-title",
+			".fl-node-$id .fl-post-carousel-text .fl-post-carousel-title a",
+		),
 		'enabled'  => ! empty( $settings->title_color ),
 		'props'    => array(
 			'color' => $settings->title_color,
@@ -147,7 +150,10 @@ if ( 'grid' == $layout ) {
 } elseif ( 'gallery' == $layout ) {
 	// title
 	FLBuilderCSS::rule( array(
-		'selector' => ".fl-node-$id .fl-post-carousel-title",
+		'selector' => array(
+			".fl-node-$id .fl-post-carousel-text .fl-post-carousel-title",
+			".fl-node-$id .fl-post-carousel-text .fl-post-carousel-title a",
+		),
 		'enabled'  => ! empty( $settings->title_color ),
 		'props'    => array(
 			'color' => $settings->title_color,

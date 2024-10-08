@@ -619,14 +619,14 @@ final class FLBuilder {
 						}
 					}
 				}
-				if ( is_array( $row->settings->animation ) && ! empty( $row->settings->animation['style'] ) ) {
+				if ( isset( $row->settings->animation ) && is_array( $row->settings->animation ) && ! empty( $row->settings->animation['style'] ) ) {
 					wp_enqueue_script( 'jquery-waypoints' );
 				}
 			}
 
 			// Enqueue required column CSS and JS
 			foreach ( $nodes['columns'] as $col ) {
-				if ( is_array( $col->settings->animation ) && ! empty( $col->settings->animation['style'] ) ) {
+				if ( isset( $col->settings->animation ) && is_array( $col->settings->animation ) && ! empty( $col->settings->animation['style'] ) ) {
 					wp_enqueue_script( 'jquery-waypoints' );
 				}
 			}
@@ -648,7 +648,7 @@ final class FLBuilder {
 				foreach ( $module->js as $handle => $props ) {
 					wp_enqueue_script( $handle, $props[0], $props[1], $props[2], $props[3] );
 				}
-				if ( is_array( $module->settings->animation ) && ! empty( $module->settings->animation['style'] ) ) {
+				if ( isset( $module->settings->animation ) && is_array( $module->settings->animation ) && ! empty( $module->settings->animation['style'] ) ) {
 					wp_enqueue_script( 'jquery-waypoints' );
 				}
 			}
@@ -973,7 +973,7 @@ final class FLBuilder {
 			wp_enqueue_script( 'clipboard', $js_url . 'clipboard.min.js', array(), $ver );
 			if ( FLBuilder::is_tour_enabled() ) {
 				wp_enqueue_script( 'bootstrap-tour', $js_url . 'bootstrap-tour-standalone.min.js', array(), $ver );
-				wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array(), $ver );
+				wp_enqueue_script( 'fl-builder-tour', $js_url . 'fl-builder-tour.js', array( 'jquery' ), $ver );
 			}
 
 			wp_enqueue_script( 'ace', $js_url . 'ace/ace.js', array(), $ver );
@@ -1238,6 +1238,10 @@ final class FLBuilder {
 
 		//versions
 		$builder = FL_BUILDER_VERSION;
+
+		if ( true === FL_BUILDER_LITE ) {
+			$builder = 'lite-' . $builder;
+		}
 
 		if ( '{FL_BUILDER_VERSION}' === $builder ) {
 			$classes[] = 'fl-builder-git';
@@ -1624,7 +1628,7 @@ final class FLBuilder {
 				);
 			}
 
-			if ( $help['tour'] ) {
+			if ( FLBuilder::is_tour_enabled() ) {
 				$help_view['items'][20] = array(
 					'label'     => __( 'Take A Tour', 'fl-builder' ),
 					'type'      => 'event',
@@ -2313,9 +2317,14 @@ final class FLBuilder {
 				continue;
 			}
 
-			$groups = FLBuilderModel::get_nodes( 'column-group', $row );
+			$groups = FLBuilderModel::get_nodes( null, $row );
 
 			foreach ( $groups as $group ) {
+
+				if ( 'module' === $group->type ) {
+					self::render_module_editor_content( $group );
+					continue;
+				}
 
 				$cols = FLBuilderModel::get_nodes( 'column', $group );
 
@@ -2331,21 +2340,8 @@ final class FLBuilder {
 
 						if ( 'module' == $col_child->type ) {
 
-							$module = FLBuilderModel::get_module( $col_child );
+							self::render_module_editor_content( $col_child );
 
-							if ( FLBuilderModel::node_has_visibility_rules( $module ) ) {
-								continue;
-							}
-
-							if ( $module && $module->editor_export ) {
-
-								// Don't crop photos to ensure media library photos are rendered.
-								if ( 'photo' == $module->settings->type ) {
-									$module->settings->crop = false;
-								}
-
-								FLBuilder::render_module_html( $module->settings->type, $module->settings, $module );
-							}
 						} elseif ( 'column-group' == $col_child->type ) {
 
 							$group_cols = FLBuilderModel::get_nodes( 'column', $col_child );
@@ -2356,19 +2352,7 @@ final class FLBuilder {
 
 								foreach ( $modules as $module ) {
 
-									if ( FLBuilderModel::node_has_visibility_rules( $module ) ) {
-										continue;
-									}
-
-									if ( $module->editor_export ) {
-
-										// Don't crop photos to ensure media library photos are rendered.
-										if ( 'photo' == $module->settings->type ) {
-											$module->settings->crop = false;
-										}
-
-										FLBuilder::render_module_html( $module->settings->type, $module->settings, $module );
-									}
+									self::render_module_editor_content( $module );
 								}
 							}
 						}
@@ -2394,6 +2378,41 @@ final class FLBuilder {
 		$content = preg_replace( '/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/', "\n", $content );
 
 		return apply_filters( 'fl_builder_editor_content', $content );
+	}
+
+	/**
+	 * Renders the editor content for a single module.
+	 *
+	 * @param object $node
+	 * @return void
+	 */
+	static public function render_module_editor_content( $node ) {
+		$module = FLBuilderModel::get_module( $node );
+
+		if ( FLBuilderModel::node_has_visibility_rules( $module ) ) {
+			return;
+		}
+
+		if ( $module && $module->editor_export ) {
+
+			// Don't crop photos to ensure media library photos are rendered.
+			if ( 'photo' == $module->settings->type ) {
+				$module->settings->crop = false;
+			}
+
+			self::render_module_html( $module->settings->type, $module->settings, $module );
+
+			// Render container module children.
+			if ( $module->accepts_children() ) {
+				$children = FLBuilderModel::get_nodes( null, $module );
+
+				foreach ( $children as $child ) {
+					if ( 'module' === $child->type ) {
+						self::render_module_editor_content( $child );
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -2607,7 +2626,7 @@ final class FLBuilder {
 				}
 			}
 		}
-		if ( is_array( $row->settings->animation ) && ! empty( $row->settings->animation['style'] ) ) {
+		if ( isset( $row->settings->animation ) && is_array( $row->settings->animation ) && ! empty( $row->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $row->settings->animation['style'];
 			$attrs['data-animation-delay'][] = $row->settings->animation['delay'];
 			if ( isset( $row->settings->animation['duration'] ) ) {
@@ -2867,6 +2886,7 @@ final class FLBuilder {
 			'class'     => array(
 				'fl-col',
 				'fl-node-' . $col->node,
+				'fl-col-bg-' . $col->settings->bg_type,
 			),
 			'data-node' => $col->node,
 			'style'     => array(),
@@ -2905,7 +2925,7 @@ final class FLBuilder {
 				}
 			}
 		}
-		if ( is_array( $col->settings->animation ) && ! empty( $col->settings->animation['style'] ) ) {
+		if ( isset( $col->settings->animation ) && is_array( $col->settings->animation ) && ! empty( $col->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $col->settings->animation['style'];
 			$attrs['data-animation-delay'][] = $col->settings->animation['delay'];
 			if ( isset( $col->settings->animation['duration'] ) ) {
@@ -2927,6 +2947,13 @@ final class FLBuilder {
 		// Style
 		if ( $active ) {
 			$attrs['style'][] = 'width: ' . $col->settings->size . '%;';
+		}
+
+		// bg
+		if ( 'photo' === $col->settings->bg_type ) {
+			if ( 'fixed' === $col->settings->bg_attachment ) {
+				$attrs['class'][] = 'fl-col-bg-fixed';
+			}
 		}
 
 		// filter node attrs first to make sure specific node has highest priority
@@ -3118,7 +3145,7 @@ final class FLBuilder {
 		}
 
 		// Animation
-		if ( is_array( $module->settings->animation ) && ! empty( $module->settings->animation['style'] ) ) {
+		if ( isset( $module->settings->animation ) && is_array( $module->settings->animation ) && ! empty( $module->settings->animation['style'] ) ) {
 			$attrs['class'][]                = 'fl-animation fl-' . $module->settings->animation['style'];
 			$attrs['data-animation-delay'][] = $module->settings->animation['delay'];
 			if ( isset( $module->settings->animation['duration'] ) ) {
@@ -3351,6 +3378,10 @@ final class FLBuilder {
 
 		// Loop through the modules.
 		foreach ( $nodes['modules'] as $module ) {
+
+			if ( ! $module ) {
+				continue;
+			}
 
 			/**
 			 * Filter each modules settings before rendering CSS
@@ -3952,7 +3983,7 @@ final class FLBuilder {
 	static public function render_node_animation_css( $settings ) {
 		$css = '';
 
-		if ( ! is_array( $settings->animation ) || empty( $settings->animation ) ) {
+		if ( ! isset( $settings->animation ) || ! is_array( $settings->animation ) || empty( $settings->animation ) ) {
 			return $css;
 		} elseif ( in_array( 'animation-' . $settings->animation['style'], self::$enqueued_global_assets ) ) {
 			return $css;
@@ -4249,11 +4280,15 @@ final class FLBuilder {
 		$global_settings = FLBuilderModel::get_global_settings();
 		$js              = '';
 
+		if ( ! $module ) {
+			return $js;
+		}
+
 		// Global module JS
 		$file = $module->dir . 'js/frontend.js';
 
 		if ( fl_builder_filesystem()->file_exists( $file ) && ! in_array( $module->settings->type . '-module-js', self::$enqueued_global_assets ) ) {
-			$js                            .= "\n" . fl_builder_filesystem()->file_get_contents( $file );
+			$js                            .= "\n;" . ltrim( fl_builder_filesystem()->file_get_contents( $file ), ';' );
 			self::$enqueued_global_assets[] = $module->settings->type . '-module-js';
 		}
 
@@ -4266,7 +4301,7 @@ final class FLBuilder {
 			self::$enqueued_module_js_assets[] = $id;
 			ob_start();
 			include $file;
-			$js .= ob_get_clean();
+			$js .= ';' . ltrim( ob_get_clean(), ';' );
 		}
 
 		// Return the JS.
@@ -4537,7 +4572,7 @@ final class FLBuilder {
 	 */
 	static public function is_tour_enabled() {
 		$settings = FLBuilderModel::get_help_button_settings();
-		return $settings['tour'];
+		return apply_filters( 'fl_is_tour_enabled', $settings['tour'] );
 	}
 
 	/**

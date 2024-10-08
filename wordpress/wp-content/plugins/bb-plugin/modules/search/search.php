@@ -1002,9 +1002,9 @@ FLBuilder::register_module('FLSearchModule', array(
 							'1' => __( 'Show', 'fl-builder' ),
 							'0' => __( 'Hide', 'fl-builder' ),
 						),
-						'toggle' => array(
+						'toggle'  => array(
 							'1' => array(
-								'fields'   => array( 'content_length' ),
+								'fields' => array( 'content_length' ),
 							),
 						),
 						'preview' => array(

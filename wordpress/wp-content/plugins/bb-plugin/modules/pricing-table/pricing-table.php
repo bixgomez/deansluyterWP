@@ -390,13 +390,13 @@ class FLPricingTableModule extends FLBuilderModule {
 			// Default feature icon
 			if ( ! empty( $settings->default_feature_icon ) ) {
 				FLBuilderIcons::enqueue_styles_for_icon( $settings->default_feature_icon );
-				$icon = '<div class="fl-feature-icon-wrapper"><i class="fl-feature-icon ' . $settings->default_feature_icon . '" aria-hidden="true"></i></div>';
+				$icon = '<div class="fl-feature-icon-wrapper"><i class="fl-feature-icon ' . esc_attr( $settings->default_feature_icon ) . '" aria-hidden="true"></i></div>';
 			}
 
 			// Override default feature icon?
 			if ( ! empty( $feature['icon'] ) ) {
 				FLBuilderIcons::enqueue_styles_for_icon( $feature['icon'] );
-				$icon = '<div class="fl-feature-icon-wrapper"><i class="fl-feature-icon ' . $feature['icon'] . '" aria-hidden="true"></i></div>';
+				$icon = '<div class="fl-feature-icon-wrapper"><i class="fl-feature-icon ' . esc_attr( $feature['icon'] ) . '" aria-hidden="true"></i></div>';
 			}
 
 			$description = '';

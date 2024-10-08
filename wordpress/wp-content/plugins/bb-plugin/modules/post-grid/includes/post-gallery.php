@@ -41,7 +41,7 @@
 
 				<?php if ( 'yes' == $settings->has_icon && 'above' == $settings->icon_position ) : ?>
 					<span class="fl-gallery-icon">
-						<i class="<?php echo $settings->icon; ?>"></i>
+						<i class="<?php echo esc_attr( $settings->icon ); ?>"></i>
 					</span>
 				<?php endif; ?>
 
@@ -59,7 +59,7 @@
 
 				<?php if ( 'yes' == $settings->has_icon && 'below' == $settings->icon_position ) : ?>
 					<span class="fl-gallery-icon">
-						<i class="<?php echo $settings->icon; ?>"></i>
+						<i class="<?php echo esc_attr( $settings->icon ); ?>"></i>
 					</span>
 				<?php endif; ?>
 

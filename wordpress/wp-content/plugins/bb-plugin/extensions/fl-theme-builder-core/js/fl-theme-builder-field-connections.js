@@ -223,7 +223,7 @@
 			FLThemeBuilderFieldConnections._closeMenus();
 
 			if ( global ) {
-				field.find( 'input, textarea, select' ).trigger( 'change' );
+				FLBuilder.triggerHook( 'fieldConnectionUpdated', field );
 			}
 
 			if ( 'undefined' == typeof formId ) {
@@ -516,7 +516,7 @@
 				value.val( '' );
 
 				if ( global ) {
-					field.find( 'input, textarea, select' ).trigger( 'change' );
+					FLBuilder.triggerHook( 'fieldConnectionUpdated', field );
 				}
 			}
 
@@ -563,11 +563,11 @@
 				var swatch = connection.find( '.swatch' );
 				var pickerInput = $( '.fl-color-picker-input' );
 
-				button.trigger( 'click' );
-				pickerInput.val( swatch.css( 'background-color' ) ).trigger( 'keyup' )
+				input.off( 'change.fl-field-connection' );
+				pickerInput.val( swatch.css( 'background-color' ) ).trigger( 'keyup' );
 
 				setTimeout( function() {
-					input.off( 'change.fl-field-connection' );
+					button.trigger( 'click' );
 					input.on( 'change.fl-field-connection', function() {
 						if ( value !== $( this ).val() ) {
 							input.off( 'change.fl-field-connection' );

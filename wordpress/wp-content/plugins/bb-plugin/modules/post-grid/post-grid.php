@@ -30,7 +30,7 @@ class FLPostGridModule extends FLBuilderModule {
 	public function filter_raw_settings( $settings ) {
 
 		// Handle columns for the new large breakpoint.
-		if ( ! isset( $settings->post_columns_large ) ) {
+		if ( ! isset( $settings->post_columns_large ) && isset( $settings->post_columns ) ) {
 			$settings->post_columns_large = $settings->post_columns;
 		}
 
@@ -777,6 +777,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 							'h4' => '&lt;h4&gt;',
 							'h5' => '&lt;h5&gt;',
 							'h6' => '&lt;h6&gt;',
+							'p'  => '&lt;p&gt;',
 						),
 						'help'     => __( 'Optional. Choose an appropriate Heading Tag for each Post Title.', 'fl-builder' ),
 					),

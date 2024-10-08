@@ -1,3 +1,126 @@
+<h4>2.8.4 - 10/3/2024</h4>
+
+<strong>Security</strong>
+<ul>
+	<li>Security: Fix potential XSS issue with layout field in the Button Group module (#3660)</li>
+</ul>
+
+<strong>Enhancements</strong>
+<ul>
+	<li>Performance: Optimize history storage to use less memory(#3592)</li>
+	<li>Column Settings: Add field connection for background overlay setting (#219)</li>
+	<li>Video Module: add field connection when using the media library (#1569)</li>
+	<li>Global Settings: Add additional units for Row padding (#3575)</li>
+	<li>Columns: add column class for different background types (#3608)</li>
+	<li>Update Dash Icons(#3572)</li>
+	<li>Subscribe Module: Update Keap (InfusionSoft) integration so that non-legacy keys can be used (#3562)</li>
+	<li>(A11y) Post Module: Add p tag as an option for Post Title tag (#3553)</li>
+</ul>
+
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Outline Panel: Fix issue with Fluent Forms widget and ACF blocks causing a JS error (#3597 & #3612)</li>
+	<li>Fix fatal PHP error if a saved module no longer exists (#3423)</li>
+	<li>Accordion Module: Fix module not rendering all posts of a CPT when inside a Themer Archive layout (#3004)</li>
+	<li>(A11y) Menu Module: Fix flyout menu not opening when tabbing through the page (#1663)</li>
+	<li>Menu Module: Fix flyout menu being too short on Safari when scrolling (#3308)</li>
+	<li>Fix border added to button module when not using BB theme (#3284)</li>
+	<li>Icon Group Module: Fix alignment changes not live previewing (#461)</li>
+	<li>Fix installer on license tab for the child theme (#3475)</li>
+	<li>Fix row heading color overriding Post Carousel Module Title Color (#3565)</li>
+	<li>Fix settings form buttons not fitting in modal when modal is in thin mode (#3527)</li>
+	<li>Fix PHP warning when using Fashion Freaks Template (#3614)</li>
+	 <li>Fix conflict with some themes that display cart in menu or header (#3633)</li>
+</ul>
+
+<strong>Developer</strong>
+<ul>
+	<li>Add filter to allow plugins to modify photo paths/URLs (#3437)</li>
+</ul>
+
+<h4>2.8.3.7 - 09/24/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Security: Fix XSS issue via form fields with preview text (#3630)</li>
+</ul>
+
+
+<h4>2.8.3.6 - 08/28/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Security: Fix XSS issue via type parameter on repeater fields (#3585)</li>
+</ul>
+
+<h4>2.8.3.5 - 08/15/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Text Editor Module: Fix not being able to access link settings when settings are pinned to the right (#3560)</li>
+	<li>Global Colors: Fix colors rendering requiring a refresh  (#3543)</li>
+	<li>Accordion Module: Fix issue with functionality when Expand on Tab is enabled (#3469)</li>
+	<li>Fix conflict with at.js script (#3546)</li>
+</ul>
+
+<h4>2.8.3.4 - 08/06/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Security: sanitize widget class variable properly (#3534)</li>
+	<li>Outline Panel: fix JS errow when some node settings are not set (#3530)</li>
+	<li>Global Styles: fix switching from one global color to another being glitchy (#3528)</li>
+	<li>Fix sanitization of Post Module ul classes not recognizing spaces (#3525)</li>
+	<li>Debug Mode: Prevent fatal errors for defines that are not set (#3523)</li>
+	<li>Fix PHP warnings when using WPML and cropping in the Photo Module (#3520)</li>
+</ul>
+
+<h4>2.8.3.3 - 07/25/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Fix duplicate Global color replacing original color (#3498)</li>
+	<li>Fix issue with fonts only used in Global Styles not loading properly (#3518)</li>
+	<li>Fix JS error in the Outline Panel when WordPress widgets exist on the page (#3500)</li>
+	<li>Fix issue with some slider modules inside of a Box module not rendering properly (#3466)</li>
+	<li>Developer: Fix potential for JS fatals due to a missing semi-colon in frontend.js or frontend.js.php (#3490)</li>
+</ul>
+
+<h4>2.8.3.2 - 07/09/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Fix JS error in Outline panel caused by modules that are disabled or no longer exist (#3488)</li>
+	<li>Clear cache subscription data when a license key is saved (#3482)</li>
+</ul>
+
+<h4>2.8.3.1 - 07/01/2024</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Remove fix that addresses conflict with Yoast SEO when an image has shortcode in alt text as it was creating issues with shortcodes rendering when using Yoast SEO (#3486)</li>
+	<li>Fix fatal error when using notequals to check for a custom field value</li>
+</ul>
+
+<h4>2.8.3 - 06/27/2024</h4>
+
+<strong>Enhancements</strong>
+<ul>
+	<li>Add class for columns with background images (#1658)</li>
+	<li>Debug: Add history counts (#3323)</li>
+	<li>Clear cache when you import BB settings (#3441)</li>
+</ul>
+
+<strong>Bug Fixes</strong>
+<ul>
+	<li>Security: Update libraries for MailJet and MailerLite integrations (#3426)</li>
+	<li>Security: Use sanitize_html_class for icon classes where necessary in Icon, Button, Post, Accordion and Pricing Table modules (#3462)</li>
+	<li>Fix container modules not being read by Relevanssi (#3460)</li>
+	<li>Fix not being able to drag into the Box module when it has no padding (#3435)</li>
+	<li>Fix conflict with Yoast SEO when an image has shortcode in alt text (#3468)</li>
+	<li>Countdown Module: Fix styling of field connection window (#3439)</li>
+	<li>Fix issue with ACF Blocks integration where shortcodes in Post Module were returning no data (#3431)</li>
+	<li>Fix fatal error with ACF Color field set tor return RGBA Array (#3389)</li>
+	<li>Fix integration with ClassicPress 2 (#3405)</li>
+	<li>Outline Panel: Fix dragging into box modules in global rows (#3411)</li>
+	<li>Fix validation errors in CSS (#3194)</li>
+	<li>Fix PHP warning with jsmin when using PHP 7.0 (#3182)</li>
+	<li>Slideshow: Fix boxes transition showing blank/empty image on mobile (#185)</li>
+</ul>
+
 <h4>2.8.2.2 - 06/6/2024</h4>
 <p><strong>Hotfix</strong></p>
 <ul>

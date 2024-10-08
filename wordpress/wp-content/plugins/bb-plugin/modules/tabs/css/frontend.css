@@ -37,7 +37,6 @@ a.fl-tabs-label {
 	display: table-cell;
 	line-height: inherit;
 	opacity: .5;
-	filter: alpha(opacity = 50);
 	padding-left: 15px;
 	vertical-align: middle;
 }

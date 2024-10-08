@@ -73,6 +73,7 @@
 
 			if ( this.expandOnTab && this.wasToggled ) {
 				this.wasToggled = false;
+				e.preventDefault();
 				return;
 			}
 

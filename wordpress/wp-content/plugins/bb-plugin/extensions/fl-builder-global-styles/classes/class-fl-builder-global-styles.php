@@ -33,9 +33,10 @@ final class FLBuilderGlobalStyles {
 		// actions.
 		add_action( 'init', __CLASS__ . '::load_settings', 1 );
 		add_action( 'wp', __CLASS__ . '::register_ajax_actions', 1 );
-		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_scripts', 9 );
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_global_styles_scripts', 9 );
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_global_styles_preview_scripts', 20 );
 		add_action( 'fl_builder_render_custom_css_for_editing', __CLASS__ . '::render_custom_css_for_editing' );
-		add_action( 'fl_builder_pre_render_global_css', __CLASS__ . '::render_fonts_for_global_css' );
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::render_fonts_for_global_css' );
 		add_action( 'fl_page_data_add_properties', __CLASS__ . '::add_page_data_properties' );
 
 		// filters.
@@ -75,11 +76,18 @@ final class FLBuilderGlobalStyles {
 	 * @since 2.8.0
 	 * @return void
 	 */
-	static public function enqueue_scripts() {
+	static public function enqueue_global_styles_scripts() {
 		if ( FLBuilderModel::is_builder_active() ) {
 			$ver = FL_BUILDER_VERSION;
 
 			wp_enqueue_script( 'fl-builder-global-styles', FL_BUILDER_GLOBAL_STYLES_URL . 'js/fl-builder-global-styles.js', array( 'jquery' ), $ver );
+		}
+	}
+
+	static public function enqueue_global_styles_preview_scripts() {
+		if ( FLBuilderModel::is_builder_active() ) {
+			$ver = FL_BUILDER_VERSION;
+
 			wp_enqueue_script( 'fl-builder-global-styles-preview', FL_BUILDER_GLOBAL_STYLES_URL . 'js/fl-builder-global-styles-preview.js', array( 'jquery' ), $ver );
 		}
 	}

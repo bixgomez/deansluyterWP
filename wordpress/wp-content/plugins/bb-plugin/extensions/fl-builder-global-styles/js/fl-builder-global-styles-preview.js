@@ -22,8 +22,9 @@
 			this.initDefaultFieldPreviews();
 
 			FLBuilder.addHook('clearGlobalPreviewTimeout', $.proxy(this.clearTimeout, this));
+			FLBuilder.addHook('fieldConnectionUpdated', $.proxy(this.renderPreview, this));
 		},
-		
+
 		/**
 		 * Destory preview.
 		 *
@@ -32,7 +33,7 @@
 		destroy: function() {
 			FLBuilder.removeHook('clearGlobalPreviewTimeout', $.proxy(this.clearTimeout, this));
 		},
-		
+
 		/**
 		 * Clear timeout object
 		 *
@@ -168,7 +169,7 @@
 
 				// rm prev loader
 				$('.fl-builder-preview-loader', window.parent.document).remove();
-	
+
 				// add new loader
 				if (heading.length > 0) {
 					heading.append(loader);
@@ -295,5 +296,5 @@
 				}
 			} );
 		}
-	}, 100 );
+	}, 10 );
 })(jQuery);

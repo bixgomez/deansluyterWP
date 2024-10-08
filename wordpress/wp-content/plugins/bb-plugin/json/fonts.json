@@ -310,7 +310,7 @@
   }
 }, {
   "Anaheim": {
-    "variants": ["regular"],
+    "variants": ["regular", "500", "600", "700", "800"],
     "fallback": "sans-serif"
   }
 }, {
@@ -419,6 +419,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Anton SC": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Antonio": {
     "variants": ["100", "200", "300", "regular", "500", "600", "700"],
     "fallback": "sans-serif"
@@ -510,6 +515,11 @@
   }
 }, {
   "Arsenal": {
+    "variants": ["regular", "italic", "700", "700italic"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Arsenal SC": {
     "variants": ["regular", "italic", "700", "700italic"],
     "fallback": "sans-serif"
   }
@@ -809,6 +819,11 @@
     "fallback": "serif"
   }
 }, {
+  "Baskervville SC": {
+    "variants": ["regular"],
+    "fallback": "serif"
+  }
+}, {
   "Battambang": {
     "variants": ["100", "300", "regular", "700", "900"],
     "fallback": "sans-serif"
@@ -836,6 +851,11 @@
 }, {
   "Bebas Neue": {
     "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Beiruti": {
+    "variants": ["200", "300", "regular", "500", "600", "700", "800", "900"],
     "fallback": "sans-serif"
   }
 }, {
@@ -1029,12 +1049,22 @@
     "fallback": "serif"
   }
 }, {
+  "Bodoni Moda SC": {
+    "variants": ["regular", "500", "600", "700", "800", "900", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
+    "fallback": "serif"
+  }
+}, {
   "Bokor": {
     "variants": ["regular"],
     "fallback": "sans-serif"
   }
 }, {
   "Bona Nova": {
+    "variants": ["regular", "italic", "700"],
+    "fallback": "serif"
+  }
+}, {
+  "Bona Nova SC": {
     "variants": ["regular", "italic", "700"],
     "fallback": "serif"
   }
@@ -1150,6 +1180,11 @@
   }
 }, {
   "Bungee Spice": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Bungee Tint": {
     "variants": ["regular"],
     "fallback": "sans-serif"
   }
@@ -1924,6 +1959,21 @@
     "fallback": "serif"
   }
 }, {
+  "Edu AU VIC WA NT Dots": {
+    "variants": ["regular", "500", "600", "700"],
+    "fallback": "cursive"
+  }
+}, {
+  "Edu AU VIC WA NT Guides": {
+    "variants": ["regular", "500", "600", "700"],
+    "fallback": "cursive"
+  }
+}, {
+  "Edu AU VIC WA NT Hand": {
+    "variants": ["regular", "500", "600", "700"],
+    "fallback": "cursive"
+  }
+}, {
   "Edu NSW ACT Foundation": {
     "variants": ["regular", "500", "600", "700"],
     "fallback": "cursive"
@@ -2329,6 +2379,11 @@
     "fallback": "cursive"
   }
 }, {
+  "Fustat": {
+    "variants": ["200", "300", "regular", "500", "600", "700", "800"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Fuzzy Bubbles": {
     "variants": ["regular", "700"],
     "fallback": "cursive"
@@ -2341,6 +2396,11 @@
 }, {
   "GFS Neohellenic": {
     "variants": ["regular", "italic", "700", "700italic"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Ga Maamli": {
+    "variants": ["regular"],
     "fallback": "sans-serif"
   }
 }, {
@@ -3020,7 +3080,7 @@
   }
 }, {
   "Inter": {
-    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900", "100italic", "200italic", "300italic", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
     "fallback": "sans-serif"
   }
 }, {
@@ -3297,6 +3357,11 @@
   "Kalnia": {
     "variants": ["100", "200", "300", "regular", "500", "600", "700"],
     "fallback": "serif"
+  }
+}, {
+  "Kalnia Glaze": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700"],
+    "fallback": "sans-serif"
   }
 }, {
   "Kameron": {
@@ -3974,6 +4039,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Maname": {
+    "variants": ["regular"],
+    "fallback": "serif"
+  }
+}, {
   "Mandali": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -4067,6 +4137,11 @@
   "Mate SC": {
     "variants": ["regular"],
     "fallback": "serif"
+  }
+}, {
+  "Matemasie": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
   }
 }, {
   "Material Icons": {
@@ -4279,6 +4354,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Moderustic": {
+    "variants": ["300", "regular", "500", "600", "700", "800"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Mogra": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -4305,7 +4385,7 @@
   }
 }, {
   "Monda": {
-    "variants": ["regular", "700"],
+    "variants": ["regular", "500", "600", "700"],
     "fallback": "sans-serif"
   }
 }, {
@@ -4542,6 +4622,11 @@
   "Neuton": {
     "variants": ["200", "300", "regular", "italic", "700", "800"],
     "fallback": "serif"
+  }
+}, {
+  "New Amsterdam": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
   }
 }, {
   "New Rocker": {
@@ -6104,6 +6189,261 @@
     "fallback": "cursive"
   }
 }, {
+  "Playwrite AR": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AT": {
+    "variants": ["100", "200", "300", "regular", "100italic", "200italic", "300italic", "italic"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AU NSW": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AU QLD": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AU SA": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AU TAS": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite AU VIC": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite BE VLG": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite BE WAL": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite BR": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite CA": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite CL": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite CO": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite CU": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite CZ": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DE Grund": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DE LA": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DE SAS": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DE VA": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DK Loopet": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite DK Uloopet": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite ES": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite ES Deco": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite FR Moderne": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite FR Trad": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite GB J": {
+    "variants": ["100", "200", "300", "regular", "100italic", "200italic", "300italic", "italic"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite GB S": {
+    "variants": ["100", "200", "300", "regular", "100italic", "200italic", "300italic", "italic"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite HR": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite HR Lijeva": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite HU": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite ID": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite IE": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite IN": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite IS": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite IT Moderna": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite IT Trad": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite MX": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite NG Modern": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite NL": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite NO": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite NZ": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite PE": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite PL": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite PT": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite RO": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite SK": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite TZ": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite US Modern": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite US Trad": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite VN": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite ZA": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
   "Plus Jakarta Sans": {
     "variants": ["200", "300", "regular", "500", "600", "700", "800", "200italic", "300italic", "italic", "500italic", "600italic", "700italic", "800italic"],
     "fallback": "sans-serif"
@@ -6829,6 +7169,11 @@
     "fallback": "serif"
   }
 }, {
+  "SUSE": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Sacramento": {
     "variants": ["regular"],
     "fallback": "cursive"
@@ -6880,6 +7225,11 @@
   }
 }, {
   "Sancreek": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Sankofa Display": {
     "variants": ["regular"],
     "fallback": "sans-serif"
   }
@@ -7644,6 +7994,11 @@
     "fallback": "serif"
   }
 }, {
+  "Tiny5": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Tiro Bangla": {
     "variants": ["regular", "italic"],
     "fallback": "serif"
@@ -8019,6 +8374,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Wittgenstein": {
+    "variants": ["regular", "500", "600", "700", "800", "900", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
+    "fallback": "serif"
+  }
+}, {
   "Wix Madefor Display": {
     "variants": ["regular", "500", "600", "700", "800"],
     "fallback": "sans-serif"
@@ -8181,6 +8541,11 @@
 }, {
   "ZCOOL XiaoWei": {
     "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Zain": {
+    "variants": ["200", "300", "regular", "700", "800", "900"],
     "fallback": "sans-serif"
   }
 }, {
