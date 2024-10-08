@@ -3796,6 +3796,10 @@
 			$( FLBuilder._contentClass + ' .fl-module[data-accepts]' ).each( function() {
 				if ( ! $( this ).closest( '.fl-builder-shortcode-mask-wrap' ).length ) {
 					$( this ).addClass( 'fl-module-highlight' );
+
+					if ( 0 === parseInt( $( this ).css( 'padding' ) ) ) {
+						$( this ).css( 'padding', '10px' )
+					}
 				}
 			} );
 		},
@@ -3810,6 +3814,7 @@
 		_removeEmptyRowAndColHighlights: function() {
 			$( '.fl-row-highlight' ).removeClass('fl-row-highlight');
 			$( '.fl-col-highlight' ).removeClass('fl-col-highlight');
+			$( '.fl-module-highlight[data-accepts]' ).css('padding', '');
 			$( '.fl-module-highlight' ).removeClass('fl-module-highlight');
 			$( '.fl-sortable-fixed-width' ).css( 'max-width', '' ).removeClass( 'fl-sortable-fixed-width' );
 		},
@@ -5515,6 +5520,12 @@
 			var data             = FLBuilder._jsonParse( response ),
 			    showSettingsForm = false;
 
+			if ( false === data ) {
+				FLBuilder.alert( FLBuilderStrings.savedModuleNotExists );
+				FLBuilder._newModuleParent.find( '.fl-builder-node-loading-placeholder' ).remove();
+				return false;
+			}
+
 			// Setup a preview layout if we have one.
 			if ( data.layout ) {
 				if ( FLBuilder._newModuleParent ) {
@@ -6157,6 +6168,7 @@
 			}
 
 			FLBuilder._focusFirstSettingsControl();
+			FLBuilder._hideEditorPopups();
 
 			e.preventDefault();
 		},
@@ -7624,6 +7636,11 @@
 			clone.find('.fl-color-picker-color').css('background-color', 'transparent');
 			clone.find('.fl-color-picker-color').addClass('fl-color-picker-empty');
 
+			// global color
+			if ( clone.find('.fl-global-color-field-uid') ) {
+				clone.find('.fl-global-color-field-uid').val( FLBuilder._uniqueColorID() );
+			}
+
 			fieldRow.after(clone);
 			FLBuilder._initMultipleFields();
 
@@ -7662,12 +7679,13 @@
 				index   = parseInt(row.find('label span.fl-builder-field-index').html(), 10) + 1;
 
 			clone.find('th label span.fl-builder-field-index').html(index);
-			row.after(clone);
 
 			// global color - remove input id for cloned field
-			if ( row.find('.fl-global-color-field-uid') ) {
-				row.find('.fl-global-color-field-uid').val('');
+			if ( clone.find('.fl-global-color-field-uid') ) {
+				clone.find('.fl-global-color-field-uid').val( FLBuilder._uniqueColorID() );
 			}
+
+			row.after(clone);
 
 			parent.find('input').trigger('change');
 			FLBuilder._renumberFields(row.parent());
@@ -8120,6 +8138,24 @@
 					position.show();
 				}
 			} );
+		},
+
+		/**
+		 * Create unique color ID.
+		 *
+		 * @access private
+		 * @method _uniqueColorID
+		 */
+		_uniqueColorID: function() {
+			const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+			let uid = '';
+
+			for ( let i = 0; i < 9; i++ ) {
+				const randomIndex = Math.floor( Math.random() * characters.length );
+				uid += characters.charAt( randomIndex );
+			}
+
+			return uid;
 		},
 
 		/* Single Photo Fields
@@ -9022,14 +9058,15 @@
 			if ( valid ) {
 				if ( typeof preview !== 'undefined' && typeof previewText !== 'undefined' ) {
 					if ( 'icon' === previewField?.data( 'type' ) ) {
-						previewText = '<i class="' + previewText + '"></i>';
+						previewText = '<i class="' + FLBuilderSettingsForms.escapeHTML( previewText ) + '"></i>';
 					}
 					else if ( previewText.length > 35 ) {
 						tmp.innerHTML = previewText;
 						previewText = ( tmp.textContent || tmp.innerText || '' ).replace( /^(.{35}[^\s]*).*/, "$1" ) + '...';
+						previewText = FLBuilderSettingsForms.escapeHTML( previewText );
 					}
 					if( 'filter_meta_label' == preview && ! previewText ) {
-						previewText = settings[ 'filter_meta_key' ];
+						previewText = FLBuilderSettingsForms.escapeHTML( settings[ 'filter_meta_key' ] );
 					}
 					link.siblings( '.fl-form-field-preview-text' ).html( previewText );
 				}
@@ -9509,6 +9546,16 @@
 
 			$( '.wplink-autocomplete', window.parent.document ).remove();
 			$( '.ui-helper-hidden-accessible', window.parent.document ).remove();
+		},
+
+		/**
+		 * Hide all TinyMCE popups.
+		 *
+		 * @since 2.8
+		 */
+		_hideEditorPopups: function()
+		{
+			$( '.mce-inline-toolbar-grp', window.parent.document ).hide();
 		},
 
 		/**
@@ -10224,6 +10271,10 @@
 
 			// Do the ajax call.
 			FLBuilder._ajaxRequest = $.post(FLBuilder._ajaxUrl(), data, function(response) {
+				debugdata = $.parseJSON(response) || false;
+				if ( debugdata && 'undefined' !== typeof debugdata.mem_usage ) {
+					console.log( 'AJAX: ' + debugdata.mem_usage );
+				}
 				if(typeof callback !== 'undefined') {
 					callback.call(this, response);
 				}

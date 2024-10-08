@@ -34,7 +34,7 @@ if ( ! $themer_archive_404 && $query->have_posts() ) :
 
 	if ( 'li' == $module->get_posts_container() ) :
 		if ( '' != $module->settings->posts_container_ul_class ) {
-			echo '<ul class="' . sanitize_html_class( $module->settings->posts_container_ul_class ) . '">';
+			echo '<ul class="' . FLBuilderUtils::sanitize_html_class( $module->settings->posts_container_ul_class ) . '">';
 		} else {
 			echo '<ul>';
 		}

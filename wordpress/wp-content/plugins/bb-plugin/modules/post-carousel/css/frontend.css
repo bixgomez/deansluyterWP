@@ -7,6 +7,10 @@ body.rtl .fl-module-post-carousel .bx-viewport {
 body.rtl .fl-post-carousel-post {
 	direction: rtl;
 }
+.fl-module-post-carousel {
+	flex-grow: 1;
+	place-self: stretch;
+}
 .fl-module-post-carousel .bx-wrapper {
 	max-width: 100% !important;
 	margin: 0 auto 40px;
@@ -148,7 +152,6 @@ body.rtl .fl-post-carousel-post {
 	height: 100%;
 	padding: 0 20px;
 	text-align: center;
-	filter: alpha(opacity = 0);
 	opacity: 0;
 	-webkit-transition: all 0.3s;
 	   -moz-transition: all 0.3s;
@@ -169,7 +172,6 @@ body.rtl .fl-post-carousel-post {
 
 .fl-post-carousel-gallery .fl-post-carousel-link:hover .fl-post-carousel-text-wrap,
 .fl-post-carousel-gallery .fl-post-carousel-post.fl-post-no-thumb .fl-post-carousel-text-wrap {
-	filter: alpha(opacity = 100);
 	opacity: 1;
 }
 

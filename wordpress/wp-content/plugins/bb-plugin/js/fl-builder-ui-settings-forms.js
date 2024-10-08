@@ -882,6 +882,21 @@
 			}
 			return new FLBuilderSettingField( name, this.config )
 		},
+		/**
+		 * escapeHTML function
+		 * https://stackoverflow.com/a/4835406
+		 * @since 2.8
+		 */
+		escapeHTML: function( text ) {
+			var map = {
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#039;'
+			};
+			return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+		}
 	};
 
 	/**
@@ -978,6 +993,18 @@
 		 * @param {Object} settings
 		 */
 		updateOnSaveGlobalStyles: function( e, settings ) {
+			if ( settings.colors.length > 0 ) {
+				settings.colors.forEach( ( color ) => {
+					let qualifiedColor = '';
+
+					if ( ! color.color.match( /^(var|rgb|hs(l|v))a?\(/ ) && ! color.color.startsWith( '#' ) ) {
+						qualifiedColor = '#' + color.color;
+					} else {
+						qualifiedColor = FLBuilderColor( color.color ).toDisplay();
+					}
+					FLBuilderConfig.globalColorLabels[ 'global_color_' + color.uid ] = '<span class=\"prefix\">' + 'Global -' + '</span>' + color.label + '<span class=\"swatch\" style=\"background-color:' + qualifiedColor + ';\"></span>';
+				} );
+			}
 			FLBuilderConfig.styles = settings;
 		},
 

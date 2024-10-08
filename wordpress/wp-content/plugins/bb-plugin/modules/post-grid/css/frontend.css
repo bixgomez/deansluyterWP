@@ -129,7 +129,6 @@ body .fl-post-grid-meta {
 	height: 100%;
 	padding: 0 20px;
 	text-align: center;
-	filter: alpha(opacity = 0);
 	opacity: 0;
 	-webkit-transition: all 0.3s;
 	   -moz-transition: all 0.3s;
@@ -138,7 +137,6 @@ body .fl-post-grid-meta {
 }
 
 .fl-post-gallery-link:hover .fl-post-gallery-text-wrap {
-	filter: alpha(opacity = 100);
 	opacity: 1;
 }
 

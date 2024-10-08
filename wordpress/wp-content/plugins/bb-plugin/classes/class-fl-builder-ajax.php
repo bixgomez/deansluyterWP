@@ -248,6 +248,10 @@ final class FLBuilderAJAX {
 			header( 'Content-Type:text/plain' );
 		}
 
+		if ( is_array( $result ) && ! empty( $result ) && FLBuilder::is_debug() ) {
+			$result['mem_usage'] = $action['action'] . ' - ' . FLBuilderUtils::formatbytes( memory_get_peak_usage( true ) );
+		}
+
 		// JSON encode the result.
 		echo FLBuilderUtils::json_encode( $result );
 

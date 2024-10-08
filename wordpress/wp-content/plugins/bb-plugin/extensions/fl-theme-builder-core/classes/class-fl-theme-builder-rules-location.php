@@ -1058,7 +1058,7 @@ final class FLThemeBuilderRulesLocation {
 	 * @param int $tax_id
 	 * @return array
 	 */
-	static public function get_taxonomy_terms( $taxonomy_name ) {
+	static public function get_taxonomy_terms( $taxonomy_name, $search = '' ) {
 		$tax = get_taxonomy( $taxonomy_name );
 
 		$data = array(
@@ -1083,8 +1083,18 @@ final class FLThemeBuilderRulesLocation {
 		$terms_json = '[' . rtrim( $terms_data, ',' ) . ']';
 		$terms      = json_decode( $terms_json, true );
 
-		if ( $terms ) {
-			$data['objects'] = $terms;
+		if ( ! empty( $search ) && ! empty( $terms ) ) {
+			foreach ( $terms as $key => $term ) {
+				if ( isset( $term['name'] ) && ! empty( $term['name'] ) ) {
+					if ( false === stripos( $term['name'], $search ) ) {
+						unset( $terms[ $key ] );
+					}
+				}
+			}
+		}
+
+		if ( ! empty( $terms ) ) {
+			$data['objects'] = array_values( $terms );
 		}
 
 		return $data;
@@ -1121,7 +1131,7 @@ final class FLThemeBuilderRulesLocation {
 	 * @param int $post_type
 	 * @return array
 	 */
-	static public function get_post_type_posts( $post_type ) {
+	static public function get_post_type_posts( $post_type, $search = '' ) {
 
 		global $wpdb;
 
@@ -1152,9 +1162,20 @@ final class FLThemeBuilderRulesLocation {
 				'walker'      => $page_walker,
 			) );
 
-			$pages_json      = '[' . rtrim( $pages_data, ',' ) . ']';
-			$pages           = json_decode( $pages_json, true );
-			$data['objects'] = $pages;
+			$pages_json = '[' . rtrim( $pages_data, ',' ) . ']';
+			$pages      = json_decode( $pages_json, true );
+
+			if ( ! empty( $search ) ) {
+				foreach ( $pages as $key => $page ) {
+					if ( isset( $page['name'] ) && ! empty( $page['name'] ) ) {
+						if ( false === stripos( $page['name'], $search ) ) {
+							unset( $pages[ $key ] );
+						}
+					}
+				}
+			}
+
+			$data['objects'] = array_values( $pages );
 
 			// Bailout early. Process non-hierachical Post Types below.
 			return $data;
@@ -1172,6 +1193,12 @@ final class FLThemeBuilderRulesLocation {
 
 		foreach ( $posts as $post ) {
 			$title = ( '' != $post->post_title ) ? self::prepare_title( $post->post_title ) : $post_type . '-' . $post->ID;
+
+			if ( ! empty( $search ) ) {
+				if ( false === stripos( $title, $search ) ) {
+					continue;
+				}
+			}
 
 			if ( isset( $post->post_parent ) && $post->post_parent > 0 && $post->post_parent !== $post->ID ) {
 				$parent       = get_post( $post->post_parent );
@@ -1637,8 +1664,13 @@ final class FLThemeBuilderRulesLocation {
 	 */
 	static public function ajax_get_preview_posts() {
 		$post_data = FLBuilderModel::get_post_data();
+		$search    = '';
 
-		echo json_encode( self::get_post_type_posts( $post_data['post_type'] ) );
+		if ( isset( $post_data['search'] ) ) {
+			$search = sanitize_text_field( trim( $post_data['search'] ) );
+		}
+
+		echo json_encode( self::get_post_type_posts( $post_data['post_type'], $search ) );
 
 		die();
 	}
@@ -1652,8 +1684,13 @@ final class FLThemeBuilderRulesLocation {
 	 */
 	static public function ajax_get_preview_terms() {
 		$post_data = FLBuilderModel::get_post_data();
+		$search    = '';
 
-		echo json_encode( self::get_taxonomy_terms( $post_data['taxonomy'] ) );
+		if ( isset( $post_data['search'] ) ) {
+			$search = sanitize_text_field( trim( $post_data['search'] ) );
+		}
+
+		echo json_encode( self::get_taxonomy_terms( $post_data['taxonomy'], $search ) );
 
 		die();
 	}

@@ -142,6 +142,25 @@
 
 							// If the form is valid, save the global styles
 							if (valid) {
+								var colors = Object.values( nextColors );
+
+								if ( colors.length > 0 ) {
+									colors.forEach( ( color ) => {
+										let qualifiedColor = '';
+
+										if ( ! color.color.match( /^(var|rgb|hs(l|v))a?\(/ ) && ! color.color.startsWith( '#' ) ) {
+											qualifiedColor = '#' + color.color;
+										} else {
+											qualifiedColor = FLBuilderColor( color.color ).toDisplay();
+										}
+
+										FLBuilderConfig.globalColorLabels[ 'global_color_' + color.uid ] = '<span class=\"prefix\">' + 'Global -' + '</span>' + color.label + '<span class=\"swatch\" style=\"background-color:' + qualifiedColor + ';\"></span>';
+									} );
+								}
+
+								settings.colors = Object.values( colors );
+								FLBuilderConfig.styles.colors = Object.values( colors );
+
 								FL.Builder.data.getLayoutActions().saveGlobalStyles( settings );
 								FLBuilder.addHook( 'didSaveGlobalStylesComplete', FLBuilderGlobalStyles._reloadPanel );
 							}
@@ -210,7 +229,23 @@
 				settings = FLBuilder._getSettings( form );
 
 			if ( valid ) {
-				FLBuilderConfig.styles.colors = Object.values( settings.colors );
+				var colors = Object.values( settings.colors );
+
+				if ( colors.length > 0 ) {
+					colors.forEach( ( color ) => {
+						let qualifiedColor = '';
+
+						if ( ! color.color.match( /^(var|rgb|hs(l|v))a?\(/ ) && ! color.color.startsWith( '#' ) ) {
+							qualifiedColor = '#' + color.color;
+						} else {
+							qualifiedColor = FLBuilderColor( color.color ).toDisplay();
+						}
+
+						FLBuilderConfig.globalColorLabels[ 'global_color_' + color.uid ] = '<span class=\"prefix\">' + 'Global -' + '</span>' + color.label + '<span class=\"swatch\" style=\"background-color:' + qualifiedColor + ';\"></span>';
+					} );
+				}
+
+				FLBuilderConfig.styles.colors = Object.values( colors );
 				FL.Builder.data.getLayoutActions().saveGlobalStyles( settings );
 			}
 		},

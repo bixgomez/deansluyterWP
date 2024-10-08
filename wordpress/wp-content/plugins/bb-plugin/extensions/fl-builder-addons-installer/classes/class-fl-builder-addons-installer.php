@@ -79,13 +79,31 @@ class FLBuilderAddonsInstaller {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
 		require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader.php';
 
-		$slug = $_POST['slug'];
-
-		$url      = sprintf( 'https://updates.wpbeaverbuilder.com/?fl-api-method=composer_download&download=%s.zip&license=%s', $slug, FLUpdater::get_subscription_license() );
+		$slug     = $_POST['slug'];
 		$skin     = new WP_Ajax_Upgrader_Skin();
 		$upgrader = new Theme_Upgrader( $skin );
-		$result   = $upgrader->install( $url );
+		$defaults = array(
+			'clear_update_cache' => true,
+			'overwrite_package'  => true, // Do not overwrite files.
+		);
 
+		if ( 'bb-theme-child' === $slug ) {
+			$url    = sprintf( 'https://updates.wpbeaverbuilder.com/?fl-api-method=composer_download&download=%s.zip&license=%s', 'bb-theme', FLUpdater::get_subscription_license() );
+			$result = $upgrader->install( $url, $defaults );
+			if ( ! $result ) {
+				return wp_send_json_error( $skin->get_errors() );
+			}
+			$url    = sprintf( 'https://updates.wpbeaverbuilder.com/?fl-api-method=composer_download&download=%s.zip&license=%s', 'bb-theme-child', FLUpdater::get_subscription_license() );
+			$result = $upgrader->install( $url, $defaults );
+			if ( ! $result ) {
+				return wp_send_json_error( $skin->get_errors() );
+			}
+			return wp_send_json_success();
+		}
+
+		$url = sprintf( 'https://updates.wpbeaverbuilder.com/?fl-api-method=composer_download&download=%s.zip&license=%s', 'bb-theme', FLUpdater::get_subscription_license() );
+
+		$result = $upgrader->install( $url, $defaults );
 		if ( true === $result ) {
 			return wp_send_json_success();
 		} else {

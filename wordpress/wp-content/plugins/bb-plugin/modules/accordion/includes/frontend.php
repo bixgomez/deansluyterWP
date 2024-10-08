@@ -21,7 +21,7 @@
 				<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>" <?php echo $tabindex_attr; ?>>
 
 					<?php if ( 'left' === $settings->label_icon_position ) : ?>
-					<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo $item_tab_icon_class; ?>"></i>
+					<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo esc_attr( $item_tab_icon_class ); ?>"></i>
 					<?php endif; ?>
 
 					<a href="#" id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php echo $settings->items[ $i ]->label; ?></a>
@@ -66,7 +66,7 @@
 					<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>" <?php echo $tabindex_attr; ?>>
 
 						<?php if ( 'left' === $settings->label_icon_position ) : ?>
-						<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo $item_tab_icon_class; ?>"></i>
+						<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo esc_attr( $item_tab_icon_class ); ?>"></i>
 						<?php endif; ?>
 
 						<a href="#" id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php the_title(); ?></a>

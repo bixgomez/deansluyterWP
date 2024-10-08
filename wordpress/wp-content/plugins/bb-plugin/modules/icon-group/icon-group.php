@@ -124,9 +124,7 @@ FLBuilder::register_module('FLIconGroupModule', array(
 						'default'    => 'center',
 						'responsive' => true,
 						'preview'    => array(
-							'type'     => 'css',
-							'selector' => '.fl-icon-group',
-							'property' => 'text-align',
+							'type' => 'refresh',
 						),
 					),
 				),

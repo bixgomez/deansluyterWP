@@ -48,7 +48,6 @@
 
 .fl-accordion-button-icon-left, .fl-accordion-button-icon-right {
 	opacity: .5;
-	filter: alpha(opacity = 50);
 }
 
 .fl-accordion-content {

@@ -806,7 +806,7 @@ final class FLThemeBuilderFieldConnections {
 			return $value;
 		}
 
-		$meta = untrailingslashit( $value );
+		$meta = is_string( $value ) ? untrailingslashit( $value ) : $value;
 
 		$expression = $settings->exp;
 

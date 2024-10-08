@@ -44,16 +44,6 @@
 						'slug': slug,
 						'_wpnonce': $('.subscription-downloads').find('#_wpnonce').val()
 					}
-
-					if ('bb-theme-child' === data.slug) {
-						// check if parent is ready for install
-						// if it is it MUST be installed 1st.
-						parent = $('.subscription-downloads [data-slug=bb-theme]');
-						if (parent.length > 0) {
-							parent.trigger('click');
-							return false;
-						}
-					}
 					wrap.html('<strong>' + bb_addon_data.wait + '</strong>');
 					$.post(ajaxurl, data, function(response) {
 							if (response.success) {
@@ -75,7 +65,11 @@
 									autoclose: true,
 									autotimeout: 1000,
 								});
-								FLBuilderAddonsInstaller.init();
+								if ('bb-theme-child' === data.slug) {
+									setTimeout(function(){
+										window.location.reload();
+									}, 1500);
+								}
 							} else {
 								// build message
 								var msg = '';

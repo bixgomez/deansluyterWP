@@ -14,11 +14,16 @@ body.rtl .fl-testimonials-wrap .fl-testimonial {
 	direction: rtl;
 }
 
+.fl-module-testimonials {
+	flex-grow: 1;
+	place-self: stretch;
+}
+
 .fl-module-testimonials .bx-wrapper {
 	margin: 0 auto 35px;
 }
-.fl-testimonials-wrap { 
-	position: relative; 
+.fl-testimonials-wrap {
+	position: relative;
 }
 .fl-testimonials-wrap .fl-testimonial {
 	position: absolute;
