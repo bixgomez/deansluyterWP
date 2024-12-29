@@ -1,8 +1,8 @@
 <?php
 
 	// set defaults
-	$autoplay = ! empty( $settings->speed ) ? $settings->speed * 1000 : '1000';
-	$speed = ! empty( $settings->transitionDuration ) ? $settings->transitionDuration * 1000 : '1000'; // @codingStandardsIgnoreLine
+	$autoplay = ! empty( $settings->speed ) ? esc_js( $settings->speed * 1000 ) : '1000';
+	$speed = ! empty( $settings->transitionDuration ) ? esc_js( $settings->transitionDuration * 1000 ) : '1000'; // @codingStandardsIgnoreLine
 
 ?>
 
@@ -17,20 +17,20 @@
 		<?php endif; ?>
 			settings: {
 			<?php if ( isset( $settings->transition ) ) : ?>
-				mode: '<?php echo $settings->transition; ?>',
+				mode: '<?php echo esc_js( $settings->transition ); ?>',
 			<?php endif; ?>
 			<?php if ( isset( $settings->pagination ) && 'no' == $settings->pagination ) : ?>
 				pager: false,
 			<?php endif; ?>
 			<?php if ( isset( $settings->auto_play ) ) : ?>
-				auto: <?php echo $settings->auto_play; ?>,
+				auto: <?php echo esc_js( $settings->auto_play ); ?>,
 			<?php else : ?>
 				auto: false,
 			<?php endif; ?>
 				pause: <?php echo $autoplay; ?>,
 				speed: <?php echo $speed; ?>,
 			<?php if ( isset( $settings->slider_loop ) ) : ?>
-				infiniteLoop: <?php echo $settings->slider_loop; ?>,
+				infiniteLoop: <?php echo esc_js( $settings->slider_loop ); ?>,
 			<?php else : ?>
 				infiniteLoop: false,
 			<?php endif; ?>

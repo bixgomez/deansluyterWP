@@ -1,6 +1,6 @@
 <?php $module->add_fb_root(); ?>
 <?php $settings = $module->update( $settings ); ?>
-<div class="fl-social-buttons fl-social-buttons-<?php echo $settings->align; ?>">
+<div class="fl-social-buttons fl-social-buttons-<?php echo sanitize_html_class( $settings->align ); ?>">
 
 	<?php if ( $settings->show_facebook ) : ?>
 		<div class="fl-social-button fl-fb">

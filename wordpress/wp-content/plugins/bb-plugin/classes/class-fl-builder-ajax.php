@@ -248,7 +248,7 @@ final class FLBuilderAJAX {
 			header( 'Content-Type:text/plain' );
 		}
 
-		if ( is_array( $result ) && ! empty( $result ) && FLBuilder::is_debug() ) {
+		if ( is_array( $result ) && ! empty( $result ) && 'fl_builder_autosuggest' !== $action['action'] && get_transient( 'fl_debug_mode' ) ) {
 			$result['mem_usage'] = $action['action'] . ' - ' . FLBuilderUtils::formatbytes( memory_get_peak_usage( true ) );
 		}
 

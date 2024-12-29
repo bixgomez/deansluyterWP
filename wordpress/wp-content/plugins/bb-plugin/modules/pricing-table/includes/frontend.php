@@ -11,7 +11,7 @@ $module->render_toggle_pricing_button();
 $pricing_table_class = $module->get_pricing_table_class();
 
 ?>
-<div class="<?php echo $pricing_table_class; ?>">
+<div class="<?php echo FLBuilderUtils::sanitize_html_class( $pricing_table_class ); ?>">
 	<?php
 
 	$columns = count( $settings->pricing_columns );

@@ -118,8 +118,9 @@
 					icon.removeClass( this.settings.labelIcon );
 					icon.addClass( this.settings.activeIcon );
 				}
-
-				icon.find('span').text( 'Collapse' );
+				icon.attr( 'title', this.settings.collapseTxt );
+				icon.parent().find('span').text( this.settings.collapseTxt );
+				icon.find('span').text( this.settings.collapseTxt );
 			}
 			else {
 				button.attr('aria-expanded', 'false');
@@ -133,8 +134,9 @@
 					icon.removeClass( this.settings.activeIcon );
 					icon.addClass( this.settings.labelIcon );
 				}
-
-				icon.find('span').text( 'Expand' );
+				icon.attr( 'title', this.settings.expandTxt );
+				icon.parent().find('span').text( this.settings.expandTxt );
+				icon.find('span').text( this.settings.expandTxt );
 			}
 		},
 

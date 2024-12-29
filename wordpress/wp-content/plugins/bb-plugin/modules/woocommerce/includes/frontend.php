@@ -1,7 +1,7 @@
 <?php
 
 // Opening Wrapper
-echo '<div class="fl-woocommerce-' . $settings->layout . '">';
+echo '<div class="fl-woocommerce-' . sanitize_html_class( $settings->layout ) . '">';
 
 // Shortcodes
 $pages = array(

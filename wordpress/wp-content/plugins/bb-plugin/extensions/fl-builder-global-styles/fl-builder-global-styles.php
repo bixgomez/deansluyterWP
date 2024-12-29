@@ -3,6 +3,18 @@
 add_action( 'plugins_loaded', function() {
 	// make sure we have at least Themer 1.4.7 or dev version
 	if ( defined( 'FL_THEME_BUILDER_VERSION' ) && '{FL_THEME_BUILDER_VERSION}' !== FL_THEME_BUILDER_VERSION && version_compare( FL_THEME_BUILDER_VERSION, '1.4.7', '<' ) ) {
+
+		/**
+		 * Polyfill
+		 */
+		class FLBuilderGlobalStyles {
+			public static function get_settings() {
+				return (object) [ 'colors' => [] ];
+			}
+			public static function get_theme_json_js_config() {
+				return [ 'color' => [ 'palette' => [] ] ];
+			}
+		}
 		return;
 	}
 	// Defines

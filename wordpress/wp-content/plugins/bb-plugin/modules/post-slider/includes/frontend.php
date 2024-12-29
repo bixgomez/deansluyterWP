@@ -1,13 +1,13 @@
 <?php
 
 // Do the removal of paged & offset parameters
-add_filter( 'fl_builder_loop_query_args', array( $module, 'remove_pagination_args' ), 10 );
+add_filter( 'fl_builder_loop_query_args', array( $module, 'override_query_args' ), 10 );
 
 // Get the query data.
 $query = $module->get_query();
 
 // Remove filter to prevent breaking other modules
-remove_filter( 'fl_builder_loop_query_args', array( $module, 'remove_pagination_args' ), 10 );
+remove_filter( 'fl_builder_loop_query_args', array( $module, 'override_query_args' ), 10 );
 
 // Render the posts.
 if ( $query->have_posts() ) :

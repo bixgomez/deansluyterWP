@@ -7,7 +7,7 @@ if ( 'post' == $settings->source ) {
 }
 ?>
 
-<div class="fl-tabs fl-tabs-<?php echo $settings->layout; ?> fl-clearfix">
+<div class="fl-tabs fl-tabs-<?php echo sanitize_html_class( $settings->layout ); ?> fl-clearfix">
 
 	<div class="fl-tabs-labels fl-clearfix" role="tablist">
 		<?php

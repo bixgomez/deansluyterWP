@@ -1,4 +1,4 @@
-<div class="<?php echo $module->get_form_classes(); ?>"
+<div class="<?php echo FLBuilderUtils::sanitize_html_class( $module->get_form_classes() ); ?>"
 	<?php
 	if ( isset( $module->template_id ) ) {
 		echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';}

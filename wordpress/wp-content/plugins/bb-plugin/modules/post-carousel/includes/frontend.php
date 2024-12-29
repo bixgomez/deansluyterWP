@@ -1,21 +1,21 @@
 <?php
 
 // Do the removal of paged & offset parameters
-add_filter( 'fl_builder_loop_query_args', array( $module, 'remove_pagination_args' ), 10 );
+add_filter( 'fl_builder_loop_query_args', array( $module, 'override_query_args' ), 10 );
 
 // Get the query data.
 $query  = FLBuilderLoop::query( $settings );
 $layout = isset( $settings->layout ) ? $settings->layout : 'grid';
 
 // Remove filter to prevent breaking other modules
-remove_filter( 'fl_builder_loop_query_args', array( $module, 'remove_pagination_args' ), 10 );
+remove_filter( 'fl_builder_loop_query_args', array( $module, 'override_query_args' ), 10 );
 
 // Render the posts.
 if ( $query->have_posts() ) :
 
 	?>
 
-	<div class="fl-post-carousel fl-post-carousel-<?php echo $layout; ?>"<?php FLBuilder::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/Blog"' ); ?>>
+	<div class="fl-post-carousel fl-post-carousel-<?php echo sanitize_html_class( $layout ); ?>"<?php FLBuilder::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/Blog"' ); ?>>
 		<div class="fl-post-carousel-wrapper">
 			<?php
 

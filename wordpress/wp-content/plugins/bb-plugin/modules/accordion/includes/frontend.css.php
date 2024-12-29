@@ -84,7 +84,7 @@ FLBuilderCSS::typography_field_rule( array(
 
 // Content Text Color
 FLBuilderCSS::rule( array(
-	'selector' => ".fl-node-$id .fl-accordion .fl-accordion-content",
+	'selector' => ".fl-node-$id .fl-accordion .fl-accordion-content :where( p, span, li )",
 	'enabled'  => 'content' === $settings->source,
 	'props'    => array(
 		'color' => $settings->content_text_color,
@@ -114,7 +114,7 @@ FLBuilderCSS::dimension_field_rule( array(
 
 // Content Typography
 FLBuilderCSS::typography_field_rule( array(
-	'selector'     => ".fl-node-$id .fl-accordion-content",
+	'selector'     => ".fl-node-$id .fl-accordion-content :where( p, span, li )",
 	'setting_name' => 'content_typography',
 	'settings'     => $settings,
 	'enabled'      => 'content' === $settings->source,

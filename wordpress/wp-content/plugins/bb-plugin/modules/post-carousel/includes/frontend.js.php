@@ -1,11 +1,11 @@
 <?php
 
 	// set defaults
-	$layout        = isset( $settings->layout ) ? $settings->layout : 'grid';
-	$autoplay      = ! empty( $settings->speed ) ? $settings->speed * 1000 : '1000';
-	$speed         = ! empty( $settings->transition_duration ) ? $settings->transition_duration * 1000 : '1000';
-	$slide_width   = ! empty( $settings->slide_width ) ? $settings->slide_width : 300;
-	$space_between = isset( $settings->space_between ) && '' !== $settings->space_between ? $settings->space_between : 30;
+	$layout        = isset( $settings->layout ) ? esc_js( $settings->layout ) : 'grid';
+	$autoplay      = ! empty( $settings->speed ) ? esc_js( $settings->speed * 1000 ) : '1000';
+	$speed         = ! empty( $settings->transition_duration ) ? esc_js( $settings->transition_duration * 1000 ) : '1000';
+	$slide_width   = ! empty( $settings->slide_width ) ? esc_js( $settings->slide_width ) : 300;
+	$space_between = isset( $settings->space_between ) && '' !== $settings->space_between ? esc_js( $settings->space_between ) : 30;
 
 ?>
 
@@ -28,15 +28,15 @@
 				pager: false,
 			<?php endif; ?>
 			<?php if ( isset( $settings->auto_play ) ) : ?>
-				auto: <?php echo $settings->auto_play; ?>,
+				auto: <?php echo esc_js( $settings->auto_play ); ?>,
 			<?php else : ?>
 				auto: false,
 			<?php endif; ?>
 				pause: <?php echo $autoplay; ?>,
 				speed: <?php echo $speed; ?>,
-				autoDirection: '<?php echo $settings->direction; ?>',
+				autoDirection: '<?php echo esc_js( $settings->direction ); ?>',
 			<?php if ( isset( $settings->carousel_loop ) ) : ?>
-				infiniteLoop: <?php echo $settings->carousel_loop; ?>,
+				infiniteLoop: <?php echo esc_js( $settings->carousel_loop ); ?>,
 			<?php else : ?>
 				infiniteLoop: false,
 			<?php endif; ?>

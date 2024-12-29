@@ -9,7 +9,7 @@
 				$slide = $settings->slides[ $i ];
 			}
 			?>
-		<div class="fl-slide fl-slide-<?php echo $i; ?> fl-slide-text-<?php echo $slide->text_position; ?>">
+		<div class="fl-slide fl-slide-<?php echo $i; ?> fl-slide-text-<?php echo sanitize_html_class( $slide->text_position ); ?>">
 			<?php
 
 			// Mobile photo or video

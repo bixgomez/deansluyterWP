@@ -75,7 +75,7 @@
 		}).mosaicflow({
 			itemSelector: '.fl-mosaicflow-item',
 			columnClass: 'fl-mosaicflow-col',
-			minItemWidth: <?php echo $settings->photo_size; ?>
+			minItemWidth: <?php echo esc_js( $settings->photo_size ); ?>
 		});
 		<?php else : ?>
 		$( '.fl-node-<?php echo $id; ?> .fl-gallery' ).imagesLoaded( function(){
@@ -83,7 +83,7 @@
 				align: 'center',
 				autoResize: true,
 				container: $('.fl-node-<?php echo $id; ?> .fl-gallery'),
-				offset: <?php echo $settings->photo_spacing; ?>,
+				offset: <?php echo esc_js( $settings->photo_spacing ); ?>,
 				itemWidth: 150,
 				verticalOffset: <?php echo ( 'below' == $settings->show_captions ) ? '35' : '0'; ?>
 			});
