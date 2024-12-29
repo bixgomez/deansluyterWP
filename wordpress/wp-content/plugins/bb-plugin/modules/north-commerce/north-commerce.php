@@ -27,7 +27,7 @@ class FLNorthCommerceModule extends FLBuilderModule {
 		$class_list[] = 'fl-north-commerce';
 
 		if ( ! empty( $settings->layout ) ) {
-			$class_list[] = 'fl-north-commerce-' . $settings->layout;
+			$class_list[] = 'fl-north-commerce-' . sanitize_html_class( $settings->layout );
 		}
 
 		$class_attr = 'class="' . esc_attr( join( ' ', $class_list ) ) . '"';

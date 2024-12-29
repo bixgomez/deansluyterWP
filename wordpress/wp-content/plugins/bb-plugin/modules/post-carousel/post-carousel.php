@@ -88,14 +88,15 @@ class FLPostCarouselModule extends FLBuilderModule {
 	}
 
 	/**
-	 * Remove pagination parameters
+	 * Override query parameters
 	 *
 	 * @param array $query_args     Generated query args to override
 	 * @return array                Updated query args
 	 */
-	public function remove_pagination_args( $query_args ) {
-		$query_args['paged']  = 0;
-		$query_args['offset'] = isset( $this->settings->offset ) ? $this->settings->offset : 0;
+	public function override_query_args( $query_args ) {
+		if ( isset( $this->settings->offset ) && 0 != $this->settings->offset ) {
+			$query_args['offset'] = $this->settings->offset;
+		}
 		return $query_args;
 	}
 

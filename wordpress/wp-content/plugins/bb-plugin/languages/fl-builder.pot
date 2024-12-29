@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bb-plugin\n"
 "Report-Msgid-Bugs-To: hello@wpbeaverbuilder.com\n"
-"POT-Creation-Date: 2024-09-24 20:07:34+00:00\n"
+"POT-Creation-Date: 2024-12-04 14:32:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -271,7 +271,7 @@ msgid "JS"
 msgstr ""
 
 #: classes/class-fl-builder-admin-posts.php:362
-#: classes/class-fl-builder.php:1308 includes/ui-js-overlay-templates.php:158
+#: classes/class-fl-builder.php:1334 includes/ui-js-overlay-templates.php:158
 #: includes/ui-js-overlay-templates.php:360
 #. translators: %s: post type being duplicated
 #. translators: %s: post type
@@ -328,14 +328,14 @@ msgstr ""
 
 #: classes/class-fl-builder-admin-settings.php:275
 #: modules/icon-group/icon-group.php:73
-#: modules/post-carousel/post-carousel.php:437
+#: modules/post-carousel/post-carousel.php:438
 #: modules/post-grid/post-grid.php:1242
 #: modules/pricing-table/pricing-table.php:481
 msgid "Icons"
 msgstr ""
 
 #: classes/class-fl-builder-admin-settings.php:280
-#: classes/class-fl-builder.php:1430
+#: classes/class-fl-builder.php:1456
 msgid "Tools"
 msgstr ""
 
@@ -446,7 +446,7 @@ msgstr ""
 msgid "Plugins Page"
 msgstr ""
 
-#: classes/class-fl-builder-admin.php:304 classes/class-fl-builder.php:1089
+#: classes/class-fl-builder-admin.php:304 classes/class-fl-builder.php:1115
 #: includes/admin-settings-advanced.php:24
 #: includes/admin-settings-advanced.php:30
 msgid "Documentation"
@@ -506,10 +506,10 @@ msgstr ""
 
 #: classes/class-fl-builder-art.php:81 modules/callout/callout.php:584
 #: modules/content-slider/content-slider.php:532 modules/photo/photo.php:719
-#: modules/post-carousel/post-carousel.php:430
-#: modules/post-carousel/post-carousel.php:839
-#: modules/post-slider/post-slider.php:651
-#: modules/post-slider/post-slider.php:1081 modules/search/search.php:982
+#: modules/post-carousel/post-carousel.php:431
+#: modules/post-carousel/post-carousel.php:840
+#: modules/post-slider/post-slider.php:652
+#: modules/post-slider/post-slider.php:1082 modules/search/search.php:982
 msgid "Circle"
 msgstr ""
 
@@ -555,13 +555,13 @@ msgid "Bottom Shape Layer"
 msgstr ""
 
 #: classes/class-fl-builder-art.php:359 includes/column-settings.php:83
-#: includes/row-settings.php:113 modules/pricing-table/pricing-table.php:856
+#: includes/row-settings.php:126 modules/pricing-table/pricing-table.php:856
 #: modules/slideshow/slideshow.php:481
 msgid "Top"
 msgstr ""
 
 #: classes/class-fl-builder-art.php:360 includes/column-settings.php:85
-#: includes/row-settings.php:115 modules/post-slider/post-slider.php:776
+#: includes/row-settings.php:128 modules/post-slider/post-slider.php:777
 #: modules/slideshow/slideshow.php:480
 msgid "Bottom"
 msgstr ""
@@ -578,14 +578,14 @@ msgstr ""
 #: classes/class-fl-builder-art.php:396 includes/ui-field-typography.php:218
 #: modules/callout/callout.php:748 modules/icon/icon.php:118
 #: modules/icon-group/icon-group.php:97 modules/login-form/login-form.php:274
-#: modules/menu/menu.php:1203 modules/post-carousel/post-carousel.php:417
-#: modules/post-slider/post-slider.php:638 modules/search/search.php:969
+#: modules/menu/menu.php:1203 modules/post-carousel/post-carousel.php:418
+#: modules/post-slider/post-slider.php:639 modules/search/search.php:969
 msgid "Size"
 msgstr ""
 
 #: classes/class-fl-builder-art.php:457 includes/column-settings.php:14
 #: includes/row-settings.php:17 includes/ui-field-border.php:180
-#: modules/box/fields/ui-field-size.php:60 modules/button/button.php:338
+#: modules/box/fields/ui-field-size.php:60 modules/button/button.php:344
 #: modules/button-group/button-group.php:229 modules/callout/callout.php:589
 #: modules/content-slider/content-slider.php:702 modules/photo/photo.php:724
 #: modules/search/search.php:450 modules/search/search.php:678
@@ -596,7 +596,7 @@ msgstr ""
 #: classes/class-fl-builder-art.php:458 includes/row-settings.php:69
 #: modules/box/fields/ui-field-size.php:66
 #: modules/content-slider/content-slider.php:470 modules/map/map.php:43
-#: modules/post-slider/post-slider.php:505 modules/search/search.php:487
+#: modules/post-slider/post-slider.php:506 modules/search/search.php:487
 #: modules/separator/separator.php:84 modules/slideshow/slideshow.php:295
 msgid "Height"
 msgstr ""
@@ -606,7 +606,7 @@ msgid "Y Offset"
 msgstr ""
 
 #: classes/class-fl-builder-art.php:470 includes/ui-field-typography.php:234
-#: modules/box/box.php:363 modules/button/button.php:379
+#: modules/box/box.php:363 modules/button/button.php:385
 #: modules/button-group/button-group.php:260 modules/callout/callout.php:612
 #: modules/photo/photo.php:747 modules/separator/separator.php:127
 msgid "Align"
@@ -631,7 +631,7 @@ msgid "Center Left"
 msgstr ""
 
 #: classes/class-fl-builder-art.php:477 includes/column-settings.php:84
-#: includes/column-settings.php:213 includes/row-settings.php:114
+#: includes/column-settings.php:213 includes/row-settings.php:127
 #: includes/row-settings.php:310 includes/ui-field-object-fit.php:61
 #: modules/box/fields/ui-field-justify.php:110
 #: modules/content-slider/content-slider.php:696
@@ -683,14 +683,14 @@ msgstr ""
 #: modules/icon-group/icon-group.php:138 modules/login-form/login-form.php:218
 #: modules/login-form/login-form.php:249 modules/login-form/login-form.php:696
 #: modules/menu/menu.php:1237 modules/menu/menu.php:1422
-#: modules/post-carousel/post-carousel.php:628
-#: modules/post-carousel/post-carousel.php:670
-#: modules/post-carousel/post-carousel.php:729
-#: modules/post-carousel/post-carousel.php:788
-#: modules/post-slider/post-slider.php:869
-#: modules/post-slider/post-slider.php:911
-#: modules/post-slider/post-slider.php:970
-#: modules/post-slider/post-slider.php:1030 modules/rich-text/rich-text.php:56
+#: modules/post-carousel/post-carousel.php:629
+#: modules/post-carousel/post-carousel.php:671
+#: modules/post-carousel/post-carousel.php:730
+#: modules/post-carousel/post-carousel.php:789
+#: modules/post-slider/post-slider.php:870
+#: modules/post-slider/post-slider.php:912
+#: modules/post-slider/post-slider.php:971
+#: modules/post-slider/post-slider.php:1031 modules/rich-text/rich-text.php:56
 #: modules/search/search.php:578 modules/separator/separator.php:73
 #: modules/subscribe-form/subscribe-form.php:719
 msgid "Color"
@@ -740,7 +740,7 @@ msgstr ""
 #: extensions/fl-theme-builder-core/classes/class-fl-theme-builder-rules-location.php:719
 #: includes/global-settings.php:7 includes/ui-field-border.php:3
 #: modules/accordion/accordion.php:501 modules/audio/audio.php:73
-#: modules/button/button.php:200 modules/button-group/button-group.php:442
+#: modules/button/button.php:206 modules/button-group/button-group.php:442
 #: modules/callout/callout.php:363 modules/contact-form/contact-form.php:320
 #: modules/content-slider/content-slider.php:561
 #: modules/countdown/countdown.php:214 modules/cta/cta.php:141
@@ -756,26 +756,26 @@ msgstr ""
 #: modules/sidebar/sidebar.php:28 modules/slideshow/slideshow.php:255
 #: modules/social-buttons/social-buttons.php:61
 #: modules/subscribe-form/subscribe-form.php:336 modules/tabs/tabs.php:438
-#: modules/testimonials/testimonials.php:271 modules/video/video.php:336
+#: modules/testimonials/testimonials.php:271 modules/video/video.php:346
 #: modules/widget/widget.php:126 modules/woocommerce/woocommerce.php:49
 msgid "General"
 msgstr ""
 
-#: classes/class-fl-builder-compatibility.php:622
+#: classes/class-fl-builder-compatibility.php:623
 msgid "SAFEMODE"
 msgstr ""
 
-#: classes/class-fl-builder-compatibility.php:622
+#: classes/class-fl-builder-compatibility.php:623
 msgid "module"
 msgstr ""
 
-#: classes/class-fl-builder-compatibility.php:1063
+#: classes/class-fl-builder-compatibility.php:1064
 #: modules/pricing-table/fields/fl-price-feature.php:55
 msgid "Description"
 msgstr ""
 
 #: classes/class-fl-builder-font-awesome.php:147
-#: classes/class-fl-builder-model.php:7151
+#: classes/class-fl-builder-model.php:7158
 #: extensions/fl-builder-user-templates/classes/class-fl-builder-user-templates-post-type.php:36
 #: extensions/fl-builder-white-label/classes/class-fl-builder-white-label.php:139
 msgid "Beaver Builder"
@@ -825,19 +825,19 @@ msgstr ""
 #: modules/menu/menu.php:632 modules/menu/menu.php:786
 #: modules/menu/menu.php:834 modules/menu/menu.php:985
 #: modules/menu/menu.php:1075 modules/photo/photo.php:616
-#: modules/post-carousel/post-carousel.php:266
-#: modules/post-carousel/post-carousel.php:275
-#: modules/post-carousel/post-carousel.php:318
-#: modules/post-carousel/post-carousel.php:327
-#: modules/post-carousel/post-carousel.php:381
-#: modules/post-carousel/post-carousel.php:444
+#: modules/post-carousel/post-carousel.php:267
+#: modules/post-carousel/post-carousel.php:276
+#: modules/post-carousel/post-carousel.php:319
+#: modules/post-carousel/post-carousel.php:328
+#: modules/post-carousel/post-carousel.php:382
+#: modules/post-carousel/post-carousel.php:445
 #: modules/post-grid/post-grid.php:671 modules/post-grid/post-grid.php:892
 #: modules/post-grid/post-grid.php:1249 modules/post-grid/post-grid.php:1354
-#: modules/post-slider/post-slider.php:520
-#: modules/post-slider/post-slider.php:529
-#: modules/post-slider/post-slider.php:577
-#: modules/post-slider/post-slider.php:586
-#: modules/post-slider/post-slider.php:834
+#: modules/post-slider/post-slider.php:521
+#: modules/post-slider/post-slider.php:530
+#: modules/post-slider/post-slider.php:578
+#: modules/post-slider/post-slider.php:587
+#: modules/post-slider/post-slider.php:835
 #: modules/pricing-table/pricing-table.php:457
 #: modules/pricing-table/pricing-table.php:639
 #: modules/pricing-table/pricing-table.php:833
@@ -855,9 +855,9 @@ msgstr ""
 #: modules/social-buttons/social-buttons.php:125
 #: modules/testimonials/testimonials.php:68
 #: modules/testimonials/testimonials.php:204
-#: modules/testimonials/testimonials.php:236 modules/video/video.php:389
-#: modules/video/video.php:406 modules/video/video.php:418
-#: modules/video/video.php:430 modules/video/video.php:517
+#: modules/testimonials/testimonials.php:236 modules/video/video.php:399
+#: modules/video/video.php:416 modules/video/video.php:428
+#: modules/video/video.php:440 modules/video/video.php:527
 #: modules/woocommerce/woocommerce.php:99
 msgid "Yes"
 msgstr ""
@@ -894,19 +894,19 @@ msgstr ""
 #: modules/menu/menu.php:633 modules/menu/menu.php:787
 #: modules/menu/menu.php:835 modules/menu/menu.php:984
 #: modules/menu/menu.php:1074 modules/photo/photo.php:615
-#: modules/post-carousel/post-carousel.php:265
-#: modules/post-carousel/post-carousel.php:274
-#: modules/post-carousel/post-carousel.php:317
-#: modules/post-carousel/post-carousel.php:326
-#: modules/post-carousel/post-carousel.php:380
-#: modules/post-carousel/post-carousel.php:445
+#: modules/post-carousel/post-carousel.php:266
+#: modules/post-carousel/post-carousel.php:275
+#: modules/post-carousel/post-carousel.php:318
+#: modules/post-carousel/post-carousel.php:327
+#: modules/post-carousel/post-carousel.php:381
+#: modules/post-carousel/post-carousel.php:446
 #: modules/post-grid/post-grid.php:672 modules/post-grid/post-grid.php:893
 #: modules/post-grid/post-grid.php:1250 modules/post-grid/post-grid.php:1355
-#: modules/post-slider/post-slider.php:519
-#: modules/post-slider/post-slider.php:528
-#: modules/post-slider/post-slider.php:576
-#: modules/post-slider/post-slider.php:585
-#: modules/post-slider/post-slider.php:833
+#: modules/post-slider/post-slider.php:520
+#: modules/post-slider/post-slider.php:529
+#: modules/post-slider/post-slider.php:577
+#: modules/post-slider/post-slider.php:586
+#: modules/post-slider/post-slider.php:834
 #: modules/pricing-table/pricing-table.php:456
 #: modules/pricing-table/pricing-table.php:640
 #: modules/pricing-table/pricing-table.php:834
@@ -924,9 +924,9 @@ msgstr ""
 #: modules/social-buttons/social-buttons.php:126
 #: modules/testimonials/testimonials.php:67
 #: modules/testimonials/testimonials.php:203
-#: modules/testimonials/testimonials.php:235 modules/video/video.php:390
-#: modules/video/video.php:405 modules/video/video.php:417
-#: modules/video/video.php:429 modules/video/video.php:518
+#: modules/testimonials/testimonials.php:235 modules/video/video.php:400
+#: modules/video/video.php:415 modules/video/video.php:427
+#: modules/video/video.php:439 modules/video/video.php:528
 #: modules/woocommerce/woocommerce.php:100
 msgid "No"
 msgstr ""
@@ -943,7 +943,7 @@ msgstr ""
 msgid "V4 Compatibility Mode"
 msgstr ""
 
-#: classes/class-fl-builder-font-awesome.php:290 modules/button/button.php:531
+#: classes/class-fl-builder-font-awesome.php:290 modules/button/button.php:537
 #: modules/button-group/button-group.php:384
 #: modules/button-group/button-group.php:668 modules/callout/callout.php:1073
 #: modules/contact-form/contact-form.php:729
@@ -955,7 +955,7 @@ msgid "Enabled"
 msgstr ""
 
 #: classes/class-fl-builder-font-awesome.php:290
-#: includes/column-settings.php:508 modules/button/button.php:530
+#: includes/column-settings.php:508 modules/button/button.php:536
 #: modules/button-group/button-group.php:383
 #: modules/button-group/button-group.php:667 modules/callout/callout.php:1072
 #: modules/contact-form/contact-form.php:728
@@ -1002,8 +1002,8 @@ msgstr ""
 #: includes/ui-field-typography.php:170 includes/ui-field-typography.php:183
 #: modules/button-group/button-group.php:232
 #: modules/button-group/button-group.php:666
-#: modules/post-carousel/post-carousel.php:506
-#: modules/post-grid/post-grid.php:915 modules/post-slider/post-slider.php:687
+#: modules/post-carousel/post-carousel.php:507
+#: modules/post-grid/post-grid.php:915 modules/post-slider/post-slider.php:688
 msgid "Default"
 msgstr ""
 
@@ -1287,10 +1287,10 @@ msgstr ""
 #: modules/countdown/countdown.php:287 modules/cta/cta.php:199
 #: modules/gallery/gallery.php:234 modules/login-form/login-form.php:166
 #: modules/menu/menu.php:586 modules/north-commerce/north-commerce.php:78
-#: modules/numbers/numbers.php:164 modules/post-carousel/post-carousel.php:243
-#: modules/post-carousel/post-carousel.php:341
+#: modules/numbers/numbers.php:164 modules/post-carousel/post-carousel.php:244
+#: modules/post-carousel/post-carousel.php:342
 #: modules/post-grid/post-grid.php:628 modules/post-grid/post-grid.php:635
-#: modules/post-slider/post-slider.php:600
+#: modules/post-slider/post-slider.php:601
 #: modules/pricing-table/pricing-table.php:17 modules/search/search.php:291
 #: modules/search/search.php:298 modules/sidebar/sidebar.php:15
 #: modules/subscribe-form/subscribe-form.php:351 modules/tabs/tabs.php:15
@@ -1307,7 +1307,7 @@ msgstr ""
 #: classes/class-fl-builder-model.php:3355
 #: extensions/fl-theme-builder-core/classes/class-fl-page-data.php:88
 #: modules/post-carousel/post-carousel.php:15
-#: modules/post-carousel/post-carousel.php:344
+#: modules/post-carousel/post-carousel.php:345
 #: modules/post-grid/post-grid.php:13 modules/post-grid/post-grid.php:15
 #: modules/post-grid/post-grid.php:664 modules/post-grid/post-grid.php:1060
 #: modules/post-slider/post-slider.php:22
@@ -1364,26 +1364,26 @@ msgstr ""
 msgid "Left & Right Sidebar"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5475
-#: classes/class-fl-builder-model.php:5516
-#: classes/class-fl-builder-model.php:5604
-#: classes/class-fl-builder-model.php:6920 includes/ui-js-config.php:323
+#: classes/class-fl-builder-model.php:5482
+#: classes/class-fl-builder-model.php:5523
+#: classes/class-fl-builder-model.php:5611
+#: classes/class-fl-builder-model.php:6927 includes/ui-js-config.php:323
 msgid "Uncategorized"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5917
+#: classes/class-fl-builder-model.php:5924
 msgid "Logged In"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5921
+#: classes/class-fl-builder-model.php:5928
 msgid "Logged Out"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5925
+#: classes/class-fl-builder-model.php:5932
 msgid "Logic"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5929 includes/column-settings.php:481
+#: classes/class-fl-builder-model.php:5936 includes/column-settings.php:481
 #: includes/module-settings.php:50 includes/row-settings.php:833
 #: includes/ui-iframe.php:17
 msgid "Breakpoint"
@@ -1483,7 +1483,7 @@ msgstr ""
 msgid "Select A Preset"
 msgstr ""
 
-#: classes/class-fl-builder-shortcodes.php:103
+#: classes/class-fl-builder-shortcodes.php:99
 msgid "Content not rendered while builder is active"
 msgstr ""
 
@@ -1529,7 +1529,7 @@ msgid "Columns"
 msgstr ""
 
 #: classes/class-fl-builder-ui-settings-forms.php:539
-#: includes/ui-js-config.php:290 modules/post-slider/post-slider.php:625
+#: includes/ui-js-config.php:290 modules/post-slider/post-slider.php:626
 msgid "Thumbnail"
 msgstr ""
 
@@ -1719,25 +1719,25 @@ msgstr ""
 msgid "Unable to find Themer, is it installed and activated?"
 msgstr ""
 
-#: classes/class-fl-builder.php:1039
+#: classes/class-fl-builder.php:1065
 #: extensions/fl-builder-white-label/includes/admin-settings-help-button.php:45
 #: includes/ui-js-config.php:333
 msgid "Knowledge Base"
 msgstr ""
 
-#: classes/class-fl-builder.php:1040
+#: classes/class-fl-builder.php:1066
 msgid "Support ticket"
 msgstr ""
 
-#: classes/class-fl-builder.php:1070
+#: classes/class-fl-builder.php:1096
 msgid "has detected a plugin conflict that is preventing the page from saving."
 msgstr ""
 
-#: classes/class-fl-builder.php:1071
+#: classes/class-fl-builder.php:1097
 msgid "Try to fix it yourself now"
 msgstr ""
 
-#: classes/class-fl-builder.php:1073
+#: classes/class-fl-builder.php:1099
 #. translators: %s: link to documentation
 msgid ""
 "If you want to troubleshoot further, you can check our %s for plugins we "
@@ -1746,165 +1746,165 @@ msgid ""
 "normally, you have identified the plugin causing the conflict."
 msgstr ""
 
-#: classes/class-fl-builder.php:1074 classes/class-fl-builder.php:1077
+#: classes/class-fl-builder.php:1100 classes/class-fl-builder.php:1103
 msgid ""
 "If you contact Beaver Builder Support, we need to know what the error is in "
 "the JavaScript console in your browser."
 msgstr ""
 
-#: classes/class-fl-builder.php:1075
+#: classes/class-fl-builder.php:1101
 msgid "Step One"
 msgstr ""
 
-#: classes/class-fl-builder.php:1076
+#: classes/class-fl-builder.php:1102
 msgid "Step Two"
 msgstr ""
 
-#: classes/class-fl-builder.php:1079
+#: classes/class-fl-builder.php:1105
 #. translators: %s: link to support form
 msgid ""
 "Copy the errors you find there and submit them with your %s. It saves us "
 "having to ask you that as a second step."
 msgstr ""
 
-#: classes/class-fl-builder.php:1080
+#: classes/class-fl-builder.php:1106
 msgid "Need a helping hand?"
 msgstr ""
 
-#: classes/class-fl-builder.php:1083
+#: classes/class-fl-builder.php:1109
 msgid "PHP Fatal Error Detected"
 msgstr ""
 
-#: classes/class-fl-builder.php:1085
+#: classes/class-fl-builder.php:1111
 #. translators: [MEM]: Do not translate word [mem]
 msgid "Memory exhausted ([MEM]Mb) unable to continue"
 msgstr ""
 
-#: classes/class-fl-builder.php:1087
+#: classes/class-fl-builder.php:1113
 #. translators: %s: link to support form
 msgid "Please see %s for more information"
 msgstr ""
 
-#: classes/class-fl-builder.php:1104
+#: classes/class-fl-builder.php:1130
 msgid "An update is available"
 msgstr ""
 
-#: classes/class-fl-builder.php:1311 includes/ui-js-config.php:261
+#: classes/class-fl-builder.php:1337 includes/ui-js-config.php:261
 msgid "Are you sure?"
 msgstr ""
 
-#: classes/class-fl-builder.php:1422
+#: classes/class-fl-builder.php:1448
 msgid "Unnamed Menu"
 msgstr ""
 
-#: classes/class-fl-builder.php:1437
+#: classes/class-fl-builder.php:1463
 msgid "Publish Layout"
 msgstr ""
 
-#: classes/class-fl-builder.php:1449
+#: classes/class-fl-builder.php:1475
 #: extensions/fl-builder-user-templates/includes/user-template-settings.php:4
 #: includes/ui-js-config.php:275
 msgid "Save Template"
 msgstr ""
 
-#: classes/class-fl-builder.php:1457
+#: classes/class-fl-builder.php:1483
 msgid "Duplicate Layout"
 msgstr ""
 
-#: classes/class-fl-builder.php:1463
+#: classes/class-fl-builder.php:1489
 msgid "Preview Layout"
 msgstr ""
 
-#: classes/class-fl-builder.php:1470 includes/ui-js-templates.php:81
+#: classes/class-fl-builder.php:1496 includes/ui-js-templates.php:81
 msgid "Responsive Editing"
 msgstr ""
 
-#: classes/class-fl-builder.php:1477
+#: classes/class-fl-builder.php:1503
 msgid "Reverse Responsive Editing"
 msgstr ""
 
-#: classes/class-fl-builder.php:1489
+#: classes/class-fl-builder.php:1515
 msgid "Layout CSS & Javascript"
 msgstr ""
 
-#: classes/class-fl-builder.php:1497
+#: classes/class-fl-builder.php:1523
 #: includes/admin-settings-import-export.php:8 includes/global-settings.php:4
 #: includes/ui-js-config.php:217
 msgid "Global Settings"
 msgstr ""
 
-#: classes/class-fl-builder.php:1504
+#: classes/class-fl-builder.php:1530
 #: extensions/fl-builder-global-styles/includes/controls.php:4
 #: includes/admin-settings-import-export.php:9
 msgid "Global Styles"
 msgstr ""
 
-#: classes/class-fl-builder.php:1514
+#: classes/class-fl-builder.php:1540
 #: extensions/fl-builder-template-data-exporter/includes/template-data-exporter.php:11
 msgid "Themer Layouts"
 msgstr ""
 
-#: classes/class-fl-builder.php:1525
+#: classes/class-fl-builder.php:1551
 msgid "Change UI Brightness"
 msgstr ""
 
-#: classes/class-fl-builder.php:1531 includes/row-settings.php:244
+#: classes/class-fl-builder.php:1557 includes/row-settings.php:244
 #: includes/row-settings.php:403 includes/row-settings.php:512
 #: modules/audio/audio.php:83 modules/gallery/gallery.php:251
 #: modules/photo/photo.php:578 modules/slideshow/slideshow.php:265
-#: modules/video/video.php:346
+#: modules/video/video.php:356
 msgid "Media Library"
 msgstr ""
 
-#: classes/class-fl-builder.php:1537 classes/class-fl-builder.php:1560
+#: classes/class-fl-builder.php:1563 classes/class-fl-builder.php:1586
 msgid "WordPress Admin"
 msgstr ""
 
-#: classes/class-fl-builder.php:1544 classes/class-fl-builder.php:1614
+#: classes/class-fl-builder.php:1570 classes/class-fl-builder.php:1640
 msgid "Help"
 msgstr ""
 
-#: classes/class-fl-builder.php:1551
+#: classes/class-fl-builder.php:1577
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: classes/class-fl-builder.php:1589 includes/ui-js-config.php:233
+#: classes/class-fl-builder.php:1615 includes/ui-js-config.php:233
 msgid "Manage Templates"
 msgstr ""
 
-#: classes/class-fl-builder.php:1603
+#: classes/class-fl-builder.php:1629
 msgid "Customize Theme"
 msgstr ""
 
-#: classes/class-fl-builder.php:1633
+#: classes/class-fl-builder.php:1659
 msgid "Take A Tour"
 msgstr ""
 
-#: classes/class-fl-builder.php:1641
+#: classes/class-fl-builder.php:1667
 msgid "View Knowledge Base"
 msgstr ""
 
-#: classes/class-fl-builder.php:1649
+#: classes/class-fl-builder.php:1675
 #: extensions/fl-builder-white-label/includes/admin-settings-help-button.php:59
 #: includes/ui-js-config.php:318
 msgid "Contact Support"
 msgstr ""
 
-#: classes/class-fl-builder.php:1845
+#: classes/class-fl-builder.php:1871
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates.php:11
 #: extensions/fl-builder-user-templates/includes/admin-add-new-form.php:36
 #: includes/ui-js-config.php:236 includes/ui-js-config.php:352
 msgid "Module"
 msgstr ""
 
-#: classes/class-fl-builder.php:1848
+#: classes/class-fl-builder.php:1874
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates.php:10
 #: includes/column-settings.php:4 includes/ui-js-config.php:195
 #: modules/box/box.php:318 modules/box/box.php:334 modules/box/box.php:480
 msgid "Column"
 msgstr ""
 
-#: classes/class-fl-builder.php:1851
+#: classes/class-fl-builder.php:1877
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates.php:9
 #: includes/row-settings.php:6 includes/ui-js-config.php:266
 #: includes/ui-js-config.php:353 modules/box/box.php:317
@@ -1912,33 +1912,33 @@ msgstr ""
 msgid "Row"
 msgstr ""
 
-#: classes/class-fl-builder.php:1880
+#: classes/class-fl-builder.php:1906
 msgid "Dev Feedback"
 msgstr ""
 
-#: classes/class-fl-builder.php:1892
+#: classes/class-fl-builder.php:1918
 msgid "Alpha Feedback"
 msgstr ""
 
-#: classes/class-fl-builder.php:1895
+#: classes/class-fl-builder.php:1921
 msgid "Beta Feedback"
 msgstr ""
 
-#: classes/class-fl-builder.php:1911
+#: classes/class-fl-builder.php:1937
 msgid "Buy Now"
 msgstr ""
 
-#: classes/class-fl-builder.php:1915 includes/ui-js-config.php:211
+#: classes/class-fl-builder.php:1941 includes/ui-js-config.php:211
 #: includes/ui-js-templates.php:71
 msgid "Done"
 msgstr ""
 
-#: classes/class-fl-builder.php:4399
+#: classes/class-fl-builder.php:4425
 #. translators: %s: extension type
 msgid "The uploaded file is not a valid %s extension."
 msgstr ""
 
-#: classes/class-fl-builder.php:4555
+#: classes/class-fl-builder.php:4581
 msgid ""
 "You must call the_content in the current theme template in order for Beaver "
 "Builder to work on this layout."
@@ -2993,8 +2993,8 @@ msgid "Edit Template"
 msgstr ""
 
 #: extensions/fl-builder-core-templates-admin/includes/admin-core-templates-edit.php:12
-#: modules/callout/callout.php:523 modules/post-carousel/post-carousel.php:403
-#: modules/post-grid/post-grid.php:792 modules/post-slider/post-slider.php:621
+#: modules/callout/callout.php:523 modules/post-carousel/post-carousel.php:404
+#: modules/post-grid/post-grid.php:792 modules/post-slider/post-slider.php:622
 msgid "Image"
 msgstr ""
 
@@ -3003,8 +3003,8 @@ msgstr ""
 #: includes/column-settings.php:202 includes/row-settings.php:299
 #: modules/callout/callout.php:560 modules/callout/callout.php:648
 #: modules/content-slider/content-slider.php:691
-#: modules/post-slider/post-slider.php:770
-#: modules/post-slider/post-slider.php:789
+#: modules/post-slider/post-slider.php:771
+#: modules/post-slider/post-slider.php:790
 msgid "Position"
 msgstr ""
 
@@ -3097,7 +3097,7 @@ msgstr ""
 
 #: extensions/fl-builder-global-styles/includes/controls.php:11
 #: includes/column-settings.php:94 includes/loop-settings-filter.php:35
-#: modules/button/button.php:207 modules/button/button.php:403
+#: modules/button/button.php:213 modules/button/button.php:409
 #: modules/button-group/button-group.php:300
 #: modules/button-group/button-group.php:449
 #: modules/button-group/button-group.php:588 modules/callout/callout.php:394
@@ -3116,20 +3116,20 @@ msgstr ""
 #: extensions/fl-builder-global-styles/includes/controls.php:134
 #: extensions/fl-builder-global-styles/includes/controls.php:177
 #: modules/accordion/accordion.php:375 modules/accordion/accordion.php:480
-#: modules/button/button.php:435 modules/button-group/button-group.php:320
+#: modules/button/button.php:441 modules/button-group/button-group.php:320
 #: modules/button-group/button-group.php:608
 #: modules/content-slider/content-slider.php:764
 #: modules/content-slider/content-slider.php:785
 #: modules/heading/heading.php:212 modules/list/list.php:448
 #: modules/list/list.php:474 modules/menu/menu.php:1445
-#: modules/post-carousel/post-carousel.php:655
-#: modules/post-carousel/post-carousel.php:714
-#: modules/post-carousel/post-carousel.php:773
-#: modules/post-carousel/post-carousel.php:815
-#: modules/post-slider/post-slider.php:896
-#: modules/post-slider/post-slider.php:955
-#: modules/post-slider/post-slider.php:1015
-#: modules/post-slider/post-slider.php:1057 modules/rich-text/rich-text.php:68
+#: modules/post-carousel/post-carousel.php:656
+#: modules/post-carousel/post-carousel.php:715
+#: modules/post-carousel/post-carousel.php:774
+#: modules/post-carousel/post-carousel.php:816
+#: modules/post-slider/post-slider.php:897
+#: modules/post-slider/post-slider.php:956
+#: modules/post-slider/post-slider.php:1016
+#: modules/post-slider/post-slider.php:1058 modules/rich-text/rich-text.php:68
 #: modules/search/search.php:626 modules/search/search.php:755
 #: modules/subscribe-form/subscribe-form.php:742 modules/tabs/tabs.php:374
 #: modules/tabs/tabs.php:417
@@ -3195,8 +3195,8 @@ msgstr ""
 
 #: extensions/fl-builder-global-styles/includes/controls.php:113
 #: modules/audio/audio.php:84 modules/audio/audio.php:109
-#: modules/box/box.php:705 modules/button/button.php:255
-#: modules/button/button.php:272 modules/button-group/button-group.php:496
+#: modules/box/box.php:705 modules/button/button.php:261
+#: modules/button/button.php:278 modules/button-group/button-group.php:496
 #: modules/button-group/button-group.php:513 modules/callout/callout.php:762
 #: modules/callout/callout.php:769 modules/callout/callout.php:789
 #: modules/content-slider/content-slider.php:796
@@ -3213,10 +3213,10 @@ msgstr ""
 #: extensions/fl-builder-global-styles/includes/controls.php:153
 #: modules/callout/callout.php:708 modules/icon/icon.php:160
 #: modules/icon-group/icon-group.php:148 modules/menu/menu.php:1249
-#: modules/menu/menu.php:1434 modules/post-carousel/post-carousel.php:645
-#: modules/post-carousel/post-carousel.php:805
-#: modules/post-slider/post-slider.php:886
-#: modules/post-slider/post-slider.php:1047 modules/search/search.php:590
+#: modules/menu/menu.php:1434 modules/post-carousel/post-carousel.php:646
+#: modules/post-carousel/post-carousel.php:806
+#: modules/post-slider/post-slider.php:887
+#: modules/post-slider/post-slider.php:1048 modules/search/search.php:590
 #: modules/subscribe-form/subscribe-form.php:732
 msgid "Hover Color"
 msgstr ""
@@ -3232,9 +3232,9 @@ msgstr ""
 
 #: extensions/fl-builder-global-styles/includes/controls.php:161
 #: includes/column-settings.php:139 includes/row-settings.php:182
-#: modules/button/button.php:478 modules/button-group/button-group.php:326
+#: modules/button/button.php:484 modules/button-group/button-group.php:326
 #: modules/button-group/button-group.php:614
-#: modules/post-slider/post-slider.php:624
+#: modules/post-slider/post-slider.php:625
 #: modules/subscribe-form/subscribe-form.php:752
 msgid "Background"
 msgstr ""
@@ -3247,7 +3247,7 @@ msgstr ""
 #: includes/column-settings.php:372 includes/column-settings.php:376
 #: includes/row-settings.php:734 includes/row-settings.php:738
 #: modules/box/box.php:689 modules/box/box.php:948
-#: modules/button/button.php:554 modules/button/button.php:558
+#: modules/button/button.php:560 modules/button/button.php:564
 #: modules/button-group/button-group.php:407
 #: modules/button-group/button-group.php:411
 #: modules/button-group/button-group.php:691
@@ -3264,7 +3264,7 @@ msgid "Border"
 msgstr ""
 
 #: extensions/fl-builder-global-styles/includes/controls.php:188
-#: modules/button/button.php:569 modules/button-group/button-group.php:420
+#: modules/button/button.php:575 modules/button-group/button-group.php:420
 #: modules/button-group/button-group.php:704
 #: modules/north-commerce/north-commerce.php:211
 #: modules/subscribe-form/subscribe-form.php:795
@@ -3793,14 +3793,14 @@ msgstr ""
 
 #: extensions/fl-theme-builder-core/classes/class-fl-page-data.php:92
 #: modules/post-grid/post-grid.php:928 modules/post-grid/post-grid.php:937
-#: modules/post-slider/post-slider.php:700
+#: modules/post-slider/post-slider.php:701
 msgid "Comments"
 msgstr ""
 
 #: extensions/fl-theme-builder-core/classes/class-fl-page-data.php:96
 #: includes/ui-loop-settings-filter.php:87 includes/ui-loop-settings.php:82
-#: includes/ui-simple-loop.php:65 modules/post-carousel/post-carousel.php:480
-#: modules/post-grid/post-grid.php:875 modules/post-slider/post-slider.php:661
+#: includes/ui-simple-loop.php:65 modules/post-carousel/post-carousel.php:481
+#: modules/post-grid/post-grid.php:875 modules/post-slider/post-slider.php:662
 msgid "Author"
 msgstr ""
 
@@ -4407,7 +4407,7 @@ msgstr ""
 #: includes/column-settings.php:7 includes/row-settings.php:10
 #: includes/ui-field-border.php:166 includes/ui-field-typography.php:276
 #: modules/accordion/accordion.php:277 modules/audio/audio.php:146
-#: modules/button/button.php:331 modules/button-group/button-group.php:213
+#: modules/button/button.php:337 modules/button-group/button-group.php:213
 #: modules/button-group/button-group.php:573 modules/callout/callout.php:412
 #: modules/content-slider/content-slider.php:463
 #: modules/content-slider/content-slider.php:684
@@ -4419,8 +4419,8 @@ msgstr ""
 #: modules/north-commerce/north-commerce.php:104
 #: modules/north-commerce/north-commerce.php:110
 #: modules/numbers/numbers.php:311 modules/photo/photo.php:704
-#: modules/post-carousel/post-carousel.php:573
-#: modules/post-grid/post-grid.php:1057 modules/post-slider/post-slider.php:763
+#: modules/post-carousel/post-carousel.php:574
+#: modules/post-grid/post-grid.php:1057 modules/post-slider/post-slider.php:764
 #: modules/pricing-table/pricing-table.php:502
 #: modules/pricing-table/pricing-table.php:1164
 #: modules/rich-text/rich-text.php:48 modules/search/search.php:443
@@ -4445,32 +4445,32 @@ msgid ""
 "height regardless of how much content is in each of them."
 msgstr ""
 
-#: includes/column-settings.php:67 includes/row-settings.php:123
+#: includes/column-settings.php:67 includes/row-settings.php:110
 #: modules/box/box.php:527 modules/box/box.php:901
 msgid "Aspect Ratio"
 msgstr ""
 
-#: includes/column-settings.php:80 includes/row-settings.php:110
+#: includes/column-settings.php:80 includes/row-settings.php:123
 msgid "Vertical Alignment"
 msgstr ""
 
 #: includes/column-settings.php:109 includes/row-settings.php:152
 #: modules/callout/callout.php:822 modules/menu/menu.php:895
 #: modules/menu/menu.php:1015 modules/menu/menu.php:1156
-#: modules/post-carousel/post-carousel.php:687
-#: modules/post-carousel/post-carousel.php:746
-#: modules/post-grid/post-grid.php:1169 modules/post-slider/post-slider.php:928
-#: modules/post-slider/post-slider.php:987
+#: modules/post-carousel/post-carousel.php:688
+#: modules/post-carousel/post-carousel.php:747
+#: modules/post-grid/post-grid.php:1169 modules/post-slider/post-slider.php:929
+#: modules/post-slider/post-slider.php:988
 msgid "Link Color"
 msgstr ""
 
 #: includes/column-settings.php:119 includes/row-settings.php:162
 #: modules/callout/callout.php:836 modules/menu/menu.php:915
 #: modules/menu/menu.php:1035 modules/menu/menu.php:1167
-#: modules/post-carousel/post-carousel.php:704
-#: modules/post-carousel/post-carousel.php:763
-#: modules/post-grid/post-grid.php:1181 modules/post-slider/post-slider.php:945
-#: modules/post-slider/post-slider.php:1005
+#: modules/post-carousel/post-carousel.php:705
+#: modules/post-carousel/post-carousel.php:764
+#: modules/post-grid/post-grid.php:1181 modules/post-slider/post-slider.php:946
+#: modules/post-slider/post-slider.php:1006
 msgid "Link Hover Color"
 msgstr ""
 
@@ -4598,7 +4598,7 @@ msgstr ""
 #: includes/column-settings.php:344 includes/row-settings.php:692
 #: modules/accordion/accordion.php:348 modules/accordion/accordion.php:453
 #: modules/box/box.php:663 modules/box/box.php:934
-#: modules/button/button.php:506 modules/button-group/button-group.php:357
+#: modules/button/button.php:512 modules/button-group/button-group.php:357
 #: modules/button-group/button-group.php:642 modules/callout/callout.php:420
 #: modules/callout/callout.php:718
 #: modules/content-slider/content-slider.php:619
@@ -4607,18 +4607,18 @@ msgstr ""
 #: modules/list/list.php:617 modules/login-form/login-form.php:750
 #: modules/menu/menu.php:1217 modules/menu/menu.php:1401
 #: modules/north-commerce/north-commerce.php:153
-#: modules/post-carousel/post-carousel.php:581
-#: modules/post-slider/post-slider.php:822 modules/search/search.php:521
+#: modules/post-carousel/post-carousel.php:582
+#: modules/post-slider/post-slider.php:823 modules/search/search.php:521
 #: modules/search/search.php:602 modules/subscribe-form/subscribe-form.php:757
 #: modules/tabs/tabs.php:245
 msgid "Background Color"
 msgstr ""
 
 #: includes/column-settings.php:359 includes/row-settings.php:707
-#: modules/button/button.php:539 modules/button-group/button-group.php:392
+#: modules/button/button.php:545 modules/button-group/button-group.php:392
 #: modules/button-group/button-group.php:676 modules/callout/callout.php:1051
 #: modules/content-slider/content-slider.php:1019 modules/cta/cta.php:520
-#: modules/post-slider/post-slider.php:830
+#: modules/post-slider/post-slider.php:831
 msgid "Background Gradient"
 msgstr ""
 
@@ -4639,7 +4639,7 @@ msgstr ""
 #: includes/global-settings.php:235 includes/row-settings.php:792
 #: modules/accordion/accordion.php:359 modules/accordion/accordion.php:464
 #: modules/box/box.php:507 modules/box/box.php:823
-#: modules/button/button.php:390 modules/button-group/button-group.php:580
+#: modules/button/button.php:396 modules/button-group/button-group.php:580
 #: modules/callout/callout.php:451
 #: modules/content-slider/content-slider.php:732 modules/cta/cta.php:249
 #: modules/login-form/login-form.php:737 modules/menu/menu.php:1260
@@ -4842,7 +4842,7 @@ msgstr ""
 
 #: includes/global-settings.php:162 includes/global-settings.php:176
 #: includes/row-settings.php:21 includes/row-settings.php:39
-#: modules/button/button.php:342 modules/callout/callout.php:926
+#: modules/button/button.php:348 modules/callout/callout.php:926
 #: modules/contact-form/contact-form.php:614
 #: modules/login-form/login-form.php:393 modules/login-form/login-form.php:550
 #: modules/post-grid/post-grid.php:1438
@@ -4986,8 +4986,8 @@ msgstr ""
 #: includes/loop-settings-filter.php:36 includes/ui-loop-settings-filter.php:89
 #: includes/ui-loop-settings.php:84 includes/ui-simple-loop.php:68
 #: modules/countdown/countdown.php:217 modules/countdown/countdown.php:221
-#: modules/post-carousel/post-carousel.php:489
-#: modules/post-grid/post-grid.php:898 modules/post-slider/post-slider.php:670
+#: modules/post-carousel/post-carousel.php:490
+#: modules/post-grid/post-grid.php:898 modules/post-slider/post-slider.php:671
 #: modules/woocommerce/woocommerce.php:244
 msgid "Date"
 msgstr ""
@@ -5123,7 +5123,7 @@ msgstr ""
 
 #: includes/row-settings.php:142 modules/accordion/accordion.php:336
 #: modules/accordion/accordion.php:441 modules/box/box.php:676
-#: modules/box/box.php:920 modules/button/button.php:408
+#: modules/box/box.php:920 modules/button/button.php:414
 #: modules/button-group/button-group.php:305
 #: modules/button-group/button-group.php:593 modules/callout/callout.php:500
 #: modules/content-slider/content-slider.php:495
@@ -5167,7 +5167,7 @@ msgstr ""
 msgid "YouTube or Vimeo"
 msgstr ""
 
-#: includes/row-settings.php:425 modules/video/video.php:361
+#: includes/row-settings.php:425
 msgid "Video (MP4)"
 msgstr ""
 
@@ -5177,7 +5177,7 @@ msgid ""
 "browsers support this format."
 msgstr ""
 
-#: includes/row-settings.php:434 modules/video/video.php:369
+#: includes/row-settings.php:434
 msgid "Video (WebM)"
 msgstr ""
 
@@ -5259,14 +5259,14 @@ msgid "Speed"
 msgstr ""
 
 #: includes/row-settings.php:558 modules/content-slider/content-slider.php:407
-#: modules/post-slider/post-slider.php:544 modules/slideshow/slideshow.php:394
+#: modules/post-slider/post-slider.php:545 modules/slideshow/slideshow.php:394
 #: modules/testimonials/testimonials.php:84
 msgid "Transition"
 msgstr ""
 
 #: includes/row-settings.php:562 modules/content-slider/content-slider.php:411
-#: modules/post-carousel/post-carousel.php:389
-#: modules/post-grid/post-grid.php:1200 modules/post-slider/post-slider.php:547
+#: modules/post-carousel/post-carousel.php:390
+#: modules/post-grid/post-grid.php:1200 modules/post-slider/post-slider.php:548
 #: modules/slideshow/slideshow.php:398 modules/testimonials/testimonials.php:88
 msgid "Fade"
 msgstr ""
@@ -5308,8 +5308,8 @@ msgid "Boxes Grow"
 msgstr ""
 
 #: includes/row-settings.php:579 modules/content-slider/content-slider.php:416
-#: modules/post-carousel/post-carousel.php:299
-#: modules/post-slider/post-slider.php:553 modules/slideshow/slideshow.php:412
+#: modules/post-carousel/post-carousel.php:300
+#: modules/post-slider/post-slider.php:554 modules/slideshow/slideshow.php:412
 #: modules/testimonials/testimonials.php:93
 msgid "Transition Speed"
 msgstr ""
@@ -5420,14 +5420,14 @@ msgstr ""
 
 #: includes/ui-field-animation.php:132
 #: modules/content-slider/content-slider.php:395
-#: modules/post-carousel/post-carousel.php:280
-#: modules/post-slider/post-slider.php:534
+#: modules/post-carousel/post-carousel.php:281
+#: modules/post-slider/post-slider.php:535
 #: modules/testimonials/testimonials.php:73
 msgid "Delay"
 msgstr ""
 
 #: includes/ui-field-animation.php:138
-#: modules/pricing-table/pricing-table.php:893 modules/video/video.php:470
+#: modules/pricing-table/pricing-table.php:893 modules/video/video.php:480
 msgid "Duration"
 msgstr ""
 
@@ -6280,7 +6280,7 @@ msgid "Missing header or wrong module type!"
 msgstr ""
 
 #: includes/ui-js-config.php:376 modules/box/box.php:176
-#: modules/post-carousel/post-carousel.php:246
+#: modules/post-carousel/post-carousel.php:247
 msgid "Grid"
 msgstr ""
 
@@ -6823,17 +6823,17 @@ msgid "Item"
 msgstr ""
 
 #: modules/accordion/accordion.php:188 modules/accordion/accordion.php:514
-#: modules/button/button.php:289 modules/button-group/button-group.php:531
+#: modules/button/button.php:295 modules/button-group/button-group.php:531
 #: modules/post-grid/post-grid.php:1010 modules/tabs/tabs.php:161
 #: modules/tabs/tabs.php:451
 msgid "Content Type"
 msgstr ""
 
 #: modules/accordion/accordion.php:191
-#: modules/post-carousel/post-carousel.php:724
-#: modules/post-grid/post-grid.php:997 modules/post-slider/post-slider.php:710
-#: modules/post-slider/post-slider.php:714
-#: modules/post-slider/post-slider.php:965 modules/tabs/tabs.php:164
+#: modules/post-carousel/post-carousel.php:725
+#: modules/post-grid/post-grid.php:997 modules/post-slider/post-slider.php:711
+#: modules/post-slider/post-slider.php:715
+#: modules/post-slider/post-slider.php:966 modules/tabs/tabs.php:164
 msgid "Post Content"
 msgstr ""
 
@@ -6854,10 +6854,10 @@ msgid "..."
 msgstr ""
 
 #: modules/accordion/accordion.php:218
-#: modules/post-carousel/post-carousel.php:550
-#: modules/post-carousel/post-carousel.php:783
-#: modules/post-grid/post-grid.php:1035 modules/post-slider/post-slider.php:740
-#: modules/post-slider/post-slider.php:1025 modules/tabs/tabs.php:191
+#: modules/post-carousel/post-carousel.php:551
+#: modules/post-carousel/post-carousel.php:784
+#: modules/post-grid/post-grid.php:1035 modules/post-slider/post-slider.php:741
+#: modules/post-slider/post-slider.php:1026 modules/tabs/tabs.php:191
 msgid "More Link"
 msgstr ""
 
@@ -6868,28 +6868,28 @@ msgstr ""
 #: modules/contact-form/contact-form.php:417
 #: modules/contact-form/contact-form.php:456
 #: modules/contact-form/contact-form.php:776 modules/menu/menu.php:676
-#: modules/menu/menu.php:814 modules/post-carousel/post-carousel.php:406
-#: modules/post-carousel/post-carousel.php:483
-#: modules/post-carousel/post-carousel.php:492
-#: modules/post-carousel/post-carousel.php:527
-#: modules/post-carousel/post-carousel.php:553
+#: modules/menu/menu.php:814 modules/post-carousel/post-carousel.php:407
+#: modules/post-carousel/post-carousel.php:484
+#: modules/post-carousel/post-carousel.php:493
+#: modules/post-carousel/post-carousel.php:528
+#: modules/post-carousel/post-carousel.php:554
 #: modules/post-grid/post-grid.php:795 modules/post-grid/post-grid.php:878
 #: modules/post-grid/post-grid.php:901 modules/post-grid/post-grid.php:931
 #: modules/post-grid/post-grid.php:940 modules/post-grid/post-grid.php:965
 #: modules/post-grid/post-grid.php:1004 modules/post-grid/post-grid.php:1038
-#: modules/post-grid/post-grid.php:1375 modules/post-slider/post-slider.php:610
-#: modules/post-slider/post-slider.php:664
-#: modules/post-slider/post-slider.php:673
-#: modules/post-slider/post-slider.php:703
-#: modules/post-slider/post-slider.php:717
-#: modules/post-slider/post-slider.php:743 modules/search/search.php:878
+#: modules/post-grid/post-grid.php:1375 modules/post-slider/post-slider.php:611
+#: modules/post-slider/post-slider.php:665
+#: modules/post-slider/post-slider.php:674
+#: modules/post-slider/post-slider.php:704
+#: modules/post-slider/post-slider.php:718
+#: modules/post-slider/post-slider.php:744 modules/search/search.php:878
 #: modules/search/search.php:955 modules/search/search.php:1002
 #: modules/subscribe-form/subscribe-form.php:363
 #: modules/subscribe-form/subscribe-form.php:387
 #: modules/subscribe-form/subscribe-form.php:818 modules/tabs/tabs.php:194
-#: modules/video/video.php:446 modules/video/video.php:455
-#: modules/video/video.php:464 modules/video/video.php:473
-#: modules/video/video.php:482 modules/video/video.php:491
+#: modules/video/video.php:456 modules/video/video.php:465
+#: modules/video/video.php:474 modules/video/video.php:483
+#: modules/video/video.php:492 modules/video/video.php:501
 msgid "Show"
 msgstr ""
 
@@ -6900,41 +6900,41 @@ msgstr ""
 #: modules/contact-form/contact-form.php:418
 #: modules/contact-form/contact-form.php:457
 #: modules/contact-form/contact-form.php:777 modules/menu/menu.php:677
-#: modules/menu/menu.php:815 modules/post-carousel/post-carousel.php:407
-#: modules/post-carousel/post-carousel.php:484
-#: modules/post-carousel/post-carousel.php:493
-#: modules/post-carousel/post-carousel.php:528
-#: modules/post-carousel/post-carousel.php:554
+#: modules/menu/menu.php:815 modules/post-carousel/post-carousel.php:408
+#: modules/post-carousel/post-carousel.php:485
+#: modules/post-carousel/post-carousel.php:494
+#: modules/post-carousel/post-carousel.php:529
+#: modules/post-carousel/post-carousel.php:555
 #: modules/post-grid/post-grid.php:796 modules/post-grid/post-grid.php:879
 #: modules/post-grid/post-grid.php:902 modules/post-grid/post-grid.php:932
 #: modules/post-grid/post-grid.php:941 modules/post-grid/post-grid.php:966
 #: modules/post-grid/post-grid.php:1005 modules/post-grid/post-grid.php:1039
-#: modules/post-grid/post-grid.php:1376 modules/post-slider/post-slider.php:611
-#: modules/post-slider/post-slider.php:665
-#: modules/post-slider/post-slider.php:674
-#: modules/post-slider/post-slider.php:704
-#: modules/post-slider/post-slider.php:718
-#: modules/post-slider/post-slider.php:744 modules/search/search.php:877
+#: modules/post-grid/post-grid.php:1376 modules/post-slider/post-slider.php:612
+#: modules/post-slider/post-slider.php:666
+#: modules/post-slider/post-slider.php:675
+#: modules/post-slider/post-slider.php:705
+#: modules/post-slider/post-slider.php:719
+#: modules/post-slider/post-slider.php:745 modules/search/search.php:877
 #: modules/search/search.php:956 modules/search/search.php:1003
 #: modules/subscribe-form/subscribe-form.php:364
 #: modules/subscribe-form/subscribe-form.php:388
 #: modules/subscribe-form/subscribe-form.php:819 modules/tabs/tabs.php:195
-#: modules/video/video.php:447 modules/video/video.php:456
-#: modules/video/video.php:465 modules/video/video.php:474
-#: modules/video/video.php:483 modules/video/video.php:492
+#: modules/video/video.php:457 modules/video/video.php:466
+#: modules/video/video.php:475 modules/video/video.php:484
+#: modules/video/video.php:493 modules/video/video.php:502
 msgid "Hide"
 msgstr ""
 
 #: modules/accordion/accordion.php:232
-#: modules/post-carousel/post-carousel.php:565
-#: modules/post-grid/post-grid.php:1049 modules/post-slider/post-slider.php:755
+#: modules/post-carousel/post-carousel.php:566
+#: modules/post-grid/post-grid.php:1049 modules/post-slider/post-slider.php:756
 #: modules/tabs/tabs.php:205
 msgid "More Link Text"
 msgstr ""
 
 #: modules/accordion/accordion.php:233 modules/callout/callout.php:807
-#: modules/post-carousel/post-carousel.php:566
-#: modules/post-grid/post-grid.php:1050 modules/post-slider/post-slider.php:756
+#: modules/post-carousel/post-carousel.php:567
+#: modules/post-grid/post-grid.php:1050 modules/post-slider/post-slider.php:757
 #: modules/tabs/tabs.php:206
 msgid "Read More"
 msgstr ""
@@ -6978,7 +6978,7 @@ msgid "Item Border"
 msgstr ""
 
 #: modules/accordion/accordion.php:386 modules/accordion/accordion.php:399
-#: modules/button/button.php:217 modules/button/button.php:445
+#: modules/button/button.php:223 modules/button/button.php:451
 #: modules/button-group/button-group.php:458 modules/callout/callout.php:535
 #: modules/callout/callout.php:634 modules/callout/callout.php:638
 #: modules/icon/icon.php:13 modules/icon/icon.php:72 modules/icon/icon.php:114
@@ -6990,7 +6990,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: modules/accordion/accordion.php:390 modules/button/button.php:228
+#: modules/accordion/accordion.php:390 modules/button/button.php:234
 #: modules/button-group/button-group.php:469
 #: modules/login-form/login-form.php:266 modules/search/search.php:431
 msgid "Icon Position"
@@ -6999,8 +6999,8 @@ msgstr ""
 #: modules/accordion/accordion.php:393
 #: modules/content-slider/content-slider.php:695 modules/menu/menu.php:662
 #: modules/menu/menu.php:763 modules/post-grid/post-grid.php:815
-#: modules/post-slider/post-slider.php:774
-#: modules/post-slider/post-slider.php:793 modules/search/search.php:380
+#: modules/post-slider/post-slider.php:775
+#: modules/post-slider/post-slider.php:794 modules/search/search.php:380
 #: modules/social-buttons/social-buttons.php:98
 msgid "Left"
 msgstr ""
@@ -7008,8 +7008,8 @@ msgstr ""
 #: modules/accordion/accordion.php:394
 #: modules/content-slider/content-slider.php:697 modules/menu/menu.php:663
 #: modules/menu/menu.php:764 modules/post-grid/post-grid.php:817
-#: modules/post-slider/post-slider.php:775
-#: modules/post-slider/post-slider.php:794 modules/search/search.php:381
+#: modules/post-slider/post-slider.php:776
+#: modules/post-slider/post-slider.php:795 modules/search/search.php:381
 #: modules/social-buttons/social-buttons.php:99
 msgid "Right"
 msgstr ""
@@ -7018,14 +7018,14 @@ msgstr ""
 msgid "Active Icon"
 msgstr ""
 
-#: modules/accordion/accordion.php:408 modules/button/button.php:448
-#: modules/icon/icon.php:171 modules/post-carousel/post-carousel.php:595
+#: modules/accordion/accordion.php:408 modules/button/button.php:454
+#: modules/icon/icon.php:171 modules/post-carousel/post-carousel.php:596
 #: modules/post-grid/post-grid.php:1263
 msgid "DuoTone Icon Primary Color"
 msgstr ""
 
-#: modules/accordion/accordion.php:421 modules/button/button.php:462
-#: modules/icon/icon.php:185 modules/post-carousel/post-carousel.php:608
+#: modules/accordion/accordion.php:421 modules/button/button.php:468
+#: modules/icon/icon.php:185 modules/post-carousel/post-carousel.php:609
 #: modules/post-grid/post-grid.php:1276
 msgid "DuoTone Icon Secondary Color"
 msgstr ""
@@ -7033,12 +7033,12 @@ msgstr ""
 #: modules/accordion/accordion.php:436 modules/accordion/accordion.php:569
 #: modules/bigcommerce/bigcommerce.php:46
 #: modules/content-slider/content-slider.php:687 modules/list/list.php:588
-#: modules/post-carousel/post-carousel.php:520
-#: modules/post-carousel/post-carousel.php:524
-#: modules/post-carousel/post-carousel.php:860
+#: modules/post-carousel/post-carousel.php:521
+#: modules/post-carousel/post-carousel.php:525
+#: modules/post-carousel/post-carousel.php:861
 #: modules/post-grid/post-grid.php:1001 modules/post-grid/post-grid.php:1321
-#: modules/post-slider/post-slider.php:766
-#: modules/post-slider/post-slider.php:1103 modules/search/search.php:889
+#: modules/post-slider/post-slider.php:767
+#: modules/post-slider/post-slider.php:1104 modules/search/search.php:889
 #: modules/search/search.php:999 modules/tabs/tabs.php:385
 #: modules/tabs/tabs.php:506
 msgid "Content"
@@ -7076,6 +7076,18 @@ msgstr ""
 msgid "Select Template"
 msgstr ""
 
+#: modules/accordion/includes/frontend.js.php:11
+#: modules/accordion/includes/frontend.php:19
+#: modules/accordion/includes/frontend.php:65
+msgid "Expand"
+msgstr ""
+
+#: modules/accordion/includes/frontend.js.php:12
+#: modules/accordion/includes/frontend.php:19
+#: modules/accordion/includes/frontend.php:65
+msgid "Collapse"
+msgstr ""
+
 #: modules/acf-block/acf-block.php:10
 msgid "ACF Block"
 msgstr ""
@@ -7101,15 +7113,15 @@ msgid "Audio Type"
 msgstr ""
 
 #: modules/audio/audio.php:118 modules/content-slider/content-slider.php:351
-#: modules/post-carousel/post-carousel.php:262
-#: modules/post-slider/post-slider.php:516 modules/slideshow/slideshow.php:377
-#: modules/testimonials/testimonials.php:64 modules/video/video.php:402
+#: modules/post-carousel/post-carousel.php:263
+#: modules/post-slider/post-slider.php:517 modules/slideshow/slideshow.php:377
+#: modules/testimonials/testimonials.php:64 modules/video/video.php:412
 msgid "Auto Play"
 msgstr ""
 
 #: modules/audio/audio.php:130 modules/content-slider/content-slider.php:386
-#: modules/post-carousel/post-carousel.php:271
-#: modules/post-slider/post-slider.php:525 modules/video/video.php:414
+#: modules/post-carousel/post-carousel.php:272
+#: modules/post-slider/post-slider.php:526 modules/video/video.php:424
 msgid "Loop"
 msgstr ""
 
@@ -7221,10 +7233,10 @@ msgstr ""
 
 #: modules/box/box.php:103 modules/callout/callout.php:583
 #: modules/content-slider/content-slider.php:533 modules/photo/photo.php:718
-#: modules/post-carousel/post-carousel.php:429
-#: modules/post-carousel/post-carousel.php:840
-#: modules/post-slider/post-slider.php:650
-#: modules/post-slider/post-slider.php:1082 modules/search/search.php:981
+#: modules/post-carousel/post-carousel.php:430
+#: modules/post-carousel/post-carousel.php:841
+#: modules/post-slider/post-slider.php:651
+#: modules/post-slider/post-slider.php:1083 modules/search/search.php:981
 msgid "Square"
 msgstr ""
 
@@ -7339,7 +7351,7 @@ msgstr ""
 msgid "Linking"
 msgstr ""
 
-#: modules/box/box.php:707 modules/button/button.php:273
+#: modules/box/box.php:707 modules/button/button.php:279
 msgid "http://www.example.com"
 msgstr ""
 
@@ -7441,12 +7453,12 @@ msgstr ""
 msgid "A simple call to action button."
 msgstr ""
 
-#: modules/button/button.php:208 modules/button-group/button-group.php:450
+#: modules/button/button.php:214 modules/button-group/button-group.php:450
 #: modules/cta/cta.php:333
 msgid "Click Here"
 msgstr ""
 
-#: modules/button/button.php:231 modules/button-group/button-group.php:472
+#: modules/button/button.php:237 modules/button-group/button-group.php:472
 #: modules/callout/callout.php:902 modules/contact-form/contact-form.php:590
 #: modules/content-slider/content-slider.php:883 modules/cta/cta.php:396
 #: modules/login-form/login-form.php:369 modules/login-form/login-form.php:526
@@ -7456,7 +7468,7 @@ msgstr ""
 msgid "Before Text"
 msgstr ""
 
-#: modules/button/button.php:232 modules/button-group/button-group.php:473
+#: modules/button/button.php:238 modules/button-group/button-group.php:473
 #: modules/callout/callout.php:903 modules/contact-form/contact-form.php:591
 #: modules/content-slider/content-slider.php:884 modules/cta/cta.php:397
 #: modules/login-form/login-form.php:370 modules/login-form/login-form.php:527
@@ -7466,11 +7478,11 @@ msgstr ""
 msgid "After Text"
 msgstr ""
 
-#: modules/button/button.php:240 modules/button-group/button-group.php:481
+#: modules/button/button.php:246 modules/button-group/button-group.php:481
 msgid "Icon Visibility"
 msgstr ""
 
-#: modules/button/button.php:243 modules/button-group/button-group.php:484
+#: modules/button/button.php:249 modules/button-group/button-group.php:484
 #: modules/callout/callout.php:911 modules/contact-form/contact-form.php:599
 #: modules/content-slider/content-slider.php:892 modules/cta/cta.php:405
 #: modules/login-form/login-form.php:378 modules/login-form/login-form.php:535
@@ -7480,7 +7492,7 @@ msgstr ""
 msgid "Always Visible"
 msgstr ""
 
-#: modules/button/button.php:244 modules/button-group/button-group.php:485
+#: modules/button/button.php:250 modules/button-group/button-group.php:485
 #: modules/callout/callout.php:912 modules/contact-form/contact-form.php:600
 #: modules/content-slider/content-slider.php:893 modules/cta/cta.php:406
 #: modules/login-form/login-form.php:379 modules/login-form/login-form.php:536
@@ -7490,58 +7502,58 @@ msgstr ""
 msgid "Fade In On Hover"
 msgstr ""
 
-#: modules/button/button.php:252 modules/button-group/button-group.php:493
+#: modules/button/button.php:258 modules/button-group/button-group.php:493
 #: modules/gallery/gallery.php:297 modules/slideshow/slideshow.php:339
 msgid "Click Action"
 msgstr ""
 
-#: modules/button/button.php:256 modules/button-group/button-group.php:497
+#: modules/button/button.php:262 modules/button-group/button-group.php:497
 #: modules/gallery/gallery.php:301 modules/photo/photo.php:672
 msgid "Lightbox"
 msgstr ""
 
-#: modules/button/button.php:285 modules/button-group/button-group.php:527
+#: modules/button/button.php:291 modules/button-group/button-group.php:527
 msgid "Lightbox Content"
 msgstr ""
 
-#: modules/button/button.php:292 modules/button-group/button-group.php:534
+#: modules/button/button.php:298 modules/button-group/button-group.php:534
 #: modules/html/html.php:13
 msgid "HTML"
 msgstr ""
 
-#: modules/button/button.php:293 modules/button-group/button-group.php:535
+#: modules/button/button.php:299 modules/button-group/button-group.php:535
 #: modules/content-slider/content-slider.php:583 modules/video/video.php:18
 msgid "Video"
 msgstr ""
 
-#: modules/button/button.php:319 modules/button-group/button-group.php:561
+#: modules/button/button.php:325 modules/button-group/button-group.php:561
 msgid "Video Link"
 msgstr ""
 
-#: modules/button/button.php:343 modules/button-group/button-group.php:233
+#: modules/button/button.php:349 modules/button-group/button-group.php:233
 #: modules/search/search.php:455 modules/search/search.php:682
 #: modules/search/search.php:922 modules/social-buttons/social-buttons.php:71
 msgid "Custom"
 msgstr ""
 
-#: modules/button/button.php:357 modules/button-group/button-group.php:243
+#: modules/button/button.php:363 modules/button-group/button-group.php:243
 #: modules/search/search.php:469 modules/search/search.php:696
 #: modules/search/search.php:936
 msgid "Custom Width"
 msgstr ""
 
-#: modules/button/button.php:422 modules/button-group/button-group.php:313
+#: modules/button/button.php:428 modules/button-group/button-group.php:313
 #: modules/button-group/button-group.php:601
 #: modules/north-commerce/north-commerce.php:165 modules/search/search.php:745
 msgid "Text Hover Color"
 msgstr ""
 
-#: modules/button/button.php:482 modules/button-group/button-group.php:330
+#: modules/button/button.php:488 modules/button-group/button-group.php:330
 #: modules/button-group/button-group.php:618
 msgid "Background Style"
 msgstr ""
 
-#: modules/button/button.php:485 modules/button-group/button-group.php:333
+#: modules/button/button.php:491 modules/button-group/button-group.php:333
 #: modules/button-group/button-group.php:621 modules/callout/callout.php:1009
 #: modules/contact-form/contact-form.php:719
 #: modules/content-slider/content-slider.php:965 modules/cta/cta.php:478
@@ -7551,19 +7563,19 @@ msgstr ""
 msgid "Flat"
 msgstr ""
 
-#: modules/button/button.php:486 modules/button-group/button-group.php:334
+#: modules/button/button.php:492 modules/button-group/button-group.php:334
 #: modules/button-group/button-group.php:622 modules/callout/callout.php:1010
 #: modules/content-slider/content-slider.php:966 modules/cta/cta.php:479
 msgid "Auto Gradient"
 msgstr ""
 
-#: modules/button/button.php:487 modules/button-group/button-group.php:335
+#: modules/button/button.php:493 modules/button-group/button-group.php:335
 #: modules/button-group/button-group.php:623 modules/callout/callout.php:1011
 #: modules/content-slider/content-slider.php:967 modules/cta/cta.php:480
 msgid "Advanced Gradient"
 msgstr ""
 
-#: modules/button/button.php:517 modules/button-group/button-group.php:368
+#: modules/button/button.php:523 modules/button-group/button-group.php:368
 #: modules/button-group/button-group.php:653 modules/callout/callout.php:725
 #: modules/icon/icon.php:208 modules/icon-group/icon-group.php:168
 #: modules/login-form/login-form.php:762
@@ -7572,12 +7584,12 @@ msgstr ""
 msgid "Background Hover Color"
 msgstr ""
 
-#: modules/button/button.php:527 modules/button-group/button-group.php:380
+#: modules/button/button.php:533 modules/button-group/button-group.php:380
 #: modules/button-group/button-group.php:663
 msgid "Background Animation"
 msgstr ""
 
-#: modules/button/button.php:546 modules/button-group/button-group.php:399
+#: modules/button/button.php:552 modules/button-group/button-group.php:399
 #: modules/button-group/button-group.php:683 modules/callout/callout.php:1060
 #: modules/content-slider/content-slider.php:1026 modules/cta/cta.php:529
 msgid "Background Hover Gradient"
@@ -7709,27 +7721,27 @@ msgid "Photo Style"
 msgstr ""
 
 #: modules/callout/callout.php:576 modules/photo/photo.php:711
-#: modules/post-carousel/post-carousel.php:422
-#: modules/post-slider/post-slider.php:643 modules/search/search.php:977
+#: modules/post-carousel/post-carousel.php:423
+#: modules/post-slider/post-slider.php:644 modules/search/search.php:977
 #: modules/slideshow/slideshow.php:316
 msgid "Crop"
 msgstr ""
 
 #: modules/callout/callout.php:580 modules/photo/photo.php:715
-#: modules/post-carousel/post-carousel.php:426
-#: modules/post-slider/post-slider.php:647
+#: modules/post-carousel/post-carousel.php:427
+#: modules/post-slider/post-slider.php:648
 msgid "Landscape"
 msgstr ""
 
 #: modules/callout/callout.php:581 modules/photo/photo.php:716
-#: modules/post-carousel/post-carousel.php:427
-#: modules/post-slider/post-slider.php:648
+#: modules/post-carousel/post-carousel.php:428
+#: modules/post-slider/post-slider.php:649
 msgid "Panorama"
 msgstr ""
 
 #: modules/callout/callout.php:582 modules/photo/photo.php:717
-#: modules/post-carousel/post-carousel.php:428
-#: modules/post-slider/post-slider.php:649
+#: modules/post-carousel/post-carousel.php:429
+#: modules/post-slider/post-slider.php:650
 msgid "Portrait"
 msgstr ""
 
@@ -8265,8 +8277,8 @@ msgid "Slide"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:344
-#: modules/post-carousel/post-carousel.php:236
-#: modules/post-slider/post-slider.php:498
+#: modules/post-carousel/post-carousel.php:237
+#: modules/post-slider/post-slider.php:499
 #: modules/testimonials/testimonials.php:57
 msgid "Slider"
 msgstr ""
@@ -8292,15 +8304,15 @@ msgid "Show Play/Pause"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:437
-#: modules/post-carousel/post-carousel.php:323
-#: modules/post-slider/post-slider.php:582
+#: modules/post-carousel/post-carousel.php:324
+#: modules/post-slider/post-slider.php:583
 #: modules/testimonials/testimonials.php:200
 msgid "Show Arrows"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:451
-#: modules/post-carousel/post-carousel.php:314
-#: modules/post-slider/post-slider.php:573
+#: modules/post-carousel/post-carousel.php:315
+#: modules/post-slider/post-slider.php:574
 #: modules/testimonials/testimonials.php:232
 msgid "Show Dots"
 msgstr ""
@@ -8331,8 +8343,8 @@ msgstr ""
 
 #: modules/content-slider/content-slider.php:508
 #: modules/content-slider/content-slider.php:711
-#: modules/post-carousel/post-carousel.php:583
-#: modules/post-grid/post-grid.php:1230 modules/post-slider/post-slider.php:823
+#: modules/post-carousel/post-carousel.php:584
+#: modules/post-grid/post-grid.php:1230 modules/post-slider/post-slider.php:824
 msgid "The color applies to the overlay behind text over the background selections."
 msgstr ""
 
@@ -8342,20 +8354,20 @@ msgid "Arrows"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:523
-#: modules/post-carousel/post-carousel.php:830
-#: modules/post-slider/post-slider.php:1072
+#: modules/post-carousel/post-carousel.php:831
+#: modules/post-slider/post-slider.php:1073
 msgid "Arrows Background Color"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:529
-#: modules/post-carousel/post-carousel.php:836
-#: modules/post-slider/post-slider.php:1078
+#: modules/post-carousel/post-carousel.php:837
+#: modules/post-slider/post-slider.php:1079
 msgid "Arrows Background Style"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:539
-#: modules/post-carousel/post-carousel.php:846
-#: modules/post-slider/post-slider.php:1088
+#: modules/post-carousel/post-carousel.php:847
+#: modules/post-slider/post-slider.php:1089
 msgid "Arrows Color"
 msgstr ""
 
@@ -8415,12 +8427,12 @@ msgid ""
 msgstr ""
 
 #: modules/content-slider/content-slider.php:717
-#: modules/post-slider/post-slider.php:839
+#: modules/post-slider/post-slider.php:840
 msgid "Background Height"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:719
-#: modules/post-slider/post-slider.php:841
+#: modules/post-slider/post-slider.php:842
 msgid ""
 "Auto will allow the overlay to fit however long the text content is. 100% "
 "will fit the overlay to the top and bottom of the slide."
@@ -8640,7 +8652,7 @@ msgstr ""
 msgid "Button Link"
 msgstr ""
 
-#: modules/gallery/gallery.php:13 modules/post-carousel/post-carousel.php:247
+#: modules/gallery/gallery.php:13 modules/post-carousel/post-carousel.php:248
 #: modules/post-grid/post-grid.php:640
 msgid "Gallery"
 msgstr ""
@@ -9013,7 +9025,7 @@ msgstr ""
 
 #: modules/list/list.php:624 modules/menu/menu.php:1303
 #: modules/north-commerce/north-commerce.php:141
-#: modules/post-carousel/post-carousel.php:590 modules/search/search.php:821
+#: modules/post-carousel/post-carousel.php:591 modules/search/search.php:821
 msgid "Icon Color"
 msgstr ""
 
@@ -9711,131 +9723,131 @@ msgstr ""
 msgid "Display a carousel of your WordPress posts."
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:290
+#: modules/post-carousel/post-carousel.php:291
 #: modules/testimonials/testimonials.php:104
 msgid "Transition Direction"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:293
+#: modules/post-carousel/post-carousel.php:294
 #: modules/testimonials/testimonials.php:107
 msgid "Right To Left"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:294
+#: modules/post-carousel/post-carousel.php:295
 #: modules/testimonials/testimonials.php:108
 msgid "Left To Right"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:310
-#: modules/post-slider/post-slider.php:569
+#: modules/post-carousel/post-carousel.php:311
+#: modules/post-slider/post-slider.php:570
 msgid "Slider Controls"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:348
-#: modules/post-slider/post-slider.php:563
+#: modules/post-carousel/post-carousel.php:349
+#: modules/post-slider/post-slider.php:564
 msgid "Number of Posts"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:354
+#: modules/post-carousel/post-carousel.php:355
 msgid "Number of Posts to Move"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:360
+#: modules/post-carousel/post-carousel.php:361
 msgid "Post Max Width"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:370
+#: modules/post-carousel/post-carousel.php:371
 #: modules/post-grid/post-grid.php:701 modules/post-grid/post-grid.php:709
 msgid "Post Spacing"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:377
+#: modules/post-carousel/post-carousel.php:378
 msgid "Equalize Column Heights"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:386
+#: modules/post-carousel/post-carousel.php:387
 msgid "Post Hover Transition"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:390
+#: modules/post-carousel/post-carousel.php:391
 #: modules/post-grid/post-grid.php:1201
 msgid "Slide Up"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:391
+#: modules/post-carousel/post-carousel.php:392
 #: modules/post-grid/post-grid.php:1202
 msgid "Slide Down"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:392
+#: modules/post-carousel/post-carousel.php:393
 #: modules/post-grid/post-grid.php:1203
 msgid "Scale Up"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:393
+#: modules/post-carousel/post-carousel.php:394
 #: modules/post-grid/post-grid.php:1204
 msgid "Scale Down"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:399
-#: modules/post-grid/post-grid.php:788 modules/post-slider/post-slider.php:603
+#: modules/post-carousel/post-carousel.php:400
+#: modules/post-grid/post-grid.php:788 modules/post-slider/post-slider.php:604
 #: modules/search/search.php:952
 msgid "Featured Image"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:441
+#: modules/post-carousel/post-carousel.php:442
 #: modules/post-grid/post-grid.php:1246
 msgid "Use Icon for Posts"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:455
+#: modules/post-carousel/post-carousel.php:456
 #: modules/post-grid/post-grid.php:1260
 msgid "Post Icon"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:459
+#: modules/post-carousel/post-carousel.php:460
 #: modules/post-grid/post-grid.php:1290
 msgid "Post Icon Position"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:462
+#: modules/post-carousel/post-carousel.php:463
 #: modules/post-grid/post-grid.php:1293
 msgid "Above Text"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:463
+#: modules/post-carousel/post-carousel.php:464
 #: modules/post-grid/post-grid.php:1294
 msgid "Below Text"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:468
+#: modules/post-carousel/post-carousel.php:469
 #: modules/post-grid/post-grid.php:1311
 msgid "Post Icon Size"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:476
-#: modules/post-carousel/post-carousel.php:665
-#: modules/post-grid/post-grid.php:871 modules/post-slider/post-slider.php:657
-#: modules/post-slider/post-slider.php:906
+#: modules/post-carousel/post-carousel.php:477
+#: modules/post-carousel/post-carousel.php:666
+#: modules/post-grid/post-grid.php:871 modules/post-slider/post-slider.php:658
+#: modules/post-slider/post-slider.php:907
 msgid "Post Info"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:503
-#: modules/post-grid/post-grid.php:912 modules/post-slider/post-slider.php:684
+#: modules/post-carousel/post-carousel.php:504
+#: modules/post-grid/post-grid.php:912 modules/post-slider/post-slider.php:685
 msgid "Date Format"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:539
-#: modules/post-grid/post-grid.php:1024 modules/post-slider/post-slider.php:729
+#: modules/post-carousel/post-carousel.php:540
+#: modules/post-grid/post-grid.php:1024 modules/post-slider/post-slider.php:730
 msgid "Content Length"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:576
+#: modules/post-carousel/post-carousel.php:577
 msgid "Carousel Item"
 msgstr ""
 
-#: modules/post-carousel/post-carousel.php:623
-#: modules/post-slider/post-slider.php:850
+#: modules/post-carousel/post-carousel.php:624
+#: modules/post-slider/post-slider.php:851
 msgid "Post Title"
 msgstr ""
 
@@ -10056,37 +10068,37 @@ msgstr ""
 msgid "Display a slider of your WordPress posts."
 msgstr ""
 
-#: modules/post-slider/post-slider.php:512
+#: modules/post-slider/post-slider.php:513
 msgid ""
 "This setting is the minimum height of the post slider. Content will expand "
 "the height automatically."
 msgstr ""
 
-#: modules/post-slider/post-slider.php:607
+#: modules/post-slider/post-slider.php:608
 msgid "Show Featured Image?"
 msgstr ""
 
-#: modules/post-slider/post-slider.php:772
+#: modules/post-slider/post-slider.php:773
 msgid ""
 "The position will move the content layout selections left, right or bottom "
 "over the background of the slide."
 msgstr ""
 
-#: modules/post-slider/post-slider.php:791
+#: modules/post-slider/post-slider.php:792
 msgid ""
 "The position will move the content layout selections left or right or "
 "center of the thumbnail of the slide."
 msgstr ""
 
-#: modules/post-slider/post-slider.php:807
+#: modules/post-slider/post-slider.php:808
 msgid "Text Width"
 msgstr ""
 
-#: modules/post-slider/post-slider.php:814
+#: modules/post-slider/post-slider.php:815
 msgid "Text Padding"
 msgstr ""
 
-#: modules/post-slider/post-slider.php:854
+#: modules/post-slider/post-slider.php:855
 msgid "Title Tag"
 msgstr ""
 
@@ -10871,97 +10883,107 @@ msgstr ""
 msgid "Render a WordPress or embedable video."
 msgstr ""
 
-#: modules/video/video.php:100
+#: modules/video/video.php:110
 msgid "Video not specified. Please select one to display."
 msgstr ""
 
-#: modules/video/video.php:120
+#: modules/video/video.php:130
 msgid "Video embed code not specified."
 msgstr ""
 
-#: modules/video/video.php:145
+#: modules/video/video.php:155
 msgid "Please specify a poster image if Video Lightbox is enabled."
 msgstr ""
 
-#: modules/video/video.php:343
+#: modules/video/video.php:353
 msgid "Video Type"
 msgstr ""
 
-#: modules/video/video.php:347
+#: modules/video/video.php:357
 msgid "Embed"
 msgstr ""
 
-#: modules/video/video.php:363
-msgid "A video in the MP4 format. Most modern browsers support this format."
+#: modules/video/video.php:371
+msgid "Main Video (MP4)"
 msgstr ""
 
-#: modules/video/video.php:371
+#: modules/video/video.php:373
+msgid ""
+"Main video, which could be in mp4, m4v, webm, ogv, or wmv format. Most "
+"modern browsers support this format."
+msgstr ""
+
+#: modules/video/video.php:379
+msgid "Fallback Video (WebM)"
+msgstr ""
+
+#: modules/video/video.php:381
 msgid ""
 "A video in the WebM format to use as fallback. This format is required to "
 "support browsers such as FireFox and Opera."
 msgstr ""
 
-#: modules/video/video.php:386
+#: modules/video/video.php:396
 msgid "Show Video on Lightbox"
 msgstr ""
 
-#: modules/video/video.php:392
+#: modules/video/video.php:402
 msgid "Poster Image must be specified for the Lightbox to work."
 msgstr ""
 
-#: modules/video/video.php:398
+#: modules/video/video.php:408
 msgid "An image must be specified for the Lightbox to work."
 msgstr ""
 
-#: modules/video/video.php:426
+#: modules/video/video.php:436
 msgid "Sticky on Scroll"
 msgstr ""
 
-#: modules/video/video.php:443
+#: modules/video/video.php:453
 msgid "Play/Pause"
 msgstr ""
 
-#: modules/video/video.php:452
+#: modules/video/video.php:462
 msgid "Timer"
 msgstr ""
 
-#: modules/video/video.php:461
+#: modules/video/video.php:471
 msgid "Time Rail"
 msgstr ""
 
-#: modules/video/video.php:479
+#: modules/video/video.php:489
 msgid "Volume"
 msgstr ""
 
-#: modules/video/video.php:488
+#: modules/video/video.php:498
 msgid "Fullscreen"
 msgstr ""
 
-#: modules/video/video.php:506
+#: modules/video/video.php:516
 msgid "Enable Structured Data?"
 msgstr ""
 
-#: modules/video/video.php:523
+#: modules/video/video.php:533
 msgid "Video Name"
 msgstr ""
 
-#: modules/video/video.php:531
+#: modules/video/video.php:541
 msgid "Video Description"
 msgstr ""
 
-#: modules/video/video.php:539
+#: modules/video/video.php:549
 msgid "Content URL"
 msgstr ""
 
-#: modules/video/video.php:547
+#: modules/video/video.php:557
 msgid "Embed URL"
 msgstr ""
 
-#: modules/video/video.php:555
+#: modules/video/video.php:565
 msgid "Video Thumbnail"
 msgstr ""
 
-#: modules/video/video.php:564
+#: modules/video/video.php:574
 msgid "Upload Date"
 msgstr ""
 
@@ -11270,13 +11292,13 @@ msgid ""
 "ensure compatibility with Beaver Builder."
 msgstr ""
 
-#: classes/class-fl-builder-model.php:4689
+#: classes/class-fl-builder-model.php:4696
 #. translators: %s: post/page title
 msgctxt "%s stands for post/page title."
 msgid "Copy of %s"
 msgstr ""
 
-#: classes/class-fl-builder-model.php:5537
+#: classes/class-fl-builder-model.php:5544
 msgctxt "Default user template category."
 msgid "Uncategorized"
 msgstr ""
@@ -11371,112 +11393,112 @@ msgctxt "current blog name"
 msgid "Rebuilt the theme cache for blog %s"
 msgstr ""
 
-#: classes/class-fl-builder.php:1580
+#: classes/class-fl-builder.php:1606
 msgctxt "label for the WordPress Dashboard link"
 msgid "Dashboard"
 msgstr ""
 
-#: classes/class-fl-builder.php:1670
+#: classes/class-fl-builder.php:1696
 msgctxt "A keyboard shortcut with no label given"
 msgid "Untitled Shortcut"
 msgstr ""
 
-#: classes/class-fl-builder.php:1678
+#: classes/class-fl-builder.php:1704
 msgctxt "Keyboard action to show modules tab"
 msgid "Open Modules Tab"
 msgstr ""
 
-#: classes/class-fl-builder.php:1682
+#: classes/class-fl-builder.php:1708
 msgctxt "Keyboard action to show rows tab"
 msgid "Open Rows Tab"
 msgstr ""
 
-#: classes/class-fl-builder.php:1686
+#: classes/class-fl-builder.php:1712
 msgctxt "Keyboard action to show templates tab"
 msgid "Open Templates Tab"
 msgstr ""
 
-#: classes/class-fl-builder.php:1690
+#: classes/class-fl-builder.php:1716
 msgctxt "Keyboard action to show saved tab"
 msgid "Open Saved Tab"
 msgstr ""
 
-#: classes/class-fl-builder.php:1695
+#: classes/class-fl-builder.php:1721
 msgctxt "Keyboard action to open save template form"
 msgid "Save New Template"
 msgstr ""
 
-#: classes/class-fl-builder.php:1700
+#: classes/class-fl-builder.php:1726
 msgctxt "Keyboard action to toggle preview mode"
 msgid "Toggle Preview Mode"
 msgstr ""
 
-#: classes/class-fl-builder.php:1704
+#: classes/class-fl-builder.php:1730
 msgctxt "Keyboard action to toggle responsive editing"
 msgid "Toggle Responsive Editing Mode"
 msgstr ""
 
-#: classes/class-fl-builder.php:1708
+#: classes/class-fl-builder.php:1734
 msgctxt "Keyboard action to toggle responsive editing"
 msgid "Toggle Responsive Editing Mode in Reverse"
 msgstr ""
 
-#: classes/class-fl-builder.php:1712
+#: classes/class-fl-builder.php:1738
 msgctxt "Keyboard action to open the global settings panel"
 msgid "Open Global Settings"
 msgstr ""
 
-#: classes/class-fl-builder.php:1716
+#: classes/class-fl-builder.php:1742
 msgctxt "Keyboard action to open the global style settings panel"
 msgid "Open Global Style Settings"
 msgstr ""
 
-#: classes/class-fl-builder.php:1721
+#: classes/class-fl-builder.php:1747
 msgctxt "Keyboard action to open the layout settings panel"
 msgid "Open Layout Settings"
 msgstr ""
 
-#: classes/class-fl-builder.php:1725
+#: classes/class-fl-builder.php:1751
 msgctxt "Keyboard action to open the module search panel"
 msgid "Display Module Search"
 msgstr ""
 
-#: classes/class-fl-builder.php:1730
+#: classes/class-fl-builder.php:1756
 msgctxt "Keyboard action to save changes"
 msgid "Save Layout"
 msgstr ""
 
-#: classes/class-fl-builder.php:1735
+#: classes/class-fl-builder.php:1761
 msgctxt "Keyboard action to publish any pending changes"
 msgid "Publish changes without leaving builder"
 msgstr ""
 
-#: classes/class-fl-builder.php:1740
+#: classes/class-fl-builder.php:1766
 msgctxt "Keyboard action to dismiss the current task or panel"
 msgid "Dismiss Active Panel"
 msgstr ""
 
-#: classes/class-fl-builder.php:1745
+#: classes/class-fl-builder.php:1771
 msgctxt "Keyboard action to undo changes"
 msgid "Undo"
 msgstr ""
 
-#: classes/class-fl-builder.php:1749
+#: classes/class-fl-builder.php:1775
 msgctxt "Keyboard action to redo changes"
 msgid "Redo"
 msgstr ""
 
-#: classes/class-fl-builder.php:1753
+#: classes/class-fl-builder.php:1779
 msgctxt "Keyboard action to toggle outline panel"
 msgid "Toggle Outline Panel"
 msgstr ""
 
-#: classes/class-fl-builder.php:1757
+#: classes/class-fl-builder.php:1783
 msgctxt "Keyboard action to toggle outline panel tree"
 msgid "Toggle Outline Panel Tree"
 msgstr ""
 
-#: classes/class-fl-builder.php:1861
+#: classes/class-fl-builder.php:1887
 #. translators: %s: post label
 msgctxt "Currently editing message"
 msgid "Currently Editing %s"
@@ -12341,7 +12363,7 @@ msgctxt "%s stands for acf block."
 msgid "%s no longer exists."
 msgstr ""
 
-#: modules/button/button.php:341 modules/callout/callout.php:925
+#: modules/button/button.php:347 modules/callout/callout.php:925
 #: modules/contact-form/contact-form.php:613
 #: modules/login-form/login-form.php:392 modules/login-form/login-form.php:549
 #: modules/post-grid/post-grid.php:1437
@@ -12357,8 +12379,8 @@ msgid "None"
 msgstr ""
 
 #: modules/callout/callout.php:579 modules/photo/photo.php:714
-#: modules/post-carousel/post-carousel.php:425
-#: modules/post-slider/post-slider.php:646 modules/search/search.php:980
+#: modules/post-carousel/post-carousel.php:426
+#: modules/post-slider/post-slider.php:647 modules/search/search.php:980
 msgctxt "Photo Crop."
 msgid "None"
 msgstr ""
@@ -12370,7 +12392,7 @@ msgid "None"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:410
-#: modules/post-slider/post-slider.php:548
+#: modules/post-slider/post-slider.php:549
 #: modules/testimonials/testimonials.php:87
 msgctxt "Transition type."
 msgid "Slide"
@@ -12382,7 +12404,7 @@ msgid "None"
 msgstr ""
 
 #: modules/content-slider/content-slider.php:721
-#: modules/post-slider/post-slider.php:843
+#: modules/post-slider/post-slider.php:844
 msgctxt "Background height."
 msgid "Auto"
 msgstr ""
@@ -12503,7 +12525,7 @@ msgctxt "Nav type."
 msgid "None"
 msgstr ""
 
-#: modules/video/video.php:397
+#: modules/video/video.php:407
 msgctxt "Video preview/fallback image."
 msgid "Poster"
 msgstr ""

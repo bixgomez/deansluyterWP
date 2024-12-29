@@ -1,5 +1,5 @@
 <?php if ( ! is_user_logged_in() || FLBuilderModel::is_builder_active() ) : ?>
-<div class="fl-login-form fl-login-form-<?php echo $settings->layout; ?> fl-form fl-clearfix login" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
+<div class="fl-login-form fl-login-form-<?php echo sanitize_html_class( $settings->layout ); ?> fl-form fl-clearfix login" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
 	<?php wp_nonce_field( 'fl-login-form', 'fl-login-form-nonce' ); ?>
 	<div class="fl-form-field fl-form-name-wrap">
 		<?php
@@ -45,7 +45,7 @@
 
 </div>
 <?php else : ?>
-	<div class="fl-login-form fl-login-form-<?php echo $settings->layout; ?> fl-form fl-clearfix logout" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
+	<div class="fl-login-form fl-login-form-<?php echo sanitize_html_class( $settings->layout ); ?> fl-form fl-clearfix logout" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
 		<?php if ( 'yes' == $settings->lo_btn_enabled ) : ?>
 			<?php wp_nonce_field( 'fl-login-form', 'fl-login-form-nonce' ); ?>
 		<div class="fl-form-button log-out" data-wait-text="<?php esc_attr_e( 'Please Wait...', 'fl-builder' ); ?>">

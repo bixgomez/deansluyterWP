@@ -6,14 +6,14 @@
 
 	// Create the slider and assign an instance to a variable.
 	var testimonials = $('.fl-node-<?php echo $id; ?> .fl-testimonials').bxSlider({
-		autoStart : <?php echo $settings->auto_play; ?>,
+		autoStart : <?php echo esc_js( $settings->auto_play ); ?>,
 		auto : true,
 		adaptiveHeight: true,
 		ariaLive: false,
-		pause : <?php echo $settings->pause * 1000; ?>,
-		mode : '<?php echo $settings->transition; ?>',
-		autoDirection: '<?php echo $settings->direction; ?>',
-		speed : <?php echo $settings->speed * 1000; ?>,
+		pause : <?php echo esc_js( $settings->pause * 1000 ); ?>,
+		mode : '<?php echo esc_js( $settings->transition ); ?>',
+		autoDirection: '<?php echo esc_js( $settings->direction ); ?>',
+		speed : <?php echo esc_js( $settings->speed * 1000 ); ?>,
 		pager : <?php echo ( 'wide' == $settings->layout ) ? $settings->dots : 0; ?>,
 		nextSelector : '.fl-node-<?php echo $id; ?> .fl-slider-next',
 		prevSelector : '.fl-node-<?php echo $id; ?> .fl-slider-prev',
@@ -35,8 +35,8 @@
 			$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').addClass('disabled');
 		},
 		onSlideAfter: function( ele, oldIndex, newIndex ) {
-			$('.fl-node-<?php echo $id; ?> .fl-slider-next a').removeClass('disabled'); 
-			$('.fl-node-<?php echo $id; ?> .fl-slider-prev a').removeClass('disabled'); 
+			$('.fl-node-<?php echo $id; ?> .fl-slider-next a').removeClass('disabled');
+			$('.fl-node-<?php echo $id; ?> .fl-slider-prev a').removeClass('disabled');
 			$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').removeClass('disabled');
 		},
 		onSlideNext: function(ele, oldIndex, newIndex) {
@@ -49,7 +49,7 @@
 		}
 	});
 
-	// Fix slider width not right when column is resized/deleted or when in responsive editing mode. 
+	// Fix slider width not right when column is resized/deleted or when in responsive editing mode.
 	if ( 'undefined' !== typeof( FLBuilder ) ) {
 		var reloadTestimonials = function() {
 			setTimeout( function(){

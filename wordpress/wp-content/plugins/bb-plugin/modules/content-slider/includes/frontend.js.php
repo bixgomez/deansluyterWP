@@ -16,8 +16,8 @@
 
 	$(function() {
 		var sliderIndex = 'undefined' === typeof FLBuilder ? false : FLBuilder.getSandbox('sliderIndex'),
-			autoPlay    = <?php echo $settings->auto_play; ?>,
-			dots        = <?php echo $settings->dots; ?>;
+			autoPlay    = <?php echo esc_js( $settings->auto_play ); ?>,
+			dots        = <?php echo esc_js( $settings->dots ); ?>
 
 		// display slider immediately if not editing a specific one
 		if (false === sliderIndex) {
@@ -31,9 +31,9 @@
 			auto: autoPlay && false === sliderIndex ? true : false,
 			autoHover: <?php echo ( $settings->auto_hover ) ? 'true' : 'false'; ?>,
 			autoControls: <?php echo ( $settings->play_pause ) ? 'true' : 'false'; ?>,
-			pause: <?php echo $settings->delay * 1000; ?>,
-			mode: '<?php echo $settings->transition; ?>',
-			speed: <?php echo $settings->speed * 1000; ?>,
+			pause: <?php echo esc_js( $settings->delay * 1000 ); ?>,
+			mode: '<?php echo esc_js( $settings->transition ); ?>',
+			speed: <?php echo esc_js( $settings->speed * 1000 ); ?>,
 			controls: false,
 			infiniteLoop: <?php echo $module->is_loop_enabled(); ?>,
 			pager: dots && false === sliderIndex ? true : false,

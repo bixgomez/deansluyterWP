@@ -13,18 +13,18 @@ YUI({'logExclude': { 'yui': true } }).use('fl-slideshow', function(Y){
 
 	var oldSlideshow = Y.one('.fl-node-<?php echo $id; ?> .fl-slideshow-container .fl-slideshow'),
 		newSlideshow = new Y.FL.Slideshow({
-			autoPlay: <?php echo $settings->auto_play; ?>,
+			autoPlay: <?php echo esc_js( $settings->auto_play ); ?>,
 			<?php if ( 'url' == $settings->click_action ) : ?>
 			clickAction: 'url',
-			clickActionUrl: '<?php echo $settings->click_action_url; ?>',
+			clickActionUrl: '<?php echo esc_js( $settings->click_action_url ); ?>',
 			<?php endif; ?>
-			color: '<?php echo $settings->color; ?>',
+			color: '<?php echo esc_js( $settings->color ); ?>',
 			<?php if ( $settings->crop ) : ?>
 			crop: true,
 			<?php endif; ?>
-			height: <?php echo $settings->height; ?>,
-			imageNavEnabled: <?php echo $settings->image_nav; ?>,
-			likeButtonEnabled: <?php echo $settings->facebook; ?>,
+			height: <?php echo esc_js( $settings->height ); ?>,
+			imageNavEnabled: <?php echo esc_js( $settings->image_nav ); ?>,
+			likeButtonEnabled: <?php echo esc_js( $settings->facebook ); ?>,
 			<?php if ( 'none' != $settings->nav_type ) : ?>
 			navButtons: [<?php $module->get_nav_buttons(); ?>],
 			navButtonsLeft: [<?php $module->get_nav_buttons_left(); ?>],
@@ -33,25 +33,25 @@ YUI({'logExclude': { 'yui': true } }).use('fl-slideshow', function(Y){
 			<?php if ( $settings->nav_overlay ) : ?>
 			navOverlay: true,
 			<?php endif; ?>
-			navPosition: '<?php echo $settings->nav_position; ?>',
-			navType: '<?php echo $settings->nav_type; ?>',
+			navPosition: '<?php echo esc_js( $settings->nav_position ); ?>',
+			navType: '<?php echo esc_js( $settings->nav_type ); ?>',
 			<?php if ( $settings->nav_overlay ) : ?>
 			overlayHideDelay: <?php echo intval( $settings->overlay_hide_delay ) * 1000; ?>,
-			overlayHideOnMousemove: <?php echo $settings->overlay_hide; ?>,
+			overlayHideOnMousemove: <?php echo esc_js( $settings->overlay_hide ); ?>,
 			<?php endif; ?>
-			pinterestButtonEnabled: <?php echo $settings->pinterest; ?>,
-			protect: <?php echo $settings->protect; ?>,
-			randomize: <?php echo $settings->randomize; ?>,
+			pinterestButtonEnabled: <?php echo esc_js( $settings->pinterest ); ?>,
+			protect: <?php echo esc_js( $settings->protect ); ?>,
+			randomize: <?php echo esc_js( $settings->randomize ); ?>,
 			<?php if ( $global_settings->responsive_enabled ) : ?>
 			responsiveThreshold: <?php echo $global_settings->responsive_breakpoint; ?>,
 			<?php endif; ?>
 			source: [{<?php echo $source; ?>}],
 			speed: <?php echo intval( $settings->speed ) * 1000; ?>,
-			tweetButtonEnabled: <?php echo $settings->twitter; ?>,
-			thumbsImageHeight: <?php echo $settings->thumbs_size; ?>,
-			thumbsImageWidth: <?php echo $settings->thumbs_size; ?>,
-			transition: '<?php echo $settings->transition; ?>',
-			transitionDuration: <?php echo $settings->transitionDuration; // @codingStandardsIgnoreLine ?>
+			tweetButtonEnabled: <?php echo esc_js( $settings->twitter ); ?>,
+			thumbsImageHeight: <?php echo esc_js( $settings->thumbs_size ); ?>,
+			thumbsImageWidth: <?php echo esc_js( $settings->thumbs_size ); ?>,
+			transition: '<?php echo esc_js( $settings->transition ); ?>',
+			transitionDuration: <?php echo esc_js( $settings->transitionDuration ); // @codingStandardsIgnoreLine ?>
 		});
 
 	if(oldSlideshow) {

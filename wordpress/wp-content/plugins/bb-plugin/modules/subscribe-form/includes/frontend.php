@@ -8,7 +8,7 @@ $subscribe_form_fields = apply_filters( 'fl_builder_subscribe_form_fields', arra
 ), $settings );
 
 ?>
-<div class="fl-subscribe-form fl-subscribe-form-<?php echo $settings->layout; ?> fl-subscribe-form-name-<?php echo $settings->show_name; ?> fl-form fl-clearfix" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
+<div class="fl-subscribe-form fl-subscribe-form-<?php echo sanitize_html_class( $settings->layout ); ?> fl-subscribe-form-name-<?php echo sanitize_html_class( $settings->show_name ); ?> fl-form fl-clearfix" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
 <?php wp_nonce_field( 'fl-subscribe-form-nonce', 'fl-subscribe-form-nonce' ); ?>
 	<?php if ( 'show' == $settings->show_name ) : ?>
 	<div class="fl-form-field">

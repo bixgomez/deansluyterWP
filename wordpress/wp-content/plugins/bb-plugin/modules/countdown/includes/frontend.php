@@ -24,7 +24,7 @@
 <div class="fl-countdown<?php echo ( 'default' == $settings->layout && 'yes' == $settings->show_separator && isset( $settings->separator_type ) ) ? ' fl-countdown-separator-' . sanitize_html_class( $settings->separator_type ) : ''; ?>">
 
 	<?php foreach ( $counters as $class => $label ) : ?>
-		<div class="fl-countdown-number fl-countdown-<?php echo $class; ?>">
+		<div class="fl-countdown-number fl-countdown-<?php echo sanitize_html_class( $class ); ?>">
 			<div class="fl-countdown-unit">
 				<span class="fl-countdown-unit-number"></span>
 				<div class="fl-countdown-unit-label" data-label='<?php echo json_encode( $label ); ?>'><?php echo $label['singular']; ?></div>

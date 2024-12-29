@@ -1,6 +1,6 @@
 <?php
 
-$testimonials_class = 'fl-testimonials-wrap ' . $settings->layout;
+$testimonials_class = 'fl-testimonials-wrap ' . sanitize_html_class( $settings->layout );
 
 if ( '' == $settings->heading && 'compact' == $settings->layout ) {
 	$testimonials_class .= ' fl-testimonials-no-heading';

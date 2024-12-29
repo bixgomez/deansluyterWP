@@ -443,7 +443,7 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'     => 'css',
-							'selector' => '.fl-accordion-content',
+							'selector' => '.fl-accordion-content :where( p, span, li )',
 							'property' => 'color',
 						),
 					),
@@ -481,7 +481,7 @@ FLBuilder::register_module('FLAccordionModule', array(
 						'responsive' => true,
 						'preview'    => array(
 							'type'      => 'css',
-							'selector'  => '.fl-accordion-content',
+							'selector'  => '.fl-accordion-content :where( p, span, li )',
 							'important' => true,
 						),
 					),

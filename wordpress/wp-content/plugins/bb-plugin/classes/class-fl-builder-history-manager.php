@@ -310,7 +310,7 @@ final class FLBuilderHistoryManager {
 					'meta_id' => $state->meta_id,
 				],
 				[ '%s' ],
-				[ '%d', '%d' ],
+				[ '%d', '%d' ]
 			);
 		}
 	}
