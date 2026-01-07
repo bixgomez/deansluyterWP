@@ -83,6 +83,17 @@ final class FLBuilderLoop {
 		add_filter( 'pre_handle_404', __CLASS__ . '::pre_404_pagination', 1, 2 );
 		add_filter( 'paginate_links', __CLASS__ . '::filter_paginate_links', 1 );
 		// add_filter( 'rewrite_rules_array', __CLASS__ . '::rewrite_rules_array' );
+
+		/**
+		 * Add Sort By Price to sort options if Woo is active.
+		 * @since 2.9
+		 */
+		add_filter( 'fl_builder_render_settings_field', function ( $field, $name, $settings ) {
+			if ( 'order_by' === $name && class_exists( 'woocommerce' ) ) {
+				$field['options']['woo_price'] = __( 'Sort By Price (Woo)', 'fl-builder' );
+			}
+			return $field;
+		}, 10, 3 );
 	}
 
 	/**
@@ -122,6 +133,8 @@ final class FLBuilderLoop {
 
 		if ( isset( $settings->data_source ) && 'main_query' == $settings->data_source ) {
 			$query = self::main_query();
+		} elseif ( isset( $settings->data_source ) && 'taxonomy_query' == $settings->data_source ) {
+			$query = self::terms_query( $settings );
 		} else {
 			$query = self::custom_query( $settings );
 		}
@@ -220,6 +233,10 @@ final class FLBuilderLoop {
 			'settings'            => $settings,
 		);
 
+		if ( 'woo_price' === $args['orderby'] ) {
+			$args['orderby']  = 'meta_value_num';
+			$args['meta_key'] = '_price';
+		}
 		// Set query keywords if specified in the settings.
 		if ( isset( $settings->keyword ) && ! empty( $settings->keyword ) ) {
 			$args['s'] = $settings->keyword;
@@ -420,6 +437,53 @@ final class FLBuilderLoop {
 
 		// Build the query.
 		$query = new WP_Query( $args );
+
+		// Return the query.
+		return $query;
+	}
+
+	/**
+	 * Returns a new instance of WP_Query based on
+	 * the provided module settings.
+	 *
+	 * @param object $settings Module settings to use for the query.
+	 * @return object A WP_Query instance.
+	 */
+	static public function terms_query( $settings ) {
+
+		// Build the query.
+		$order_by     = isset( $settings->term_order_by ) ? $settings->term_order_by : 'name';
+		$select_terms = isset( $settings->select_terms ) ? $settings->select_terms : 'all';
+
+		$args = array(
+			'taxonomy'   => $settings->terms_taxonomy,
+			'order'      => isset( $settings->term_order ) ? $settings->term_order : 'ASC',
+			'orderby'    => $order_by,
+			'hide_empty' => isset( $settings->term_hide_empty ) ? $settings->term_hide_empty : false,
+			'settings'   => $settings,
+		);
+
+		if ( 0 != $settings->term_parent && 'child' == $select_terms ) {
+			$args['parent'] = $settings->term_parent;
+		}
+
+		if ( 'top' == $select_terms ) {
+			$args['parent'] = 0;
+		}
+
+		// Order by meta value arg.
+		if ( strstr( $order_by, 'meta_value' ) ) {
+			$args['meta_key'] = $settings->term_order_by_meta_key;
+		}
+
+		/**
+		 * Filter all the args passed to WP_Query.
+		 * @see fl_builder_loop_terms_args
+		 */
+		$args = apply_filters( 'fl_builder_loop_terms_args', $args );
+
+		// The Term Query
+		$query = new FLBuilderLoopTermQuery( $args );
 
 		// Return the query.
 		return $query;
@@ -1233,6 +1297,74 @@ final class FLBuilderLoop {
 		 * @see fl_builder_loop_taxonomies
 		 */
 		return apply_filters( 'fl_builder_loop_taxonomies', $data, $taxonomies, $post_type );
+	}
+
+	/**
+	 * @since 2.9
+	 * @return array
+	 */
+	static public function get_taxonomy_options() {
+		$taxonomies = get_taxonomies( array(
+			'public'  => true,
+			'show_ui' => true,
+		), 'objects' );
+		$result     = array();
+
+		foreach ( $taxonomies as $slug => $data ) {
+
+			if ( stristr( $slug, 'fl-builder' ) ) {
+				continue;
+			}
+
+			$result[ $slug ] = $data->label;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @since 2.9
+	 * @return array
+	 */
+	static public function get_term_options( $taxonomy = '' ) {
+
+		$result = array( 0 => __( 'None', 'fl-builder' ) );
+
+		if ( ! $taxonomy ) {
+			$post_data = FLBuilderModel::get_post_data();
+
+			if ( ! isset( $post_data['taxonomy'] ) ) {
+				return $result;
+			}
+			$taxonomy = $post_data['taxonomy'];
+		}
+
+		$terms = get_terms( array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+			'parent'     => 0,
+		) );
+
+		foreach ( $terms as $slug => $data ) {
+
+			$child_terms = get_terms( array(
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => true,
+				'parent'     => $data->term_id,
+				'fields'     => 'ids',
+			) );
+
+			if ( ! empty( $child_terms ) ) {
+				$result[ $data->term_id ] = $data->name;
+			}
+		}
+
+		if ( isset( $post_data['action'] ) ) {
+			echo json_encode( $result );
+			die();
+		}
+
+		return $result;
 	}
 
 	/**

@@ -9,6 +9,7 @@ class FLBuilderSeoPlugins {
 	public function __construct() {
 
 		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action( 'rank_math/admin/editor_scripts', array( $this, 'init_rank_math_editor' ) );
 		add_action( 'admin_head', array( $this, 'remove_yoast_meta_box_on_edit' ), 999 );
 
 		add_filter( 'wpseo_sitemap_exclude_post_type', array( $this, 'sitemap_exclude_post_type' ), 10, 2 );
@@ -24,6 +25,8 @@ class FLBuilderSeoPlugins {
 		add_filter( 'seopress_content_analysis_content', array( $this, 'sp_content_analysis_content' ), 10, 2 );
 		add_filter( 'fl_builder_register_template_category_args', array( $this, 'yoast_templates' ) );
 		add_filter( 'wpseo_indexable_excluded_post_types', array( $this, 'wpseo_indexable_excluded_post_types' ), 11 );
+
+		add_filter( 'wp_sitemaps_users_query_args', array( $this, 'wp_sitemaps_users_query_args' ) );
 	}
 
 	public function init() {
@@ -34,9 +37,16 @@ class FLBuilderSeoPlugins {
 
 		if ( defined( 'WPSEO_VERSION' ) ) {
 			$this->enqueue_script( 'yoast' );
-		} elseif ( class_exists( 'RankMath' ) ) {
-			$this->enqueue_script( 'rankmath' );
 		}
+	}
+
+	public function init_rank_math_editor() {
+		global $pagenow;
+		if ( FLBuilderAJAX::doing_ajax() || 'post.php' !== $pagenow ) {
+			return;
+		}
+
+		$this->enqueue_script( 'rankmath' );
 	}
 
 	public function rankmath_types( $post_types ) {
@@ -153,7 +163,7 @@ class FLBuilderSeoPlugins {
 		return $value;
 	}
 
-	public  function sf_sitemap( $types ) {
+	public function sf_sitemap( $types ) {
 		$types[] = 'fl-builder-template';
 		return $types;
 	}
@@ -187,6 +197,13 @@ class FLBuilderSeoPlugins {
 			}
 		}
 		return $option;
+	}
+
+	public function wp_sitemaps_users_query_args( $args ) {
+		if ( is_array( $args['has_published_posts'] ) ) {
+			$args['has_published_posts'] = array_diff( $args['has_published_posts'], array( 'fl-builder-template' ) );
+		}
+		return $args;
 	}
 }
 

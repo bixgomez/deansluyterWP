@@ -18,8 +18,10 @@ class FLVideoModule extends FLBuilderModule {
 			'name'            => __( 'Video', 'fl-builder' ),
 			'description'     => __( 'Render a WordPress or embedable video.', 'fl-builder' ),
 			'category'        => __( 'Basic', 'fl-builder' ),
-			'partial_refresh' => true,
 			'icon'            => 'format-video.svg',
+			'partial_refresh' => true,
+			'include_wrapper' => false,
+			'element_setting' => false,
 		));
 
 		$this->add_js( 'jquery-fitvids' );
@@ -38,7 +40,7 @@ class FLVideoModule extends FLBuilderModule {
 			if ( ! empty( $this->data ) && isset( $this->settings->data ) ) {
 				$this->data = $this->settings->data;
 			} else {
-				$data            = new stdClass;
+				$data            = new stdClass();
 				$data->url       = '';
 				$data->extension = '';
 
@@ -49,7 +51,7 @@ class FLVideoModule extends FLBuilderModule {
 				}
 
 				if ( ! empty( $data->url ) ) {
-					$video_file        = wp_check_filetype( $data->url );
+					$video_file      = wp_check_filetype( $data->url );
 					$data->extension = $video_file['ext'];
 				}
 
@@ -155,9 +157,13 @@ class FLVideoModule extends FLBuilderModule {
 				$poster_html .= sprintf( '%s', __( 'Please specify a poster image if Video Lightbox is enabled.', 'fl-builder' ) );
 				$poster_html .= '</div>';
 			} else {
-				$video_url    = $this->get_video_url();
+				$video_url    = esc_url( $this->get_video_url() );
 				$size         = isset( $this->settings->poster_size ) && ! empty( $this->settings->poster_size ) ? $this->settings->poster_size : 'large';
-				$poster_html .= '<div class="fl-video-poster" data-mfp-src="' . $video_url . '">';
+				$poster_html .= '<div class="fl-video-poster" ';
+				$poster_html .= 'role="button" ';
+				$poster_html .= 'tabindex="0" ';
+				$poster_html .= 'aria-label="' . esc_attr__( 'Play Video', 'fl-builder' ) . '" ';
+				$poster_html .= 'data-mfp-src="' . $video_url . '">';
 				$poster_html .= wp_get_attachment_image( $this->settings->poster, $size, '', array( 'class' => 'img-responsive' ) );
 				$poster_html .= '</div>';
 			}
@@ -272,7 +278,7 @@ class FLVideoModule extends FLBuilderModule {
 	 * @return string
 	 */
 	static public function mute_video( $output, $atts, $video, $post_id ) {
-		if ( false !== strpos( $output, 'autoplay="1"' ) && FLBuilderModel::get_post_id() == $post_id ) {
+		if ( preg_match( '/\sautoplay[\s|=]/', $output ) && FLBuilderModel::get_post_id() == $post_id ) {
 			$output = str_replace( '<video', '<video muted', $output );
 		}
 		return $output;
@@ -389,7 +395,7 @@ FLBuilder::register_module('FLVideoModule', array(
 						'editor'      => 'html',
 						'label'       => '',
 						'rows'        => '9',
-						'connections' => array( 'custom_field' ),
+						'connections' => array( 'custom_field', 'url' ),
 					),
 					'video_lightbox'   => array(
 						'type'    => 'select',

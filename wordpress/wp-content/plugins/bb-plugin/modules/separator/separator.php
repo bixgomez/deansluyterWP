@@ -14,9 +14,11 @@ class FLSeparatorModule extends FLBuilderModule {
 			'name'            => __( 'Separator', 'fl-builder' ),
 			'description'     => __( 'A divider line to separate content.', 'fl-builder' ),
 			'category'        => __( 'Basic', 'fl-builder' ),
+			'icon'            => 'minus.svg',
 			'editor_export'   => false,
 			'partial_refresh' => true,
-			'icon'            => 'minus.svg',
+			'include_wrapper' => false,
+			'element_setting' => false,
 		));
 	}
 
@@ -73,6 +75,7 @@ FLBuilder::register_module('FLSeparatorModule', array(
 						'label'       => __( 'Color', 'fl-builder' ),
 						'default'     => 'cccccc',
 						'show_alpha'  => true,
+						'responsive'  => true,
 						'preview'     => array(
 							'type'     => 'css',
 							'selector' => '.fl-separator',
@@ -139,21 +142,22 @@ FLBuilder::register_module('FLSeparatorModule', array(
 						),
 					),
 					'style'  => array(
-						'type'    => 'select',
-						'label'   => __( 'Style', 'fl-builder' ),
-						'default' => 'solid',
-						'options' => array(
+						'type'       => 'select',
+						'label'      => __( 'Style', 'fl-builder' ),
+						'default'    => 'solid',
+						'responsive' => true,
+						'options'    => array(
 							'solid'  => _x( 'Solid', 'Border type.', 'fl-builder' ),
 							'dashed' => _x( 'Dashed', 'Border type.', 'fl-builder' ),
 							'dotted' => _x( 'Dotted', 'Border type.', 'fl-builder' ),
 							'double' => _x( 'Double', 'Border type.', 'fl-builder' ),
 						),
-						'preview' => array(
+						'preview'    => array(
 							'type'     => 'css',
 							'selector' => '.fl-separator',
 							'property' => 'border-top-style',
 						),
-						'help'    => __( 'The type of border to use. Double borders must have a height of at least 3px to render properly.', 'fl-builder' ),
+						'help'       => __( 'The type of border to use. Double borders must have a height of at least 3px to render properly.', 'fl-builder' ),
 					),
 				),
 			),

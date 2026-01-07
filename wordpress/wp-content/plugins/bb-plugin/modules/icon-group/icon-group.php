@@ -16,6 +16,7 @@ class FLIconGroupModule extends FLBuilderModule {
 			'editor_export'   => false,
 			'partial_refresh' => true,
 			'icon'            => 'star-filled.svg',
+			'block_editor'    => true,
 		));
 	}
 
@@ -62,7 +63,6 @@ class FLIconGroupModule extends FLBuilderModule {
 
 		return $settings;
 	}
-
 }
 
 /**
@@ -200,14 +200,16 @@ FLBuilder::register_settings_form('icon_group_form', array(
 					'title'  => '', // Section Title
 					'fields' => array( // Section Fields
 						'icon'    => array(
-							'type'  => 'icon',
-							'label' => __( 'Icon', 'fl-builder' ),
+							'type'    => 'icon',
+							'label'   => __( 'Icon', 'fl-builder' ),
+							'default' => 'dashicons dashicons-before dashicons-wordpress-alt',
 						),
 						'link'    => array(
 							'type'          => 'link',
 							'label'         => __( 'Link', 'fl-builder' ),
 							'show_target'   => true,
 							'show_nofollow' => true,
+							'show_download' => true,
 							'connections'   => array( 'url' ),
 						),
 						'sr_text' => array(

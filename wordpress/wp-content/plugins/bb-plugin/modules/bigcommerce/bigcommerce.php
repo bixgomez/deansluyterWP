@@ -37,7 +37,7 @@ class FLBCProductsModule extends FLBuilderModule {
  * search - A search string to match against product titles, BigCommerce product IDs, or SKUs
  * x- paged - Set to 0 to disable pagination
  * x- per_page - The number of products to show per page. Defaults to the value set in the theme customizer.
- * order - Whether to sort products in “ASC” or “DESC” order
+ * order - Whether to sort products in "ASC" or "DESC" order
  * orderby - Which field to use for sorting. Accepts any field that WP_Query accepts (e.g., title, date)
  */
 FLBuilder::register_module( 'FLBCProductsModule', array(

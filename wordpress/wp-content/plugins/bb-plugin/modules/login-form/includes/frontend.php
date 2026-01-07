@@ -18,22 +18,35 @@
 	</div>
 
 	<?php if ( 'stacked' === $settings->layout ) : ?>
-		<?php if ( isset( $settings->forget ) && 'yes' === $settings->forget ) : ?>
+		<?php if ( isset( $settings->forget ) && 'yes' === $settings->forget && 'default' === $settings->forget_position && ! empty( $settings->forget_text ) ) : ?>
 		<div class="fl-input-field fl-remember-forget">
-			<a href="<?php echo wp_lostpassword_url( get_permalink() ); ?>" title="Lost Password"><?php _e( 'Forgot?', 'fl-builder' ); ?></a>
+			<a href="<?php echo wp_lostpassword_url( get_permalink() ); ?>" title="<?php echo esc_attr( $settings->forget_text ); ?>">
+				<?php echo esc_html( $settings->forget_text ); ?>
+			</a>
 		</div>
 		<?php endif; ?>
 
-		<?php if ( isset( $settings->remember ) && 'yes' === $settings->remember ) : ?>
+		<?php if ( isset( $settings->remember ) && 'yes' === $settings->remember && ! empty( $settings->remember_text ) ) : ?>
 		<div class="fl-input-field fl-remember-checkbox">
 			<label for="fl-login-checkbox-<?php echo $id; ?>">
-				<input id="fl-login-checkbox-<?php echo $id; ?>" type="checkbox" name="fl-login-form-remember" value="1" aria-label="rememberme" /><span class="fl-remember-checkbox-text"><?php _e( 'Remember me', 'fl-builder' ); ?></span>
+				<input id="fl-login-checkbox-<?php echo $id; ?>" type="checkbox" name="fl-login-form-remember" value="1" aria-label="rememberme" /><span class="fl-remember-checkbox-text">
+					<?php echo esc_html( $settings->remember_text ); ?>
+				</span>
 			</label>
 		</div>
 		<?php endif; ?>
 		<div class="fl-form-button" data-wait-text="<?php esc_attr_e( 'Please Wait...', 'fl-builder' ); ?>">
 		<?php FLBuilder::render_module_html( 'button', $module->get_button_settings( 'btn_' ) ); ?>
 		</div>
+
+		<?php if ( isset( $settings->forget ) && 'yes' === $settings->forget && 'below' === $settings->forget_position && ! empty( $settings->forget_text ) ) : ?>
+		<div class="fl-input-field fl-remember-forget fl-lost-password-below">
+			<a href="<?php echo wp_lostpassword_url( get_permalink() ); ?>" title="<?php echo esc_attr( $settings->forget_text ); ?>">
+				<?php echo esc_html( $settings->forget_text ); ?>
+			</a>
+		</div>
+		<?php endif; ?>
+
 	<?php else : ?>
 		<div class="fl-form-button" data-wait-text="<?php esc_attr_e( 'Please Wait...', 'fl-builder' ); ?>">
 		<?php FLBuilder::render_module_html( 'button', $module->get_button_settings( 'btn_' ) ); ?>

@@ -10,7 +10,7 @@
 				<?php
 
 				// Renders search template
-				include $module->dir . 'includes/wp-search.php';
+				require $module->dir . 'includes/wp-search.php';
 
 				?>
 			</div>

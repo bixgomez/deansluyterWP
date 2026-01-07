@@ -86,7 +86,7 @@
 				templateId		= theForm.data( 'template-id' ),
 				templateNodeId	= theForm.data( 'template-node-id' ),
 				nodeId      	= theForm.closest( '.fl-module' ).data( 'node' ),
-				nonce         = theForm.find('#fl-contact-form-nonce').val();
+				nonce           = theForm.find('#fl-contact-form-nonce').val();
 
 			e.preventDefault();
 
@@ -215,7 +215,7 @@
 					template_id 		: templateId,
 					template_node_id 	: templateNodeId,
 					node_id 			: nodeId,
-					nonce         : nonce
+					_wpnonce            : nonce
 				}
 
 				if ( reCaptchaValue ) {
@@ -231,6 +231,8 @@
 		{
 			var urlField 	= $( this.nodeClass + ' .fl-success-url' ),
 				noMessage 	= $( this.nodeClass + ' .fl-success-none' );
+
+			response = response.data;
 
 			// On success show the success message
 			if (typeof response.error !== 'undefined' && response.error === false) {

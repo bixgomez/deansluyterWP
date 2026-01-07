@@ -9,8 +9,8 @@ body.rtl .fl-module-content-slider .bx-viewport {
 	position: relative;
 }
 .fl-content-slider .fl-slide {
-	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 	position: absolute;
 	top: 0;
 	visibility: hidden;

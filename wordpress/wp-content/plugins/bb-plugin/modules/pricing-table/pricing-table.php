@@ -17,14 +17,14 @@ class FLPricingTableModule extends FLBuilderModule {
 			'category'        => __( 'Layout', 'fl-builder' ),
 			'partial_refresh' => true,
 			'icon'            => 'editor-table.svg',
+			'block_editor'    => true,
 		));
 
 		// Register custom fields.
-		add_filter( 'fl_builder_custom_fields', function( $fields ) {
+		add_filter( 'fl_builder_custom_fields', function ( $fields ) {
 			$fields['fl-price-feature'] = __DIR__ . '/fields/fl-price-feature.php';
 			return $fields;
 		} );
-
 	}
 
 	/**
@@ -158,7 +158,7 @@ class FLPricingTableModule extends FLBuilderModule {
 				$extended_features = array();
 
 				foreach ( $pricing_column->features as $feature ) {
-					$feature_obj              = new stdClass;
+					$feature_obj              = new stdClass();
 					$feature_obj->description = $feature;
 					$feature_obj->icon        = '';
 					$feature_obj->tooltip     = '';
@@ -569,7 +569,7 @@ FLBuilder::register_module('FLPricingTableModule', array(
 					'border_type'     => array(
 						'type'    => 'select',
 						'label'   => __( 'Border Type', 'fl-builder' ),
-						'default' => '',    // See filter_setting() method.
+						'default' => 'legacy',    // See filter_setting() method.
 						'options' => array(
 							'standard' => __( 'Standard', 'fl-builder' ),
 							'legacy'   => __( 'Legacy', 'fl-builder' ),
@@ -1047,7 +1047,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'type'        => 'color',
 							'connections' => array( 'color' ),
 							'label'       => __( 'Button Text Color', 'fl-builder' ),
-							'default'     => '',
+							'default'     => 'ffffff',
 							'show_reset'  => true,
 							'show_alpha'  => true,
 							'preview'     => array(

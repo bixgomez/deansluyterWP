@@ -8,7 +8,7 @@ class FLBuilderAddonsInstaller {
 
 	private $strings = [];
 
-	function __construct() {
+	public function __construct() {
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 		add_action( 'wp_ajax_fl_addons_install', array( $this, 'addon_install' ) );
@@ -17,18 +17,20 @@ class FLBuilderAddonsInstaller {
 
 		add_filter( 'fl_builder_subscription_downloads', array( $this, 'subscription_downloads' ) );
 
-		$this->strings = array(
-			'install'   => __( 'Install', 'fl-builder' ),
-			'installed' => sprintf( ' - <em>%s</em>', __( 'Installed', 'fl-builder' ) ),
-			'activate'  => __( 'Activate', 'fl-builder' ),
-			'upgrade'   => __( 'Upgrade', 'fl-builder' ),
-			'downgrade' => __( 'Downgrade', 'fl-builder' ),
-			'activated' => __( 'Activated', 'fl-builder' ),
-		);
+		add_action( 'init', function () {
+			$this->strings = array(
+				'install'   => __( 'Install', 'fl-builder' ),
+				'installed' => sprintf( ' - <em>%s</em>', __( 'Installed', 'fl-builder' ) ),
+				'activate'  => __( 'Activate', 'fl-builder' ),
+				'upgrade'   => __( 'Upgrade', 'fl-builder' ),
+				'downgrade' => __( 'Downgrade', 'fl-builder' ),
+				'activated' => __( 'Activated', 'fl-builder' ),
+			);
+		});
 	}
 
+	public function addon_install() {
 
-	function addon_install() {
 		check_ajax_referer( 'subscription_downloads' );
 		if ( 'plugin' === $_POST['type'] ) {
 			$this->install_plugin();
@@ -38,7 +40,7 @@ class FLBuilderAddonsInstaller {
 		}
 	}
 
-	function addon_activate() {
+	public function addon_activate() {
 		check_ajax_referer( 'subscription_downloads' );
 		$type = $_POST['type'];
 		$slug = $_POST['slug'];
@@ -51,7 +53,7 @@ class FLBuilderAddonsInstaller {
 		}
 	}
 
-	function install_plugin() {
+	public function install_plugin() {
 		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
@@ -74,7 +76,7 @@ class FLBuilderAddonsInstaller {
 		}
 	}
 
-	function install_theme() {
+	public function install_theme() {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
 		require_once ABSPATH . 'wp-admin/includes/class-theme-upgrader.php';
@@ -111,7 +113,7 @@ class FLBuilderAddonsInstaller {
 		}
 	}
 
-	function scripts() {
+	public function scripts() {
 		wp_enqueue_script( 'bb-addon-scripts', FL_BUILDER_ADDONS_PLUGINS_URL . 'js/addons-installer.js', array( 'jquery' ), false, true );
 		wp_localize_script( 'bb-addon-scripts', 'bb_addon_data', array(
 			'install'     => __( 'Install', 'fl-builder' ),
@@ -124,7 +126,7 @@ class FLBuilderAddonsInstaller {
 		) );
 	}
 
-	function subscription_downloads( $downloads ) {
+	public function subscription_downloads( $downloads ) {
 
 		if ( ! function_exists( 'get_plugins' ) || ! function_exists( 'is_plugin_active' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -181,33 +183,32 @@ class FLBuilderAddonsInstaller {
 		return $downloads;
 	}
 
-	function security_nonce() {
+	public function security_nonce() {
 		wp_nonce_field( 'subscription_downloads' );
 	}
 
-	function check_plugin_installed( $plugin_slug ) {
+	public function check_plugin_installed( $plugin_slug ) {
 		$installed_plugins = get_plugins();
 		return array_key_exists( $plugin_slug, $installed_plugins ) || in_array( $plugin_slug, $installed_plugins, true );
 	}
 
-	function get_plugin_install_link( $plugin, $custom = '' ) {
+	public function get_plugin_install_link( $plugin, $custom = '' ) {
 		$install_text = $custom ? $custom : $this->strings['install'];
 		return sprintf( ' - <a href="#" class="fl-installer-addon" data-type="plugin" data-slug="%s">%s</a>', $plugin, $install_text );
 	}
 
-	function get_theme_install_link( $theme ) {
+	public function get_theme_install_link( $theme ) {
 		return sprintf( ' - <a href="#" class="fl-installer-addon" data-type="theme" data-slug="%s">%s</a>', $theme, $this->strings['install'] );
 	}
 
 	/**
 	 * return standard/pro/agency
 	 */
-	function _get_plugin_version( $plugin ) {
+	public function _get_plugin_version( $plugin ) {
 		if ( preg_match( '/\s\(([a-z]+)\s/i', $plugin, $matches ) ) {
 			return $matches[1];
 		}
 	}
-
 }
 
 new FLBuilderAddonsInstaller();

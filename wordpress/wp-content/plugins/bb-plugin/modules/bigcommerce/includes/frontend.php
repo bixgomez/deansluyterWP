@@ -27,5 +27,3 @@ foreach ( $attr as $key => $value ) {
 }
 
 echo sprintf( '[%s]', $shortcode );
-
-

@@ -1,17 +1,17 @@
-# Copyright (C) 2022 Gravity Forms
+# Copyright (C) 2025 Gravity Forms
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Constant Contact Add-On 1.7\n"
+"Project-Id-Version: Gravity Forms Constant Contact Add-On 1.8.0\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-26T18:00:20+00:00\n"
+"POT-Creation-Date: 2025-04-15T17:09:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: gravityformsconstantcontact\n"
 
 #. Plugin Name of the plugin
@@ -60,7 +60,7 @@ msgstr ""
 
 #: class-gf-constantcontact.php:404
 #: class-gf-constantcontact.php:408
-#: class-gf-constantcontact.php:604
+#: class-gf-constantcontact.php:609
 msgid "Name"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 
 #: class-gf-constantcontact.php:412
 #: class-gf-constantcontact.php:417
-#: class-gf-constantcontact.php:605
+#: class-gf-constantcontact.php:610
 msgid "Constant Contact List"
 msgstr ""
 
@@ -105,143 +105,151 @@ msgstr ""
 msgid "Select custom fields in Constant Contact to pair with Gravity Forms fields."
 msgstr ""
 
-#: class-gf-constantcontact.php:485
-#: class-gf-constantcontact.php:487
+#: class-gf-constantcontact.php:490
+#: class-gf-constantcontact.php:492
 msgid "Select a Custom Field"
 msgstr ""
 
-#: class-gf-constantcontact.php:516
+#: class-gf-constantcontact.php:521
 msgid "Email Address"
 msgstr ""
 
-#: class-gf-constantcontact.php:522
+#: class-gf-constantcontact.php:527
 msgid "First Name"
 msgstr ""
 
-#: class-gf-constantcontact.php:527
+#: class-gf-constantcontact.php:532
 msgid "Last Name"
 msgstr ""
 
-#: class-gf-constantcontact.php:533
+#: class-gf-constantcontact.php:538
 msgid "Job Title"
 msgstr ""
 
-#: class-gf-constantcontact.php:538
+#: class-gf-constantcontact.php:543
 msgid "Company Name"
 msgstr ""
 
-#: class-gf-constantcontact.php:543
+#: class-gf-constantcontact.php:548
 msgid "Home Phone Number"
 msgstr ""
 
-#: class-gf-constantcontact.php:549
+#: class-gf-constantcontact.php:554
 msgid "Mobile Phone Number"
 msgstr ""
 
-#: class-gf-constantcontact.php:555
+#: class-gf-constantcontact.php:560
 msgid "Work Phone Number"
 msgstr ""
 
-#: class-gf-constantcontact.php:561
+#: class-gf-constantcontact.php:566
 msgid "Address"
 msgstr ""
 
-#: class-gf-constantcontact.php:567
+#: class-gf-constantcontact.php:572
 msgid "City"
 msgstr ""
 
-#: class-gf-constantcontact.php:573
+#: class-gf-constantcontact.php:578
 msgid "State"
 msgstr ""
 
-#: class-gf-constantcontact.php:579
+#: class-gf-constantcontact.php:584
 msgid "ZIP Code"
 msgstr ""
 
-#: class-gf-constantcontact.php:585
+#: class-gf-constantcontact.php:590
 msgid "Country"
 msgstr ""
 
-#: class-gf-constantcontact.php:680
+#: class-gf-constantcontact.php:685
 msgid "Connected to Constant Contact."
 msgstr ""
 
-#: class-gf-constantcontact.php:684
+#: class-gf-constantcontact.php:689
 msgid "Disconnect from Constant Contact"
 msgstr ""
 
-#: class-gf-constantcontact.php:694
+#: class-gf-constantcontact.php:699
 msgid "SSL Certificate Required"
 msgstr ""
 
-#: class-gf-constantcontact.php:695
+#: class-gf-constantcontact.php:700
 msgid "Make sure you have an SSL certificate installed and enabled, then %1$sclick here to continue%2$s."
 msgstr ""
 
-#: class-gf-constantcontact.php:728
+#: class-gf-constantcontact.php:733
 msgid "An application must be created with Constant Contact to get your API Key and App Secret. The app should be dedicated to this website, please do not use the same app with multiple sites."
 msgstr ""
 
-#: class-gf-constantcontact.php:730
+#: class-gf-constantcontact.php:735
 msgid "Login to the %1$sConstant Contact V3 Portal%2$s and create a \"New Application\"."
 msgstr ""
 
-#: class-gf-constantcontact.php:731
+#: class-gf-constantcontact.php:736
 msgid "Enter \"Gravity Forms\" for the application name and click \"Save\"."
 msgstr ""
 
-#: class-gf-constantcontact.php:732
+#: class-gf-constantcontact.php:737
 msgid "Copy your Constant Contact API Key and paste it into the API Key field below."
 msgstr ""
 
-#: class-gf-constantcontact.php:733
+#: class-gf-constantcontact.php:738
 msgid "Click the \"Generate Secret\" button, go through the secret generation process and paste the resulted key in the \"App Secret\" field below."
 msgstr ""
 
-#: class-gf-constantcontact.php:734
+#: class-gf-constantcontact.php:739
 msgid "Paste the URL %s into the Redirect URI field and click \"Save\" in the top right corner of the screen."
 msgstr ""
 
-#: class-gf-constantcontact.php:762
+#: class-gf-constantcontact.php:767
 msgid "API Key"
 msgstr ""
 
-#: class-gf-constantcontact.php:772
+#: class-gf-constantcontact.php:777
 msgid "App Secret"
 msgstr ""
 
-#: class-gf-constantcontact.php:784
+#: class-gf-constantcontact.php:789
 msgid "Connect to Constant Contact"
 msgstr ""
 
-#: class-gf-constantcontact.php:1067
+#: class-gf-constantcontact.php:1073
 msgid "Unable to process feed because API could not be initialized."
 msgstr ""
 
-#: class-gf-constantcontact.php:1076
+#: class-gf-constantcontact.php:1082
 msgid "A valid Email address must be provided."
 msgstr ""
 
-#: class-gf-constantcontact.php:1084
+#: class-gf-constantcontact.php:1090
 msgid "Subscriber details invalid."
 msgstr ""
 
-#: class-gf-constantcontact.php:1092
+#: class-gf-constantcontact.php:1098
 msgid "Unable to add/update subscriber: %s"
 msgstr ""
 
-#: class-gf-constantcontact.php:1257
+#: class-gf-constantcontact.php:1267
 msgid "You're trying to add a contact which has been deleted from your Constant Contact account. Currently you have to manually revive the contact via the Constant Contact website."
 msgstr ""
 
 #: class-gf-constantcontact.php:1280
-#: class-gf-constantcontact.php:1285
-#: class-gf-constantcontact.php:1311
-#: class-gf-constantcontact.php:1316
+msgid "Contact updated. ID: %s."
+msgstr ""
+
+#: class-gf-constantcontact.php:1280
+msgid "Contact added. ID: %s."
+msgstr ""
+
+#: class-gf-constantcontact.php:1295
+#: class-gf-constantcontact.php:1300
+#: class-gf-constantcontact.php:1326
+#: class-gf-constantcontact.php:1331
 msgid "Access denied."
 msgstr ""
 
 #. translators: 1: open <a> tag, 2: close </a> tag
-#: class-gf-constantcontact.php:1625
+#: class-gf-constantcontact.php:1640
 msgid "On March 31, 2022, Constant Contact is ending support for their previous authorization management service, which can result in outdated applications no longer being able to connect. %1$sPlease update your Constant Contact application%3$s using %2$sthese instructions%3$s and connect using your new application to ensure the continued functionality of your form feeds."
 msgstr ""

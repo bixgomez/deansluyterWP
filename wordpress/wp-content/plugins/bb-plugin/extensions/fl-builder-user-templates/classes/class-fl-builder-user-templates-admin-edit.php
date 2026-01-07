@@ -32,7 +32,7 @@ final class FLBuilderUserTemplatesAdminEdit {
 	 * @param string $location
 	 * @return string The location to redirect this template on save.
 	 */
-	static function redirect_template_location( $location ) {
+	public static function redirect_template_location( $location ) {
 		if ( ! empty( $_POST['fl-builder-launch'] ) && ( 'true' === $_POST['fl-builder-launch'] ) ) {
 			$location = FLBuilderModel::get_edit_url( absint( $_POST['fl-builder-template-redirect'] ) );
 		}

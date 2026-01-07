@@ -164,7 +164,7 @@
 					template_id      : templateId,
 					template_node_id : templateNodeId,
 					node_id          : nodeId,
-					nonce            : nonce
+					_wpnonce         : nonce
 				};
 
 				if ( reCaptchaValue ) {
@@ -179,7 +179,7 @@
 
 		_submitFormComplete: function( response, button )
 		{
-			var data        = JSON.parse( response ),
+			var data        = response.data,
 				buttonText  = button.data( 'original-text' ),
 				form        = button.closest( '.fl-subscribe-form' );
 

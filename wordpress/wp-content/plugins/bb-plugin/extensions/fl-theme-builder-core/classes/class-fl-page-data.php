@@ -64,7 +64,6 @@ final class FLPageData {
 	 */
 	static public function init() {
 		self::init_defaults();
-
 		add_action( 'wp', __CLASS__ . '::init_properties', 1 );
 	}
 
@@ -106,6 +105,10 @@ final class FLPageData {
 			),
 			'advanced' => array(
 				'label'  => __( 'Advanced', 'fl-builder' ),
+				'render' => true,
+			),
+			'term'     => array(
+				'label'  => __( 'Term', 'fl-builder' ),
 				'render' => true,
 			),
 		);
@@ -192,6 +195,21 @@ final class FLPageData {
 	}
 
 	/**
+	 * Adds a property and associated data for term.
+	 *
+	 * @since 1.0
+	 * @param string $key
+	 * @param array  $data
+	 * @return void
+	 */
+	static public function add_term_property( $key, $data = array() ) {
+		$data = array_merge( array(
+			'post_type' => 'all',
+		), $data );
+		self::add_property( 'term', $key, $data );
+	}
+
+	/**
 	 * Adds a property and associated data for the site.
 	 *
 	 * @since 1.0
@@ -224,7 +242,7 @@ final class FLPageData {
 			'label'  => $key,
 			'type'   => 'string',
 			'form'   => false,
-			'getter' => function() {
+			'getter' => function () {
 				return ''; },
 		), $data );
 	}
@@ -271,7 +289,7 @@ final class FLPageData {
 		// Get the value.
 		if ( $property['form'] ) {
 			$defaults       = FLBuilderModel::get_settings_form_defaults( $property['form']['id'] );
-			$settings       = ! $settings ? new stdClass : $settings;
+			$settings       = ! $settings ? new stdClass() : $settings;
 			$settings       = (object) array_merge( (array) $defaults, (array) $settings );
 			self::$settings = $settings;
 			$value          = call_user_func( $property['getter'], $settings, $property );
@@ -364,6 +382,18 @@ final class FLPageData {
 	}
 
 	/**
+	 * Adds a settings form associated with a term property.
+	 *
+	 * @since 1.0
+	 * @param string $key
+	 * @param array  $data
+	 * @return void
+	 */
+	static public function add_term_property_settings_form( $key, $data = array() ) {
+		self::add_property_settings_form( 'term', $key, $data );
+	}
+
+	/**
 	 * Adds a settings form associated with a property.
 	 *
 	 * @since 1.0
@@ -423,6 +453,18 @@ final class FLPageData {
 	 */
 	static public function add_site_property_settings_fields( $key, $data = array() ) {
 		self::add_property_settings_fields( 'site', $key, $data );
+	}
+
+	/**
+	 * Adds a settings fields to a form associated with a term property.
+	 *
+	 * @since 1.0
+	 * @param string $key
+	 * @param array  $data
+	 * @return void
+	 */
+	static public function add_term_property_settings_fields( $key, $data = array() ) {
+		self::add_property_settings_fields( 'term', $key, $data );
 	}
 
 	/**

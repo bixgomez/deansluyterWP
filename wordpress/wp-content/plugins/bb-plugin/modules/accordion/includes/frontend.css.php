@@ -48,7 +48,7 @@ FLBuilderCSS::rule( array(
 
 // Label Text Color
 FLBuilderCSS::rule( array(
-	'selector' => ".fl-node-$id .fl-accordion-button-label, .fl-node-$id .fl-accordion-button-label:hover, .fl-node-$id .fl-accordion-button .fl-accordion-button-icon",
+	'selector' => ".fl-node-$id .fl-accordion-button .fl-accordion-button-label, .fl-node-$id .fl-accordion-button-label:hover, .fl-node-$id .fl-accordion-button .fl-accordion-button-icon",
 	'props'    => array(
 		'color' => $settings->label_text_color,
 	),

@@ -7,6 +7,7 @@
 			$('.fl-node-<?php echo $id; ?> .fl-mosaicflow-content, .fl-node-<?php echo $id; ?> .fl-gallery').magnificPopup({
 				delegate: '.fl-photo-content > a',
 				closeBtnInside: false,
+				fixedContentPos: true,
 				type: 'image',
 				gallery: {
 					enabled: true,
@@ -65,9 +66,11 @@
 
 		<?php if ( 'collage' == $settings->layout ) : ?>
 		$('.fl-node-<?php echo $id; ?> .fl-mosaicflow-content').one( 'mosaicflow-filled', function(){
-			var hash = window.location.hash.replace( '#', '' );
-			if ( hash != '' ) {
-				FLBuilderLayout._scrollToElement( $( '#' + hash ) );
+			if ( ! $( '.fl-node-<?php echo $id; ?>' ).parents( '.fl-animation' ).length ) {
+				var hash = window.location.hash.replace( '#', '' );
+				if ( hash != '' ) {
+					FLBuilderLayout._scrollToElement( $( '#' + hash ) );
+				}
 			}
 			if ( 'undefined' != typeof Waypoint ) {
 				Waypoint.refreshAll();

@@ -31,13 +31,14 @@ final class FLBuilderGlobalStyles {
 	 */
 	static public function init() {
 		// actions.
-		add_action( 'init', __CLASS__ . '::load_settings', 1 );
+		add_action( 'setup_theme', __CLASS__ . '::load_settings', 1 );
 		add_action( 'wp', __CLASS__ . '::register_ajax_actions', 1 );
 		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_global_styles_scripts', 9 );
 		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_global_styles_preview_scripts', 20 );
 		add_action( 'fl_builder_render_custom_css_for_editing', __CLASS__ . '::render_custom_css_for_editing' );
 		add_action( 'wp_enqueue_scripts', __CLASS__ . '::render_fonts_for_global_css' );
 		add_action( 'fl_page_data_add_properties', __CLASS__ . '::add_page_data_properties' );
+		add_action( 'after_setup_theme', __CLASS__ . '::wp_theme_json_data_theme', 11 );
 
 		// filters.
 		add_filter( 'fl_builder_js_config_settings_forms', __CLASS__ . '::add_js_config_for_settings_forms', 10, 1 );
@@ -101,6 +102,9 @@ final class FLBuilderGlobalStyles {
 	 */
 	static public function add_js_config_for_settings_forms( $config ) {
 		$config['styles'] = self::get_settings( false );
+		if ( empty( $config['styles']->colors ) ) {
+			$config['styles']->colors[] = array();
+		}
 		return $config;
 	}
 
@@ -112,6 +116,47 @@ final class FLBuilderGlobalStyles {
 	 * @return array The updated JS configuration.
 	 */
 	static public function add_theme_json_js_config( $config ) {
+		$config['themeJSON'] = self::get_theme_json_js_config();
+
+		return $config;
+	}
+
+	static public function wp_theme_json_data_theme() {
+		// Using $_SERVER here since REST_REQUEST is not available yet.
+		if ( isset( $_GET['fl_builder'] ) || strstr( $_SERVER['REQUEST_URI'], 'fl-controls/' ) ) {
+			return false;
+		}
+		$palette  = (array) current( (array) get_theme_support( 'editor-color-palette' ) );
+		$settings = self::get_settings( false );
+		$new_data = array();
+		if ( ! empty( $settings->colors ) ) {
+			foreach ( $settings->colors as $color ) {
+				$color = (object) $color;
+
+				if ( ! isset( $color->label ) || ! isset( $color->color ) || empty( $color->color ) ) {
+					continue;
+				}
+
+				$key = str_replace( array( '_', ' ' ), '-', strtolower( $color->label ) );
+				$key = preg_replace( '/[^A-Za-z0-9\-]/', '', $key );
+
+				$new_data[] = array(
+					'slug'  => $key,
+					'color' => FLBuilderColor::hex_or_rgb( $color->color ),
+					'name'  => esc_html( $color->label ),
+				);
+			}
+		}
+		add_theme_support( 'editor-color-palette', array_merge( array_filter( $palette ), $new_data ) );
+	}
+
+	/**
+	 * Returns the JS configuration for theme.json styles.
+	 *
+	 * @since 2.9
+	 * @return array
+	 */
+	static public function get_theme_json_js_config() {
 		$theme_json = [
 			'color' => [
 				'palette' => [],
@@ -130,9 +175,13 @@ final class FLBuilderGlobalStyles {
 			}
 		}
 
-		$config['themeJSON'] = $theme_json;
+		// Must be filtered this way for backwards compat. Previously, the
+		// entire BB config array was filtered.
+		$filtered = apply_filters( 'fl_builder_global_colors_json', [
+			'themeJSON' => $theme_json,
+		] );
 
-		return apply_filters( 'fl_builder_global_colors_json', $config );
+		return $filtered['themeJSON'];
 	}
 
 	/**
@@ -353,7 +402,7 @@ final class FLBuilderGlobalStyles {
 	 * @return string
 	 */
 	static public function generate_css( $settings = array() ) {
-		if ( empty( $settings ) ) {
+		if ( empty( (array) $settings ) ) {
 			$settings = self::get_settings();
 		}
 
@@ -652,6 +701,14 @@ final class FLBuilderGlobalStyles {
 			),
 		) );
 
+		/**
+		 * Fires before generating the global CSS.
+		 *
+		 * This action hook allows developers to execute custom code before the global CSS
+		 * is generated.
+		 */
+		do_action( 'fl_builder_before_generate_global_css' );
+
 		// create buffer.
 		ob_start();
 
@@ -666,13 +723,47 @@ final class FLBuilderGlobalStyles {
 	}
 
 	/**
-	 * Generate global styles variables.
+	 * Generate global colors css only.
 	 *
-	 * @since 2.8
+	 * @since 2.9
 	 * @param array $settings
 	 * @return string
 	 */
-	static public function generate_css_vars( $settings ) {
+	static public function generate_global_colors_css( $settings = [] ) {
+		if ( empty( $settings ) ) {
+			$settings = self::get_settings();
+		}
+
+		// make sure it is object.
+		$settings = (object) $settings;
+
+		// css variables.
+		FLBuilderCSS::rule( array(
+			'selector' => ':root',
+			'props'    => self::generate_global_colors_css_vars( $settings ),
+		) );
+
+		// create buffer.
+		ob_start();
+
+		// output css strings.
+		FLBuilderCSS::render();
+
+		// clean global css vars
+		self::$css_vars = array();
+
+		// Generate css strings for global styles.
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generate global colors variables.
+	 *
+	 * @since 2.9
+	 * @param array $settings
+	 * @return array
+	 */
+	static public function generate_global_colors_css_vars( $settings ) {
 		if ( empty( $settings ) ) {
 			return self::$css_vars;
 		}
@@ -692,6 +783,25 @@ final class FLBuilderGlobalStyles {
 			}
 		}
 
+		return self::$css_vars;
+	}
+
+	/**
+	 * Generate global styles variables.
+	 *
+	 * @since 2.8
+	 * @param array $settings
+	 * @return array
+	 */
+	static public function generate_css_vars( $settings ) {
+		if ( empty( $settings ) ) {
+			return self::$css_vars;
+		}
+
+		// global colors
+		self::generate_global_colors_css_vars( $settings );
+
+		// global styles
 		self::extract_color_var( $settings, 'text_color', 'text-color' );
 		self::extract_compound_vars( $settings, 'typography', 'text_typography', 'text' );
 
@@ -755,7 +865,7 @@ final class FLBuilderGlobalStyles {
 	 * @return void
 	 */
 	static public function extract_color_var( $settings, $setting_key, $var_key ) {
-		if ( empty( $settings ) || empty( $setting_key ) || empty( $var_key ) ) {
+		if ( empty( (array) $settings ) || empty( $setting_key ) || empty( $var_key ) ) {
 			return;
 		}
 

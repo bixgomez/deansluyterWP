@@ -1,9 +1,23 @@
+@use "sass:color";
+@use "variables";
+
 // sass-lint:disable class-name-format no-qualifying-elements id-name-format
 //--------------------------------------------------------------
 //   INPUTS
 //--------------------------------------------------------------
 
 .ctct-form-wrapper {
+
+	.ctct-form {
+		&.ctct-inline {
+			display: flex;
+			align-items: flex-end;
+
+			.ctct-form-field-submit {
+				margin-left: 10px;
+			}
+		}
+	}
 
 	input {
 
@@ -18,17 +32,15 @@
 				background-position: 8px 50%;
 				background-repeat: no-repeat;
 				background-size: 18px;
-				border-color: $color-success;
+				border-color: variables.$color-success;
 				padding-left: 32px;
 			}
 
 			&:required.ctct-invalid,
 			&.ctct-invalid {
-				background: $color-white url( ../images/error.svg ) no-repeat;
-				background-color: fade-out($color-error, 0.98);
-				background-position: 8px 50%;
-				background-size: 24px;
-				border-color: $color-error;
+			  background: color.adjust(variables.$color-error, $alpha: -0.98) url(../images/error.svg) no-repeat 8px 50%;
+			  background-size: 24px;
+				border-color: variables.$color-error;
 				padding-left: 40px;
 			}
 		}
@@ -43,16 +55,17 @@
 	}
 
 	.ctct-field-error {
+		color: variables.$color-red;
 		font-size: 0.85rem;
 		font-style: italic;
 	}
 
 	input.ctct-invalid {
-		background: $color-white url( ../images/error.svg ) no-repeat;
-		background-color: fade-out($color-error, 0.98);
+		background: variables.$color-white url( ../images/error.svg ) no-repeat;
+		background-color: color.adjust(variables.$color-error, $alpha: -0.98);
 		background-position: 8px 50%;
 		background-size: 24px;
-		border-color: $color-error;
+		border-color: variables.$color-error;
 		padding-left: 40px;
 	}
 

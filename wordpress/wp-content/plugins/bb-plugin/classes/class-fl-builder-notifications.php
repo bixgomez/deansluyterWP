@@ -12,10 +12,6 @@ final class FLBuilderNotifications {
 	protected static $seconds = 172800; // 48 hours
 
 	public static function init() {
-
-		if ( FLBuilderModel::is_white_labeled() || true == apply_filters( 'fl_disable_notifications', false ) ) {
-			return false;
-		}
 		add_action( 'init', array( 'FLBuilderNotifications', 'set_schedule' ) );
 		add_action( 'fl_builder_notifications_event', array( 'FLBuilderNotifications', 'fetch_notifications' ) );
 		FLBuilderAJAX::add_action( 'fl_builder_notifications', array( 'FLBuilderNotifications', 'notications_ajax' ), array( 'read' ) );
@@ -26,7 +22,9 @@ final class FLBuilderNotifications {
 	 * @since 2.2.1
 	 */
 	public static function set_schedule() {
-
+		if ( FLBuilderModel::is_white_labeled() || true == apply_filters( 'fl_disable_notifications', false ) ) {
+			return false;
+		}
 		if ( ! wp_next_scheduled( 'fl_builder_notifications_event' ) ) {
 			wp_schedule_single_event( time() + self::$seconds, 'fl_builder_notifications_event' );
 		}
@@ -55,7 +53,16 @@ final class FLBuilderNotifications {
 		} else {
 			self::update_state( false );
 		}
-		wp_send_json_success();
+		die( '{"success":"true"}' );
+	}
+
+	/**
+	 * Check if notification enabled.
+	 *
+	 */
+	public static function is_notications_enabled() {
+
+		return get_option( '_fl_builder_notifications_enabled', true ) ? true : false;
 	}
 
 	/**
@@ -110,7 +117,6 @@ final class FLBuilderNotifications {
 			error_log( 'response was not a 200' );
 		}
 		return $stored_data;
-
 	}
 
 	/**
@@ -162,8 +168,7 @@ final class FLBuilderNotifications {
 			'data'     => '{}',
 		);
 		$notifications = get_option( self::$option, $defaults );
-
-		if ( '{}' == $notifications['data'] ) {
+		if ( ! empty( $notifications ) && '{}' == $notifications['data'] ) {
 			return self::fetch_notifications();
 		}
 		return $notifications;
@@ -175,13 +180,15 @@ final class FLBuilderNotifications {
 	 * @since 2.1
 	 */
 	public static function update_state( $state ) {
-		$defaults              = array(
+		$defaults      = array(
 			'read'     => false,
 			'checksum' => '',
 			'data'     => '{}',
 		);
-		$notifications         = get_option( self::$option, $defaults );
-		$notifications['read'] = $state;
+		$notifications = get_option( self::$option, $defaults );
+		if ( ! empty( $notifications ) ) {
+			$notifications['read'] = $state;
+		}
 		FLBuilderUtils::update_option( self::$option, $notifications );
 	}
 }

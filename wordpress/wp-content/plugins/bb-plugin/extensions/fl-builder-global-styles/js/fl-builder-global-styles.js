@@ -220,8 +220,14 @@
 		 * @access private
 		 * @method _onClickSave
 		 */
-		_onClickSave: function()
+		_onClickSave: function( e )
 		{
+			e.preventDefault();
+
+			if ( undefined === e.originalEvent ) {
+				return;
+			}
+
 			FLBuilder.triggerHook( 'clearGlobalPreviewTimeout' );
 
 			var form     = $(this).closest('.fl-builder-settings'),
@@ -288,10 +294,11 @@
 							colors: [ { label: '', color: '' } ]
 						};
 
-						setTimeout( function() {
-							// reload preview
-							FLBuilder._updateLayout();
+						// reload preview
+						FLBuilder.triggerHook( 'clearGlobalPreviewTimeout' );
+						FLBuilderGlobalStylesPreview.renderCSS( null, true );
 
+						setTimeout( function() {
 							// reload panel
 							FLBuilder.triggerHook('showGlobalStyles');
 						}, 500 );

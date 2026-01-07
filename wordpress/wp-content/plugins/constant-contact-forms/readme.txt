@@ -1,12 +1,12 @@
 === Constant Contact Forms ===
 Contributors:      constantcontact, webdevstudios, tw2113, znowebdev, ggwicz, ravedev, oceas, dcooney, newyorkerlaura
 Tags: constant contact, constant contact official, marketing, newsletter, contacts
-Requires at least: 5.2.0
-Tested up to:      6.6.2
-Stable tag:        2.7.0
+Requires at least: 6.4.0
+Tested up to:      6.9
+Stable tag:        2.15.2
 License:           GPLv3
 License URI:       http://www.gnu.org/licenses/gpl-3.0.html
-Requires PHP:      7.4
+Requires PHP:      8.1
 
 The official Constant Contact plugin adds a contact form to your WordPress site to quickly capture information from visitors.
 
@@ -49,109 +49,111 @@ Development of Constant Contact Forms plugin occurs on [GitHub](https://github.c
 
 == Changelog ==
 
-= 2.7.0 =
-* Fixed: Issues around opt-in options not showing until a list was chosen and the form saved.
-* Fixed: PHP warnings with login/register/comment signup integrations.
-* Added: Extra form submission catching if connection issues detected. Will notify administrators right away when detected as well.
-* Updated: Dismissable admin notice recommending to update the Constant Contact Forms plugin when one is available.
+= 2.15.2 =
+* Fixed: Fatal errors regarding strings and addition vs concatenation.
 
-= 2.6.1 =
-* Fixed: Issues around opt-in option display that were introduced with version 2.6.0.
-* Fixed: Issues regarding lists display in admin emails after user signup.
-* Updated: Removed unused images and changed some.
-* Updated: Social sharing icons in plugin list page.
+= 2.15.1 =
+* Fixed: Compatibility issues around Monolog logger and other plugins using different versions.
+* Fixed: PHP notice around custom fields if not managing to connect.
+* Fixed: CMB2 Attached Post potential conflict with other plugins.
+* Updated: aria-label wording for better compliance.
 
-= 2.6.0 =
-* Updated: Amended the list selection process for a given form. Should not break existing forms, and now you can make use of drag-n-drop to order the list selection when offering multiple lists.
-* Updated: reworked the underpinning of the Constant Contact block to be more in line with modern WordPress coding patterns, including block.json based. Should not break existing forms.
-* Updated: Show general List metabox regardless of connected status. Messaging will reflect connection state.
-* Added: New duration timing for a review request and displayed notification.
+= 2.15.0 =
+* Added: Moves PHP minimum requirement to version 8.1 or higher.
+* Added: Anniversary and birthday form fields.
+* Added: Max length limit to Form builder and our custom field inputs.
+* Added: List display of existing custom fields from your Constant Contact Accout at bottom of form builder.
+* Added: Reminder to set a list for a form, when connected.
+* Fixed: Label style application for some positions.
+* Updated: Adjusted logic regarding version 2.0.0 "major upgrade" admin notification.
+* Updated: Show messaging in "Opt in" setting tab when not connected.
+* Updated: Log library version.
+* Updated: Improved log timestamp formats to make more visual sense.
+* Updated: Removed internationalization files to rely on wordpress.org translations.
 
-= 2.5.0 =
-* Updated: Better handling of email notifications around spam submission attempts.
+= 2.14.2 =
+* Fixed: errors regarding Google reCAPTCHA v3 javascript variables.
 
-= 2.4.4 =
-* Fixed: Consistently set address kind to "home".
+= 2.14.1 =
+* Fixed: Dashicon getting escaped instead of displaying, in custom menu spot.
 
-= 2.4.3 =
-* Fixed: Hardened up details around error log files and access.
+= 2.14.0 =
+* Fixed: Issues with Google reCAPTCHA version 3 and forms submitted without page refresh.
+* Fixed: Logic around notification display in case manual intervention is needed.
+* Added: Per-form field setting for a max-width value as a percentage.
+* Added: Ability to choose the address type for address field. Example: home, work, other.
+* Updated: Small visual indicators and wording for if connection issues exist.
+* Updated: Visual details around "required" field indicators on forms, as well as accessibility improvements.
+* Updated: Various PHP warnings and notices.
 
-= 2.4.2 =
-* Fixed: Extra early return check before we process form submissions.
-* Updated: Accessibility around disabled submit buttons during form processing.
+= 2.13.0 =
+* Fixed: Details around address data retrieval from Constant Contact, used in disclosure text.
+* Updated: Added extra theme compatibility for popular themes.
+* Updated: Removed "edit" link on frontend form display to avoid potential confusion.
+* Updated: Adjusted details around cron jobs related to API token tasks.
+* Added: Admin area "edit form" link output for chosen form in Constant Contact Forms Block.
+* Added: Keywords for Elementor widget integration.
+* Added: Dedicated color picker for form title display.
+* Added: Ability to display form horizontally when using just the email field.
 
-= 2.4.1 =
-* Fixed: White font on light gray in admin page modal popups.
-* Fixed: Prevent potential PHP fatal errors with access token fetching.
+= 2.12.0 =
+* Fixed: Fatal errors around list creation within WordPress dashboard.
+* Fixed: Touchups and style bugs around Forms block.
+* Fixed: Require list selection if site has a connected account but no list is chosen for form.
+* Added: Ability to select the heading level when showing form title.
+* Updated: Touched up styles and wording in form editor.
+* Updated: Adjusted Google reCAPTCHA version 3 token timing. Assigned upon submit instead of pageload, to help avoid 2 minute expiration issues.
 
-= 2.4.0 =
-* Updated: Removed reliance on jQuery library for frontend scripts.
-* Updated: Individual address fields and available required fields match up to what's included.
-* Updated: Internal logging library.
-* Updated: Moved disclosure messaging to outside of the generated `<form>` tag.
-* Added: Include list name in sent admin emails.
-* Fixed: Empty list information when creating a list in WordPress Dashboard.
-* Fixed: Prevent fatal errors in functionality that checks for a note.
+= 2.11.3 =
+* Fixed: Email notifications being sent even when toggled off.
+* Updated: Wording in various metaboxes and some fuzzy/blurry icons.
 
-= 2.3.0 =
-* Added: Background catch for new contact API requests that fail due to need to re-authenticate. Requests will be re-tried once newly reconnected.
-* Added: Site health integration to help with debugging and troubleshooting.
-* Updated: Removed reliance on WP Cron for sending submissions. All API submission should be run right away from now on. "Bypass cron" setting negated.
-* Updated: Amended "address" field to allow for choosing which address components to use as well as allow requiring only certain components.
+= 2.11.2 =
+* Fixed: PHP errors regarding passed variable types expecting array but getting string
+* Fixed: Checkbox widths with TwentyTwentyOne theme.
 
-= 2.2.0 =
-* Added: Admin notice if its been determined that the account connection needs human intervention.
-* Updated: Revised and improved access token refreshing in the background.
-* Updated: Removed Google Analytics opt-in option.
-* Updated: Prevent Constant Contact WooCommerce lists from being imported to local lists.
+= 2.11.1 =
+* Updated: restored missed php file that was causing fatal errors.
 
-= 2.1.0 =
-* Fixed: Option saving process for Multisite installs.
-* Fixed: Further touchups and fixes around reported security vulnerabilities.
-* Fixed: Prevent potential issues with `lists` property and contact actions.
-* Fixed: Compatibility with other oAuth2 based services. Specifically: Site Kit at this time.
-* Updated: Obfuscated API values in debug logs.
-* Updated: Adjusted account information lookup frequency. Reduced to every 12 hours.
-* Updated: Adjusted and fixed up details around custom field usage and needing unique labels.
+= 2.11.0 =
+* Added: hCaptcha data to Site Health Panel
+* Updated: Lots of internal code cleanup
+* Updated: Removed old Constant Contact SDK code.
+* Updated: Hide disclosure text below form if not connected to Constant Contact.
+* Updated: Internal, switch to wp_admin_notice() usage.
 
-= 2.0.3 =
-* Updated: Resolution for fatal errors regarding autoloading.
-* Updated: Further security fixes for reported issues.
+= 2.10.0 =
+* Added: Use current displayed language with Google reCAPTCHA when using WPML or PolyLang.
+* Fixed: Issues around language specifications for Google reCAPTCHA.
+* Fixed: WordPress notices around textdomain loading.
+* Fixed: Added aria-label to disclosure external links for better ADA compliance
+* Updated: Amended processes regarding failing API communications when human intervention needed. Includes preventing excessive attempts to refresh tokens in states where the attempt will fail.
+* Updated: Increased notification chances if human intervention needed.
+* Updated: Register list post type for Constant Contact Lists even if not yet connected.
+* Updated: Notice regarding list management details.
 
-= 2.0.2 =
-* Updated: Rate limits on API requests. Should help address list sync issues.
-* Added: Notifications of issues with list fetching with API version 3. Shorter transient cache time.
-* Added: More conditions to show "APIv3 upgrade needed" notice while needed.
-
-= 2.0.1 =
-* Fixed: Fatal error regarding objects and arrays upon update to 2.0.0
-
-= 2.0.0 =
-* Updated: Plugin has been migrated to use Constant Contact API version 3.0. This will require new authentication workflow.
-* Updated: Addressed security issues with regards to opt-in notification.
-* Updated: Added support to check for DISABLE_WP_CRON constant usage and bypass cron scheduling if true.
-* Fixed: moved "Edit form" link to outside the `<form>` markup.
-* Fixed: Custom color choices were not applying to all parts of form text output.
+== Upgrade Notice ==
+* Fixed issues around Monolog compatibility and little details.
 
 == Frequently Asked Questions ==
 
 #### Installation and Setup
-[HELP: Install the Constant Contact Forms Plugin for WordPress to Gather Sign-Ups and Feedback](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/10054-WordPress-Integration-with-Constant-Contact)
+[HELP: Install the Constant Contact Forms Plugin for WordPress to Gather Sign-Ups and Feedback](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/10054-Install-the-Constant-Contact-Forms-plugin-for-WordPress-to-gather-sign-ups-and-feedback?lang=en_US)
 
 #### Constant Contact Forms Options
-[HELP: Add email opt-in to a WordPress Form created with the Constant Contact plugin](http://knowledgebase.constantcontact.com/articles/KnowledgeBase/18260-WordPress-Constant-Contact-Forms-Options)
+[HELP: Add email opt-in to a WordPress Form created with the Constant Contact plugin](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/18260-Add-email-opt-in-to-a-WordPress-Form-created-with-the-Constant-Contact-plugin?lang=en_US)
 
 #### Frequently Asked Questions
-[HELP: Enable Logging in the Constant Contact Forms for WordPress Plugin](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/18491-Enable-Logging-in-the-Constant-Contact-Forms-for-WordPress-Plugin)
+[HELP: Enable Logging in the Constant Contact Forms for WordPress Plugin](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/18491-Enable-logging-in-the-Constant-Contact-Forms-for-WordPress-Plugin?lang=en_US)
 
 #### Constant Contact List Addition Issues
-[HELP: Troubleshooting List Addition Issues in the Constant Contact Forms Plugin for WordPress](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/18539-WordPress-Constant-Contact-List-Addition-Issues)
+[HELP: Troubleshooting List Addition Issues in the Constant Contact Forms Plugin for WordPress](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/18539-Troubleshooting-list-addition-issues-in-the-Constant-Contact-Forms-Plugin-for-WordPress?lang=en_US)
 
 #### cURL error 60: SSL certificate problem
-[HELP: WordPress cURL Error 60: SSL Certificate Problem](https://knowledgebase.constantcontact.com/articles/KnowledgeBase/18159-WordPress-Error-60)
+[HELP: WordPress cURL Error 60: SSL Certificate Problem](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/18159-WordPress-cURL-error-60-SSL-certificate-problem?lang=en_US)
 
 #### Add Google reCAPTCHA to Constant Contact Forms
-[HELP: Add Google reCAPTCHA to Your WordPress Sign-up Form to Prevent Spam Entries](http://knowledgebase.constantcontact.com/articles/KnowledgeBase/17880)
+[HELP: Add Google reCAPTCHA to Your WordPress Sign-up Form to Prevent Spam Entries](https://knowledgebase.constantcontact.com/email-digital-marketing/articles/KnowledgeBase/17880-Add-Google-reCAPTCHA-to-your-WordPress-sign-up-form-to-prevent-spam-entries?lang=en_US)
 
 #### How do I include which custom fields labels are which custom field values in my Constant Contact Account?
 You can add this to your active theme or custom plugin: `add_filter( 'constant_contact_include_custom_field_label', '__return_true' );`. Note: custom fields have a max length of 50 characters. Including the labels will subtract from the 50 character total available.
@@ -161,6 +163,3 @@ You will need to make the connection to Constant Contact using the credentials o
 
 ### Error: Please select at least one list to subscribe to.
 Some users are experiencing errors when upgrading from an older version of the plugin. If you are receiving an error "Please select at least one list to subscribe to" on your form submissions we recommend "Sync Lists with Constant Contact", this can be found in your admin dashboard Contact Form > Lists. If problem still persists we recommend recreating the form from scratch.
-
-== Upgrade Notice ==
-* We will soon be releasing a version of Constant Contact Forms that has a major upgrade to our API behind the scenes. Information will be provided at the time to help ease the process. You should not need to recreate any existing forms, but will need to re-authenticate.

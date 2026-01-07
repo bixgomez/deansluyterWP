@@ -236,9 +236,10 @@ final class FLBuilderUserTemplates {
 				}
 			}
 
-			$is_col_template = FLBuilderModel::is_post_user_template( 'column' );
+			$is_col_template    = FLBuilderModel::is_post_user_template( 'column' );
+			$is_module_template = FLBuilderModel::is_post_user_template( 'module' );
 
-			if ( ! $is_col_template ) {
+			if ( ! $is_col_template && ! $is_module_template ) {
 
 				// Saved columns view
 				$data['tabs']['rows']['views'][] = array(
@@ -277,15 +278,9 @@ final class FLBuilderUserTemplates {
 				}
 			}
 
-			$is_row_template    = FLBuilderModel::is_post_user_template( 'row' );
-			$is_module_template = FLBuilderModel::is_post_user_template( 'module' );
+			$is_row_template = FLBuilderModel::is_post_user_template( 'row' );
 
 			if ( ! $is_row_template && ! $is_col_template && ! $is_module_template ) {
-
-				// Saved rows view
-				$data['tabs']['rows']['views'][] = array(
-					'type' => 'separator',
-				);
 
 				$data['tabs']['rows']['views'][] = array(
 					'handle'       => 'savedRows',

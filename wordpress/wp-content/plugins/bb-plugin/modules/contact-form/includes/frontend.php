@@ -1,5 +1,6 @@
 <?php
 global $post;
+$layout_id          = is_object( $post ) ? $post->ID : 0;
 $label_hidden_class = isset( $settings->placeholder_labels ) && 'placeholder' === $settings->placeholder_labels ? ' class="fl-contact-form-label-hidden"' : '';
 $show_placeholder   = isset( $settings->placeholder_labels ) && ( 'placeholder' === $settings->placeholder_labels || 'both' === $settings->placeholder_labels ) ? true : false;
 
@@ -20,7 +21,7 @@ $contact_form_fields = apply_filters( 'fl_builder_contact_form_fields', array(
 ?>
 <form class="fl-contact-form" <?php if ( isset( $module->template_id ) ) { echo 'data-template-id="' . $module->template_id . '" data-template-node-id="' . $module->template_node_id . '"';} ?>><?php // @codingStandardsIgnoreLine ?>
 	<?php wp_nonce_field( 'fl-contact-form-nonce', 'fl-contact-form-nonce' ); ?>
-	<input type="hidden" name="fl-layout-id" value="<?php echo $post->ID; ?>" />
+	<input type="hidden" name="fl-layout-id" value="<?php echo $layout_id; ?>" />
 	<?php if ( 'show' == $settings->name_toggle ) : ?>
 	<div class="fl-input-group fl-name">
 		<label for="<?php echo esc_attr( $contact_form_fields['form_name'] ); ?>" <?php echo $label_hidden_class; ?>><?php echo esc_attr( $settings->name_placeholder ); ?></label>

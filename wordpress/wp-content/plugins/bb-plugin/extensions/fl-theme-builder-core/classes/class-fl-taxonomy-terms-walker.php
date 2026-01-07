@@ -19,7 +19,7 @@ if ( ! class_exists( 'FLTaxonomyTermsWalker' ) ) {
 		 * @param array   $args   An array of arguments. Unused here. See wp_list_categories().
 		 * @param int     $id    ID of the current category. Unused here.
 		 */
-		function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+		public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 			$mdash   = str_repeat( '&mdash; ', $depth );
 			$output .= '{'
 				. '"id": ' . $item->term_id . ','

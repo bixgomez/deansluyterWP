@@ -80,10 +80,6 @@
 
 			switch(fieldType) {
 				case 'align':
-					field.find('input').on('change', callback);
-				break;
-
-				case 'align':
 					field.find( 'input' ).on( 'change', callback );
 				break;
 
@@ -208,8 +204,12 @@
 			}, (response) => {
 				var win = FLBuilder.UIIFrame.getIFrameWindow();
 
+				if ( typeof response !== 'string' ) {
+					response = FLBuilder._jsonParse(response)
+				}
+
 				$('.fl-builder-preview-loader', window.parent.document).remove();
-				$('#fl-builder-global-styles', win.document).empty().append(JSON.parse(response));
+				$('#fl-builder-global-styles', win.document).empty().append(response);
 
 				if (closePanel) {
 					FLBuilder._lightbox.close();

@@ -45,7 +45,7 @@ class FLGalleryModule extends FLBuilderModule {
 	 */
 	public function update( $settings ) {
 		// Cache the photo data if using the WordPress media library.
-		if ( 'wordpress' == $settings->source ) {
+		if ( 'wordpress' == $settings->source ) { // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
 			$settings->photo_data = $this->get_wordpress_photos();
 		}
 
@@ -57,7 +57,7 @@ class FLGalleryModule extends FLBuilderModule {
 	 */
 	public function get_photos() {
 		// WordPress
-		if ( 'wordpress' == $this->settings->source ) {
+		if ( 'wordpress' == $this->settings->source ) { // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
 			return $this->get_wordpress_photos();
 		}
 

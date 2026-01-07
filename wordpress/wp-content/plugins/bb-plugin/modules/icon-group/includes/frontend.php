@@ -22,6 +22,7 @@ foreach ( $settings->icons as $icon ) {
 		'link'            => $icon->link,
 		'link_target'     => isset( $icon->link_target ) ? $icon->link_target : '_blank',
 		'link_nofollow'   => isset( $icon->link_nofollow ) ? $icon->link_nofollow : 'nofollow',
+		'link_download'   => isset( $icon->link_download ) ? $icon->link_download : 'download',
 		'size'            => $settings->size,
 		'text'            => false,
 		'three_d'         => ! $duo ? $settings->three_d : '',

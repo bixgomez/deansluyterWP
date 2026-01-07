@@ -14,13 +14,14 @@ class FLListModule extends FLBuilderModule {
 				'name'            => __( 'List', 'fl-builder' ),
 				'description'     => __( 'A simple list of items.', 'fl-builder' ),
 				'category'        => __( 'Basic', 'fl-builder' ),
-				'partial_refresh' => true,
 				'icon'            => 'list.svg',
+				'partial_refresh' => true,
+				'include_wrapper' => false,
 			)
 		);
 	}
 
-	function get_list_opening_tag( $list_type ) {
+	public function get_list_opening_tag( $list_type ) {
 		$list_tag_open = '';
 
 		if ( 'ul' === $list_type ) {
@@ -31,10 +32,18 @@ class FLListModule extends FLBuilderModule {
 			$list_tag_open = '<div class="fl-list fl-list-regular" role="list">';
 		}
 
+		// v2 wrapper
+		if ( $this->version && 1 < $this->version ) {
+			ob_start();
+			$this->render_attributes();
+			$attrs         = ob_get_clean();
+			$list_tag_open = "<div$attrs>$list_tag_open";
+		}
+
 		return $list_tag_open;
 	}
 
-	function get_list_closing_tag( $list_type ) {
+	public function get_list_closing_tag( $list_type ) {
 		$list_tag_close = '';
 
 		if ( 'ul' === $list_type ) {
@@ -45,10 +54,15 @@ class FLListModule extends FLBuilderModule {
 			$list_tag_close = '</div>';
 		}
 
+		// v2 wrapper
+		if ( $this->version && 1 < $this->version ) {
+			$list_tag_close .= '</div>';
+		}
+
 		return $list_tag_close;
 	}
 
-	function get_list_item_tag( $list_type ) {
+	public function get_list_item_tag( $list_type ) {
 		$li_div = '';
 
 		if ( 'ul' === $list_type || 'ol' === $list_type ) {
@@ -60,7 +74,7 @@ class FLListModule extends FLBuilderModule {
 		return $li_div;
 	}
 
-	function get_list_icon( $list_item_icon, $list_icon_default ) {
+	public function get_list_icon( $list_item_icon, $list_icon_default ) {
 		$list_icon = '';
 
 		if ( ! empty( $list_item_icon ) ) {
@@ -72,7 +86,7 @@ class FLListModule extends FLBuilderModule {
 		return $list_icon;
 	}
 
-	function get_heading_icon( $list_icon, $list_icon_placement ) {
+	public function get_heading_icon( $list_icon, $list_icon_placement ) {
 		$heading_icon = '';
 
 		if ( 'heading_left' == $list_icon_placement || 'heading' == $list_icon_placement ) {
@@ -84,7 +98,7 @@ class FLListModule extends FLBuilderModule {
 		return $heading_icon;
 	}
 
-	function get_content_icon( $list_icon, $list_icon_placement ) {
+	public function get_content_icon( $list_icon, $list_icon_placement ) {
 		$content_icon = '';
 
 		if ( 'content_left' == $list_icon_placement || 'content' == $list_icon_placement ) {
@@ -96,7 +110,7 @@ class FLListModule extends FLBuilderModule {
 		return $content_icon;
 	}
 
-	function get_heading_html( $heading_tag, $heading_text, $heading_icon, $icon_placement ) {
+	public function get_heading_html( $heading_tag, $heading_text, $heading_icon, $icon_placement ) {
 		$heading_html = '';
 
 		if ( empty( $heading_icon ) && empty( $heading_text ) ) {
@@ -104,7 +118,22 @@ class FLListModule extends FLBuilderModule {
 		}
 
 		if ( ! empty( $heading_tag ) ) {
-			$wrapped_heading_text = '<span class="fl-list-item-heading-text">' . esc_html( $heading_text ) . '</span>';
+			$allowed_tags         = array(
+				'a'      => array(
+					'href'   => true,
+					'title'  => true,
+					'target' => true,
+				),
+				'em'     => array(),
+				'i'      => array(),
+				'strong' => array(),
+				'b'      => array(),
+				'sup'    => array(),
+				'sub'    => array(),
+				'span'   => array(),
+			);
+			$allowed_tags         = apply_filters( 'fl_list_heading_allowed_tags', $allowed_tags );
+			$wrapped_heading_text = '<span class="fl-list-item-heading-text">' . wp_kses( $heading_text, $allowed_tags ) . '</span>';
 
 			if ( 'heading_right' == $icon_placement ) {
 				$heading_html = "<$heading_tag class=\"fl-list-item-heading\">$wrapped_heading_text $heading_icon</$heading_tag>";
@@ -116,7 +145,7 @@ class FLListModule extends FLBuilderModule {
 		return $heading_html;
 	}
 
-	function get_content_html( $content_tag, $content_text, $content_icon, $icon_placement ) {
+	public function get_content_html( $content_tag, $content_text, $content_icon, $icon_placement ) {
 		$content_html = '';
 
 		if ( empty( $content_icon ) && empty( $content_text ) ) {
@@ -153,7 +182,6 @@ class FLListModule extends FLBuilderModule {
 
 		return $settings;
 	}
-
 }
 
 /**
@@ -315,14 +343,14 @@ FLBuilder::register_module(
 							),
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => '.fl-module-content',
+								'selector' => '.fl-list',
 								'property' => 'padding',
 							),
 						),
 						'common_list_item_padding' => array(
 							'type'       => 'dimension',
 							'label'      => __( 'List Item Padding', 'fl-builder' ),
-							'default'    => '0',
+							'default'    => '5',
 							'responsive' => true,
 							'slider'     => true,
 							'units'      => array(
@@ -332,7 +360,7 @@ FLBuilder::register_module(
 							),
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => '.fl-module-content .fl-list .fl-list-item',
+								'selector' => '.fl-list .fl-list-item',
 								'property' => 'padding',
 							),
 							'help'       => __( 'This applies to all list items, but can be overridden individually.', 'fl-builder' ),
@@ -343,7 +371,7 @@ FLBuilder::register_module(
 							'responsive' => true,
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => '.fl-module-content',
+								'selector' => '.fl-list',
 							),
 						),
 					),
@@ -413,7 +441,7 @@ FLBuilder::register_module(
 						'icon_padding'    => array(
 							'type'       => 'dimension',
 							'label'      => __( 'Icon Padding', 'fl-builder' ),
-							'default'    => '0',
+							'default'    => '5',
 							'responsive' => true,
 							'slider'     => true,
 							'units'      => array(
@@ -423,7 +451,7 @@ FLBuilder::register_module(
 							),
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => '.fl-module-content .fl-list-item-icon',
+								'selector' => '.fl-list .fl-list-item-icon',
 								'property' => 'padding',
 							),
 						),
@@ -475,7 +503,7 @@ FLBuilder::register_module(
 							'responsive' => true,
 							'preview'    => array(
 								'type'      => 'css',
-								'selector'  => '{node}.fl-module-list .fl-list-item-content .fl-list-item-content-text, {node}.fl-module-list .fl-list-item-content .fl-list-item-content-text *',
+								'selector'  => '{node}.fl-module-list .fl-list-item-content .fl-list-item-content-text, {node}.fl-module-list .fl-list-item-content .fl-list-item-content-text *:not(b, strong)',
 								'important' => true,
 							),
 						),

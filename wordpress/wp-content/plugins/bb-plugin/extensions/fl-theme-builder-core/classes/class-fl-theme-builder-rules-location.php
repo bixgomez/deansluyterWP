@@ -94,7 +94,7 @@ final class FLThemeBuilderRulesLocation {
 		global $wp_query;
 		global $post;
 
-		if ( ! did_action( 'wp' ) && strpos( $_SERVER['REQUEST_URI'], 'legacy-widget-preview' ) === false ) {
+		if ( ! is_admin() && ! did_action( 'wp' ) && strpos( $_SERVER['REQUEST_URI'], 'legacy-widget-preview' ) === false ) {
 			_doing_it_wrong( __CLASS__ . '::get_current_page_location', __( 'Must be called on or after the wp action.', 'fl-builder' ), '1.0' );
 		}
 
@@ -117,6 +117,8 @@ final class FLThemeBuilderRulesLocation {
 			$location = 'general:search';
 		} elseif ( is_404() ) {
 			$location = 'general:404';
+		} elseif ( is_feed() ) {
+			$location = 'general:feed';
 		} elseif ( is_category() ) {
 
 			$location = 'taxonomy:category';
@@ -140,7 +142,12 @@ final class FLThemeBuilderRulesLocation {
 				$object   = $location . ':' . $queried_object->term_id;
 			}
 		} elseif ( is_post_type_archive() ) {
-			$location = 'archive:' . $wp_query->get( 'post_type' );
+			$post_type = get_query_var( 'post_type' );
+			if ( ! is_array( $post_type ) ) {
+				$location = 'archive:' . $post_type;
+			} else {
+				$location = 'archive:' . reset( $post_type );
+			}
 		} elseif ( is_singular() ) {
 
 			$location = 'post:' . $post->post_type;

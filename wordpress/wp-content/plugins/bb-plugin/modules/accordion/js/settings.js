@@ -38,7 +38,7 @@
 				moreLinkField = form.find('#fl-field-more_link'),
 				moreLinkTextField = form.find('#fl-field-more_link_text'),
 				showExcerpt = ( 'post' === contentSource && 'post_excerpt' === contentType );
-			
+
 			if ( showExcerpt ) {
 				excerptLengthField.show();
 				excerptMoreTextField.show();
