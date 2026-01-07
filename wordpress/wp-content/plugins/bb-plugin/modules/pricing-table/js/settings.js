@@ -108,7 +108,7 @@
 		_flipSettings: function( form ) {
 			var icon = form.find( 'input[name=btn_icon]' );
 
-			if ( -1 !== icon.val().indexOf( 'fad fa') ) {
+			if ( icon.val() && -1 !== icon.val().indexOf( 'fad fa') ) {
 				$('#fl-field-btn_duo_color1').show();
 				$('#fl-field-btn_duo_color2').show();
 			} else {

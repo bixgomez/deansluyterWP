@@ -23,7 +23,9 @@
 			$( this.nodeClass + ' .fl-accordion-button-label' ).on('focusin', $.proxy( this._labelFocusIn, this ) );
 			$( this.nodeClass + ' .fl-accordion-button' ).on('focusout', $.proxy( this._focusOut, this ) );
 
-			FLBuilderLayout.preloadAudio( this.nodeClass + ' .fl-accordion-content' );
+			if ( 'undefined' !== typeof FLBuilderLayout ) {
+				FLBuilderLayout.preloadAudio( this.nodeClass + ' .fl-accordion-content' );
+			}
 
 			this._openActiveAccordion();
 		},
@@ -162,22 +164,24 @@
 				item 		= content.parent(),
 				win  		= $( window );
 
-			FLBuilderLayout.refreshGalleries( content );
+			if ( 'undefined' !== typeof FLBuilderLayout ) {
+				FLBuilderLayout.refreshGalleries( content );
 
-			// Grid layout support (uses Masonry)
-			FLBuilderLayout.refreshGridLayout( content );
+				// Grid layout support (uses Masonry)
+				FLBuilderLayout.refreshGridLayout( content );
 
-			// Post Carousel support (uses BxSlider)
-			FLBuilderLayout.reloadSlider( content );
+				// Post Carousel support (uses BxSlider)
+				FLBuilderLayout.reloadSlider( content );
 
-			// WP audio shortcode support
-			FLBuilderLayout.resizeAudio( content );
+				// WP audio shortcode support
+				FLBuilderLayout.resizeAudio( content );
 
-			// Reload Google Map embed.
-			FLBuilderLayout.reloadGoogleMap( content );
+				// Reload Google Map embed.
+				FLBuilderLayout.reloadGoogleMap( content );
 
-			// Slideshow module support.
-			FLBuilderLayout.resizeSlideshow();
+				// Slideshow module support.
+				FLBuilderLayout.resizeSlideshow();
+			}
 
 			if ( item.offset().top < win.scrollTop() + 100 ) {
 				$( 'html, body' ).animate({

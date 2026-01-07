@@ -17,7 +17,7 @@ if ( ! class_exists( 'FLPageWalker' ) ) {
 		 * @param array   $args         Optional. Array of arguments. Default empty array.
 		 * @param int     $current_page Optional. Page ID. Default 0.
 		 */
-		function start_el( &$output, $page, $depth = 0, $args = array(), $current_page = 0 ) {
+		public function start_el( &$output, $page, $depth = 0, $args = array(), $current_page = 0 ) {
 			$mdash   = str_repeat( '&mdash; ', $depth );
 			$title   = wp_slash( esc_attr( FLThemeBuilderRulesLocation::sanitize_title( $page->post_title ) ) );
 			$title   = empty( $title ) ? __( 'No Title', 'fl-builder' ) : $title;
@@ -31,10 +31,10 @@ if ( ! class_exists( 'FLPageWalker' ) ) {
 		public function end_el( &$output, $page, $depth = 0, $args = array() ) {
 			$output .= '';
 		}
-		function start_lvl( &$output, $depth = 0, $args = array() ) {
+		public function start_lvl( &$output, $depth = 0, $args = array() ) {
 			$output .= '';
 		}
-		function end_lvl( &$output, $depth = 0, $args = array() ) {
+		public function end_lvl( &$output, $depth = 0, $args = array() ) {
 			$output .= '';
 		}
 	}

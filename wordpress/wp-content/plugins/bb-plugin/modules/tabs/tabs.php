@@ -15,6 +15,7 @@ class FLTabsModule extends FLBuilderModule {
 			'category'        => __( 'Layout', 'fl-builder' ),
 			'partial_refresh' => true,
 			'icon'            => 'layout.svg',
+			'block_editor'    => true,
 		));
 
 		$this->add_css( 'font-awesome-5' );
@@ -116,7 +117,6 @@ class FLTabsModule extends FLBuilderModule {
 	public function set_custom_excerpt_more( $more ) {
 		return $this->settings->excerpt_more_text;
 	}
-
 }
 
 /**

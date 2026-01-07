@@ -20,6 +20,7 @@
 		this.currentBrowserWidth = $( window ).width();
 		this.postId              = settings.postId;
 		this.mobileStacked       = settings.mobileStacked;
+		this.submenuIcon         = settings.submenuIcon;
 
 		// initialize the menu
 		this._initMenu();
@@ -63,7 +64,7 @@
 		$( this.wrapperClass + ' ul.menu > li:last-child' ).on( 'focusout', $.proxy(function (e) {
 			if ( $( this.wrapperClass ).find( '.fl-menu-mobile-toggle' ).hasClass( 'fl-active' ) && ( 'expanded' !== this.mobileToggle ) ) {
 				if ( ! $( e.relatedTarget ).parent().hasClass( 'menu-item' ) ) {
-					$( this.wrapperClass ).find( '.fl-menu-mobile-toggle' ).trigger( 'click' );	
+					$( this.wrapperClass ).find( '.fl-menu-mobile-toggle' ).trigger( 'click' );
 				}
 			}
 		}, this ) );
@@ -306,18 +307,20 @@
 
 				var $link			= $( e.target ).parents( '.fl-has-submenu' ).first(),
 					$subMenu 		= $link.children( '.sub-menu' ).first(),
-					$href	 		= $link.children('.fl-has-submenu-container').first().find('> a').attr('href'),
+					$href	 		= $link.children('.fl-has-submenu-container').first().find('> a').attr('href') || false,
 					$subMenuParents = $( e.target ).parents( '.sub-menu' ),
 					$activeParents 	= $( e.target ).parents( '.fl-has-submenu.fl-active' );
-
-				if( !$subMenu.is(':visible') || $(e.target).hasClass('fl-menu-toggle')
-					|| ($subMenu.is(':visible') && (typeof $href === 'undefined' || $href == '#')) ){
+				if(
+					( ! $subMenu.is(':visible') && 'none' === this.submenuIcon )
+					|| $(e.target).hasClass('fl-menu-toggle')
+					|| ($subMenu.is(':visible') && (typeof $href === 'undefined'|| $href == '#'))
+					|| ( ! $href || '#' === $href )
+				){
 					e.preventDefault();
-				}
-				else {
-					e.stopPropagation();
-					window.location.href = $href;
-					return;
+				} else {
+						e.stopPropagation();
+						window.location.href = $href;
+						return false;
 				}
 
 				if ($(this.wrapperClass).hasClass('fl-menu-accordion-collapse')) {
@@ -518,13 +521,23 @@
 					}
 					else {
 						var targetMenu = null;
-						
+
 						if ( self.mobileBelowRow ) {
-							targetMenu = $( this ).closest( '.fl-col' ).next( '.fl-menu-mobile-clone' );
+							var $closestCol = $( this ).parents( '.fl-col, .fl-module-box' ),
+								$closestColGroup = $closestCol.length ? $closestCol.parent( '.fl-col-group' ) : null,
+								targetMenu  = $closestCol.length ? $closestCol.last().next( '.fl-menu-mobile-clone' ) : null;
+
+							if ( $closestColGroup.length ) {
+								if ( $closestColGroup.hasClass( 'fl-col-group-responsive-reversed' ) ) {
+									$closestColGroup.find( '.fl-menu-mobile-clone' ).css( 'order', -1 );
+								} else if ( $closestColGroup ) {
+									$closestColGroup.find( '.fl-menu-mobile-clone' ).css( 'order', 2 );
+								}
+							}
 						} else {
 							targetMenu = $( this ).closest( '.fl-menu' ).find( 'ul.menu' );
 						}
-						
+
 						if ( targetMenu.length ) {
 							$menu = $( targetMenu );
 						}
@@ -608,7 +621,7 @@
 		 * @return boolean
 		 */
 		_isMobileBelowRowEnabled: function() {
-			return this.mobileBelowRow && $( this.nodeClass ).closest( '.fl-col' ).length;
+			return this.mobileBelowRow && ( $( this.nodeClass ).parents( '.fl-col, .fl-module-box' ).length );
 		},
 
 		/**
@@ -626,7 +639,7 @@
 
 			var module = $( this.nodeClass ),
 				clone  = null,
-				col    = module.closest( '.fl-col' );
+				col    = module.parents( '.fl-col, .fl-module-box' ).last();
 
 			if ( module.length < 1 ) {
 				return;
@@ -769,14 +782,14 @@
 
 		/**
 		 * Resize or reposition the Flyout Menu Panel.
-		 * 
+		 *
 		 * @since 2.8.1
 		 * @returns void
 		 */
 		_resizeFlyoutMenuPanel: function(){
 			const wrapper    = $( this.wrapperClass );
 			const wrapFlyout = wrapper.find( '.fl-menu-mobile-flyout' );
-				
+
 			if ( wrapFlyout.length > 0 ) {
 				wrapFlyout.css( this._getFlyoutMenuPanelPosition() );
 			}
@@ -784,7 +797,7 @@
 
 		/**
 		 * Compute the Flyout Menu Panel's position on the screen.
-		 * 
+		 *
 		 * @since 2.8.1
 		 * @returns object
 		 */
@@ -806,7 +819,7 @@
 			flyoutPosition[ side ]  = '0px';
 			flyoutPosition[ 'height' ]  = winHeight + 'px';
 			flyoutPosition[ 'top' ] = '0px';
-			
+
 			if ( adminBarHeight > 0 ) {
 				const diff = adminBarHeight - winTop;
 				flyoutPosition[ 'top' ] = diff <= 0 ? '0px' : (diff) + 'px';

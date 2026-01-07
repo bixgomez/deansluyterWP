@@ -29,7 +29,7 @@ class FLSlideshowModule extends FLBuilderModule {
 	 */
 	public function update( $settings ) {
 		// Cache the photo data if using the WordPress media library.
-		if ( 'wordpress' == $settings->source ) {
+		if ( 'wordpress' == $settings->source ) { // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
 			$settings->photo_data = $this->get_wordpress_photos();
 		}
 
@@ -41,7 +41,7 @@ class FLSlideshowModule extends FLBuilderModule {
 	 */
 	public function get_source() {
 		// WordPress
-		if ( 'wordpress' == $this->settings->source ) {
+		if ( 'wordpress' == $this->settings->source ) { // phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText
 			return $this->get_wordpress_source();
 		}
 
@@ -49,6 +49,135 @@ class FLSlideshowModule extends FLBuilderModule {
 		if ( 'smugmug' == $this->settings->source ) {
 			return $this->get_smugmug_source();
 		}
+	}
+
+		/**
+	 * @method get_smugmug_source
+	 */
+	public function get_smugmug_source() {
+
+		$photos = $this->get_smugmug_photos();
+
+		// Build the source js object
+		if ( count( $photos ) > 0 ) {
+
+			$source  = 'type: "urls", urls:';
+			$objects = array();
+
+			foreach ( $photos as $photo ) {
+				if ( empty( $photo ) ) {
+					continue;
+				}
+
+				$thumb = $photo->media[0]['url'];
+				$med   = $photo->media[0]['url'];
+				$full  = $photo->media[0]['url'];
+
+				foreach ( $photo->media as $media ) {
+
+					if ( (int) $media['width'] < 500 ) {
+						$thumb = $media['url'];
+					}
+					if ( (int) $media['width'] > 500 && (int) $media['width'] < 1400 ) {
+						$med = $media['url'];
+					}
+				}
+
+				$caption   = str_replace( array( "\r", "\n" ), '', nl2br( htmlspecialchars( $photo->caption ) ) );
+				$alt       = empty( $photo->alt ) ? '' : esc_attr( $photo->alt );
+				$urls      = '{' . "\n";
+				$urls .= 'thumbURL: "' . sanitize_url( $thumb ) . '",'; // @codingStandardsIgnoreLine
+				$urls .= 'largeURL: "' . sanitize_url( $med ) . '",'; // @codingStandardsIgnoreLine
+				$urls .= 'x3largeURL: "' . sanitize_url( $full ) . '",'; // @codingStandardsIgnoreLine
+				$urls     .= 'caption: "' . $caption . '",';
+				$urls     .= 'alt: "' . $alt . '",';
+				$urls     .= '}';
+				$objects[] = $urls;
+			}
+
+			return $source . '[' . implode( ',', $objects ) . ']';
+		} else {
+			return '';
+		}
+	}
+
+		/**
+	 * @method get_smugmug_photos
+	 */
+	public function get_smugmug_photos() {
+		$photos = array();
+
+		// Load the feed into a DOM object.
+		if ( ini_get( 'allow_url_fopen' ) ) {
+			$feed = simplexml_load_file( $this->settings->feed_url, 'SimpleXMLElement', LIBXML_NOWARNING );
+		} else {
+			$data = wp_remote_get( $this->settings->feed_url );
+			$feed = simplexml_load_string( $data['body'], 'SimpleXMLElement', LIBXML_NOWARNING );
+		}
+
+		if ( false !== $feed ) {
+
+			// Get the feed data into an array.
+			foreach ( $feed->channel->item as $item ) {
+
+				// SmugMug photo sizes.
+				$media = array();
+
+				foreach ( $item->xpath( 'media:group/media:content' ) as $media_content ) {
+
+					$media_content = (array) $media_content;
+
+					$media_content = reset( $media_content );
+					if ( 'image' == $media_content['medium'] ) {
+						$media[] = array(
+							'height' => $media_content['height'],
+							'width'  => $media_content['width'],
+							'url'    => $media_content['url'],
+						);
+					}
+				}
+
+				// Only continue if we have media.
+				if ( count( $media ) > 0 ) {
+
+					// Photo link
+					if ( count( $media ) <= 3 ) {
+						$link = $media[0]['url'];
+					} else {
+						$link = $media[ count( $media ) - 2 ]['url'];
+					}
+
+					if ( isset( $this->settings->layout ) && 'collage' == $this->settings->layout ) {
+						for ( $i = count( $media ) - 1; $i >= 0; $i-- ) {
+							if ( $this->settings->photo_size <= $media[ $i ]['width'] ) {
+								$src = $media[ $i ]['url'];
+							}
+						}
+					} else {
+						$src = $media[1]['url'];
+					}
+
+					// Photo data object.
+					$data              = new stdClass();
+					$data->id          = $item->guid;
+					$data->alt         = $item->title;
+					$data->caption     = $item->title;
+					$data->description = $item->title;
+					$data->title       = $item->title;
+					$data->height      = $media[ count( $media ) - 1 ]['height'];
+					$data->width       = $media[ count( $media ) - 1 ]['width'];
+					$data->link        = $link;
+					$data->src         = $src;
+					$data->data_source = 'smugmug';
+					$data->media       = $media;
+
+					// Push the photo data.
+					array_push( $photos, $data );
+				}
+			}
+		}
+
+		return $photos;
 	}
 
 	/**
@@ -155,32 +284,7 @@ class FLSlideshowModule extends FLBuilderModule {
 		}
 	}
 
-	/**
-	 * @method get_smugmug_source
-	 */
-	public function get_smugmug_source() {
-		$gallery_id = array();
-		$parts      = explode( '?', $this->settings->feed_url );
 
-		if ( count( $parts ) == 2 ) {
-
-			$parts = explode( '&', $parts[1] );
-
-			foreach ( $parts as $part ) {
-				if ( stristr( $part, 'data' ) ) {
-					$parts      = explode( '=', $part );
-					$gallery_id = explode( '_', $parts[1] );
-					break;
-				}
-			}
-		}
-
-		if ( count( $gallery_id ) > 0 ) {
-			return 'type: "smugmug", id: "' . $gallery_id[0] . '", key: "' . $gallery_id[1] . '"';
-		} else {
-			return '';
-		}
-	}
 
 	/**
 	 * @method get_nav_buttons

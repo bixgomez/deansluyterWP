@@ -1,3 +1,7 @@
+### 1.8.0 | 2025-04-15
+- Updated the Custom Fields setting on the feed configuration page to use the generic_map type field instead of the deprecated dynamic_field_map type field.
+- AF: Updated process_feed() return value for compatibility with Gravity Forms 2.9.4, so the framework can save the feed status to the entry meta.
+
 ### 1.7 | 2022-10-26
 - Updated feed processing to prevent delays in form submission by running in the background.
 - Updated token refresh procedure so that it retries when there is an error, reducing service disconnections.

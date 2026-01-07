@@ -204,7 +204,10 @@ final class FLBuilderWhiteLabel {
 		foreach ( $value as $k => $v ) {
 			$value[ $k ] = wp_specialchars_decode( stripslashes( wp_strip_all_tags( $v ) ) );
 		}
-		return $value;
+		/**
+		 * @see fl_builder_theme_branding
+		 */
+		return apply_filters( 'fl_builder_theme_branding', $value );
 	}
 
 	/**

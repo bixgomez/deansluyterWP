@@ -15,6 +15,7 @@ class FLCountdownModule extends FLBuilderModule {
 			'category'        => __( 'Info', 'fl-builder' ),
 			'partial_refresh' => true,
 			'icon'            => 'clock.svg',
+			'block_editor'    => true,
 		));
 	}
 
@@ -155,6 +156,10 @@ class FLCountdownModule extends FLBuilderModule {
 			unset( $settings->year );
 		}
 
+		if ( is_array( $settings->time ) ) {
+			// rebuild time as a string...
+			$settings->time = date( 'H:i', strtotime( $settings->time['hours'] . ':' . $settings->time['minutes'] . ':00 ' . strtoupper( $settings->time['day_period'] ) ) ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+		}
 		return $settings;
 	}
 
@@ -166,19 +171,14 @@ class FLCountdownModule extends FLBuilderModule {
 	 */
 	public function get_time() {
 
-		$date       = gmdate( 'Y-m-d', strtotime( $this->settings->ui_date ) );
-		$hours      = isset( $this->settings->time['hours'] ) ? str_pad( $this->settings->time['hours'], 2, '0', STR_PAD_LEFT ) : '00';
-		$minutes    = isset( $this->settings->time['minutes'] ) ? str_pad( $this->settings->time['minutes'], 2, '0', STR_PAD_LEFT ) : '00';
-		$day_period = isset( $this->settings->time['day_period'] ) ? $this->settings->time['day_period'] : 'AM';
-		$zone       = isset( $this->settings->time_zone ) && '' != $this->settings->time_zone ? $this->settings->time_zone : date( 'e', current_time( 'timestamp', 1 ) ); //phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date,WordPress.DateTime.CurrentTimeTimestamp.RequestedUTC
-		$time       = date( 'H:i:s', strtotime( $hours . ':' . $minutes . ':00 ' . strtoupper( $day_period ) ) ); //phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-
+		$date      = gmdate( 'Y-m-d', strtotime( $this->settings->ui_date ) );
+		$zone      = isset( $this->settings->time_zone ) && '' != $this->settings->time_zone ? $this->settings->time_zone : date( 'e', current_time( 'timestamp', 1 ) ); //phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date,WordPress.DateTime.CurrentTimeTimestamp.RequestedUTC
+		$time      = $this->settings->time;
 		$timestamp = $date . ' ' . $time;
 		$timezone  = new DateTimeZone( $zone );
 		$date      = new DateTime( $timestamp, $timezone );
 
 		return $date->format( 'c' );
-
 	}
 
 	/**
@@ -203,7 +203,6 @@ class FLCountdownModule extends FLBuilderModule {
 
 		echo $html;
 	}
-
 }
 
 /**
@@ -231,13 +230,10 @@ FLBuilder::register_module('FLCountdownModule', array(
 				'title'  => __( 'Time', 'fl-builder' ),
 				'fields' => array(
 					'time'      => array(
-						'type'    => 'time',
-						'label'   => __( 'Time', 'fl-builder' ),
-						'default' => array(
-							'hours'      => '01',
-							'minutes'    => '00',
-							'day_period' => 'am',
-						),
+						'type'        => 'simple-time',
+						'label'       => __( 'Time', 'fl-builder' ),
+						'default'     => '01:00',
+						'connections' => array( 'custom_field' ),
 					),
 					'time_zone' => array(
 						'type'    => 'timezone',

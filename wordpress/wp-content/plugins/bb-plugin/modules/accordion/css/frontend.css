@@ -16,6 +16,9 @@
 	background: none;
 	text-align: left;
 	outline: 1px;
+	font-size: inherit;
+	font-family: inherit;
+	line-height: inherit;
 	text-decoration: none;
 }
 
@@ -23,7 +26,9 @@
 .fl-accordion-button-label:active,
 .fl-accordion-button-icon:focus,
 .fl-accordion-button-icon:active {
+	opacity: 1;
 	background: none;
+	outline-width: 1px;
 	outline-color: -webkit-focus-ring-color;
 	outline-style: auto;
 	text-decoration: none;
@@ -35,15 +40,16 @@
 }
 
 .fl-accordion-button-icon {
-	display: table-cell;
+	display: block;
 	line-height: inherit;
-	padding-left: 15px;
-	vertical-align: middle;
 }
 
 .fl-accordion-button-icon-left {
-	padding-left: 0;
-	padding-right: 10px;
+	margin-inline-end: 10px;
+}
+
+.fl-accordion-button-icon-right {
+	margin-inline-start: 10px;
 }
 
 .fl-accordion-button-icon-left, .fl-accordion-button-icon-right {
@@ -69,7 +75,8 @@
 .fl-accordion-medium .fl-accordion-button {
 	padding: 15px 20px;
 }
-.fl-accordion-medium .fl-accordion-button-label {
+.fl-accordion-medium .fl-accordion-button-label,
+.fl-accordion-medium .fl-accordion-button-icon {
 	font-size: 20px;
 }
 .fl-accordion-medium .fl-accordion-content {
@@ -80,7 +87,8 @@
 .fl-accordion-large .fl-accordion-button {
 	padding: 20px 25px;
 }
-.fl-accordion-large .fl-accordion-button-label {
+.fl-accordion-large .fl-accordion-button-label,
+.fl-accordion-large .fl-accordion-button-icon {
 	font-size: 26px;
 }
 .fl-accordion-large .fl-accordion-content {
@@ -90,7 +98,4 @@
 .rtl .fl-accordion-item .fl-accordion-button-label,
 .rtl .fl-accordion-item .fl-accordion-content * {
 	text-align: right;
-}
-.rtl .fl-accordion-item .fl-accordion-button-icon {
-	padding-left: 0;
 }

@@ -16,6 +16,7 @@ class FLPostCarouselModule extends FLBuilderModule {
 			'editor_export'   => false,
 			'partial_refresh' => true,
 			'icon'            => 'slides.svg',
+			'block_editor'    => true,
 		));
 
 		$this->add_css( 'jquery-bxslider' );
@@ -133,7 +134,6 @@ class FLPostCarouselModule extends FLBuilderModule {
 		$thumb_id = get_post_thumbnail_id( $id );
 
 		return FLBuilderPhoto::get_attachment_data( $thumb_id );
-
 	}
 
 
@@ -178,7 +178,6 @@ class FLPostCarouselModule extends FLBuilderModule {
 			FLBuilder::render_module_html( 'photo', $photo_settings );
 
 		}
-
 	}
 
 	/**
@@ -226,7 +225,6 @@ class FLPostCarouselModule extends FLBuilderModule {
 
 		post_class( apply_filters( 'fl_builder_post_carousel_classes', $classes, $settings ) );
 	}
-
 }
 
 /**

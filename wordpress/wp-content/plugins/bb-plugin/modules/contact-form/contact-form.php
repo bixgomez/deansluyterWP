@@ -171,16 +171,22 @@ class FLContactFormModule extends FLBuilderModule {
 		$template_node_id   = isset( $_POST['template_node_id'] ) ? sanitize_text_field( $_POST['template_node_id'] ) : false;
 		$recaptcha_response = isset( $_POST['recaptcha_response'] ) ? $_POST['recaptcha_response'] : false;
 		$terms_checked      = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
-
-		$subject     = ( isset( $_POST['subject'] ) ? stripslashes( $_POST['subject'] ) : __( 'Contact Form Submission', 'fl-builder' ) );
-		$admin_email = get_option( 'admin_email' );
-		$site_name   = get_option( 'blogname' );
-		$response    = array(
+		$subject            = ( isset( $_POST['subject'] ) ? stripslashes( $_POST['subject'] ) : __( 'Contact Form Submission', 'fl-builder' ) );
+		$admin_email        = get_option( 'admin_email' );
+		$site_name          = get_option( 'blogname' );
+		$nonce              = isset( $_POST['_wpnonce'] ) ? $_POST['_wpnonce'] : false;
+		$response           = array(
 			'error'   => true,
 			'message' => __( 'Message failed. Please try again.', 'fl-builder' ),
 		);
 
-		if ( $node_id && check_admin_referer( 'fl-contact-form-nonce', 'nonce' ) ) {
+		if ( ! wp_verify_nonce( $nonce, 'fl-contact-form-nonce' ) ) {
+			$result['error']     = __( 'There was an error submitting. Please try again.', 'fl-builder' );
+			$result['errorInfo'] = 'WordPress security token is invalid/timed out. If this page is statically cached and the cache timeout is longer than the default WP security token lifetime (24H) then the security token will become invalid and the form will fail to submit';
+			wp_send_json_error( $result );
+		}
+
+		if ( $node_id && check_admin_referer( 'fl-contact-form-nonce' ) ) {
 
 			// Get the module settings.
 			if ( $template_id ) {
@@ -211,7 +217,7 @@ class FLContactFormModule extends FLBuilderModule {
 					'error'   => true,
 					'message' => __( 'You must accept the Terms and Conditions.', 'fl-builder' ),
 				);
-				wp_send_json( $response );
+				wp_send_json_error( $response );
 			}
 
 			// Validate reCAPTCHA if enabled
@@ -285,7 +291,7 @@ class FLContactFormModule extends FLBuilderModule {
 					);
 				}
 			}
-			wp_send_json( $response );
+			wp_send_json_success( $response );
 		}
 	}
 
@@ -326,7 +332,7 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'type'        => 'text',
 						'label'       => __( 'Send To Email', 'fl-builder' ),
 						'default'     => '',
-						'placeholder' => __( 'example@mail.com', 'fl-builder' ),
+						'placeholder' => 'example@mail.com',
 						'help'        => __( 'The contact form will send to this e-mail. Defaults to the admin email.', 'fl-builder' ),
 						'preview'     => array(
 							'type' => 'none',
@@ -508,7 +514,7 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'label'         => '',
 						'media_buttons' => false,
 						'rows'          => 8,
-						'default'       => __( 'Thanks for your message! We’ll be in touch soon.', 'fl-builder' ),
+						'default'       => __( "Thanks for your message! We'll be in touch soon.", 'fl-builder' ),
 						'preview'       => array(
 							'type' => 'none',
 						),
@@ -805,7 +811,7 @@ FLBuilder::register_module('FLContactFormModule', array(
 					'recaptcha_action'        => array(
 						'type'        => 'text',
 						'label'       => __( 'Action', 'fl-builder' ),
-						'help'        => __( 'Optional advanced feature to make use of Google’s v3 analytical capabilities.', 'fl-builder' ),
+						'help'        => __( "Optional advanced feature to make use of Google's v3 analytical capabilities.", 'fl-builder' ),
 						'preview'     => array(
 							'type' => 'none',
 						),

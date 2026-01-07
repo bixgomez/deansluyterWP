@@ -1,6 +1,7 @@
 <?php global $wp_embed; ?>
 <?php
-	$tabindex_attr = wp_validate_boolean( $settings->expand_on_tab ) ? '' : ' tabindex="0"';
+$label_tag     = 'a' === $settings->label_tag ? $settings->label_tag . ' href="#" ' : esc_attr( $settings->label_tag );
+$tabindex_attr = wp_validate_boolean( $settings->expand_on_tab ) ? 'tabindex="-1"' : ' tabindex="0"';
 ?>
 
 <div class="fl-accordion fl-accordion-<?php echo sanitize_html_class( $settings->label_size ); ?><?php echo ( $settings->collapse ) ? ' fl-accordion-collapse' : ''; ?>"<?php echo ( ! $settings->collapse ) ? ' multiselectable="true"' : ''; ?>>
@@ -19,16 +20,16 @@
 			$expand_text         = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
 			?>
 			<div class="fl-accordion-item <?php echo $item_tab_class; ?>"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-				<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>" <?php echo $tabindex_attr; ?>>
+				<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>">
 
 					<?php if ( 'left' === $settings->label_icon_position ) : ?>
-					<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo esc_attr( $item_tab_icon_class ); ?>"></i>
+					<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-left" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>"><span class="sr-only"><?php echo ( $i > 0 || ! $settings->open_first ) ? 'Expand' : 'Collapse'; ?></span></i></a>
 					<?php endif; ?>
 
-					<a href="#" id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php echo $settings->items[ $i ]->label; ?></a>
+					<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php echo wp_kses_post( $settings->items[ $i ]->label ); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
 
 					<?php if ( 'right' === $settings->label_icon_position ) : ?>
-						<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon" tabindex="-1"><i class="fl-accordion-button-icon fl-accordion-button-icon-right <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
+						<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-right" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
 					<?php endif; ?>
 
 				</div>
@@ -49,7 +50,8 @@
 			<?php
 		}
 	} elseif ( 'post' == $settings->source ) {
-		$query = FLBuilderLoop::query( $settings );
+		$settings->exclude_self = 'yes';
+		$query                  = FLBuilderLoop::query( $settings );
 
 		if ( $query->have_posts() ) {
 			$i = 0;
@@ -65,16 +67,16 @@
 				$expand_text         = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
 				?>
 				<div class="fl-accordion-item <?php echo $item_tab_class; ?>"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-					<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>" <?php echo $tabindex_attr; ?>>
+					<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>">
 
 						<?php if ( 'left' === $settings->label_icon_position ) : ?>
-						<i class="fl-accordion-button-icon fl-accordion-button-icon-left <?php echo esc_attr( $item_tab_icon_class ); ?>"></i>
+						<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-left" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>"><span class="sr-only"><?php echo ( $i > 0 || ! $settings->open_first ) ? 'Expand' : 'Collapse'; ?></span></i></a>
 						<?php endif; ?>
 
-						<a href="#" id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php the_title(); ?></a>
+						<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php the_title(); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
 
 						<?php if ( 'right' === $settings->label_icon_position ) : ?>
-							<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon" <?php echo $tabindex_attr; ?> aria-controls="<?php echo $content_id; ?>"><i class="fl-accordion-button-icon fl-accordion-button-icon-right <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
+							<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-right" <?php echo $tabindex_attr; ?> aria-controls="<?php echo $content_id; ?>"><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
 						<?php endif; ?>
 
 					</div>

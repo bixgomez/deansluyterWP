@@ -35,7 +35,7 @@ final class FLBuilderCompatibility {
 		add_action( 'template_redirect', array( __CLASS__, 'fix_klaviyo_themer_layout' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'aggiungi_script_instafeed_owl' ), 1000 );
 		add_action( 'template_redirect', array( __CLASS__, 'fix_happyfoxchat' ) );
-		add_action( 'template_redirect', array( __CLASS__, 'fix_adminbar' ) );
+		add_action( 'after_setup_theme', array( __CLASS__, 'fix_adminbar' ) );
 		add_action( 'tribe_events_pro_widget_render', array( __CLASS__, 'tribe_events_pro_widget_render_fix' ), 10, 3 );
 		add_action( 'wp_footer', array( __CLASS__, 'fix_woo_short_description_footer' ) );
 		add_action( 'save_post', array( __CLASS__, 'fix_seopress' ), 9 );
@@ -49,6 +49,7 @@ final class FLBuilderCompatibility {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'ee_remove_stylesheet' ), 99999 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_woocommerce_products_filter' ), 12 );
 		add_action( 'pre_get_posts', array( __CLASS__, 'fix_woo_archive_loop' ), 99 );
+		add_action( 'pre_get_posts', array( __CLASS__, 'use_tribe_events_per_page' ) );
 		add_action( 'fl_builder_menu_module_before_render', array( __CLASS__, 'fix_menu_module_before_render' ) );
 		add_action( 'fl_builder_menu_module_after_render', array( __CLASS__, 'fix_menu_module_after_render' ) );
 		add_action( 'wp_before_admin_bar_render', array( __CLASS__, 'fix_dulicate_page' ), 11 );
@@ -59,10 +60,14 @@ final class FLBuilderCompatibility {
 		add_action( 'wp_print_scripts', array( __CLASS__, 'convert_box_bb' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'yith_woocommerce_affiliates' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_jquery_dialog' ) );
+		add_action( 'wp_head', array( __CLASS__, 'fix_bugherd' ), 9 );
 		add_action( 'wp_tiny_mce_init', array( __CLASS__, 'fix_gf_tinymce' ), 9 );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'remove_tour_fix' ) );
 		add_action( 'fl_before_sortable_enqueue', array( __CLASS__, 'fix_classicpress_v2' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_restaurant_woocommerce' ), 20 );
+		add_action( 'um_profile_header', array( __CLASS__, 'um_prevent_shortcode_parse' ) );
+		add_action( 'um_after_header_meta', array( __CLASS__, 'um_restore_shortcode_parse' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'fix_wpd_plugins' ), 11 );
 
 		// Filters
 		add_filter( 'fl_builder_is_post_editable', array( __CLASS__, 'bp_pages_support' ), 11, 2 );
@@ -98,11 +103,13 @@ final class FLBuilderCompatibility {
 		add_filter( 'woocommerce_tab_manager_tab_panel_content', array( __CLASS__, 'fix_woo_tab_manager_missing_content' ), 10, 3 );
 		add_filter( 'fl_builder_loop_query_args', array( __CLASS__, 'hide_tribe_child_recurring_events_custom_query' ) );
 		add_filter( 'fl_builder_render_assets_inline', array( __CLASS__, 'fix_ultimate_dashboard_pro' ), 1001 );
+		add_filter( 'fl_builder_render_assets_inline', array( __CLASS__, 'fix_toolset_views_background' ) );
 		add_filter( 'the_content', __CLASS__ . '::render_tribe_event_template', 11 );
 		add_filter( 'fl_builder_loop_query', array( __CLASS__, 'fix_tribe_events_pagination' ), 20, 2 );
 		add_filter( 'option_iubenda_cookie_law_solution', array( __CLASS__, 'fix_iubenda' ) );
 		add_filter( 'fl_builder_is_post_editable', array( __CLASS__, 'fix_theme_my_login' ) );
 		add_filter( 'fl_is_tour_enabled', array( __CLASS__, 'fix_classicpress_v2_ad_js' ) );
+		add_filter( 'attachment_fields_to_edit', array( __CLASS__, 'attachment_fields_to_edit' ), 10, 2 );
 	}
 
 	/**
@@ -435,7 +442,7 @@ final class FLBuilderCompatibility {
 	public static function fix_protector_gold() {
 		if ( FLBuilderModel::is_builder_active() && class_exists( 'Prevent_Direct_Access_Gold' ) && ! function_exists( 'get_current_screen' ) ) {
 			function get_current_screen() {
-				$args         = new StdClass;
+				$args         = new StdClass();
 				$args->id     = 'Beaver';
 				$args->action = 'Builder';
 				return $args;
@@ -531,7 +538,7 @@ final class FLBuilderCompatibility {
 	public static function wc_memberships_support() {
 
 		if ( function_exists( 'wc_memberships_is_post_content_restricted' ) ) {
-			add_filter( 'fl_builder_do_render_content', function( $do_render, $post_id ) {
+			add_filter( 'fl_builder_do_render_content', function ( $do_render, $post_id ) {
 				if ( wc_memberships_is_post_content_restricted() ) {
 					// check if user has access to restricted content
 					if ( ! current_user_can( 'wc_memberships_view_restricted_post_content', $post_id ) ) {
@@ -1015,6 +1022,22 @@ final class FLBuilderCompatibility {
 		}
 	}
 
+	/**
+	 * Use Events per Page value from the TEC Settings on the archive page.
+	 *
+	 * @since 2.9
+	 */
+	public static function use_tribe_events_per_page( $query ) {
+		if ( ! class_exists( 'Tribe__Events__Query' ) || ! class_exists( 'FLThemeBuilder' ) || is_admin() ) {
+			return;
+		}
+
+		if ( ( $query->is_main_query() && is_post_type_archive( 'tribe_events' ) ) || ( 'fl-theme-layout' === get_post_type() && ! isset( $_GET['fl_builder'] ) ) ) {
+			$events_per_page = (int) tribe_get_option( 'postsPerPage', 10 );
+			$query->set( 'posts_per_page', $events_per_page );
+		}
+	}
+
 	public static function render_tribe_event_template( $content ) {
 
 		if ( ! class_exists( 'Tribe__Events__Main' ) ) {
@@ -1250,6 +1273,21 @@ final class FLBuilderCompatibility {
 	}
 
 	/**
+	 * Fixes background image on toolset content template
+	 * Render inline when using toolset view.
+	 * @since 2.8.6
+	 */
+	public static function fix_toolset_views_background( $enabled ) {
+
+		if ( function_exists( 'has_wpv_content_template' ) ) {
+			if ( has_wpv_content_template( get_the_ID() ) > 0 ) {
+				return true;
+			}
+		}
+		return $enabled;
+	}
+
+	/**
 	 * @since 2.5.5
 	 */
 	public static function convert_box_bb() {
@@ -1278,7 +1316,7 @@ final class FLBuilderCompatibility {
 			return $query;
 		}
 
-		if ( empty( $settings->data_source ) || $query->post_count < 1 ) {
+		if ( empty( $settings->data_source ) || ! isset( $query->post_count ) || $query->post_count < 1 ) {
 			return $query;
 		}
 
@@ -1314,12 +1352,20 @@ final class FLBuilderCompatibility {
 	}
 
 	/**
-	 * Fix admin bar styles in WP 6.4
+	 * Fix Bugherd (2870)
+	 */
+	public static function fix_bugherd() {
+		if ( class_exists( 'FLBuilderModel' ) && FLBuilderUIIFrame::is_ui_request() ) {
+			remove_action( 'wp_head', 'bugherd_do_the_frontend_script' );
+		}
+	}
+
+	/** Fix admin bar styles in WP 6.4
 	 * @since 2.8
 	 */
 	public static function fix_adminbar() {
 		if ( isset( $_REQUEST['fl_builder'] ) ) {
-			remove_action( 'wp_enqueue_scripts', 'wp_enqueue_admin_bar_bump_styles' );
+			add_theme_support( 'admin-bar', array( 'callback' => '__return_false' ) );
 		}
 	}
 
@@ -1374,7 +1420,44 @@ final class FLBuilderCompatibility {
 		}
 
 		wp_dequeue_script( 'rms_jquery_ui_datepicker_script' );
+	}
 
+	/* Ultimate Member: Prevent Shortcode Parse */
+	public static function um_prevent_shortcode_parse() {
+		if ( ! class_exists( 'FLBuilder' ) ) {
+			return;
+		}
+		remove_filter( 'the_content', 'do_shortcode', 11 );
+	}
+
+	/* Ultimate Member: Restore Shortcode Parse */
+	public static function um_restore_shortcode_parse() {
+		add_filter( 'the_content', 'do_shortcode', 11 );
+	}
+
+	/**
+	 * Dequeue wpd plugins js
+	 * @since 2.9.1
+	 */
+	public static function fix_wpd_plugins() {
+		if ( isset( $_GET['fl_builder'] ) ) {
+			wp_dequeue_script( 'wpd-value-slider' );
+			wp_dequeue_script( 'wpd-bb-popups-uabb-page-builder' );
+			wp_dequeue_script( 'wpd-bb-popups-powerpack-page-builder' );
+			wp_dequeue_script( 'wpd-module-animation-speed' );
+			wp_dequeue_script( 'wpd-google-places-autocomplete' );
+		}
+	}
+
+	/**
+	 * @since 2.9.1
+	 */
+	public static function attachment_fields_to_edit( $form_fields, $post = null ) {
+		if ( ! function_exists( 'get_current_screen' && class_exists( 'Media_Library_Organizer' ) ) ) {
+			include_once ABSPATH . 'wp-admin/includes/template.php';
+			include_once ABSPATH . 'wp-admin/includes/screen.php';
+		}
+		return $form_fields;
 	}
 }
 FLBuilderCompatibility::init();

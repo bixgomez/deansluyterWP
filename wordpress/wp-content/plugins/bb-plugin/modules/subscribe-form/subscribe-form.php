@@ -26,9 +26,9 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			'name'            => __( 'Subscribe Form', 'fl-builder' ),
 			'description'     => __( 'Adds a simple subscribe form to your layout.', 'fl-builder' ),
 			'category'        => __( 'Actions', 'fl-builder' ),
+			'icon'            => 'editor-table.svg',
 			'editor_export'   => false,
 			'partial_refresh' => true,
-			'icon'            => 'editor-table.svg',
 		));
 		add_action( 'wp_mail_failed', array( $this, 'mail_failed' ) );
 		add_action( 'wp_ajax_fl_builder_subscribe_form_submit', array( $this, 'submit' ) );
@@ -214,6 +214,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 		$node_id          = isset( $_POST['node_id'] ) ? sanitize_text_field( $_POST['node_id'] ) : false;
 		$template_id      = isset( $_POST['template_id'] ) ? sanitize_text_field( $_POST['template_id'] ) : false;
 		$template_node_id = isset( $_POST['template_node_id'] ) ? sanitize_text_field( $_POST['template_node_id'] ) : false;
+		$nonce            = isset( $_POST['_wpnonce'] ) ? $_POST['_wpnonce'] : false;
 		$result           = array(
 			'action'  => false,
 			'error'   => false,
@@ -221,7 +222,13 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			'url'     => false,
 		);
 
-		if ( $email && $node_id && check_admin_referer( 'fl-subscribe-form-nonce', 'nonce' ) ) {
+		if ( ! wp_verify_nonce( $nonce, 'fl-subscribe-form-nonce' ) ) {
+			$result['error']     = __( 'There was an error subscribing. Please try again.', 'fl-builder' );
+			$result['errorInfo'] = 'WordPress security token is invalid/timed out. If this page is statically cached and the cache timeout is longer than the default WP security token lifetime (24H) then the security token will become invalid and the form will fail to submit';
+			wp_send_json_error( $result );
+		}
+
+		if ( $email && $node_id && check_admin_referer( 'fl-subscribe-form-nonce' ) ) {
 
 			// Get the module settings.
 			if ( $template_id ) {
@@ -299,9 +306,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 			$result['error'] = __( 'There was an error subscribing. Please try again.', 'fl-builder' );
 		}
 
-		echo json_encode( $result );
-
-		die();
+		wp_send_json_success( $result );
 	}
 
 	/**
@@ -847,7 +852,7 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 					'recaptcha_action'        => array(
 						'type'        => 'text',
 						'label'       => __( 'Action', 'fl-builder' ),
-						'help'        => __( 'Optional advanced feature to make use of Google’s v3 analytical capabilities.', 'fl-builder' ),
+						'help'        => __( "Optional advanced feature to make use of Google's v3 analytical capabilities.", 'fl-builder' ),
 						'preview'     => array(
 							'type' => 'none',
 						),

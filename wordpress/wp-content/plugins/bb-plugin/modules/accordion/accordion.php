@@ -15,6 +15,7 @@ class FLAccordionModule extends FLBuilderModule {
 			'category'        => __( 'Layout', 'fl-builder' ),
 			'partial_refresh' => true,
 			'icon'            => 'layout.svg',
+			'block_editor'    => true,
 		));
 
 		$this->add_css( 'font-awesome-5' );
@@ -130,7 +131,6 @@ class FLAccordionModule extends FLBuilderModule {
 	public function set_custom_excerpt_more( $more ) {
 		return $this->settings->excerpt_more_text;
 	}
-
 }
 
 /**
@@ -183,6 +183,26 @@ FLBuilder::register_module('FLAccordionModule', array(
 			'display' => array(
 				'title'  => __( 'Display', 'fl-builder' ),
 				'fields' => array(
+					'label_tag'         => array(
+						'type'     => 'select',
+						'label'    => __( 'Label Tag', 'fl-builder' ),
+						'default'  => 'a',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'a' ),
+						'options'  => array(
+							'a'    => 'a',
+							'h1'   => 'h1',
+							'h2'   => 'h2',
+							'h3'   => 'h3',
+							'h4'   => 'h4',
+							'h5'   => 'h5',
+							'h6'   => 'h6',
+							'div'  => 'div',
+							'span' => 'span',
+						),
+						'preview'  => array(
+							'type' => 'refresh',
+						),
+					),
 					'content_type'      => array(
 						'type'    => 'select',
 						'label'   => __( 'Content Type', 'fl-builder' ),

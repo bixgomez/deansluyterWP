@@ -16,6 +16,7 @@ class FLIconModule extends FLBuilderModule {
 			'editor_export'   => false,
 			'partial_refresh' => true,
 			'icon'            => 'star-filled.svg',
+			'block_editor'    => true,
 		));
 	}
 
@@ -70,6 +71,7 @@ FLBuilder::register_module('FLIconModule', array(
 					'icon'    => array(
 						'type'    => 'icon',
 						'label'   => __( 'Icon', 'fl-builder' ),
+						'default' => 'dashicons dashicons-before dashicons-wordpress-alt',
 						'preview' => array(
 							'type' => 'none',
 						),
@@ -80,6 +82,7 @@ FLBuilder::register_module('FLIconModule', array(
 						'label'         => __( 'Link', 'fl-builder' ),
 						'show_target'   => true,
 						'show_nofollow' => true,
+						'show_download' => true,
 						'connections'   => array( 'url' ),
 					),
 					'sr_text' => array(

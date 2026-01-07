@@ -151,6 +151,30 @@ class Contact extends Component
      */
     public $source_details;
 
+	/**
+	 * Contact anniversary month
+	 * @var string
+	 */
+	public $month_anniversary;
+
+	/**
+	 * Contact anniversary day
+	 * @var string
+	 */
+	public $day_anniversary;
+
+	/**
+	 * Contact anniversary year
+	 * @var string
+	 */
+	public $year_anniversary;
+
+	/**
+	 * Contact street address
+	 * @var string
+	 */
+	public $street_address;
+
     /**
      * Factory method to create a Contact object from an array
      * @param array $props - Associative array of initial properties to set
@@ -158,6 +182,7 @@ class Contact extends Component
      */
     public static function create(array $props)
     {
+		return;
         $contact = new Contact();
         $contact->id = parent::getValue($props, "id");
         $contact->status = parent::getValue($props, "status");
@@ -232,6 +257,7 @@ class Contact extends Component
      */
     public function addEmail($emailAddress)
     {
+		return;
         if (!$emailAddress instanceof EmailAddress) {
             $emailAddress = new EmailAddress($emailAddress);
         }

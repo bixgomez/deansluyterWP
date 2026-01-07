@@ -131,7 +131,7 @@ class FLContentSliderModule extends FLBuilderModule {
 
 		// Background link
 		if ( ! empty( $slide->link ) && ( 'photo' == $slide->bg_layout || 'color' == $slide->bg_layout ) && 'none' == $slide->cta_type ) {
-			echo '<a class="fl-slide-bg-link" href="' . esc_attr( $slide->link ) . '" target="' . esc_attr( $slide->link_target ) . '" aria-label="' . esc_attr( $slide->title ) . '"></a>';
+			echo '<a class="fl-slide-bg-link" href="' . esc_attr( $slide->link ) . '"' . ( ( isset( $slide->link_download ) && 'yes' === $slide->link_download ) ? ' download' : '' ) . ' target="' . esc_attr( $slide->link_target ) . '" aria-label="' . esc_attr( $slide->title ) . '"></a>';
 		}
 	}
 
@@ -178,7 +178,7 @@ class FLContentSliderModule extends FLBuilderModule {
 			echo '<div class="fl-slide-photo">';
 
 			if ( ! empty( $slide->link ) ) {
-				echo '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . esc_attr( $slide->link_target ) . '">';
+				echo '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" ' . ( ( isset( $slide->link_download ) && 'yes' === $slide->link_download ) ? ' download' : '' ) . ' target="' . esc_attr( $slide->link_target ) . '">';
 			}
 
 			printf( '<img %s class="fl-slide-photo-img wp-image-%s" src="%s" alt="%s" />', FLBuilderUtils::img_lazyload( 'false' ), $slide->fg_photo, $slide->fg_photo_src, esc_attr( $alt ) );
@@ -263,7 +263,7 @@ class FLContentSliderModule extends FLBuilderModule {
 	 */
 	public function render_link( $slide ) {
 		if ( 'link' == $slide->cta_type ) {
-			return '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '" target="' . esc_attr( $slide->link_target ) . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
+			return '<a href="' . esc_url( do_shortcode( $slide->link ) ) . '"' . ( ( isset( $slide->link_download ) && 'yes' === $slide->link_download ) ? ' download' : '' ) . ' target="' . esc_attr( $slide->link_target ) . '" class="fl-slide-cta-link">' . $slide->cta_text . '</a>';
 		}
 	}
 
@@ -279,6 +279,7 @@ class FLContentSliderModule extends FLBuilderModule {
 			'link'          => $slide->link,
 			'link_nofollow' => isset( $slide->link_nofollow ) ? $slide->link_nofollow : 'no',
 			'link_target'   => $slide->link_target,
+			'link_download' => isset( $slide->link_download ) ? $slide->link_download : 'no',
 			'text'          => $slide->cta_text,
 			'width'         => 'auto',
 		);
@@ -334,6 +335,7 @@ FLBuilder::register_module('FLContentSliderModule', array(
 						'label'        => __( 'Slide', 'fl-builder' ),
 						'form'         => 'content_slider_slide', // ID from registered form below
 						'preview_text' => 'label', // Name of a field to use for the preview text
+						'preview_img'  => 'bg_photo_src',
 						'multiple'     => true,
 					),
 				),
@@ -803,6 +805,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'label'         => __( 'Link', 'fl-builder' ),
 							'show_target'   => true,
 							'show_nofollow' => true,
+							'show_download' => true,
 							'help'          => __( 'The link applies to the entire slide. If choosing a call to action type below, this link will also be used for the text or button.', 'fl-builder' ),
 						),
 					),

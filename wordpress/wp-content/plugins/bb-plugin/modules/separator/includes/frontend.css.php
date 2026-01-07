@@ -1,12 +1,26 @@
 .fl-node-<?php echo $id; ?> .fl-separator {
 	border-top-width: <?php echo $settings->height; ?>px;
-	border-top-style: <?php echo $settings->style; ?>;
-	border-top-color: <?php echo FLBuilderColor::hex_or_rgb( $settings->color ); ?>;
 	max-width: <?php echo $settings->width . $settings->width_unit; ?>;
 	margin: <?php echo $settings->align; ?>;
 }
 
-<?php if ( $global_settings->responsive_enabled ) { ?>
+<?php
+FLBuilderCSS::responsive_rule( array(
+	'settings'     => $settings,
+	'setting_name' => 'color',
+	'selector'     => ".fl-node-$id .fl-separator",
+	'prop'         => 'border-top-color',
+) );
+
+FLBuilderCSS::responsive_rule( array(
+	'settings'     => $settings,
+	'setting_name' => 'style',
+	'selector'     => ".fl-node-$id .fl-separator",
+	'prop'         => 'border-top-style',
+) );
+
+if ( $global_settings->responsive_enabled ) {
+	?>
 	<?php if ( ! empty( $settings->height_large ) || ! empty( $settings->width_large ) || ! empty( $settings->align_large ) ) { ?>
 	@media (max-width: <?php echo $global_settings->large_breakpoint; ?>px) {
 		.fl-node-<?php echo $id; ?> .fl-separator {

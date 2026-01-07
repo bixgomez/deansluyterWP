@@ -10,19 +10,22 @@
  * phpcs:disable WebDevStudios.All.RequireAuthor -- Don't require author tag in docblocks.
  */
 
+use Elementor\Controls_Manager;
+use Elementor\Widget_Base;
+
 /**
  * This class get's everything up an running for Elementor Widget.
  *
  * @since 1.11.0
  */
-class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
+class ConstantContact_Elementor_Widget extends Widget_Base {
 
 	/**
 	 * Widgets Name
 	 *
 	 * @since 1.10.0
 	 */
-	public function get_name() {
+	public function get_name() : string{
 		return 'constant-contact';
 	}
 
@@ -32,7 +35,7 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 	 * @since 1.10.0
 	 */
 	public function get_title() {
-		return 'Constant Contact Form';
+		return esc_html__( 'Constant Contact Form', 'constant-contact-forms' );
 	}
 
 	/**
@@ -40,7 +43,7 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @since 1.10.0
 	 */
-	public function get_icon() {
+	public function get_icon() : string {
 		return 'eicon-form-horizontal';
 	}
 
@@ -49,8 +52,19 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @since 1.10.0
 	 */
-	public function get_categories() {
+	public function get_categories() : array {
 		return [ 'basic' ];
+	}
+
+	/**
+	 * Widgets keywords
+	 *
+	 * @since 2.13.0
+	 *
+	 * @return string[]
+	 */
+	public function get_keywords() : array {
+		return [ 'contact', 'form', 'constant' ];
 	}
 
 	/**
@@ -63,17 +77,17 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'section_title',
 			[
-				'label' => __( 'Constant Contact Form Settings', 'constant-contact-forms' ),
+				'label' => esc_html__( 'Constant Contact Form Settings', 'constant-contact-forms' ),
 			]
 		);
 
 		$this->add_control(
 			'show_title',
 			[
-				'label'        => __( 'Show Title', 'constant-contact-forms' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => __( 'Show', 'constant-contact-forms' ),
-				'label_off'    => __( 'Hide', 'constant-contact-forms' ),
+				'label'        => esc_html__( 'Show Title', 'constant-contact-forms' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'constant-contact-forms' ),
+				'label_off'    => esc_html__( 'Hide', 'constant-contact-forms' ),
 				'return_value' => true,
 				'default'      => true,
 			]
@@ -82,8 +96,8 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'form_id',
 			[
-				'label'   => __( 'Form', 'constant-contact-forms' ),
-				'type'    => \Elementor\Controls_Manager::SELECT,
+				'label'   => esc_html__( 'Form', 'constant-contact-forms' ),
+				'type'    => Controls_Manager::SELECT,
 				'options' => $this->get_form_options(),
 			]
 		);
@@ -96,7 +110,7 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @since 1.10.0
 	 */
-	private function get_form_options() {
+	private function get_form_options() : array {
 
 		$options = [];
 
@@ -113,7 +127,7 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 		}
 
 		if ( empty( $options ) ) {
-			$options[''] = __( 'No forms currently published.', 'constant-contact-forms' );
+			$options[''] = esc_html__( 'No forms currently published.', 'constant-contact-forms' );
 		}
 
 		return $options;
@@ -133,7 +147,7 @@ class ConstantContact_Elementor_Widget extends \Elementor\Widget_Base {
 		}
 
 		$show_title = $settings['show_title'] ? 'true' : 'false';
-		echo do_shortcode( "[ctct form='{$settings['form_id']}' show_title='{$show_title}']" );
+		echo do_shortcode( "[ctct form='{$settings['form_id']}' show_title='$show_title']" );
 	}
 
 }

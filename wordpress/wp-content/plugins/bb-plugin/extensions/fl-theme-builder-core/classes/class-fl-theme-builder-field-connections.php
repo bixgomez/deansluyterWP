@@ -55,6 +55,7 @@ final class FLThemeBuilderFieldConnections {
 		'border',
 		'gradient',
 		'typography',
+		'background',
 	);
 
 	/**
@@ -66,12 +67,13 @@ final class FLThemeBuilderFieldConnections {
 	static public function init() {
 		// Actions
 		add_action( 'wp', __CLASS__ . '::connect_all_layout_settings' );
-		add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_scripts' );
-		add_action( 'wp_footer', __CLASS__ . '::js_templates' );
+		add_action( 'wp', __CLASS__ . '::hook_scripts' );
 		add_action( 'fl_builder_before_control', __CLASS__ . '::render_connection', 10, 4 );
 		add_action( 'fl_builder_before_render_ajax_layout', __CLASS__ . '::connect_all_layout_settings' );
-		add_action( 'fl_builder_posts_module_before_posts', __CLASS__ . '::posts_grid_before_posts', 10, 2 );
-		add_action( 'fl_builder_posts_module_after_posts', __CLASS__ . '::posts_grid_after_posts', 10, 2 );
+		add_action( 'fl_builder_posts_module_before_posts', __CLASS__ . '::posts_grid_before_posts', 10 );
+		add_action( 'fl_builder_posts_module_after_posts', __CLASS__ . '::posts_grid_after_posts', 10 );
+		add_action( 'fl_builder_module_data_repeater_before_posts', __CLASS__ . '::posts_grid_before_posts', 10 );
+		add_action( 'fl_builder_module_data_repeater_after_posts', __CLASS__ . '::posts_grid_after_posts', 10 );
 
 		// Filters
 		add_filter( 'fl_builder_node_settings', __CLASS__ . '::connect_node_settings', 10, 2 );
@@ -86,6 +88,19 @@ final class FLThemeBuilderFieldConnections {
 	}
 
 	/**
+	 * Hook Themer scripts if the builder is active.
+	 *
+	 * @since 2.9
+	 * @return void
+	 */
+	static public function hook_scripts() {
+		if ( FLBuilderModel::is_builder_active() ) {
+			add_action( 'wp_enqueue_scripts', __CLASS__ . '::enqueue_scripts' );
+			add_action( 'wp_footer', __CLASS__ . '::js_templates' );
+		}
+	}
+
+	/**
 	 * Enqueues styles and scripts for field connections.
 	 *
 	 * @since 1.0
@@ -94,14 +109,11 @@ final class FLThemeBuilderFieldConnections {
 	static public function enqueue_scripts() {
 		$slug = 'fl-theme-builder-field-connections';
 
-		if ( FLBuilderModel::is_builder_active() ) {
+		wp_enqueue_style( $slug, FL_THEME_BUILDER_CORE_URL . 'css/' . $slug . '.css', array(), FL_BUILDER_VERSION );
+		wp_enqueue_style( 'tether', FL_THEME_BUILDER_CORE_URL . 'css/tether.min.css', array(), FL_BUILDER_VERSION );
 
-			wp_enqueue_style( $slug, FL_THEME_BUILDER_CORE_URL . 'css/' . $slug . '.css', array(), FL_BUILDER_VERSION );
-			wp_enqueue_style( 'tether', FL_THEME_BUILDER_CORE_URL . 'css/tether.min.css', array(), FL_BUILDER_VERSION );
-
-			wp_enqueue_script( $slug, FL_THEME_BUILDER_CORE_URL . 'js/' . $slug . '.js', array( 'jquery' ), FL_BUILDER_VERSION );
-			wp_enqueue_script( 'tether', FL_THEME_BUILDER_CORE_URL . 'js/tether.min.js', array( 'jquery' ), FL_BUILDER_VERSION );
-		}
+		wp_enqueue_script( $slug, FL_THEME_BUILDER_CORE_URL . 'js/' . $slug . '.js', array( 'jquery' ), FL_BUILDER_VERSION );
+		wp_enqueue_script( 'tether', FL_THEME_BUILDER_CORE_URL . 'js/tether.min.js', array( 'jquery' ), FL_BUILDER_VERSION );
 	}
 
 	/**
@@ -111,9 +123,7 @@ final class FLThemeBuilderFieldConnections {
 	 * @return void
 	 */
 	static public function js_templates() {
-		if ( FLBuilderModel::is_builder_active() ) {
-			include FL_THEME_BUILDER_CORE_DIR . 'includes/field-connection-js-templates.php';
-		}
+		include FL_THEME_BUILDER_CORE_DIR . 'includes/field-connection-js-templates.php';
 	}
 
 	/**
@@ -436,11 +446,9 @@ final class FLThemeBuilderFieldConnections {
 	 * Sets flag that determine we are inside the post grid loop.
 	 *
 	 * @since 1.3.2
-	 * @param object $settings The settings object for a module.
-	 * @param object $query The query object.
 	 * @return void
 	 */
-	static public function posts_grid_before_posts( $settings, $query ) {
+	static public function posts_grid_before_posts() {
 		self::$in_post_grid_loop = true;
 	}
 
@@ -448,11 +456,9 @@ final class FLThemeBuilderFieldConnections {
 	 * Resets flag for post grid loop.
 	 *
 	 * @since 1.3.2
-	 * @param object $settings The settings object for a module.
-	 * @param object $query The query object.
 	 * @return void
 	 */
-	static public function posts_grid_after_posts( $settings, $query ) {
+	static public function posts_grid_after_posts() {
 		self::$in_post_grid_loop = false;
 	}
 
@@ -468,7 +474,7 @@ final class FLThemeBuilderFieldConnections {
 	 * @return object
 	 */
 	static public function connect_node_settings( $settings, $node ) {
-		global $post, $wp_the_query;
+		global $post, $wp_the_query, $fl_term_query, $fl_term;
 		$repeater = array();
 		$nested   = array();
 
@@ -478,11 +484,16 @@ final class FLThemeBuilderFieldConnections {
 		} else {
 			$cache_key = $post && isset( $post->ID ) ? $node->node . '_' . $post->ID : $node->node;
 		}
+
 		// check for bb loop
-		if ( isset( self::$in_post_grid_loop ) ) {
+		if ( isset( $fl_term_query ) && isset( $fl_term ) && ! self::$in_post_grid_loop ) {
+			$cache_key = $node->node . '_term_' . $fl_term->term_id;
+		} elseif ( self::$in_post_grid_loop ) {
 			if ( self::$in_post_grid_loop && $post && isset( $post->ID ) ) {
 				$cache_key = $node->node . '_' . $post->ID;
 			}
+		} elseif ( function_exists( 'acf_get_loop' ) && acf_get_loop( 'active' ) ) {
+			$cache_key = $node->node . '_' . get_row_index();
 		}
 
 		/**
@@ -556,11 +567,17 @@ final class FLThemeBuilderFieldConnections {
 				$data = json_decode( $data );
 			}
 
-			if ( ! empty( $data ) && is_object( $data ) ) {
+			if ( ! empty( $data ) && ( is_object( $data ) || is_array( $data ) ) ) {
+
+				$data = (object) $data;
 
 				// Connect a flat connection.
 				if ( isset( $data->property ) ) {
-					$settings = self::connect_setting( $settings, $key, $data );
+					if ( isset( $data->output ) && 'css' === $data->output ) {
+						self::connect_css_var( $data );
+					} else {
+						$settings = self::connect_setting( $settings, $key, $data );
+					}
 					continue;
 				}
 
@@ -568,51 +585,12 @@ final class FLThemeBuilderFieldConnections {
 				$result = self::get_compound_connection_data( $key, $data );
 
 				foreach ( $result as $k => $v ) {
-					$settings = self::connect_setting( $settings, $k, $v );
+					if ( isset( $v->output ) && 'css' === $v->output ) {
+						self::connect_css_var( $v );
+					} else {
+						$settings = self::connect_setting( $settings, $k, $v );
+					}
 				}
-			}
-		}
-
-		return $settings;
-	}
-
-	/**
-	 * Connects a single setting to a field connection.
-	 *
-	 * @since 2.8
-	 * @param object $settings The settings object for a node.
-	 * @param object $key The connection key.
-	 * @param object $data The connection data.
-	 * @return object
-	 */
-	static public function connect_setting( $settings, $key, $data ) {
-		global $post;
-
-		$property       = FLPageData::get_property( $data->object, $data->property );
-		$data->settings = isset( $data->settings ) ? $data->settings : null;
-		$value          = '';
-
-		if ( ! $property ) {
-			return $settings;
-		} elseif ( isset( $property['placeholder'] ) && is_object( $post ) && 'fl-theme-layout' == $post->post_type ) {
-			$value = $property['placeholder'];
-		} else {
-			$value = FLPageData::get_value( $data->object, $data->property, $data->settings );
-		}
-
-		if ( strstr( $key, '.' ) ) {
-			$settings = self::set_compound_setting( $settings, $key, $value );
-		} else {
-			$settings->{ $key } = $value;
-		}
-
-		if ( 'photo' == $data->field ) {
-			if ( is_array( $settings->{ $key } ) ) {
-				$settings->{ $key . '_src' } = $settings->{ $key }['url'];
-				$settings->{ $key }          = $settings->{ $key }['id'];
-			} else {
-				$settings->{ $key . '_src' } = $settings->{ $key };
-				$settings->{ $key }          = -1;
 			}
 		}
 
@@ -630,7 +608,15 @@ final class FLThemeBuilderFieldConnections {
 	static public function get_compound_connection_data( $key, $data ) {
 		$result = [];
 
+		if ( empty( $data ) ) {
+			return $result;
+		}
+
 		foreach ( $data as $k => $v ) {
+			if ( is_array( $v ) ) {
+				$v = (object) $v;
+			}
+
 			$path = "$key.$k";
 
 			if ( isset( $v->property ) ) {
@@ -645,6 +631,112 @@ final class FLThemeBuilderFieldConnections {
 	}
 
 	/**
+	 * Connects a single setting to a field connection.
+	 *
+	 * @since 2.8
+	 * @param object $settings The settings object for a node.
+	 * @param object $key The connection key.
+	 * @param object $data The connection data.
+	 * @return object
+	 */
+	static public function connect_setting( $settings, $key, $data ) {
+		global $post;
+
+		$property       = FLPageData::get_property( $data->object, $data->property );
+		$data->settings = isset( $data->settings ) ? (object) $data->settings : null;
+		$value          = '';
+
+		if ( ! $property ) {
+			return $settings;
+		} elseif ( isset( $property['placeholder'] ) && is_object( $post ) && 'fl-theme-layout' == $post->post_type ) {
+			$value = $property['placeholder'];
+		} else {
+			$value = FLPageData::get_value( $data->object, $data->property, $data->settings );
+		}
+
+		if ( 'background' === $data->field ) {
+			$settings = self::set_background_setting( $settings, $key, $value );
+		} elseif ( 'photo' === $data->field ) {
+			$settings = self::set_photo_setting( $settings, $key, $value );
+		} elseif ( strstr( $key, '.' ) ) {
+			$settings = self::set_compound_setting( $settings, $key, $value );
+		} else {
+			$settings->{ $key } = $value;
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Sets the values for photo connections.
+	 *
+	 * @since 2.9
+	 * @param object $settings The settings object for a node.
+	 * @param object $key The setting key.
+	 * @param object $data The value to set.
+	 * @return object
+	 */
+	static public function set_photo_setting( $settings, $key, $value ) {
+		$settings->{ $key } = $value;
+
+		if ( is_array( $settings->{ $key } ) ) {
+			$settings->{ $key . '_src' } = $settings->{ $key }['url'];
+			$settings->{ $key }          = $settings->{ $key }['id'];
+		} else {
+			$settings->{ $key . '_src' } = $settings->{ $key };
+			$settings->{ $key }          = -1;
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Sets a single layer connection for background fields.
+	 *
+	 * @since 2.9
+	 * @param object $settings The settings object for a node.
+	 * @param object $key The object path to the setting key.
+	 * @param object $data The value to set.
+	 * @return object
+	 */
+	static public function set_background_setting( $settings, $key, $value ) {
+		$parts    = explode( '.layer_', $key );
+		$base_key = $parts[0];
+		$layer_id = $parts[1];
+
+		if ( ! isset( $settings->{ $base_key } ) ) {
+			return $settings;
+		} elseif ( ! is_array( $settings->{ $base_key }['layers'] ) ) {
+			return $settings;
+		}
+
+		$setting = $settings->{ $base_key };
+		$layers  = $setting['layers'];
+		$css     = $setting['css'];
+
+		foreach ( $layers as $layer_key => $layer ) {
+
+			// Find the layer to connect to this value
+			if ( (string) $layer->id === (string) $layer_id ) {
+
+				// Handle color layer connections
+				if ( 'color' === $layer->type ) {
+					$current_color = $layer->state->color;
+
+					if ( $current_color !== $value ) {
+						$settings->{ $base_key }['layers'][ $layer_key ]->state->color = $value;
+						$settings->{ $base_key }['css']                                = str_replace( $current_color, $value, $css );
+					}
+				}
+
+				break;
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
 	 * Sets a single setting for a compound connection.
 	 *
 	 * @since 2.8
@@ -655,16 +747,103 @@ final class FLThemeBuilderFieldConnections {
 	 */
 	static public function set_compound_setting( $settings, $path, $value ) {
 		$parts   = explode( '.', $path );
-		$segment = $settings;
+		$segment =& $settings;
+
 		foreach ( $parts as $part ) {
 			if ( is_array( $segment ) ) {
+				if ( ! isset( $segment[ $part ] ) ) {
+					$segment[ $part ] = [];
+				}
 				$segment =& $segment[ $part ];
-			} else {
+			} elseif ( is_object( $segment ) ) {
+				if ( ! isset( $segment->{ $part } ) ) {
+					$segment->{ $part } = new \stdClass();
+				}
+
 				$segment =& $segment->{ $part };
+			} else {
+				// Invalid path, points to child of scalar (throw exception?)
+				return $settings;
 			}
 		}
 		$segment = $value;
 		return $settings;
+	}
+
+	/**
+	 * Registers a CSS var for a connected field.
+	 *
+	 * @since 2.9
+	 * @param object $data
+	 * @return void
+	 */
+	static public function connect_css_var( $data ) {
+		$property = FLPageData::get_property( $data->object, $data->property );
+
+		if ( ! $property ) {
+			return;
+		}
+
+		// Don't output global color vars as they are already on the page.
+		$is_global_color = str_starts_with( $property['key'], 'global_color_' );
+		$is_theme_color  = str_starts_with( $property['key'], 'theme_color_' );
+
+		if ( $is_global_color || $is_theme_color ) {
+			return;
+		}
+
+		// Get the CSS var key and value.
+		$key   = self::get_css_var_key( $data );
+		$value = self::get_css_var_value( $data, $property );
+
+		// Register the var.
+		FLBuilderCSSVars::register( $key, $value );
+	}
+
+	/**
+	 * Builds the key for a CSS var connection.
+	 *
+	 * @since 2.9
+	 * @param object $data
+	 * @return string
+	 */
+	static public function get_css_var_key( $data ) {
+		$object   = $data->object;
+		$property = $data->property;
+		$suffix   = '';
+
+		// Handle custom field keys
+		if ( $data->settings && is_object( $data->settings ) ) {
+			if ( 'custom_field' === $property ) {
+				$suffix = "-{$data->settings->key}";
+			} elseif ( str_starts_with( $property, 'acf' ) ) {
+				$suffix = "-{$data->settings->name}";
+			}
+		}
+
+		return str_replace( '_', '-', sanitize_key( "--fl-$object-$property$suffix" ) );
+	}
+
+	/**
+	 * Retrieves the value for a CSS var connection.
+	 *
+	 * @since 2.9
+	 * @param object $data
+	 * @param array $property
+	 * @return string
+	 */
+	static public function get_css_var_value( $data, $property ) {
+		$value = FLPageData::get_value( $data->object, $data->property, $data->settings );
+
+		// Handle photo connections.
+		if ( 'photo' === $property['type'] ) {
+			if ( is_array( $value ) ) {
+				$value = $value['url'];
+			}
+			$value = "url($value)";
+		}
+
+		return $value;
 	}
 
 	/**
@@ -780,7 +959,9 @@ final class FLThemeBuilderFieldConnections {
 	 * @return bool
 	 */
 	static public function is_connecting_allowed() {
-		if ( defined( 'DOING_AJAX' ) ) {
+		if ( FLBuilderModuleBlocks::is_block_editor() ) {
+			return true;
+		} elseif ( defined( 'DOING_AJAX' ) ) {
 
 			if ( FLBuilderModel::is_builder_active() ) {
 

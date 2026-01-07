@@ -36,8 +36,10 @@
 				showContent = form.find( 'select[name=show_content]' ),
 				showImage = form.find( 'select[name=show_image]' ),
 				dataSource = form.find( '#fl-field-data_source' ).find('select');
-				userSource = form.find( '#fl-field-users' ).find('select');
+				userSource = form.find( '#fl-field-users' ).find('select'),
+				equalHeightImage = form.find( 'select[name=equal_height_image]' ),
 			layout.on( 'change', this._layoutChanged.bind( this ) );
+			layout.on( 'change', this._equalHeightImageDependency.bind( this ) );
 			postType.on( 'change', this._toggleEventsSection.bind( this ) );
 			postType.on( 'change', this._toggleWooCommerceSection.bind( this ) );
 			dataSource.on( 'change', this._toggleWooCommerceSection.bind( this ) );
@@ -48,10 +50,12 @@
 			resizeFields.find( 'select' ).on( 'change', this._resizeLayout.bind( this ) );
 			buttonBgColor.on( 'change', this._previewButtonBackground );
 			icon.on( 'change', this._flipSettings );
+			equalHeightImage.on( 'change', this._equalHeightImageDependency.bind( this ) );
 			this._flipSettings();
 			this._toggleEventsSection();
 			this._toggleWooCommerceSection();
 			this._featuredImageDependencyChanged();
+			this._equalHeightImageDependency();
 		},
 
 		/**
@@ -187,6 +191,29 @@
 					imageWidth.show();
 					imageSize.show();
 					imageFallback.show();
+				}
+			}
+		},
+
+		_equalHeightImageDependency: function() {
+			var $form              = $('.fl-builder-settings'),
+				layout             = $form.find( 'select[name=layout]' ).val(),
+				equalHeightImage   = $form.find( 'select[name=equal_height_image]' ).val(),
+				$equalHeightImage  = $form.find( '#fl-field-equal_height_image' ),
+				$fixedHeightImage  = $form.find( '#fl-field-image_height' ),
+				$imageRatio        = $form.find( '#fl-field-image_aspect_ratio' );
+
+			$equalHeightImage.hide();
+			$fixedHeightImage.hide();
+			$imageRatio.hide();
+
+			if ( 'columns' === layout || 'grid' === layout ) {
+				$equalHeightImage.show();
+
+				if ( 'fixed' === equalHeightImage ) {
+					$fixedHeightImage.show();
+				} else if ( 'ratio' === equalHeightImage ) {
+					$imageRatio.show();
 				}
 			}
 		},

@@ -70,6 +70,7 @@ final class FLBuilderUserTemplatesPostType {
 			'publicly_queryable'  => $can_edit || $can_edit_global,
 			'exclude_from_search' => true,
 			'show_in_rest'        => true,
+			'show_in_nav_menus'   => false,
 		) );
 
 		register_post_type( 'fl-builder-template', $args );
@@ -104,6 +105,7 @@ final class FLBuilderUserTemplatesPostType {
 			'hierarchical'      => true,
 			'public'            => true,
 			'show_admin_column' => true,
+			'show_in_nav_menus' => false,
 		) );
 
 		register_taxonomy( 'fl-builder-template-category', array( 'fl-builder-template', 'fl-theme-layout' ), $args );

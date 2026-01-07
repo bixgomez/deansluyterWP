@@ -12,6 +12,8 @@
 /**
  * Add the Constant Contact post type to an array of excluded post types.
  *
+ * If the WordPress Calls to Action plug-in is installed, exclude our post type to conflict.
+ *
  * @since 1.4.0
  *
  * @param array $excluded The post types to exclude.
@@ -19,10 +21,9 @@
  */
 function constant_contact_exclude_ctct_forms( $excluded ) {
 	$excluded[] = 'ctct_forms';
+	$excluded[] = 'ctct_lists';
 	return $excluded;
 }
-
-// If the WordPress Calls to Action plug-in is installed, exclude our post type to conflict.
 add_filter( 'cta_excluded_post_types', 'constant_contact_exclude_ctct_forms' );
 
 /**
@@ -45,7 +46,7 @@ add_filter( 'constant_contact_ignored_post_form_values', 'constant_contact_exclu
  *
  * @since 1.14.0
  *
- * @param $ignored The array of fields that Constant Contact should ignore.
+ * @param array $ignored The array of fields that Constant Contact should ignore.
  * @return array
  */
 function constant_contact_support_exclude_akisment( $ignored ) {
@@ -88,7 +89,7 @@ function constant_contact_wpspamshield_compatibility( $ignored_keys = [], $form_
 	];
 
 	// Grab all the original fields from our form.
-	$original_fields = constant_contact()->process_form->get_original_fields( $form_id );
+	$original_fields = constant_contact()->get_process_form()->get_original_fields( $form_id );
 
 	// This will merge our two misc keys above with our original fields, and
 	// then return just their keys.
@@ -114,9 +115,50 @@ function constant_contact_wpspamshield_compatibility( $ignored_keys = [], $form_
 }
 add_filter( 'constant_contact_ignored_post_form_values', 'constant_contact_wpspamshield_compatibility', 10, 2 );
 
+/**
+ * Add Cleantalk field to our ignored form values.
+ *
+ * @since 1.14.0
+ *
+ * @param $ignored
+ * @return mixed
+ */
 function constant_contact_exclude_cleantalk( $ignored ) {
 	$ignored[] = 'apbct_visible_fields';
 
 	return $ignored;
 }
 add_filter( 'constant_contact_ignored_post_form_values', 'constant_contact_exclude_cleantalk' );
+
+/**
+ * Filter in the current WPML language code used for the page.
+ *
+ * @since 2.10.0
+ *
+ * @param string $original_language_code Current language code for the page.
+ * @return mixed
+ */
+function constant_contact_wpml_and_recaptcha( string $original_language_code ) {
+	$new_language_code = apply_filters( 'wpml_current_language', null );
+
+	return ! empty( $new_language_code ) ? $new_language_code : $original_language_code;
+}
+add_filter( 'constant_contact_recaptcha_lang', 'constant_contact_wpml_and_recaptcha' );
+
+/**
+ * Filter in the current Polylang language code used for the page.
+ *
+ * @since 2.10.0
+ *
+ * @param string $original_language_code Current language code for the page.
+ * @return string
+ */
+function constant_contact_polylang_and_recaptcha( string $original_language_code ) {
+	if ( ! function_exists( 'pll_current_language' ) ) {
+		return $original_language_code;
+	}
+	$new_language_code = pll_current_language();
+
+	return ! empty( $new_language_code ) ? $new_language_code : $original_language_code;
+}
+add_filter( 'constant_contact_recaptcha_lang', 'constant_contact_polylang_and_recaptcha' );

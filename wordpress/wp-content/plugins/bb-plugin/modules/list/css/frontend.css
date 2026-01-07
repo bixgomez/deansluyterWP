@@ -46,3 +46,8 @@
 .fl-module-list .fl-list-item-content .fl-list-item-content-text p:last-child {
   margin-bottom: 0px;
 }
+
+.fl-module-list .fl-list-item-content .fl-list-item-content-text b,
+.fl-module-list .fl-list-item-content .fl-list-item-content-text strong {
+	font-weight: bold;
+}

@@ -16,7 +16,6 @@ class FLTestimonialsModule extends FLBuilderModule {
 			'partial_refresh' => true,
 			'icon'            => 'format-quote.svg',
 		));
-
 	}
 
 

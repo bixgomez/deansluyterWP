@@ -2,11 +2,7 @@
 /* WordPress UI Changes
 ----------------------------------------------- */
 
-.misc-pub-visibility,
-.misc-pub-curtime,
-#minor-publishing-actions,
-#preview-action,
-#edit-slug-box {
+.misc-pub-visibility{
 	display: none;
 }
 #post-body #normal-sortables {

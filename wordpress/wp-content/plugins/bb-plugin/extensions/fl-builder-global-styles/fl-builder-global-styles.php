@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'plugins_loaded', function() {
+add_action( 'plugins_loaded', function () {
 	// make sure we have at least Themer 1.4.7 or dev version
 	if ( defined( 'FL_THEME_BUILDER_VERSION' ) && '{FL_THEME_BUILDER_VERSION}' !== FL_THEME_BUILDER_VERSION && version_compare( FL_THEME_BUILDER_VERSION, '1.4.7', '<' ) ) {
 

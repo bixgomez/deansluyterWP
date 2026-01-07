@@ -14,8 +14,10 @@ class FLHeadingModule extends FLBuilderModule {
 			'name'            => __( 'Heading', 'fl-builder' ),
 			'description'     => __( 'Display a title/page heading.', 'fl-builder' ),
 			'category'        => __( 'Basic', 'fl-builder' ),
-			'partial_refresh' => true,
 			'icon'            => 'text.svg',
+			'partial_refresh' => true,
+			'include_wrapper' => false,
+			'element_setting' => false,
 		));
 	}
 
@@ -153,7 +155,7 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'default'     => '',
 						'preview'     => array(
 							'type'     => 'text',
-							'selector' => '.fl-heading-text',
+							'selector' => '{node}.fl-heading-text, .fl-heading-text', // Use {node} for v2 markup
 						),
 						'connections' => array( 'string' ),
 					),
@@ -179,6 +181,7 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'label'         => __( 'Link', 'fl-builder' ),
 						'show_target'   => true,
 						'show_nofollow' => true,
+						'show_download' => true,
 						'preview'       => array(
 							'type' => 'none',
 						),
@@ -199,10 +202,11 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'connections' => array( 'color' ),
 						'show_reset'  => true,
 						'show_alpha'  => true,
+						'responsive'  => true,
 						'label'       => __( 'Color', 'fl-builder' ),
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => '.fl-module-content *',
+							'selector'  => '{node}.fl-module-heading, {node}.fl-module-heading :not(.fl-block-overlay *)',
 							'property'  => 'color',
 							'important' => true,
 						),
@@ -212,9 +216,8 @@ FLBuilder::register_module('FLHeadingModule', array(
 						'label'      => __( 'Typography', 'fl-builder' ),
 						'responsive' => true,
 						'preview'    => array(
-							'type'      => 'css',
-							'selector'  => '{node}.fl-module-heading .fl-heading',
-							'important' => true,
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-heading, {node}.fl-module-heading :not(.fl-block-overlay :where(a, q, p, span))',
 						),
 					),
 				),

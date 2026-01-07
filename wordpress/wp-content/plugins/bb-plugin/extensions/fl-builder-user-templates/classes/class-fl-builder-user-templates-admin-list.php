@@ -103,7 +103,8 @@ final class FLBuilderUserTemplatesAdminList {
 			if ( 'row' == $_GET['fl-builder-template-type'] ) {
 				$wp_post_types['fl-builder-template']->labels->name = __( 'Saved Rows', 'fl-builder' );
 			} elseif ( 'column' == $_GET['fl-builder-template-type'] ) {
-				$wp_post_types['fl-builder-template']->labels->name = __( 'Saved Columns', 'fl-builder' );
+				$wp_post_types['fl-builder-template']->labels->name      = __( 'Saved Columns', 'fl-builder' );
+				$wp_post_types['fl-builder-template']->cap->create_posts = false;
 			} elseif ( 'module' == $_GET['fl-builder-template-type'] ) {
 				$wp_post_types['fl-builder-template']->labels->name = __( 'Saved Modules', 'fl-builder' );
 			}
@@ -255,7 +256,6 @@ final class FLBuilderUserTemplatesAdminList {
 			);
 		}
 	}
-
 }
 
 FLBuilderUserTemplatesAdminList::init();

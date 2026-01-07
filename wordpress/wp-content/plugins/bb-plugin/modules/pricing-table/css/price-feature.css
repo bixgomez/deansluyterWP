@@ -15,7 +15,7 @@
     padding-bottom: 5px;
 }
 .fl-lightbox .fl-color-picker.fl-pricing-table-feature-icon-color {
-    width: 95%;
+    width: 95% !important;
     margin: 10px auto;
 }
 .fl-builder-settings-fields .fl-price-feature-field label {
@@ -49,11 +49,11 @@
 }
 
 .fl-builder-settings-fields .fl-price-feature-row .fl-builder-price-feature-toggle-button.up svg {
-    transform: rotate( 180deg );    
+    transform: rotate( 180deg );
 }
 
 .fl-builder-settings-fields .fl-price-feature-row .fl-builder-price-feature-toggle-button.down svg {
-    transform: rotate( 0deg );    
+    transform: rotate( 0deg );
 }
 
 .fl-builder-settings-fields .fl-price-feature-tooltip-row,

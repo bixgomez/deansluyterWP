@@ -14,22 +14,22 @@ class ConstantContact_Attached_Lists_Field {
 	 * CMB2_Field object
 	 * @var CMB2_Field
 	 */
-	protected $field;
+	protected CMB2_Field $field;
 
 	/**
 	 * Whether to output the type label.
 	 * Determined when multiple post types exist in the query_args field arg.
 	 * @var bool
 	 */
-	protected $do_type_label = false;
+	protected bool $do_type_label = false;
 
 	/**
 	 * Initialize the plugin by hooking into CMB2
 	 */
 	public function __construct() {
-		// Required to create custom field types. In this case: "custom_attached_post"
-		add_action( 'cmb2_render_custom_attached_posts', [ $this, 'render' ], 10, 5 );
-		add_action( 'cmb2_sanitize_custom_attached_posts', [ $this, 'sanitize' ], 10, 2 );
+		// Required to create custom field types. In this case: "ctct_forms_list_selection"
+		add_action( 'cmb2_render_ctct_forms_list_selection', [ $this, 'render' ], 10, 5 );
+		add_action( 'cmb2_sanitize_ctct_forms_list_selection', [ $this, 'sanitize' ], 10, 2 );
 
 		add_action( 'cmb2_attached_posts_field_add_find_posts_div', [ $this, 'add_find_posts_div' ] );
 		add_action( 'cmb2_after_init', [ $this, 'ajax_find_posts' ] );
@@ -37,7 +37,7 @@ class ConstantContact_Attached_Lists_Field {
 
 	/**
 	 * Add a CMB custom field to allow for the selection of multiple posts
-	 * attached to a single page
+	 * attached to a single page.
 	 */
 	public function render( $field, $escaped_value, $object_id, $object_type, $field_type ) {
 		self::setup_scripts();
@@ -82,8 +82,7 @@ class ConstantContact_Attached_Lists_Field {
 		}
 
 		$this->do_type_label = count( $post_type_labels ) > 1;
-
-		$post_type_labels = implode( '/', $post_type_labels );
+		$post_type_labels    = implode( '/', $post_type_labels );
 
 		$filter_boxes = '';
 		// Check 'filter' setting
@@ -110,7 +109,7 @@ class ConstantContact_Attached_Lists_Field {
 					<strong>
 						<?php
 						// translators: the placeholder will hold a post type label.
-						printf( esc_html__( 'Available %s', 'constant-contact-forms' ), $post_type_labels ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						printf( esc_html__( 'Available %s', 'constant-contact-forms' ), strtolower( $post_type_labels ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</strong>
 				</p>
@@ -149,7 +148,7 @@ class ConstantContact_Attached_Lists_Field {
 					<strong>
 						<?php
 						// translators: the placeholder will hold a post type label.
-						printf( esc_html__( 'Associated %s', 'constant-contact-forms' ), $post_type_labels ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						printf( esc_html__( 'Chosen %s', 'constant-contact-forms' ), strtolower( $post_type_labels ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						?>
 					</strong>
 				</p>
@@ -172,7 +171,7 @@ class ConstantContact_Attached_Lists_Field {
 				[
 					'type'  => 'hidden',
 					'class' => 'attached-posts-ids',
-					'value' => ! empty( $ids ) ? implode( ',', $ids ) : '', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'value' => implode( ',', $ids ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					'desc'  => '',
 				]
 			);
@@ -188,7 +187,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param array $attached Array of attached posts/users.
 	 *
 	 * @return void
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	protected function display_retrieved( $objects, $attached ) {
 		$count = 0;
@@ -212,7 +211,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param array $attached Array of attached posts/users.
 	 *
 	 * @return array
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	protected function display_attached( $attached_lists ) {
 		$ids = [];
@@ -271,7 +270,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param string $icon_class The icon class. Either 'dashicons-plus' or 'dashicons-minus'.
 	 *
 	 * @return void
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function list_item( $object, $li_class, $icon_class = 'dashicons-plus' ) {
 		// Build our list item
@@ -290,7 +289,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param mixed $object Post or User
 	 *
 	 * @return int            The object ID.
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function get_id( $object ) {
 		return $object->ID;
@@ -306,7 +305,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param int $id Post or User ID.
 	 *
 	 * @return mixed     Post or User if found.
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function get_object( $id ) {
 		return get_post( absint( $id ) );
@@ -319,7 +318,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param array $attached Array of attached object ids.
 	 *
 	 * @return array            Array of attached object ids.
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function get_all_objects( $args, $attached = [] ) {
 		$objects = $this->get_objects( $args );
@@ -351,7 +350,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param array $args Array of query args.
 	 *
 	 * @return array        Array of results.
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function get_objects( $args ) {
 		return call_user_func( 'get_posts', $args );
@@ -406,7 +405,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param string $val           The unsanitized value.
 	 *
 	 * @return string                 The (maybe-modified) sanitized value to be saved.
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function sanitize( $sanitized_val, $val ) {
 		if ( ! empty( $val ) ) {
@@ -420,7 +419,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * Check to see if we have a post type set and, if so, add the
 	 * pre_get_posts action to set the queried post type
 	 * @return void
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function ajax_find_posts() {
 		if ( $this->doing_search() ) {
@@ -434,7 +433,7 @@ class ConstantContact_Attached_Lists_Field {
 	 * @param WP_Query $query WP_Query instance during the pre_get_posts hook.
 	 *
 	 * @return void
-	 * @since  NEXT
+	 * @since  2.6.0
 	 */
 	public function modify_query( $query ) {
 		$types = $_POST['search_types'];
@@ -462,7 +461,7 @@ class ConstantContact_Attached_Lists_Field {
 	/**
 	 * Whether or not we are doing a list search.
 	 *
-	 * @since NEXT
+	 * @since 2.6.0
 	 * @return bool
 	 */
 	protected function doing_search() {

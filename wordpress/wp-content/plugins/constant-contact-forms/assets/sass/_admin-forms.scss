@@ -1,3 +1,5 @@
+@use "variables";
+
 // sass-lint:disable class-name-format no-qualifying-elements id-name-format
 
 .post-type-ctct_forms {
@@ -46,6 +48,12 @@ body.post-type-ctct_forms #titlediv #title {
 	}
 }
 
+#ctct_0_list_metabox {
+  .cmb-row {
+	padding-top: 0;
+  }
+}
+
 #cmb2-metabox-ctct_2_fields_metabox {
 
 	.cmb2-id--ctct-title {
@@ -57,6 +65,23 @@ body.post-type-ctct_forms #titlediv #title {
 
 	.cmb2-id-form-title-title {
 		padding: 0.8rem 0 1rem;
+	}
+}
+
+#ctct_0_description_metabox {
+	.cmb2-id--ctct-description-visibility {
+		padding: 0;
+
+		.cmb-td {
+			padding: 1em 0;
+		}
+	}
+
+	.cmb2-id--ctct-description-visibility,
+	.cmb2-id--ctct-description-visibility .cmb-td {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
 	}
 }
 
@@ -85,7 +110,7 @@ body.post-type-ctct_forms #titlediv #title {
 				padding-top: 0.5em;
 
 				&:not(:last-of-type)  {
-					border-bottom: 1px solid $color-light-gray;
+					border-bottom: 1px solid variables.$color-light-gray;
 					padding-bottom: 0.1rem;
 				}
 			}
@@ -125,13 +150,13 @@ body.post-type-ctct_forms #titlediv #title {
 	button {
 
 		&.cmb-add-group-row {
-			background: $color-cmb-button-light-blue !important;
-			border-color: $color-cmb-button-blue !important;
-			color: $color-white !important;
+			background: variables.$color-cmb-button-light-blue !important;
+			border-color: variables.$color-cmb-button-blue !important;
+			color: variables.$color-white !important;
 		}
 
 		&.cmb-remove-group-row {
-			background: $color-cmb-button-pale-yellow !important;
+			background: variables.$color-cmb-button-pale-yellow !important;
 			display: none;
 		}
 	}
@@ -165,10 +190,17 @@ body.post-type-ctct_forms #titlediv #title {
 	}
 }
 
+#ctct_1_optin_metabox,
+#ctct_2_fields_metabox {
+  .cmb2-metabox-title {
+	font-size: 18px;
+  }
+}
+
 #ctct_option_metabox_settings {
 
 	span.cmb2-metabox-description {
-		color: $color-cmb-description-text;
+		color: variables.$color-cmb-description-text;
 	}
 }
 
@@ -247,15 +279,8 @@ body.post-type-ctct_forms #titlediv #title {
 .cmb2-id--ctct-list {
 
 	.cmb2-list {
-		background:
-			linear-gradient($color-white 33%, transparent),
-			linear-gradient(transparent, $color-white 66%) 0 100%,
-			radial-gradient(farthest-side at 50% 0, $color-black-translucent, transparent),
-			radial-gradient(farthest-side at 50% 100%, $color-black-translucent, transparent) 0 100%;
-		background-attachment: local, local, scroll, scroll;
-		background-color: $color-white;
-		background-repeat: no-repeat;
-		background-size: 100% 30px, 100% 30px, 100% 10px, 100% 10px;
+	  background: variables.$color-white linear-gradient(variables.$color-white 33%, transparent) linear-gradient(transparent, variables.$color-white 66%) radial-gradient(farthest-side at 50% 0, variables.$color-black-translucent, transparent) radial-gradient(farthest-side at 50% 100%, variables.$color-black-translucent, transparent) no-repeat local, local, scroll, scroll 0 100% 0 100%;
+	  background-size: 100% 30px, 100% 30px, 100% 10px, 100% 10px;
 		max-height: 10rem;
 		overflow-y: auto;
 	}

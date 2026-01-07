@@ -60,7 +60,6 @@ class FLNorthCommerceModule extends FLBuilderModule {
 
 		echo $html_content;
 	}
-
 }
 
 /**

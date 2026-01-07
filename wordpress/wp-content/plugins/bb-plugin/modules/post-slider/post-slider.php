@@ -23,6 +23,7 @@ class FLPostSliderModule extends FLBuilderModule {
 			'editor_export'   => false,
 			'partial_refresh' => true,
 			'icon'            => 'slides.svg',
+			'block_editor'    => true,
 		));
 
 		$this->add_css( 'jquery-bxslider' );
@@ -153,7 +154,6 @@ class FLPostSliderModule extends FLBuilderModule {
 		$thumb_id = get_post_thumbnail_id( $id );
 
 		return FLBuilderPhoto::get_attachment_data( $thumb_id );
-
 	}
 
 
@@ -278,7 +278,6 @@ class FLPostSliderModule extends FLBuilderModule {
 				echo '<div class="fl-post-slider-content-bg fl-post-no-height"></div>';
 			}
 		}
-
 	}
 
 
@@ -324,7 +323,6 @@ class FLPostSliderModule extends FLBuilderModule {
 
 			}
 		}
-
 	}
 
 
@@ -351,7 +349,6 @@ class FLPostSliderModule extends FLBuilderModule {
 		$title .= '</' . $tag . '>';
 
 		echo $title;
-
 	}
 
 

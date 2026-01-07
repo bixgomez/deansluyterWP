@@ -455,12 +455,17 @@ class GF_ConstantContact extends GFFeedAddOn {
 					array(
 						'name'                => 'custom_fields',
 						'label'               => __( 'Custom Fields', 'gravityformsconstantcontact' ),
-						'type'                => 'dynamic_field_map',
+						'type'                => 'generic_map',
 						'disable_custom'      => true,
 						'limit'               => 25,
 						'exclude_field_types' => 'creditcard',
 						'tooltip'             => '<h6>' . __( 'Custom Fields', 'gravityformsconstantcontact' ) . '</h6>' . __( 'Select custom fields in Constant Contact to pair with Gravity Forms fields.', 'gravityformsconstantcontact' ),
-						'field_map'           => $this->custom_fields_for_feed_mapping( $custom_fields['custom_fields'] ),
+						'key_field'           => array(
+							'choices' => $this->custom_fields_for_feed_mapping( $custom_fields['custom_fields'] ),
+						),
+						'value_field'         => array(
+							'allow_custom' => false,
+						),
 					),
 				);
 				$settings = $this->add_field_after( 'fields', $cf_field, $settings );
@@ -1052,12 +1057,13 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 * Processes the feed, subscribes the user to the list.
 	 *
 	 * @since 1.0
+	 * @since 1.8 Updated return value for consistency with other add-ons, so the framework can save the feed status to the entry meta.
 	 *
-	 * @param array $feed The feed object to be processed.
+	 * @param array $feed  The feed object to be processed.
 	 * @param array $entry The entry object currently being processed.
-	 * @param array $form The form object currently being processed.
+	 * @param array $form  The form object currently being processed.
 	 *
-	 * @return array|null Returns a modified entry object or null.
+	 * @return array|WP_Error
 	 */
 	public function process_feed( $feed, $entry, $form ) {
 		$this->log_debug( __METHOD__ . '(): Processing feed.' );
@@ -1066,7 +1072,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 		if ( ! $this->initialize_api() ) {
 			$this->add_feed_error( esc_html__( 'Unable to process feed because API could not be initialized.', 'gravityformsconstantcontact' ), $feed, $entry, $form );
 
-			return $entry;
+			return new WP_Error( 'api_not_initialized', 'API was not initialized.' );
 		}
 
 		/* If email address is empty, return. */
@@ -1075,7 +1081,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 		if ( GFCommon::is_invalid_or_empty_email( $email ) ) {
 			$this->add_feed_error( esc_html__( 'A valid Email address must be provided.', 'gravityformsconstantcontact' ), $feed, $entry, $form );
 
-			return $entry;
+			return new WP_Error( 'invalid_email', 'Invalid email address.' );
 		}
 
 		$subscriber_details = $this->build_subscriber_details( $feed, $entry, $form );
@@ -1083,16 +1089,18 @@ class GF_ConstantContact extends GFFeedAddOn {
 		if ( ! $subscriber_details ) {
 			$this->add_feed_error( esc_html__( 'Subscriber details invalid.', 'gravityformsconstantcontact' ), $feed, $entry, $form );
 
-			return $entry;
+			return new WP_Error( 'invalid_subscriber_details', 'The subscriber details were invalid.' );
 		}
 
-		$subscription_results = $this->subscribe_to_list( $subscriber_details );
+		$subscription_results = $this->subscribe_to_list( $subscriber_details, rgar( $entry, 'id' ) );
 
 		if ( is_wp_error( $subscription_results ) ) {
 			$this->add_feed_error( sprintf( esc_html__( 'Unable to add/update subscriber: %s', 'gravityformsconstantcontact' ), $subscription_results->get_error_message() ), $feed, $entry, $form );
+
+			return $subscription_results;
 		}
 
-		return null;
+		return $entry;
 	}
 
 	/**
@@ -1215,12 +1223,14 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 * Subscribe a contact to lists
 	 *
 	 * @since 1.0
+	 * @since 1.8 Added the $entry_id param.
 	 *
-	 * @param array $subscriber_details Subscriber details.
+	 * @param array    $subscriber_details Subscriber details.
+	 * @param null|int $entry_id           The ID of the entry being processed.
 	 *
 	 * @return true|WP_Error
 	 */
-	public function subscribe_to_list( $subscriber_details = array() ) {
+	public function subscribe_to_list( $subscriber_details = array(), $entry_id = null ) {
 		foreach ( $subscriber_details as $key => $detail ) {
 			if ( is_string( $detail ) ) {
 				$detail = trim( $detail );
@@ -1264,7 +1274,12 @@ class GF_ConstantContact extends GFFeedAddOn {
 		}
 
 		// Log that the subscription was added or updated.
-		$this->log_debug( __METHOD__ . "(): Subscriber successfully {$action}." );
+		$this->log_debug( __METHOD__ . "(): Subscriber successfully {$action}: " . json_encode( $result ) );
+
+		if ( $entry_id ) {
+			$note = $contact_id ? esc_html__( 'Contact updated. ID: %s.', 'gravityformsconstantcontact' ) : esc_html__( 'Contact added. ID: %s.', 'gravityformsconstantcontact' );
+			$this->add_note( $entry_id, sprintf( $note, rgar( $result, 'contact_id', $contact_id ) ), 'success' );
+		}
 
 		return true;
 	}

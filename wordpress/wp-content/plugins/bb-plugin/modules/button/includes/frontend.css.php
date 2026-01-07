@@ -13,7 +13,7 @@ FLBuilderCSS::rule( array(
 FLBuilderCSS::responsive_rule( array(
 	'settings'     => $settings,
 	'setting_name' => 'align',
-	'selector'     => ".fl-node-$id .fl-button-wrap",
+	'selector'     => ".fl-node-$id.fl-button-wrap, .fl-node-$id .fl-button-wrap", // Both rules needed for compat with v1
 	'prop'         => 'text-align',
 ) );
 
@@ -21,7 +21,7 @@ FLBuilderCSS::responsive_rule( array(
 FLBuilderCSS::dimension_field_rule( array(
 	'settings'     => $settings,
 	'setting_name' => 'padding',
-	'selector'     => ".fl-builder-content .fl-node-$id .fl-button-wrap a.fl-button",
+	'selector'     => ".fl-builder-content .fl-node-$id a.fl-button",
 	'unit'         => 'px',
 	'props'        => array(
 		'padding-top'    => 'padding_top',
@@ -111,6 +111,16 @@ FLBuilderCSS::border_field_rule( array(
 	'selector'     => ".fl-builder-content .fl-node-$id a.fl-button, .fl-builder-content .fl-node-$id a.fl-button:visited, .fl-builder-content .fl-node-$id a.fl-button:hover, .fl-builder-content .fl-node-$id a.fl-button:focus, .fl-page .fl-builder-content .fl-node-$id a.fl-button, .fl-page .fl-builder-content .fl-node-$id a.fl-button:visited, .fl-page .fl-builder-content .fl-node-$id a.fl-button:hover, .fl-page .fl-builder-content .fl-node-$id a.fl-button:focus",
 ) );
 
+// theme based borders
+
+FLBuilderCSS::rule( array(
+	'enabled'  => ! empty( FLBuilderUtils::get_bb_theme_option( 'fl-button-border-hover-color' ) ) && ! empty( FLBuilderUtils::get_bb_theme_option( 'fl-button-style' ) ),
+	'selector' => ".fl-builder-content .fl-module-button.fl-node-$id a.fl-button:hover, .fl-builder-content .fl-node-$id a.fl-button:focus, .fl-page .fl-builder-content .fl-module-button.fl-node-$id a.fl-button:hover, .fl-page .fl-builder-content .fl-node-$id a.fl-button:focus",
+	'props'    => array(
+		'border-color' => FLBuilderColor::hex_or_rgb( FLBuilderUtils::get_bb_theme_option( 'fl-button-border-hover-color' ) ),
+	),
+) );
+
 if ( 'adv-gradient' === $settings->style ) {
 	$settings->border['color'] = $border_color_backup;
 }
@@ -178,13 +188,13 @@ FLBuilderCSS::rule( array(
 
 
 <?php if ( $settings->duo_color1 && false !== strpos( $settings->icon, 'fad fa' ) ) : ?>
-.fl-node-<?php echo $id; ?> .fl-module-content .fl-button-icon:before {
+.fl-node-<?php echo $id; ?> .fl-button-icon:before {
 	color: <?php echo FLBuilderColor::hex_or_rgb( $settings->duo_color1 ); ?>;
 }
 <?php endif; ?>
 
 <?php if ( $settings->duo_color2 && false !== strpos( $settings->icon, 'fad fa' ) ) : ?>
-.fl-node-<?php echo $id; ?> .fl-module-content .fl-button-icon:after {
+.fl-node-<?php echo $id; ?> .fl-button-icon:after {
 	color: <?php echo FLBuilderColor::hex_or_rgb( $settings->duo_color2 ); ?>;
 	opacity: 1;
 }

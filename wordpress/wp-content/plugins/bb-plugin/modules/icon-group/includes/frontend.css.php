@@ -21,12 +21,37 @@ FLBuilder::render_module_css('icon', $id, array(
 	'three_d'              => $settings->three_d,
 ));
 
+// Enable flex and remove margins for v2+ icon groups.
+if ( $module->version > 1 ) {
+	FLBuilderCSS::rule( array(
+		'selector' => ".fl-node-$id .fl-icon-group",
+		'props'    => array(
+			'display'   => 'flex',
+			'flex-wrap' => 'wrap',
+		),
+	) );
+
+	FLBuilderCSS::responsive_rule( array(
+		'settings'     => $settings,
+		'setting_name' => 'spacing',
+		'selector'     => ".fl-node-$id .fl-icon-group",
+		'prop'         => 'gap',
+	) );
+
+	FLBuilderCSS::rule( array(
+		'selector' => ".fl-node-$id .fl-icon-group .fl-icon",
+		'props'    => array(
+			'margin' => '0',
+		),
+	) );
+}
+
 // Alignment
 FLBuilderCSS::responsive_rule( array(
 	'settings'     => $settings,
 	'setting_name' => 'align',
 	'selector'     => ".fl-node-$id .fl-icon-group",
-	'prop'         => 'text-align',
+	'prop'         => $module->version > 1 ? 'justify-content' : 'text-align',
 ) );
 
 // Spacing
@@ -34,7 +59,7 @@ FLBuilderCSS::responsive_rule( array(
 	'settings'     => $settings,
 	'setting_name' => 'spacing',
 	'selector'     => ".fl-node-$id .fl-icon + .fl-icon",
-	'prop'         => 'margin-left',
+	'prop'         => $module->version > 1 ? null : 'margin-left',
 ) );
 
 foreach ( $settings->icons as $i => $icon ) :

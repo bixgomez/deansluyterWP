@@ -15,6 +15,7 @@ class FLMapModule extends FLBuilderModule {
 			'category'        => __( 'Media', 'fl-builder' ),
 			'partial_refresh' => true,
 			'icon'            => 'location.svg',
+			'block_editor'    => true,
 		));
 	}
 }

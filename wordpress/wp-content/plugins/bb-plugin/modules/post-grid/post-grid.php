@@ -16,6 +16,7 @@ class FLPostGridModule extends FLBuilderModule {
 			'editor_export'   => false,
 			'partial_refresh' => true,
 			'icon'            => 'schedule.svg',
+			'block_editor'    => true,
 		));
 	}
 
@@ -25,13 +26,14 @@ class FLPostGridModule extends FLBuilderModule {
 	 *
 	 * @since 2.6.0.1
 	 * @param object $settings A module settings object.
+	 * @param object $defaults The defaults for this module.
 	 * @return object
 	 */
-	public function filter_raw_settings( $settings ) {
+	public function filter_raw_settings( $settings, $defaults ) {
 
 		// Handle columns for the new large breakpoint.
-		if ( ! isset( $settings->post_columns_large ) && isset( $settings->post_columns ) ) {
-			$settings->post_columns_large = $settings->post_columns;
+		if ( ! isset( $settings->post_columns_large ) ) {
+			$settings->post_columns_large = isset( $settings->post_columns ) ? $settings->post_columns : $defaults->post_columns_large;
 		}
 
 		return $settings;
@@ -291,7 +293,8 @@ class FLPostGridModule extends FLBuilderModule {
 	public function render_content() {
 
 		global $post;
-		if ( ! has_filter( 'the_content', 'wpautop' ) && empty( $this->settings->content_length ) ) {
+
+		if ( ! has_filter( 'the_content', 'wpautop' ) ) {
 			add_filter( 'the_content', 'wpautop' );
 		}
 
@@ -836,6 +839,41 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'type'    => 'photo-sizes',
 						'label'   => __( 'Image Size', 'fl-builder' ),
 						'default' => 'medium',
+					),
+					'equal_height_image'  => array(
+						'type'    => 'select',
+						'label'   => __( 'Equal Height Image', 'fl-builder' ),
+						'default' => 'disabled',
+						'options' => array(
+							'disabled' => __( 'Disabled', 'fl-builder' ),
+							'fixed'    => __( 'Fixed Height', 'fl-builder' ),
+							'ratio'    => __( 'Aspect Ratio', 'fl-builder' ),
+						),
+					),
+					'image_height'        => array(
+						'type'       => 'unit',
+						'label'      => __( 'Image Height', 'fl-builder' ),
+						'default'    => '200',
+						'units'      => array( 'px' ),
+						'slider'     => array(
+							'min' => 0,
+							'max' => 1000,
+						),
+						'responsive' => true,
+						'preview'    => array(
+							'type' => 'refresh',
+						),
+					),
+					'image_aspect_ratio'  => array(
+						'type'       => 'text',
+						'label'      => __( 'Aspect Ratio', 'fl-builder' ),
+						'default'    => '',
+						'help'       => __( 'Use the forward slash notation: width/height.', 'fl-builder' ),
+						'responsive' => true,
+						'sanitize'   => 'FLBuilderUtils::sanitize_aspect_css',
+						'preview'    => array(
+							'type' => 'refresh',
+						),
 					),
 					'grid_image_spacing'  => array(
 						'type'    => 'unit',
@@ -1572,4 +1610,4 @@ FLBuilder::register_module('FLPostGridModule', array(
 	),
 ));
 // custom field filter form
-include FL_BUILDER_DIR . 'includes/loop-settings-filter.php';
+require FL_BUILDER_DIR . 'includes/loop-settings-filter.php';

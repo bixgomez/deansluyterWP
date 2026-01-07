@@ -84,7 +84,7 @@ FLBuilder::register_module('FLSocialButtonModule', array(
 					'custom_url'    => array(
 						'type'        => 'text',
 						'label'       => __( 'Custom URL', 'fl-builder' ),
-						'placeholder' => 'http://www.example.com',
+						'placeholder' => 'https://www.example.com',
 						'preview'     => array(
 							'type' => 'none',
 						),

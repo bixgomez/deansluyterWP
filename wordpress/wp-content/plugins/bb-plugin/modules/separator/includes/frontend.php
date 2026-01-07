@@ -1,2 +1,3 @@
-<?php // Display separator ?>
-<div class="fl-separator"></div>
+<div <?php $module->render_attributes(); ?>>
+	<div class="fl-separator"></div>
+</div>

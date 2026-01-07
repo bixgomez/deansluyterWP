@@ -134,7 +134,7 @@ class GF_Block_Form extends GF_Block {
 
 		// Add Gravity Forms styling if CSS is enabled.
 		if ( ! GFCommon::is_frontend_default_css_disabled() ) {
-			$deps = array_merge( $deps, array( 'gform_basic', 'gforms_formsmain_css', 'gforms_ready_class_css', 'gforms_browsers_css', 'gform_theme' ) );
+			$deps = array_merge( $deps, array( 'gforms_reset_css', 'gform_basic', 'gforms_formsmain_css', 'gforms_ready_class_css', 'gforms_browsers_css', 'gform_theme' ) );
 
 			/**
 			 * Allows users to disable the main theme.css file from being loaded on the Front End.
@@ -212,7 +212,7 @@ class GF_Block_Form extends GF_Block {
 			ob_end_clean();
 
 			// Return buffer contents with form string.
-			return $buffer_contents . $form_string;
+			return $buffer_contents . $form_string; // nosemgrep audit.php.wp.security.xss.block-attr
 
 		}
 
@@ -227,7 +227,7 @@ class GF_Block_Form extends GF_Block {
 			$field_values = '';
 		}
 
-		return gravity_form( $form_id, $title, $description, false, $field_values, $ajax, $tabindex, false, rgar( $attributes, 'theme' ), json_encode( $attributes ) );
+		return gravity_form( $form_id, $title, $description, false, $field_values, $ajax, $tabindex, false, rgar( $attributes, 'theme' ), json_encode( $attributes ) ); // nosemgrep audit.php.wp.security.xss.block-attr
 
 	}
 

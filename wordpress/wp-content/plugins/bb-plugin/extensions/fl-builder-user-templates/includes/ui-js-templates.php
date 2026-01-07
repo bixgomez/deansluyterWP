@@ -40,7 +40,7 @@
 			return item.content === 'module';
 		});
 		#>
-		<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! FLBuilderModel::is_post_user_template( 'column' ) ) : ?>
+		<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! FLBuilderModel::is_post_user_template( 'column' ) && ! FLBuilderModel::is_post_user_template( 'module' ) ) : ?>
 		<div id="fl-builder-blocks-saved-rows" class="fl-builder-blocks-section fl-builder-blocks-node-template">
 
 			<div class="fl-builder-blocks-section-header">

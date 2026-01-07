@@ -62,7 +62,7 @@ FLBuilderCSS::rule( array(
 	'props'    => array(
 		'border-radius' => '4px',
 		'font-size'     => '16px',
-		//	'line-height'   => '16px',
+		//  'line-height'   => '16px',
 			'padding'   => '10px 24px',
 	),
 ) );
@@ -72,14 +72,6 @@ FLBuilderCSS::rule( array(
 	'enabled'  => 'yes' === $settings->forget && 'yes' === $settings->remember,
 	'props'    => array(
 		'float' => 'right',
-	),
-) );
-
-FLBuilderCSS::rule( array(
-	'selector' => '.fl-remember-checkbox',
-	'enabled'  => 'no' === $settings->forget && 'yes' === $settings->remember,
-	'props'    => array(
-		'float' => 'left',
 	),
 ) );
 

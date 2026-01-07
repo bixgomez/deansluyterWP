@@ -213,7 +213,7 @@
 
 			if ( field.hasClass( 'fl-field' ) ) {
 				field.find( 'input, textarea, select' ).addClass( 'fl-ignore-validation' );
-				field.find( '.fl-field-connection-value' ).val( JSON.stringify( config ) );
+				field.find( '.fl-field-connection-value' ).val( JSON.stringify( config ) ).trigger( 'change' );
 				connection.find( '.fl-field-connection-label' ).html( label );
 				connection.fadeIn( 200 ).addClass( 'fl-field-connection-visible' );
 			} else {
@@ -233,6 +233,10 @@
 				connection.attr( 'data-form', formId );
 				connection.addClass( 'fl-field-connection-clear-on-cancel' );
 				FLThemeBuilderFieldConnections._showSettingsForm( field, formId, config );
+
+				if ( FLBuilder.isBlockEditor() ) {
+					FLThemeBuilderFieldConnections._triggerPreview( { target : field } );
+				}
 			}
 		},
 
@@ -305,7 +309,7 @@
 					input.val( value + ' ' + token );
 				}
 
-				input.trigger( 'keyup' );
+				input.trigger( 'input' );
 			} else if ( 'editor' == type ) {
 				window.parent.send_to_editor( token );
 			} else if ( 'code' == type ) {
@@ -377,8 +381,21 @@
 		 */
 		_showSettingsForm: function( field, formId, config )
 		{
+			var value = field.find( '.fl-field-connection-value' ).val();
+			var connectionType = value ? 'object' : 'token'
+
 			formId = undefined === formId ? field.find( '.fl-field-connection' ).attr( 'data-form' ) : formId;
 			config = undefined === config ? JSON.parse( field.find( '.fl-field-connection-value' ).val() ) : config;
+
+			if ( FLBuilder.isBlockEditor() ) {
+				FLBuilder.triggerHook( 'renderFieldConnectionSettings', [
+					formId,
+					field,
+					connectionType,
+					config.settings
+				] );
+				return;
+			}
 
 			var lightbox = FLBuilder._openNestedSettings( {
 				className : 'fl-builder-lightbox fl-field-connection-settings'
@@ -394,7 +411,7 @@
 				settings : config.settings
 				}, function( response ) {
 
-					var data = JSON.parse( response );
+					var data = FLBuilder._jsonParse( response );
 
 					lightbox._node.find( '.fl-lightbox-content' ).html( data.html );
 
@@ -404,7 +421,8 @@
 		},
 
 		/**
-		 * Saves a connection settings form.
+		 * Saves a connection settings form when the save
+		 * button is clicked.
 		 *
 		 * @since 1.0
 		 * @access private
@@ -413,9 +431,27 @@
 		 */
 		_saveSettingsFormClicked: function( e )
 		{
-			var form       = $( '.fl-field-connection-settings form' ),
-				settings   = FLBuilder._getSettings( form ),
-				field      = $( '.fl-field-connection-editing' ),
+			var form = $( '.fl-field-connection-settings form' );
+			var field = $( '.fl-field-connection-editing' );
+			var connection = field.find( '.fl-field-connection' );
+
+			FLThemeBuilderFieldConnections._saveSettings( form, field );
+			FLBuilder._closeNestedSettings();
+
+			field.removeClass( 'fl-field-connection-editing' );
+			connection.removeClass( 'fl-field-connection-clear-on-cancel' );
+		},
+
+		/**
+		 * Saves connection settings.
+		 *
+		 * @since 2.9
+		 * @param {Object} form
+		 * @param {Object} field
+		 */
+		_saveSettings: function( form, field )
+		{
+			var settings   = FLBuilder._getSettings( form ),
 				connection = field.find( '.fl-field-connection' ),
 				value      = field.find( '.fl-field-connection-value' ),
 				val        = value.val(),
@@ -427,7 +463,7 @@
 			if ( '' != val ) {
 				parsed          = JSON.parse( val );
 				parsed.settings = FLThemeBuilderFieldConnections._fixDependency( settings );
-				value.val( JSON.stringify( parsed ) );
+				value.val( JSON.stringify( parsed ) ).trigger( 'change' );
 				FLThemeBuilderFieldConnections._triggerPreview( { target : field } );
 			} else {
 				shortcode = '[wpbb ' + token;
@@ -443,10 +479,6 @@
 
 				FLThemeBuilderFieldConnections._insertMenuItemToken( field, shortcode );
 			}
-
-			field.removeClass( 'fl-field-connection-editing' );
-			connection.removeClass( 'fl-field-connection-clear-on-cancel' );
-			FLBuilder._closeNestedSettings();
 		},
 
 		/**
@@ -501,11 +533,24 @@
 		 */
 		_removeConnectionClicked: function( e )
 		{
+			var colorInput;
 			var target     = $( e.target ),
 				field      = target.closest( '.fl-field' ),
 				connection = target.closest( '.fl-field-connection' ),
 				value      = connection.siblings( '.fl-field-connection-value' ),
-				global     = field.closest( '.fl-builder-settings' ).hasClass( 'fl-builder-global-styles' );
+				global     = field.closest( '.fl-builder-settings' ).hasClass( 'fl-builder-global-styles' ),
+				color      = target.siblings('.fl-field-connection-label').find('.swatch').css('background-color');
+
+				if (field.find('.fl-field-responsive-setting').length > 0) {
+					// Responsive wrappers exist, get input for the currently visible device
+					colorInput = field.find('.fl-field-responsive-setting:visible .fl-color-picker-value');
+				} else {
+					// No responsive wrappers, fallback to flat structure
+					colorInput = field.find('.fl-color-picker-value');
+				}
+
+				// set color value to connection's color that is to be removed
+				colorInput.val(color)
 
 			if ( field.find( '.fl-field-connection-compound' ).length ) {
 				FLThemeBuilderCompoundConnections._removeConnection( connection );
@@ -513,7 +558,7 @@
 				field.find( '.fl-ignore-validation' ).removeClass( 'fl-ignore-validation' );
 				connection.removeAttr( 'data-form' );
 				connection.fadeOut( 200 ).removeClass( 'fl-field-connection-visible' );
-				value.val( '' );
+				value.val( '' ).trigger( 'change' );
 
 				if ( global ) {
 					FLBuilder.triggerHook( 'fieldConnectionUpdated', field );
@@ -597,30 +642,6 @@
 			if( FLBuilder.preview ) {
 				FLBuilder.preview.delayPreview( e );
 			}
-		},
-
-		/**
-		 * Callback for when field connections in color fields are clicked.
-		 *
-		 * @since 2.8
-		 */
-		_colorFieldConnectionClicked: function()
-		{
-			var field = $( this ).closest( '.fl-field' );
-			var button = field.find( '.fl-color-picker-color' );
-			var input = field.find( '.fl-color-picker-value' );
-			var value = input.val();
-			var remove = field.find( '.fl-field-connection-remove' );
-
-			input.off( 'change.fl-field-connection' );
-			input.on( 'change.fl-field-connection', function () {
-				if ( value !== $( this ).val() ) {
-					input.off( 'change.fl-field-connection' );
-					remove.trigger( 'click' );
-				}
-			} );
-
-			button.trigger( 'click' );
 		}
 	};
 
@@ -751,7 +772,7 @@
 				setting = setting[ matches[ i ] ];
 			}
 
-			valueInput.val( JSON.stringify( value ) );
+			valueInput.val( JSON.stringify( value ) ).trigger( 'change' );
 		},
 
 		/**

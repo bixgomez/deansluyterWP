@@ -35,7 +35,7 @@ class FLLoginFormModule extends FLBuilderModule {
 	 * @return string The JSON encoded response.
 	 */
 	public function login() {
-		//	error_log( print_r( $_POST, true ) );
+		//  error_log( print_r( $_POST, true ) );
 		$name             = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : false;
 		$password         = isset( $_POST['password'] ) ? $_POST['password'] : false;
 		$remember         = isset( $_POST['remember'] ) ? $_POST['remember'] : false;
@@ -161,13 +161,13 @@ FLBuilder::register_module( 'FLLoginFormModule', array(
 			'structure' => array(
 				'title'  => __( 'Structure', 'fl-builder' ),
 				'fields' => array(
-					'layout'   => array(
+					'layout'          => array(
 						'type'    => 'select',
 						'label'   => __( 'Layout', 'fl-builder' ),
 						'default' => 'stacked',
 						'toggle'  => array(
 							'stacked' => array(
-								'fields' => array( 'remember', 'forget' ),
+								'fields' => array( 'remember', 'forget', 'remember_text', 'forget_position', 'forget_text' ),
 							),
 						),
 						'options' => array(
@@ -175,7 +175,7 @@ FLBuilder::register_module( 'FLLoginFormModule', array(
 							'inline'  => __( 'Inline', 'fl-builder' ),
 						),
 					),
-					'remember' => array(
+					'remember'        => array(
 						'type'    => 'select',
 						'label'   => __( 'Show Remember Login', 'fl-builder' ),
 						'default' => 'yes',
@@ -183,8 +183,18 @@ FLBuilder::register_module( 'FLLoginFormModule', array(
 							'yes' => __( 'Yes', 'fl-builder' ),
 							'no'  => __( 'No', 'fl-builder' ),
 						),
+						'toggle'  => array(
+							'yes' => array(
+								'fields' => array( 'remember_text' ),
+							),
+						),
 					),
-					'forget'   => array(
+					'remember_text'   => array(
+						'type'    => 'text',
+						'label'   => __( 'Remember Me Text', 'fl-builder' ),
+						'default' => __( 'Remember Me', 'fl-builder' ),
+					),
+					'forget'          => array(
 						'type'    => 'select',
 						'label'   => __( 'Show Forget Password Link', 'fl-builder' ),
 						'default' => 'yes',
@@ -192,6 +202,25 @@ FLBuilder::register_module( 'FLLoginFormModule', array(
 							'yes' => __( 'Yes', 'fl-builder' ),
 							'no'  => __( 'No', 'fl-builder' ),
 						),
+						'toggle'  => array(
+							'yes' => array(
+								'fields' => array( 'forget_position', 'forget_text' ),
+							),
+						),
+					),
+					'forget_position' => array(
+						'type'    => 'select',
+						'label'   => __( 'Forget Text Position', 'fl-builder' ),
+						'default' => 'default',
+						'options' => array(
+							'default' => __( 'Beside Remember Me', 'fl-builder' ),
+							'below'   => __( 'Below Login Button', 'fl-builder' ),
+						),
+					),
+					'forget_text'     => array(
+						'type'    => 'text',
+						'label'   => __( 'Forgotten Password Text', 'fl-builder' ),
+						'default' => __( 'Forgotten Password', 'fl-builder' ),
 					),
 				),
 			),
@@ -788,4 +817,4 @@ FLBuilder::register_module( 'FLLoginFormModule', array(
 			),
 		),
 	),
-));
+) );

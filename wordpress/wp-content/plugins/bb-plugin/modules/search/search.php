@@ -177,7 +177,6 @@ class FLSearchModule extends FLBuilderModule {
 				);
 			}
 		}
-
 	}
 
 	/**
@@ -211,7 +210,6 @@ class FLSearchModule extends FLBuilderModule {
 	}
 
 	public function get_object_taxonomies() {
-
 	}
 
 	public function get_post_types() {
@@ -280,7 +278,6 @@ class FLSearchModule extends FLBuilderModule {
 			FLBuilder::render_module_html( 'button', $this->get_button_settings() );
 		}
 	}
-
 }
 
 /**
@@ -320,8 +317,8 @@ FLBuilder::register_module('FLSearchModule', array(
 								'sections' => array( 'button_icon', 'form_style', 'button_style', 'button_icon_color' ),
 							),
 							// 'combine' => array(
-							// 	'fields'   => array( 'placeholder', 'btn_text' ),
-							// 	'sections' => array( 'form_style', 'button_style' ),
+							//  'fields'   => array( 'placeholder', 'btn_text' ),
+							//  'sections' => array( 'form_style', 'button_style' ),
 							// ),
 							'button'  => array(
 								'fields'   => array( 'placeholder', 'btn_action', 'btn_text', 'btn_align', 'btn_width' ),
