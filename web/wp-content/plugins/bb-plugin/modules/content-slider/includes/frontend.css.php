@@ -255,7 +255,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 				'settings'     => $slide,
 				'unit'         => 'px',
 				'setting_name' => 'btn_padding',
-				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button",
+				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button)",
 				'props'        => array(
 					'padding-top'    => 'btn_padding_top',
 					'padding-right'  => 'btn_padding_right',
@@ -265,7 +265,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			) );
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button)",
 				'enabled'  => ! empty( $slide->btn_bg_color ),
 				'props'    => array(
 					'background-color' => $slide->btn_bg_color,
@@ -273,7 +273,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			) );
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button:hover",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button):hover",
 				'enabled'  => ! empty( $slide->btn_bg_hover_color ),
 				'props'    => array(
 					'background-color' => $slide->btn_bg_hover_color,
@@ -281,7 +281,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			) );
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button span.fl-button-text",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button) span.fl-button-text",
 				'enabled'  => ! empty( $slide->btn_text_color ),
 				'props'    => array(
 					'color' => $slide->btn_text_color,
@@ -289,7 +289,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			) );
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button:hover span.fl-button-text",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button):hover span.fl-button-text",
 				'enabled'  => ! empty( $slide->btn_text_hover_color ),
 				'props'    => array(
 					'color' => $slide->btn_text_hover_color,
@@ -303,7 +303,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 				$auto_grad_bg_color_end   = FLBuilderColor::hex_or_rgb( $auto_grad_bg_color );
 				$auto_grad_border_color   = FLBuilderColor::hex_or_rgb( FLBuilderColor::adjust_brightness( $auto_grad_bg_color, 12, 'darken' ) );
 				FLBuilderCSS::rule( array(
-					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button, .fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button:hover",
+					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button), .fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button):hover",
 					'props'    => array(
 						'border'           => "1px solid $auto_grad_border_color",
 						'background-image' => "linear-gradient(to bottom, $auto_grad_bg_color_start 0%, $auto_grad_bg_color_end 100%)",
@@ -315,7 +315,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 				$auto_grad_bg_hover_color_end   = FLBuilderColor::hex_or_rgb( $auto_grad_bg_hover_color );
 				$auto_grad_border_hover_color   = FLBuilderColor::hex_or_rgb( FLBuilderColor::adjust_brightness( $auto_grad_bg_hover_color, 12, 'darken' ) );
 				FLBuilderCSS::rule( array(
-					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button:hover",
+					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button):hover",
 					'props'    => array(
 						'border'           => "1px solid $auto_grad_border_hover_color",
 						'background-image' => "linear-gradient(to bottom, $auto_grad_bg_hover_color_start 0%, $auto_grad_bg_hover_color_end 100%)",
@@ -330,7 +330,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			if ( 'adv-gradient' === $slide->btn_style ) :
 
 				$adv_grad_css_rule             = array();
-				$adv_grad_css_rule['selector'] = ".fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button, .fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button:hover";
+				$adv_grad_css_rule['selector'] = ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button), .fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button):hover";
 
 				if ( empty( $slide_btn_grad['colors'][0] ) && empty( $slide_btn_grad['colors'][1] ) ) {
 
@@ -355,7 +355,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 
 				// Advanced Background Gradient Hover
 				FLBuilderCSS::rule( array(
-					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button a.fl-button:hover",
+					'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button:is(a, button):hover",
 					'enabled'  => ! ( empty( $slide_btn_grad_hover['colors'][0] ) && empty( $slide_btn_grad_hover['colors'][1] ) ),
 					'props'    => array(
 						'background-image' => FLBuilderColor::gradient( $slide_btn_grad_hover ),
@@ -365,7 +365,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			endif;
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button)",
 				'enabled'  => ( isset( $slide->btn_button_transition ) && 'enable' === $slide->btn_button_transition && 'flat' === $slide->btn_style ),
 				'props'    => array(
 					'transition'         => 'all 0.2s linear',
@@ -384,25 +384,25 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 			FLBuilderCSS::typography_field_rule( array(
 				'settings'     => $slide,
 				'setting_name' => 'btn_typography',
-				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button",
+				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button)",
 			) );
 
 			FLBuilderCSS::border_field_rule( array(
 				'settings'     => $slide,
 				'setting_name' => 'btn_border',
-				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button, .fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button:hover",
+				'selector'     => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button), .fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button):hover",
 			) );
 
 			FLBuilderCSS::rule( array(
 				'enabled'  => ! empty( $slide->btn_border_hover_color ),
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button:hover",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button):hover",
 				'props'    => array(
 					'border-color' => $slide->btn_border_hover_color,
 				),
 			) );
 
 			FLBuilderCSS::rule( array(
-				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap a.fl-button i.fl-button-icon",
+				'selector' => ".fl-node-$id .fl-slide-$i .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button) i.fl-button-icon",
 				'enabled'  => ! empty( $slide->btn_text_color ),
 				'props'    => array(
 					'color' => $slide->btn_text_color,
@@ -411,7 +411,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 
 			if ( $slide->btn_duo_color1 && false !== strpos( $slide->btn_icon, 'fad fa' ) ) :
 				?>
-				.fl-node-<?php echo $id; ?> .fl-slide-<?php echo $i; ?> .fl-slide-cta-button .fl-button-wrap a.fl-button i.fl-button-icon.fad:before {
+				.fl-node-<?php echo $id; ?> .fl-slide-<?php echo $i; ?> .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button) i.fl-button-icon.fad:before {
 					color: <?php echo FLBuilderColor::hex_or_rgb( $slide->btn_duo_color1 ); ?>;
 				}
 				<?php
@@ -419,7 +419,7 @@ for ( $i = 0; $i < count( $settings->slides ); $i++ ) {
 
 			if ( $slide->btn_duo_color2 && false !== strpos( $slide->btn_icon, 'fad fa' ) ) :
 				?>
-				.fl-node-<?php echo $id; ?> .fl-slide-<?php echo $i; ?> .fl-slide-cta-button .fl-button-wrap a.fl-button i.fl-button-icon.fad:after {
+				.fl-node-<?php echo $id; ?> .fl-slide-<?php echo $i; ?> .fl-slide-cta-button .fl-button-wrap .fl-button:is(a, button) i.fl-button-icon.fad:after {
 					color: <?php echo FLBuilderColor::hex_or_rgb( $slide->btn_duo_color2 ); ?>;
 					opacity: 1;
 				}

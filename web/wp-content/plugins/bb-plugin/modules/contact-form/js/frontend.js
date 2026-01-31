@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 (function($) {
 
 	window.onLoadFLReCaptcha = function() {
@@ -28,7 +29,7 @@
 
 								// Re-submitting the form after a successful invisible validation.
 								if ( 'invisible' == self.data( 'validate' ) ) {
-									self.closest( '.fl-contact-form' ).find( 'a.fl-button' ).trigger( 'click' );
+									self.closest( '.fl-contact-form' ).find( '.fl-button:is(a, button)' ).trigger( 'click' );
 								}
 							}
 						}
@@ -55,14 +56,6 @@
 		_init: function()
 		{
 			$( this.nodeClass + ' .fl-button' ).click( $.proxy( this._submit, this ) );
-			$( this.nodeClass + ' .fl-button' ).on( 'keydown, keyup', $.proxy( this._keyupdown, this ) );
-		},
-
-		_keyupdown: function(e) {
-			if( e.keyCode === 13 || e.keyCode === 32 ) {
-				e.preventDefault();
-				this._submit(e);
-			}
 		},
 
 		_submit: function( e )
@@ -162,10 +155,12 @@
 			if ( termsCheckbox.length ) {
 				if ( ! termsCheckbox.is(':checked') ) {
 					isValid = false;
+					termsCheckbox.attr('aria-invalid', true);
 					termsCheckbox.closest('.fl-terms-checkbox').addClass('fl-error');
 				}
-				else if (termsCheckbox.parent().hasClass('fl-error')) {
-					termsCheckbox.parent().removeClass('fl-error');
+				else if (termsCheckbox.closest('.fl-input-group').hasClass('fl-error')) {
+					termsCheckbox.closest('.fl-input-group').removeClass('fl-error');
+					termsCheckbox.attr('aria-invalid', false);
 				}
 			}
 

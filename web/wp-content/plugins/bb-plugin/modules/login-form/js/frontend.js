@@ -1,12 +1,13 @@
+/* eslint-disable no-undef */
 (function ($) {
 
 	FLBuilderLoginForm = function (settings) {
 		this.settings = settings;
 		this.nodeClass = '.fl-node-' + settings.id;
 		this.loginform = $(this.nodeClass + ' .fl-login-form.login');
-		this.loginbutton = this.loginform.find('a.fl-button');
+		this.loginbutton = this.loginform.find('.fl-button:is(a, button)');
 		this.logoutform = $(this.nodeClass + ' .fl-login-form.logout');
-		this.logoutbutton = this.logoutform.find('a.fl-button');
+		this.logoutbutton = this.logoutform.find('.fl-button:is(a, button)');
 		this._init();
 	};
 
@@ -19,7 +20,9 @@
 		_init: function () {
 			this.loginbutton.on('click', $.proxy(this._loginForm, this));
 			this.logoutbutton.on('click', $.proxy(this._logoutForm, this));
-			this.loginform.find('input[type="password"]').on('keypress', $.proxy(this._onEnterKey, this));
+			if (this.loginform.prop('tagName') === 'DIV') {
+				this.loginform.find('input:not([type="checkbox"])').on('keydown', $.proxy(this._onEnterKey, this));
+			}
 		},
 
 		_loginForm: function (e) {
@@ -46,11 +49,13 @@
 
 			if (name.length > 0 && name.val() == '') {
 				name.addClass('fl-form-error');
+				name.attr('aria-invalid', 'true');
 				name.siblings('.fl-form-error-message').show();
 				valid = false;
 			}
 			if ('' == password.val()) {
 				password.addClass('fl-form-error');
+				password.attr('aria-invalid', 'true');
 				password.siblings('.fl-form-error-message').show();
 				valid = false;
 			}
@@ -80,24 +85,21 @@
 		},
 
 		_logoutForm: function (e) {
-			var submitButton = $(e.currentTarget),
-				nonce = this.logoutform.find('input#fl-login-form-nonce').val();
-
 			e.preventDefault();
 
 			ajaxData = {
 				action: 'fl_builder_logout_form_submit',
-				nonce: nonce
+				nonce: this.logoutform.find('input#fl-login-form-nonce').val()
 			};
 
-			$.post(FLBuilderLayoutConfig.paths.wpAjaxUrl, ajaxData, $.proxy(function (response) {
-				this._logoutFormComplete(response, submitButton);
+			$.post(FLBuilderLayoutConfig.paths.wpAjaxUrl, ajaxData, $.proxy(function () {
+				this._logoutFormComplete();
 			}, this));
 		},
 
-		_logoutFormComplete: function (response, button) {
+		_logoutFormComplete: function () {
 
-			if ( this.settings.lo_url.length > 0 ) {
+			if (this.settings.lo_url.length > 0) {
 				window.location.href = this.settings.lo_url;
 			} else {
 				location.reload()
@@ -127,7 +129,7 @@
 		_onEnterKey: function (e) {
 			if (e.which == 13) {
 				var currentForm = $(e.currentTarget).closest('.fl-login-form');
-				currentForm.find('a.fl-button').trigger('click');
+				currentForm.find('.fl-button:is(a, button)').trigger('click');
 			}
 		}
 	}

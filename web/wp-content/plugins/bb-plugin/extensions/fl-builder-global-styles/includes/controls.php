@@ -29,6 +29,57 @@ FLBuilder::register_settings_form('styles', array(
 					'title'     => __( 'Heading', 'fl-builder' ),
 					'collapsed' => true,
 					'fields'    => array(
+						'h_groups'      => array(
+							'type'        => 'button-group',
+							'options'     => array(
+								'all' => __( 'All', 'fl-builder' ),
+								'h1'  => __( 'H1', 'fl-builder' ),
+								'h2'  => __( 'H2', 'fl-builder' ),
+								'h3'  => __( 'H3', 'fl-builder' ),
+								'h4'  => __( 'H4', 'fl-builder' ),
+								'h5'  => __( 'H5', 'fl-builder' ),
+								'h6'  => __( 'H6', 'fl-builder' ),
+							),
+							'default'     => 'all',
+							'fill_space'  => true,
+							'allow_empty' => false,
+							'toggle'      => array(
+								'all' => array(
+									'fields' => array( 'h_color', 'h_typography' ),
+								),
+								'h1'  => array(
+									'fields' => array( 'h1_color', 'h1_typography' ),
+								),
+								'h2'  => array(
+									'fields' => array( 'h2_color', 'h2_typography' ),
+								),
+								'h3'  => array(
+									'fields' => array( 'h3_color', 'h3_typography' ),
+								),
+								'h4'  => array(
+									'fields' => array( 'h4_color', 'h4_typography' ),
+								),
+								'h5'  => array(
+									'fields' => array( 'h5_color', 'h5_typography' ),
+								),
+								'h6'  => array(
+									'fields' => array( 'h6_color', 'h6_typography' ),
+								),
+							),
+						),
+						'h_color'       => array(
+							'type'        => 'color',
+							'label'       => __( 'Color', 'fl-builder' ),
+							'show_reset'  => true,
+							'show_alpha'  => true,
+							'default'     => '',
+							'connections' => array( 'color' ),
+						),
+						'h_typography'  => array(
+							'type'       => 'typography',
+							'label'      => __( 'Typography', 'fl-builder' ),
+							'responsive' => true,
+						),
 						'h1_color'      => array(
 							'type'        => 'color',
 							'label'       => __( 'H1 Color', 'fl-builder' ),

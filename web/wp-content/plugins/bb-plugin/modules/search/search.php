@@ -129,6 +129,23 @@ class FLSearchModule extends FLBuilderModule {
 	}
 
 	/**
+	 *  Returns the relevant deprecated version of the photo module if the search module is deprecated.
+	 *  It returns null (current version) if the search module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_photo_version
+	 * @return int|null
+	 */
+	public function get_photo_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return null;
+		}
+	}
+
+	/**
 	 * Render thumbnail for a post.
 	 *
 	 * Gets the post ID and renders the html markup for the featured image
@@ -165,7 +182,7 @@ class FLSearchModule extends FLBuilderModule {
 
 			if ( has_post_thumbnail() ) {
 				// Render image
-				FLBuilder::render_module_html( 'photo', $photo_settings );
+				FLBuilder::render_module_html( 'photo', $photo_settings, $this->get_photo_version() );
 
 			} elseif ( ! empty( $this->settings->image_fallback ) ) {
 				// Render fallback
@@ -255,9 +272,8 @@ class FLSearchModule extends FLBuilderModule {
 	 */
 	public function get_button_settings() {
 		$settings = array(
-			'link'        => '#',
-			'link_target' => '_self',
-			'width'       => 'auto',
+			'width'        => 'auto',
+			'click_action' => 'button',
 		);
 
 		foreach ( $this->settings as $key => $value ) {
@@ -267,7 +283,28 @@ class FLSearchModule extends FLBuilderModule {
 			}
 		}
 
+		if ( empty( $settings['btn_text'] ) ) {
+			$settings['label_text'] = __( 'Search', 'fl-builder' );
+		}
+
 		return $settings;
+	}
+
+	/**
+	 * Returns the relevant deprecated version of the button module if the search module is deprecated.
+	 * It returns null (current version) if the search module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_button_version
+	 * @return integer|null
+	 */
+	public function get_button_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return 2;  // Temporary lock on this version only until further changes are ready for the next version
+		}
 	}
 
 	/**
@@ -275,7 +312,7 @@ class FLSearchModule extends FLBuilderModule {
 	 */
 	public function render_button() {
 		if ( 'input' != $this->settings->layout ) {
-			FLBuilder::render_module_html( 'button', $this->get_button_settings() );
+			FLBuilder::render_module_html( 'button', $this->get_button_settings(), $this->get_button_version() );
 		}
 	}
 }
@@ -706,7 +743,7 @@ FLBuilder::register_module('FLSearchModule', array(
 						),
 						'preview' => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '.fl-button:is(a, button)',
 							'property' => 'width',
 						),
 					),
@@ -718,7 +755,7 @@ FLBuilder::register_module('FLSearchModule', array(
 						'units'      => array( 'px' ),
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button, .fl-form-field input[type=search]',
+							'selector' => '.fl-button:is(a, button), .fl-form-field input[type=search]',
 							'property' => 'padding',
 						),
 					),
@@ -731,7 +768,7 @@ FLBuilder::register_module('FLSearchModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button, a.fl-button *',
+							'selector'  => '.fl-button:is(a, button), .fl-button:is(a, button) *',
 							'property'  => 'color',
 							'important' => true,
 						),
@@ -753,7 +790,7 @@ FLBuilder::register_module('FLSearchModule', array(
 						'responsive' => true,
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '.fl-button:is(a, button)',
 							// 'important' => true,
 						),
 					),
@@ -794,7 +831,7 @@ FLBuilder::register_module('FLSearchModule', array(
 						'responsive' => true,
 						'preview'    => array(
 							'type'      => 'css',
-							'selector'  => '{node}.fl-module-search a.fl-button',
+							'selector'  => '{node}.fl-module-search .fl-button:is(a, button)',
 							'important' => true,
 						),
 					),
@@ -1032,3 +1069,8 @@ FLBuilder::register_module('FLSearchModule', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'search', [
+	// Register module version (v1) to deprecate the old rendered photo module HTML markup.
+	'v1' => [],
+] );

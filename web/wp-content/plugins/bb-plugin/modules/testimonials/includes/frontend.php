@@ -13,7 +13,11 @@ if ( '' == $settings->heading && 'compact' == $settings->layout ) {
 		<h3 class="fl-testimonials-heading"><?php echo $settings->heading; ?></h3>
 	<?php endif; ?>
 
-	<div class="fl-testimonials">
+	<?php if ( ( 'compact' == $settings->layout && $settings->arrows ) || ( 'wide' == $settings->layout && $settings->dots ) ) : ?>
+		<div class="fl-slider-prev"></div>
+		<div class="fl-slider-next"></div>
+	<?php endif; ?>
+	<<?php echo $module->get_tag( 'fl-testimonials' ); ?>>
 		<?php
 
 		for ( $i = 0; $i < count( $settings->testimonials ); $i++ ) :
@@ -23,16 +27,10 @@ if ( '' == $settings->heading && 'compact' == $settings->layout ) {
 			}
 
 			$testimonials = $settings->testimonials[ $i ];
+			echo $module->render_item( $testimonials->testimonial );
 
 			?>
-		<div class="fl-testimonial">
-			<?php echo $testimonials->testimonial; ?>
-		</div>
 		<?php endfor; ?>
-	</div>
-	<?php if ( ( 'compact' == $settings->layout && $settings->arrows ) || ( 'wide' == $settings->layout && $settings->dots ) ) : ?>
-	<div class="fl-slider-prev" role="button" aria-pressed="false" aria-label="<?php echo esc_attr( __( 'Previous', 'fl-builder' ) ); ?>"></div>
-	<div class="fl-slider-next" role="button" aria-pressed="false" aria-label="<?php echo esc_attr( __( 'Next', 'fl-builder' ) ); ?>"></div>
-	<?php endif; ?>
+	</<?php echo $module->get_tag(); ?>>
 </div>
 <?php

@@ -25,12 +25,14 @@
 		}
 
 		var slider = $('.fl-node-<?php echo $id; ?> .fl-content-slider-wrapper').delay(1000).bxSlider({
+			fallbackHTML: <?php echo ( 1 === $module->version ) ? 'true' : 'false'; ?>,
 			adaptiveHeight: true,
 			ariaLive: false,
 			startSlide: sliderIndex ? sliderIndex : 0,
 			auto: autoPlay && false === sliderIndex ? true : false,
 			autoHover: <?php echo ( $settings->auto_hover ) ? 'true' : 'false'; ?>,
 			autoControls: <?php echo ( $settings->play_pause ) ? 'true' : 'false'; ?>,
+			autoControlsCombine: <?php echo ( $settings->play_pause ) ? 'true' : 'false'; ?>,
 			pause: <?php echo esc_js( $settings->delay * 1000 ); ?>,
 			mode: '<?php echo esc_js( $settings->transition ); ?>',
 			speed: <?php echo esc_js( $settings->speed * 1000 ); ?>,
@@ -58,14 +60,6 @@
 				/* if slide 0 contains a video and it is set to auto play, then play */
 				$('.fl-slide-0:not(.bx-clone) video[autoplay]').trigger('play');
 			},
-			onSlideBefore: function(ele, oldIndex, newIndex) {
-				this.stopAuto( true );
-				$('.fl-node-<?php echo $id; ?> .fl-content-slider-navigation a').addClass('disabled');
-				$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').addClass('disabled');
-				<?php if ( $settings->auto_play ) : ?>
-				this.startAuto( true );
-				<?php endif; ?>
-			},
 			onSlideAfter: function( ele, oldIndex, newIndex ) {
 				var prevSlide = $( '.fl-node-<?php echo $id; ?> .fl-slide-' + oldIndex + ':not(.bx-clone)'),
 					newSlide  = $( '.fl-node-<?php echo $id; ?> .fl-slide-' + newIndex + ':not(.bx-clone)');
@@ -85,15 +79,15 @@
 					});
 				}
 
-				$('.fl-node-<?php echo $id; ?> .fl-content-slider-navigation a').removeClass('disabled');
-				$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').removeClass('disabled');
-
 				/* Pause and play videos if autoplay */
 				if ( prevSlide.find( 'video').length ) {
 					prevSlide.find( 'video').trigger( 'pause' );
 				}
 
 				$( '.fl-node-<?php echo $id; ?> .fl-slide-' + newIndex + ':not(.bx-clone)').find('video[autoplay]').trigger('play')
+			},
+			buildPager: function( currentIndex ) {
+				return JSON.parse( '<?php echo stripslashes( json_encode( $module->get_slides_labels() ) ); ?>' )[ currentIndex ];
 			}
 		});
 
@@ -104,20 +98,12 @@
 
 			$('.fl-node-<?php echo $id; ?> .slider-prev').on( 'click', function( e ){
 				e.preventDefault();
-				slider.stopAuto( true );
 				slider.goToPrevSlide();
-				<?php if ( $settings->auto_play ) : ?>
-				slider.startAuto( true );
-				<?php endif; ?>
 			} );
 
 			$('.fl-node-<?php echo $id; ?> .slider-next').on( 'click', function( e ){
 				e.preventDefault();
-				slider.stopAuto( true );
 				slider.goToNextSlide();
-				<?php if ( $settings->auto_play ) : ?>
-				slider.startAuto( true );
-				<?php endif; ?>
 			} );
 
 		<?php endif; ?>

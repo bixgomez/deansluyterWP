@@ -21,11 +21,18 @@
 		<?php endif; ?>
 			slideWidth: <?php echo $slide_width; ?>,
 			settings: {
+			<?php if ( 1 == $module->version ) : ?>
+				fallbackHTML: true,
+			<?php endif; ?>
 			<?php if ( isset( $settings->transition ) ) : ?>
 				mode: 'horizontal',
 			<?php endif; ?>
 			<?php if ( isset( $settings->pagination ) && 'no' == $settings->pagination ) : ?>
 				pager: false,
+			<?php endif; ?>
+			<?php if ( isset( $settings->play_pause ) && 'yes' == $settings->play_pause ) : ?>
+				autoControls: true,
+				autoControlsCombine: true,
 			<?php endif; ?>
 			<?php if ( isset( $settings->auto_play ) ) : ?>
 				auto: <?php echo esc_js( $settings->auto_play ); ?>,
@@ -50,14 +57,6 @@
 				<?php else : ?>
 				moveSlides: 1,
 				<?php endif; ?>
-				onSlideBefore: function(ele, oldIndex, newIndex) {
-					$('.fl-node-<?php echo $id; ?> .fl-post-carousel-navigation a').addClass('disabled');
-					$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').addClass('disabled');
-				},
-				onSlideAfter: function( ele, oldIndex, newIndex ) {
-					$('.fl-node-<?php echo $id; ?> .fl-post-carousel-navigation a').removeClass('disabled');
-					$('.fl-node-<?php echo $id; ?> .bx-controls .bx-pager-link').removeClass('disabled');
-				}
 			}
 		});
 

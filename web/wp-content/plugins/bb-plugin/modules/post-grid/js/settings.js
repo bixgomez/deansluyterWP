@@ -56,6 +56,7 @@
 			this._toggleWooCommerceSection();
 			this._featuredImageDependencyChanged();
 			this._equalHeightImageDependency();
+			this._changePostContainer();
 		},
 
 		/**
@@ -64,6 +65,7 @@
 		 */
 		_layoutChanged: function() {
 			this._showContentChanged();
+			this._changePostContainer();
 			this._featuredImageDependencyChanged();
 		},
 
@@ -219,6 +221,29 @@
 		},
 
 		/**
+		 * Update posts container element options list choices based on layout.
+		 * @since 2.10
+		 */
+		_changePostContainer: function () {
+			const postsLayout = $( '.fl-builder-settings select[name=layout]' );
+			const postsContainer = $( '.fl-builder-settings select[name=posts_container]' );
+			if ( postsLayout.val() === 'columns' ) {
+				postsContainer.find( 'option[value="li"]' ).text( '<li>(wrapped in divs)' );
+				postsContainer.find( 'option[value="ul"]' ).show();
+				if ( 'li' === postsContainer.val() ) {
+					postsContainer.val( 'ul' );
+				}
+			}
+			else {
+				postsContainer.find( 'option[value="li"]' ).text( '<li>' );
+				postsContainer.find( 'option[value="ul"]' ).hide();
+				if ( 'ul' === postsContainer.val() ) {
+					postsContainer.val( 'li' );
+				}
+			}
+		},
+
+		/**
 		 * Decide what to do with the Content Type and the Content Length fields
 		 * depending on the layout.
 		 * @since 2.4.2
@@ -292,7 +317,7 @@
 
 		_previewButtonBackground: function( e ) {
 			var preview	= FLBuilder.preview,
-				selector = preview.classes.node + ' a.fl-button, ' + preview.classes.node + ' a.fl-button:visited',
+				selector = preview.classes.node + ' .fl-button:is(a, button), ' + preview.classes.node + ' a.fl-button:visited',
 				form = $( '.fl-builder-settings:visible' ),
 				style = form.find( 'select[name=more_btn_style]' ).val(),
 				bgColor = form.find( 'input[name=more_btn_bg_color]' ).val();

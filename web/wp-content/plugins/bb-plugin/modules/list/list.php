@@ -312,6 +312,46 @@ FLBuilder::register_module(
 						),
 					),
 				),
+				'list_items_section'     => array(
+					'title'  => __( 'List Items', 'fl-builder' ),
+					'fields' => array(
+						'list_layout' => array(
+							'type'    => 'select',
+							'label'   => __( 'Layout', 'fl-builder' ),
+							'options' => array(
+								'advanced' => __( 'Advanced', 'fl-builder' ),
+								'basic'    => __( 'Basic', 'fl-builder' ),
+							),
+							'default' => 'advanced',
+							'toggle'  => array(
+								'advanced' => array(
+									'fields'   => array( 'list_items', 'heading_tag' ),
+									'sections' => array( 'heading_style_section' ),
+								),
+								'basic'    => array(
+									'fields' => array( 'item_data' ),
+								),
+							),
+						),
+						'list_items'  => array(
+							'type'         => 'form',
+							'label'        => __( 'List Item', 'fl-builder' ),
+							'form'         => 'list_item_form', // ID from registered form below
+							'preview_text' => 'label', // Name of a field to use for the preview text
+							'multiple'     => true,
+						),
+						'item_data'   => array(
+							'type'        => 'textarea',
+							'rows'        => '10',
+							'label'       => __( 'Text For List', 'fl-builder' ),
+							'connections' => array( 'custom_field' ),
+							'preview'     => array(
+								'type' => 'none',
+							),
+							'help'        => __( 'Enter each list item on new line.', 'fl-builder' ),
+						),
+					),
+				),
 			),
 		),
 		'style'   => array( // Tab

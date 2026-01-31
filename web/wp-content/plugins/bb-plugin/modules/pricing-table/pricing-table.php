@@ -221,6 +221,18 @@ class FLPricingTableModule extends FLBuilderModule {
 	}
 
 	/**
+	 * Returns the relevant deprecated version of the button module if the pricing table module is deprecated.
+	 * It returns null (current version) if the pricing table module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_button_version
+	 * @return integer|null
+	 */
+	public function get_button_version() {
+		return null;  // Temporary lock on current version only until further changes are ready for the next version
+	}
+
+	/**
 	 * Render the CTA button.
 	 *
 	 * @method render_button
@@ -228,7 +240,7 @@ class FLPricingTableModule extends FLBuilderModule {
 	public function render_button( $column ) {
 		$pricing_column = $this->settings->pricing_columns[ $column ];
 
-		FLBuilder::render_module_html( 'button', $this->get_button_settings( $pricing_column ) );
+		FLBuilder::render_module_html( 'button', $this->get_button_settings( $pricing_column ), $this->get_button_version() );
 	}
 
 	/**
@@ -1033,7 +1045,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'units'      => array( 'px' ),
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => 'a.fl-button',
+								'selector' => '.fl-button:is(a, button)',
 								'property' => 'padding',
 							),
 						),
@@ -1052,7 +1064,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'show_alpha'  => true,
 							'preview'     => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button, a.fl-button *',
+								'selector'  => '.fl-button:is(a, button), .fl-button:is(a, button) *',
 								'property'  => 'color',
 								'important' => true,
 							),
@@ -1066,7 +1078,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'show_alpha'  => true,
 							'preview'     => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button:hover, a.fl-button:hover *, a.fl-button:focus, a.fl-button:focus *',
+								'selector'  => '.fl-button:is(a, button):hover, .fl-button:is(a, button):hover *, .fl-button:is(a, button):focus, .fl-button:is(a, button):focus *',
 								'property'  => 'color',
 								'important' => true,
 							),
@@ -1077,7 +1089,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'responsive' => true,
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => 'a.fl-button',
+								'selector' => '.fl-button:is(a, button)',
 							),
 						),
 					),
@@ -1141,7 +1153,7 @@ FLBuilder::register_settings_form('pricing_column_form', array(
 							'responsive' => true,
 							'preview'    => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button',
+								'selector'  => '.fl-button:is(a, button)',
 								'important' => true,
 							),
 						),

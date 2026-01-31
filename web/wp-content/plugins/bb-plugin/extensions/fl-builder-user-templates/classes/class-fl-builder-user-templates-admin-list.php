@@ -26,6 +26,7 @@ final class FLBuilderUserTemplatesAdminList {
 		add_filter( 'manage_fl-builder-template_posts_columns', __CLASS__ . '::add_column_headings' );
 		add_filter( 'post_row_actions', __CLASS__ . '::row_actions' );
 		add_action( 'restrict_manage_posts', __CLASS__ . '::restrict_listings' );
+		add_filter( 'manage_edit-fl-builder-template_sortable_columns', __CLASS__ . '::add_sortable_columns' );
 	}
 
 	/**
@@ -45,9 +46,10 @@ final class FLBuilderUserTemplatesAdminList {
 
 		if ( 'edit.php' == $pagenow && 'fl-builder-template' == $screen->post_type ) {
 
+			wp_enqueue_style( 'fl-builder-css' );
 			wp_enqueue_style( $slug . 'list', $url . 'css/' . $slug . 'list.css', array(), $version );
 			wp_enqueue_script( $slug . 'list', $url . 'js/' . $slug . 'list.js', array(), $version );
-			wp_enqueue_script( 'clipboard', $js_url . 'clipboard.min.js', array(), $version );
+			wp_enqueue_script( 'clipboard', $js_url . 'libs/clipboard.min.js', array(), $version );
 
 			wp_localize_script( $slug . 'list', 'FLBuilderConfig', array(
 				'userTemplateType' => isset( $_GET['fl-builder-template-type'] ) ? sanitize_key( $_GET['fl-builder-template-type'] ) : 'layout',
@@ -162,11 +164,25 @@ final class FLBuilderUserTemplatesAdminList {
 		if ( ! isset( $_GET['fl-builder-template-type'] ) ) {
 			return;
 		}
+
 		if ( in_array( $_GET['fl-builder-template-type'], array( 'row', 'column', 'module' ) ) ) {
-			$columns['fl_global']  = __( 'Global', 'fl-builder' );
-			$columns['code']       = __( 'ShortCode', 'fl-builder' );
-			$columns['screenshot'] = __( 'Screenshot', 'fl-builder' );
-			$columns['notes']      = __( 'Notes', 'fl-builder' );
+			$columns['fl-builder-template-title'] = __( 'Title', 'fl-builder' );
+			unset( $columns['title'] );
+
+			$columns['taxonomy-fl-builder-template-category'] = __( 'Categories', 'fl-builder' );
+			$columns['code']                                  = __( 'ShortCode', 'fl-builder' );
+			$columns['screenshot']                            = __( 'Screenshot', 'fl-builder' );
+			$columns['notes']                                 = __( 'Notes', 'fl-builder' );
+
+			return [
+				'cb'                        => $columns['cb'],
+				'fl-builder-template-title' => $columns['fl-builder-template-title'],
+				'category'                  => $columns['taxonomy-fl-builder-template-category'],
+				'code'                      => $columns['code'],
+				'screenshot'                => $columns['screenshot'],
+				'notes'                     => $columns['notes'],
+			];
+
 		}
 
 		if ( 'layout' === $_GET['fl-builder-template-type'] ) {
@@ -193,25 +209,49 @@ final class FLBuilderUserTemplatesAdminList {
 	 */
 	static public function add_column_content( $column, $post_id ) {
 		global $post;
-		if ( 'code' === $column ) {
-			$shortcode = sprintf( '[fl_builder_insert_layout id=%s]', $post_id );
-			printf( '<pre class="shortcode" data-clipboard-text="%s">%s</pre>', $shortcode, $shortcode );
-			return;
-		}
-		if ( 'notes' === $column ) {
-			echo $post->post_excerpt;
-		}
-		if ( 'screenshot' === $column ) {
-			echo get_the_post_thumbnail( $post_id, 'thumbnail', array( 'class' => 'center' ) );
-		}
-		if ( 'fl_global' != $column ) {
-			return;
-		}
 
-		if ( FLBuilderModel::is_post_global_node_template( $post_id ) ) {
-			echo '<i class="dashicons dashicons-yes"></i>';
-		} else {
-			echo '&#8212;';
+		switch ( $column ) {
+			case 'fl-builder-template-title':
+				$badge      = '';
+				$post_title = get_the_title( $post_id );
+				$link       = get_the_permalink( $post_id );
+				$title_attr = the_title_attribute( [
+					'echo' => false,
+					'post' => get_post( $post_id ),
+				] );
+				$aria_label = $post_title . ' ( ' . __( 'Edit', 'fl-builder' ) . ')';
+
+				if ( FLBuilderModel::is_post_global_node_template( $post_id ) ) {
+					$badgelabel = __( 'Global', 'fl-builder' );
+					$badgeclass = 'fl-global-template-message-label';
+					$badge      = '<span class="' . $badgeclass . '">' . $badgelabel . '</span>';
+
+					if ( FLBuilderModel::is_post_dynamic_editing_node_template( $post->ID ) ) {
+						$badgelabel = __( 'Component', 'fl-builder' );
+						$badgeclass = 'fl-dynamic-template-message-label';
+						$badge      = '<span class="' . $badgeclass . '">' . $badgelabel . '</span>';
+					}
+				}
+
+				printf( '<strong><a href="%s" class="row-title" title="%s" aria-label="%s">%s</a>%s</strong>',
+					$link,
+					$title_attr,
+					$aria_label,
+					$post_title,
+					$badge
+				);
+
+				break;
+			case 'code':
+				$shortcode = sprintf( '[fl_builder_insert_layout id=%s]', $post_id );
+				printf( '<pre class="shortcode" data-clipboard-text="%s">%s</pre>', $shortcode, $shortcode );
+				break;
+			case 'notes':
+				echo $post->post_excerpt;
+				break;
+			case 'screenshot':
+				echo get_the_post_thumbnail( $post_id, 'thumbnail', array( 'class' => 'center' ) );
+				break;
 		}
 	}
 
@@ -255,6 +295,20 @@ final class FLBuilderUserTemplatesAdminList {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Make Title column sortable for Module, Column and Row Templates
+	 *
+	 * @since 2.10
+	 */
+	static public function add_sortable_columns( $columns ) {
+
+		if ( isset( $_GET['fl-builder-template-type'] ) && in_array( $_GET['fl-builder-template-type'], [ 'row', 'column', 'module' ] ) ) {
+			$columns['fl-builder-template-title'] = 'fl-builder-template-title';
+		}
+
+		return $columns;
 	}
 }
 

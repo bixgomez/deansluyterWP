@@ -12,7 +12,7 @@
 				<a class="fl-builder-node-template-edit" href="{{data.link}}" target="_blank">
 					<i class="fas fa-wrench"></i>
 				</a>
-				<a class="fl-builder-node-template-delete" href="javascript:void(0);">
+				<a class="fl-builder-node-template-delete" href="javascript:void(0);">globals
 					<i class="fas fa-times"></i>
 				</a>
 			</span>
@@ -25,6 +25,12 @@
 <script type="text/html" id="tmpl-fl-content-panel-saved-view">
 	<div class="fl-builder-panel-saved-search">
 		<input name="saved-search-term" class="saved-search-term" placeholder="<?php _e( 'Search Saved Items...', 'fl-builder' ); ?>">
+		<select name="saved-search-type" class="saved-search-type">
+			<option value="all"><?php _e( 'All', 'fl-builder' ); ?></option>
+			<option value="dynamic"><?php _e( 'Components', 'fl-builder' ); ?></option>
+			<option value="global"><?php _e( 'Globals', 'fl-builder' ); ?></option>
+			<option value="template"><?php _e( 'Templates', 'fl-builder' ); ?></option>
+		</select>
 	</div>
 
 	<div class="fl-content-panel-saved-view-content">
@@ -41,10 +47,15 @@
 		});
 		#>
 		<?php if ( ! FLBuilderModel::is_post_user_template( 'row' ) && ! FLBuilderModel::is_post_user_template( 'column' ) && ! FLBuilderModel::is_post_user_template( 'module' ) ) : ?>
-		<div id="fl-builder-blocks-saved-rows" class="fl-builder-blocks-section fl-builder-blocks-node-template">
+		<div id="fl-builder-blocks-saved-rows" class="fl-builder-blocks-section fl-builder-blocks-node-template" data-collapsible="1">
 
 			<div class="fl-builder-blocks-section-header">
-				<span class="fl-builder-blocks-section-title"><?php _e( 'Saved Rows', 'fl-builder' ); ?></span>
+				<span class="fl-builder-blocks-section-title">
+					<svg width="20" height="20">
+						<use href="#fl-builder-forms-down-caret" />
+					</svg>
+					<?php _e( 'Saved Rows', 'fl-builder' ); ?>
+				</span>
 			</div>
 			<div class="fl-builder-blocks-section-content fl-builder-saved-rows">
 			<# if (rows.length === 0) { #>
@@ -56,12 +67,13 @@
 					hasImage = image && !image.endsWith('blank.jpg'),
 					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 					var globalClass = row.isGlobal ? ' fl-builder-block-global' : '';
+					var dynamicClass = row.isDynamicEditing ? ' fl-builder-block-dynamic' : '';
 					catClasses = '';
 					for (key in row.category) {
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 				#>
-				<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
+				<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
 					<span class="fl-builder-block-content">
 						<# if ( hasImage ) { #>
 						<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -69,8 +81,12 @@
 						<div class="fl-builder-block-details">
 							<div class="fl-builder-block-title" title="{{row.name}}">{{row.name}}</div>
 							<# if (row.isGlobal) { #>
-							<div class="fl-builder-badge fl-builder-badge-global">
-								<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<div class="fl-builder-badge fl-builder-badge-global<# if ( row.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+								<# if ( row.isDynamicEditing ) { #> 
+									<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+								<# } else { #>
+									<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+								<# } #>
 							</div>
 							<# } #>
 							<span class="fl-builder-node-template-actions">
@@ -90,10 +106,15 @@
 		</div>
 		<?php endif; ?>
 		<?php if ( ! FLBuilderModel::is_post_user_template( 'column' ) && ! FLBuilderModel::is_post_user_template( 'module' ) ) : ?>
-		<div id="fl-builder-blocks-saved-columns" class="fl-builder-blocks-section fl-builder-blocks-node-template">
+		<div id="fl-builder-blocks-saved-columns" class="fl-builder-blocks-section fl-builder-blocks-node-template" data-collapsible="1">
 
 			<div class="fl-builder-blocks-section-header">
-				<span class="fl-builder-blocks-section-title"><?php _e( 'Saved Columns', 'fl-builder' ); ?></span>
+				<span class="fl-builder-blocks-section-title">
+					<svg width="20" height="20">
+						<use href="#fl-builder-forms-down-caret" />
+					</svg>
+					<?php _e( 'Saved Columns', 'fl-builder' ); ?>
+				</span>
 			</div>
 			<div class="fl-builder-blocks-section-content fl-builder-saved-columns">
 				<# if (columns.length === 0) { #>
@@ -105,12 +126,13 @@
 						hasImage = image && !image.endsWith('blank.jpg'),
 						hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 						var globalClass = column.isGlobal ? ' fl-builder-block-global' : '';
+						var dynamicClass = column.isDynamicEditing ? ' fl-builder-block-dynamic' : '';
 						catClasses = '';
 						for (key in column.category) {
 							catClasses += ' fl-builder-template-category-' + key;
 						}
 					#>
-					<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
+					<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
 						<span class="fl-builder-block-content">
 							<# if ( hasImage ) { #>
 							<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -118,8 +140,12 @@
 							<div class="fl-builder-block-details">
 								<div class="fl-builder-block-title" title="{{column.name}}">{{column.name}}</div>
 								<# if (column.isGlobal) { #>
-								<div class="fl-builder-badge fl-builder-badge-global">
-									<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+								<div class="fl-builder-badge fl-builder-badge-global<# if ( column.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+									<# if ( column.isDynamicEditing ) { #> 
+										<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+									<# } else { #>
+										<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+									<# } #>
 								</div>
 								<# } #>
 								<span class="fl-builder-node-template-actions">
@@ -138,10 +164,15 @@
 			</div>
 		</div>
 		<?php endif; ?>
-		<div id="fl-builder-blocks-saved-modules" class="fl-builder-blocks-section fl-builder-blocks-node-template">
+		<div id="fl-builder-blocks-saved-modules" class="fl-builder-blocks-section fl-builder-blocks-node-template" data-collapsible="1">
 
 			<div class="fl-builder-blocks-section-header">
-				<span class="fl-builder-blocks-section-title"><?php _e( 'Saved Modules', 'fl-builder' ); ?></span>
+				<span class="fl-builder-blocks-section-title">
+					<svg width="20" height="20">
+						<use href="#fl-builder-forms-down-caret" />
+					</svg>
+					<?php _e( 'Saved Modules', 'fl-builder' ); ?>
+				</span>
 			</div>
 			<div class="fl-builder-blocks-section-content fl-builder-saved-modules">
 			<# if (modules.length === 0) { #>
@@ -153,12 +184,13 @@
 					hasImage = image && !image.endsWith('blank.jpg'),
 					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '' ;
 					var globalClass = module.isGlobal ? ' fl-builder-block-global' : '';
+					var dynamicClass = module.isDynamicEditing ? ' fl-builder-block-dynamic' : '';
 					catClasses = '';
 					for (key in module.category) {
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 				#>
-				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
+				<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 					<span class="fl-builder-block-content">
 						<# if ( hasImage ) { #>
 						<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -166,8 +198,12 @@
 						<div class="fl-builder-block-details">
 							<div class="fl-builder-block-title" title="{{module.name}}">{{module.name}}</div>
 							<# if (module.isGlobal) { #>
-							<div class="fl-builder-badge fl-builder-badge-global">
-								<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<div class="fl-builder-badge fl-builder-badge-global<# if ( module.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+								<# if ( module.isDynamicEditing ) { #> 
+									<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+								<# } else { #>
+									<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+								<# } #>
 							</div>
 							<# } #>
 							<span class="fl-builder-node-template-actions">
@@ -202,6 +238,7 @@
 				var module = modules[i],
 					image = module.image,
 					globalClass = module.isGlobal ? ' fl-builder-block-global' : '',
+					dynamicClass = module.isDynamicEditing ? ' fl-builder-block-dynamic' : '',
 					image = module.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
 					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
@@ -210,7 +247,7 @@
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-module{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{module.id}}">
 				<span class="fl-builder-block-content">
 					<# if (hasImage) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -218,8 +255,12 @@
 					<div class="fl-builder-block-details">
 						<div class="fl-builder-block-title" title="{{module.name}}">{{module.name}}</div>
 						<# if (module.isGlobal) { #>
-						<div class="fl-builder-badge fl-builder-badge-global">
-							<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+						<div class="fl-builder-badge fl-builder-badge-global<# if ( module.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+							<# if ( module.isDynamicEditing ) { #> 
+								<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } else { #>
+								<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } #>
 						</div>
 						<# } #>
 						<span class="fl-builder-node-template-actions">
@@ -252,6 +293,7 @@
 				var column = columns[i],
 					image = column.image,
 					globalClass = column.isGlobal ? ' fl-builder-block-global' : '',
+					dynamicClass = column.isDynamicEditing ? ' fl-builder-block-dynamic' : '',
 					image = column.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
 					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
@@ -260,7 +302,7 @@
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-column{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{column.id}}">
 				<span class="fl-builder-block-content">
 					<# if (hasImage) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -268,8 +310,12 @@
 					<div class="fl-builder-block-details">
 						<div class="fl-builder-block-title" title="{{column.name}}">{{column.name}}</div>
 						<# if (column.isGlobal) { #>
-						<div class="fl-builder-badge fl-builder-badge-global">
-							<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+						<div class="fl-builder-badge fl-builder-badge-global<# if ( column.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+							<# if ( column.isDynamicEditing ) { #> 
+								<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } else { #>
+								<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } #>
 						</div>
 						<# } #>
 						<span class="fl-builder-node-template-actions">
@@ -301,6 +347,7 @@
 			<# for( var i in rows) {
 				var row = rows[i],
 					globalClass = row.isGlobal ? ' fl-builder-block-global' : '',
+					dynamicClass = row.isDynamicEditing ? ' fl-builder-block-dynamic' : '',
 					image = row.image,
 					hasImage = image && !image.endsWith( 'blank.jpg' ),
 					hasImageClass = hasImage ? ' fl-builder-block-has-thumbnail' : '';
@@ -309,7 +356,7 @@
 						catClasses += ' fl-builder-template-category-' + key;
 					}
 			#>
-			<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
+			<span class="fl-builder-block fl-builder-block-saved-row{{globalClass}}{{dynamicClass}}{{hasImageClass}}{{catClasses}}" data-id="{{row.id}}">
 				<span class="fl-builder-block-content">
 					<# if (image && !image.endsWith('blank.jpg')) { #>
 					<div class="fl-builder-block-thumbnail" style="background-image:url({{image}})"></div>
@@ -317,8 +364,12 @@
 					<div class="fl-builder-block-details">
 						<div class="fl-builder-block-title" title="{{row.name}}">{{row.name}}</div>
 						<# if (row.isGlobal) { #>
-						<div class="fl-builder-badge fl-builder-badge-global">
-							<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+						<div class="fl-builder-badge fl-builder-badge-global<# if ( row.isDynamicEditing ) { #> fl-builder-badge-dynamic<# } #>">
+							<# if ( row.isDynamicEditing ) { #> 
+								<?php _ex( 'Component', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } else { #>
+								<?php _ex( 'Global', 'Indicator for global node templates.', 'fl-builder' ); ?>
+							<# } #>
 						</div>
 						<# } #>
 						<span class="fl-builder-node-template-actions">

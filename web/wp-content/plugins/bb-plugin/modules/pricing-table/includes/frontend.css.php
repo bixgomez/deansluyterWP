@@ -420,7 +420,7 @@ for ( $i = 0; $i < $total_pricing_cols; $i++ ) :
 	<?php endif; ?>
 
 	/* Button CSS */
-	.fl-node-<?php echo $id; ?> .fl-pricing-table-column-<?php echo $i; ?> a.fl-button {
+	.fl-node-<?php echo $id; ?> .fl-pricing-table-column-<?php echo $i; ?> .fl-button:is(a, button) {
 
 		<?php if ( empty( $pricing_column->btn_bg_color ) ) : ?>
 			background-color: <?php echo FLBuilderColor::hex_or_rgb( $pricing_column->column_background ); ?> !important;
@@ -546,7 +546,7 @@ for ( $i = 0; $i < $total_pricing_cols; $i++ ) :
 	// Border Hover Color
 	if ( ! empty( $pricing_column->btn_border_hover_color ) ) {
 		?>
-		.fl-builder-content .fl-node-<?php echo $id; ?> .fl-pricing-table-column-<?php echo $i; ?> a.fl-button:hover {
+		.fl-builder-content .fl-node-<?php echo $id; ?> .fl-pricing-table-column-<?php echo $i; ?> .fl-button:is(a, button):hover {
 			border-color: <?php echo FLBuilderColor::hex_or_rgb( $pricing_column->btn_border_hover_color ); ?>;
 		}
 		<?php

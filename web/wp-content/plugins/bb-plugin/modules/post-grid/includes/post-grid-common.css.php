@@ -10,6 +10,7 @@ if ( 'grid' == $settings->layout ) : ?>
 .fl-node-<?php echo $id; ?> <?php echo $module->get_posts_container(); ?>.fl-post-grid-post {
 	margin-bottom: <?php echo $post_spacing; ?>px;
 	width: <?php echo $post_width; ?>px;
+	visibility: visible;
 }
 .fl-node-<?php echo $id; ?> .fl-post-grid-sizer {
 	width: <?php echo $post_width; ?>px;

@@ -19,7 +19,7 @@
 
 			<tr>
 				<th>
-					<label for="fl-template[type]"><?php _e( 'Type', 'fl-builder' ); ?></label>
+					<label for="fl-template[type]"><?php _e( 'Content', 'fl-builder' ); // _e( 'Type', 'fl-builder' ); ?></label>
 				</th>
 				<td>
 					<select class="fl-template-type" name="fl-template[type]" required>
@@ -31,7 +31,21 @@
 				</td>
 			</tr>
 
-			<tr class="fl-template-module-row">
+			<tr id="fl-template-content-type-row" class="fl-template-content-type-row">
+				<th>
+					<label for="fl-template[content_type]"><?php _e( 'Type', 'fl-builder' ); ?></label>
+				</th>
+				<td>
+					<select id="fl-template-content-type" class="fl-template-content-type" name="fl-template[content_type]" required>
+						<option value=""><?php _e( 'Choose...', 'fl-builder' ); ?></option>
+						<?php foreach ( $content_types as $type ) : ?>
+						<option value="<?php echo $type['key']; ?>" <?php selected( $selected_type, $type['key'] ); ?>><?php echo $type['label']; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+
+			<tr id="fl-template-module-row" class="fl-template-module-row">
 				<th>
 					<label for="fl-template[module]"><?php _e( 'Module', 'fl-builder' ); ?></label>
 				</th>
@@ -54,7 +68,7 @@
 				</td>
 			</tr>
 
-			<tr class="fl-template-global-row">
+			<tr id="fl-template-global-row" class="fl-template-global-row">
 				<th>
 					<label for="fl-template[global]"><?php _e( 'Global', 'fl-builder' ); ?></label>
 					<i class="dashicons dashicons-editor-help" title="<?php esc_html_e( 'Global rows, columns and modules can be added to multiple pages and edited in one place.', 'fl-builder' ); ?>"></i>

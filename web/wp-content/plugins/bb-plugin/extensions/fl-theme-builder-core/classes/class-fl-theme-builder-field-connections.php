@@ -179,7 +179,11 @@ final class FLThemeBuilderFieldConnections {
 		$form       = false;
 		$menu_data  = self::get_menu_data( $objects, $field['connections'] );
 
-		if ( isset( $settings->connections ) ) {
+		if ( FLBuilderDynamicGlobal::is_dynamic_child_connection( $name ) ) {
+
+			$connection = FLBuilderDynamicGlobal::get_dynamic_child_connection( $name, $settings );
+
+		} elseif ( isset( $settings->connections ) ) {
 
 			$settings->connections = (array) $settings->connections;
 

@@ -223,11 +223,7 @@ class FLContactFormModule extends FLBuilderModule {
 			// Validate reCAPTCHA if enabled
 			if ( isset( $settings->recaptcha_toggle ) && 'show' == $settings->recaptcha_toggle && $recaptcha_response ) {
 				if ( ! empty( $settings->recaptcha_secret_key ) && ! empty( $settings->recaptcha_site_key ) ) {
-					if ( version_compare( phpversion(), '5.3', '>=' ) ) {
-						include FLBuilderModel::$modules['contact-form']->dir . 'includes/validate-recaptcha.php';
-					} else {
-						$response['error'] = false;
-					}
+					include FLBuilderModel::$modules['contact-form']->dir . 'includes/validate-recaptcha.php';
 				} else {
 					$response = array(
 						'error'   => true,
@@ -296,6 +292,90 @@ class FLContactFormModule extends FLBuilderModule {
 	}
 
 	/**
+	 * Returns the form tag attributes.
+	 *
+	 * @since 2.10
+	 * @method get_form_attributes
+	 * @return string
+	 */
+	public function get_form_attributes() {
+		return join( ' ', array(
+			'class="fl-contact-form"',
+			( isset( $this->template_id ) ? 'data-template-id="' . $this->template_id . '" data-template-node-id="' . $this->template_node_id . '"' : '' ),
+		) );
+	}
+
+	/**
+	 * Returns the label tag attributes.
+	 * @since 2.10
+	 * @method get_label_attributes
+	 * @param string $field The form field name.
+	 * @return string
+	 */
+	public function get_label_attributes( $field ) {
+		$hidden = isset( $this->settings->placeholder_labels ) && 'placeholder' === $this->settings->placeholder_labels ? '-hidden"' : '';
+		return join( ' ', array(
+			'for="' . esc_attr( $field ) . '-' . $this->node . '"',
+			'class="fl-contact-form-label' . $hidden . '"',
+		) );
+	}
+
+	/**
+	 * Returns the input tag attributes.
+	 * @since 2.10
+	 * @method get_input_attributes
+	 * @param string $type The input type.
+	 * @param array $fields The form fields array.
+	 * @return string
+	 */
+	public function get_input_attributes( $type, $fields ) {
+		$placeholder = ( isset( $this->settings->placeholder_labels ) && ( 'placeholder' === $this->settings->placeholder_labels || 'both' === $this->settings->placeholder_labels ) );
+		$label       = ( isset( $this->settings->placeholder_labels ) && 'placeholder' === $this->settings->placeholder_labels );
+		return join( ' ', array(
+			'id="' . esc_attr( $fields[ 'form_' . $type ] ) . '-' . $this->node . '"',
+			'placeholder="' . ( $placeholder ? esc_attr( $this->settings->{$type . '_placeholder'} ) : '' ) . '"',
+			( $label ? 'aria-label="' . esc_attr( $this->settings->{$type . '_placeholder'} ) . '"' : '' ),
+			'aria-describedby="' . esc_attr( $fields[ $type . '_error' ] ) . '-' . $this->node . '"',
+			'name="fl-' . $type . '"',
+			'value=""',
+			'required',
+		) );
+	}
+
+	/**
+	 * Returns the error message tag attributes.
+	 * @since 2.10
+	 * @method get_error_attributes
+	 * @param string $field The form field name.
+	 * @return string
+	 */
+	public function get_error_attributes( $field ) {
+		return join( ' ', array(
+			'id="' . esc_attr( $field ) . '-' . $this->node . '"',
+			'class="fl-contact-error"',
+			'role="alert"',
+		) );
+	}
+
+	/**
+	 * Returns the checkbox attributes.
+	 *
+	 * @since 2.10
+	 * @method get_checkbox_attributes
+	 * @return string
+	 */
+	public function get_checkbox_attributes() {
+		return join( ' ', array(
+			'id="fl-terms-checkbox-' . $this->node . '"',
+			'aria-describedby="terms-error-' . $this->node . '"',
+			'name="fl-terms-checkbox"',
+			'class="checkbox-inline"',
+			'value="1"',
+			'required',
+		) );
+	}
+
+	/**
 	 * Returns an array of settings used to render a button module.
 	 *
 	 * @since 2.2
@@ -303,8 +383,8 @@ class FLContactFormModule extends FLBuilderModule {
 	 */
 	public function get_button_settings() {
 		$settings = array(
-			'link'        => '#',
-			'link_target' => '_self',
+			'click_action' => 'button',
+			'button_type'  => 'submit',
 		);
 
 		foreach ( $this->settings as $key => $value ) {
@@ -314,7 +394,28 @@ class FLContactFormModule extends FLBuilderModule {
 			}
 		}
 
+		if ( empty( $settings->text ) ) {
+			$settings['label_text'] = __( 'Send', 'fl-builder' );
+		}
+
 		return $settings;
+	}
+
+	/**
+	 * Returns the relevant deprecated version of the button module if the contact form module is deprecated.
+	 * It returns null (current version) if the contact form module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_button_version
+	 * @return integer|null
+	 */
+	public function get_button_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return null;
+		}
 	}
 }
 
@@ -442,15 +543,18 @@ FLBuilder::register_module('FLContactFormModule', array(
 					'placeholder_labels'  => array(
 						'type'    => 'select',
 						'label'   => __( 'Show labels/placeholders', 'fl-builder' ),
-						'default' => 'placeholder',
+						'default' => 'both',
 						'options' => array(
 							'placeholder' => __( 'Show Placeholders Only', 'fl-builder' ),
 							'labels'      => __( 'Show Labels Only', 'fl-builder' ),
 							'both'        => __( 'Show Both', 'fl-builder' ),
 						),
 						'toggle'  => array(
-							'show' => array(
-								'fields' => array( 'terms_checkbox_text', 'terms_text' ),
+							'labels' => array(
+								'sections' => array( 'label_style' ),
+							),
+							'both'   => array(
+								'sections' => array( 'label_style' ),
 							),
 						),
 					),
@@ -532,35 +636,144 @@ FLBuilder::register_module('FLContactFormModule', array(
 			),
 		),
 	),
-	'button'    => array(
-		'title'    => __( 'Button', 'fl-builder' ),
+	'style'     => array(
+		'title'    => __( 'Style', 'fl-builder' ),
 		'sections' => array(
-			'btn_general' => array(
-				'title'  => '',
+			'label_style'  => array(
+				'title'  => __( 'Labels', 'fl-builder' ),
 				'fields' => array(
-					'btn_text' => array(
-						'type'    => 'text',
-						'label'   => __( 'Button Text', 'fl-builder' ),
-						'default' => __( 'Send', 'fl-builder' ),
-						'preview' => array(
-							'type'     => 'text',
-							'selector' => '.fl-button-text',
+					'label_padding'    => array(
+						'type'       => 'dimension',
+						'label'      => __( 'Padding', 'fl-builder' ),
+						'responsive' => true,
+						'slider'     => true,
+						'units'      => array( 'px' ),
+						'preview'    => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form .fl-contact-form-label:not(:has(input[type=checkbox]))',
+							'property' => 'padding',
+						),
+					),
+					'label_color'      => array(
+						'type'        => 'color',
+						'label'       => __( 'Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'connections' => array( 'color' ),
+						'preview'     => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form .fl-contact-form-label',
+							'property' => 'color',
+						),
+					),
+					'label_typography' => array(
+						'type'       => 'typography',
+						'label'      => __( 'Typography', 'fl-builder' ),
+						'responsive' => true,
+						'preview'    => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form .fl-contact-form-label',
 						),
 					),
 				),
 			),
-			'btn_icon'    => array(
-				'title'  => __( 'Button Icon', 'fl-builder' ),
+			'input_style'  => array(
+				'title'  => __( 'Inputs', 'fl-builder' ),
 				'fields' => array(
-					'btn_icon'           => array(
+					'input_padding'        => array(
+						'type'       => 'dimension',
+						'label'      => __( 'Padding', 'fl-builder' ),
+						'responsive' => true,
+						'slider'     => true,
+						'units'      => array( 'px' ),
+						'preview'    => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form :is(input:not([type=checkbox]), textarea)',
+							'property' => 'padding',
+						),
+					),
+					'input_color'          => array(
+						'type'       => 'color',
+						'label'      => __( 'Color', 'fl-builder' ),
+						'show_reset' => true,
+						'show_alpha' => true,
+						'preview'    => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form :is(input:not([type=checkbox]), textarea), {node}.fl-module-contact-form :is(input, textarea)::placeholder',
+							'property' => 'color',
+						),
+					),
+					'input_typography'     => array(
+						'type'       => 'typography',
+						'label'      => __( 'Typography', 'fl-builder' ),
+						'responsive' => true,
+						'preview'    => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form :is(input:not([type=checkbox]), textarea)',
+						),
+					),
+					'input_bg_color'       => array(
+						'type'        => 'color',
+						'label'       => __( 'Background Color', 'fl-builder' ),
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'connections' => array( 'color' ),
+						'preview'     => array(
+							'type'     => 'css',
+							'selector' => '{node}.fl-module-contact-form :is(input:not([type=checkbox]), textarea)',
+							'property' => 'background-color',
+						),
+					),
+					'input_bg_hover_color' => array(
+						'type'        => 'color',
+						'label'       => __( 'Background Hover Color', 'fl-builder' ),
+						'default'     => '',
+						'show_reset'  => true,
+						'show_alpha'  => true,
+						'connections' => array( 'color' ),
+						'preview'     => array(
+							'type' => 'none',
+						),
+					),
+					'input_border'         => array(
+						'type'    => 'border',
+						'label'   => __( 'Border', 'fl-builder' ),
+						'preview' => array(
+							'type'      => 'css',
+							'selector'  => '{node}.fl-module-contact-form :is(input:not([type=checkbox]), textarea)',
+							'important' => true,
+						),
+					),
+					'input_border_hover'   => array(
+						'type'    => 'border',
+						'label'   => __( 'Border Hover', 'fl-builder' ),
+						'preview' => array(
+							'type' => 'none',
+						),
+					),
+				),
+			),
+			'button_style' => array(
+				'title'  => __( 'Button', 'fl-builder' ),
+				'fields' => array(
+					'btn_text'               => array(
+						'type'    => 'text',
+						'label'   => __( 'Text', 'fl-builder' ),
+						'default' => __( 'Send', 'fl-builder' ),
+						'preview' => array(
+							'type'     => 'text',
+							'selector' => '{node} .fl-button-text',
+						),
+					),
+					'btn_icon'               => array(
 						'type'        => 'icon',
-						'label'       => __( 'Button Icon', 'fl-builder' ),
+						'label'       => __( 'Icon', 'fl-builder' ),
 						'show_remove' => true,
 						'show'        => array(
 							'fields' => array( 'btn_icon_position', 'btn_icon_animation' ),
 						),
 					),
-					'btn_duo_color1'     => array(
+					'btn_duo_color1'         => array(
 						'label'       => __( 'DuoTone Primary Color', 'fl-builder' ),
 						'type'        => 'color',
 						'connections' => array( 'color' ),
@@ -569,12 +782,12 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'i.fl-button-icon.fad:before',
+							'selector'  => '{node} i.fl-button-icon.fad:before',
 							'property'  => 'color',
 							'important' => true,
 						),
 					),
-					'btn_duo_color2'     => array(
+					'btn_duo_color2'         => array(
 						'label'       => __( 'DuoTone Secondary Color', 'fl-builder' ),
 						'type'        => 'color',
 						'connections' => array( 'color' ),
@@ -583,37 +796,32 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'i.fl-button-icon.fad:after',
+							'selector'  => '{node} i.fl-button-icon.fad:after',
 							'property'  => 'color',
 							'important' => true,
 						),
 					),
-					'btn_icon_position'  => array(
+					'btn_icon_position'      => array(
 						'type'    => 'select',
-						'label'   => __( 'Button Icon Position', 'fl-builder' ),
+						'label'   => __( 'Icon Position', 'fl-builder' ),
 						'default' => 'before',
 						'options' => array(
 							'before' => __( 'Before Text', 'fl-builder' ),
 							'after'  => __( 'After Text', 'fl-builder' ),
 						),
 					),
-					'btn_icon_animation' => array(
+					'btn_icon_animation'     => array(
 						'type'    => 'select',
-						'label'   => __( 'Button Icon Visibility', 'fl-builder' ),
+						'label'   => __( 'Icon Visibility', 'fl-builder' ),
 						'default' => 'disable',
 						'options' => array(
 							'disable' => __( 'Always Visible', 'fl-builder' ),
 							'enable'  => __( 'Fade In On Hover', 'fl-builder' ),
 						),
 					),
-				),
-			),
-			'btn_style'   => array(
-				'title'  => __( 'Button Style', 'fl-builder' ),
-				'fields' => array(
-					'btn_width'   => array(
+					'btn_width'              => array(
 						'type'    => 'select',
-						'label'   => __( 'Button Width', 'fl-builder' ),
+						'label'   => __( 'Width', 'fl-builder' ),
 						'default' => 'auto',
 						'options' => array(
 							'auto' => _x( 'Auto', 'Width.', 'fl-builder' ),
@@ -625,80 +833,70 @@ FLBuilder::register_module('FLContactFormModule', array(
 							),
 						),
 					),
-					'btn_align'   => array(
+					'btn_align'              => array(
 						'type'       => 'align',
-						'label'      => __( 'Button Align', 'fl-builder' ),
+						'label'      => __( 'Align', 'fl-builder' ),
 						'default'    => 'left',
 						'responsive' => true,
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => '.fl-button-wrap',
+							'selector' => '{node} .fl-button-wrap',
 							'property' => 'text-align',
 						),
 					),
-					'btn_padding' => array(
+					'btn_padding'            => array(
 						'type'       => 'dimension',
-						'label'      => __( 'Button Padding', 'fl-builder' ),
+						'label'      => __( 'Padding', 'fl-builder' ),
 						'responsive' => true,
 						'slider'     => true,
 						'units'      => array( 'px' ),
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '{node} .fl-button:is(a, button)',
 							'property' => 'padding',
 						),
 					),
-				),
-			),
-			'btn_text'    => array(
-				'title'  => __( 'Button Text', 'fl-builder' ),
-				'fields' => array(
-					'btn_text_color'       => array(
+					'btn_text_color'         => array(
 						'type'        => 'color',
 						'connections' => array( 'color' ),
-						'label'       => __( 'Button Text Color', 'fl-builder' ),
+						'label'       => __( 'Text Color', 'fl-builder' ),
 						'default'     => '',
 						'show_reset'  => true,
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button, a.fl-button *',
+							'selector'  => '{node} .fl-button:is(a, button),{node} .fl-button:is(a, button) *',
 							'property'  => 'color',
 							'important' => true,
 						),
 					),
-					'btn_text_hover_color' => array(
+					'btn_text_hover_color'   => array(
 						'type'        => 'color',
 						'connections' => array( 'color' ),
-						'label'       => __( 'Button Text Hover Color', 'fl-builder' ),
+						'label'       => __( 'Text Hover Color', 'fl-builder' ),
 						'default'     => '',
 						'show_reset'  => true,
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button:hover, a.fl-button:hover *, a.fl-button:focus, a.fl-button:focus *',
+							'selector'  => '{node} .fl-button:is(a, button):hover,{node} .fl-button:is(a, button):hover *,{node} .fl-button:is(a, button):focus,{node} .fl-button:is(a, button):focus *',
 							'property'  => 'color',
 							'important' => true,
 						),
 					),
-					'btn_typography'       => array(
+					'btn_typography'         => array(
 						'type'       => 'typography',
-						'label'      => __( 'Button Typography', 'fl-builder' ),
+						'label'      => __( 'Typography', 'fl-builder' ),
 						'responsive' => true,
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '{node} .fl-button:is(a, button)',
 						),
 					),
-				),
-			),
-			'btn_colors'  => array(
-				'title'  => __( 'Button Background', 'fl-builder' ),
-				'fields' => array(
-					'btn_bg_color'          => array(
+					'btn_bg_color'           => array(
 						'type'        => 'color',
 						'connections' => array( 'color' ),
-						'label'       => __( 'Button Background Color', 'fl-builder' ),
+						'label'       => __( 'Background Color', 'fl-builder' ),
 						'default'     => '',
 						'show_reset'  => true,
 						'show_alpha'  => true,
@@ -706,10 +904,10 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'type' => 'none',
 						),
 					),
-					'btn_bg_hover_color'    => array(
+					'btn_bg_hover_color'     => array(
 						'type'        => 'color',
 						'connections' => array( 'color' ),
-						'label'       => __( 'Button Background Hover Color', 'fl-builder' ),
+						'label'       => __( 'Background Hover Color', 'fl-builder' ),
 						'default'     => '',
 						'show_reset'  => true,
 						'show_alpha'  => true,
@@ -717,18 +915,18 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'type' => 'none',
 						),
 					),
-					'btn_style'             => array(
+					'btn_style'              => array(
 						'type'    => 'select',
-						'label'   => __( 'Button Background Style', 'fl-builder' ),
+						'label'   => __( 'Background Style', 'fl-builder' ),
 						'default' => 'flat',
 						'options' => array(
 							'flat'     => __( 'Flat', 'fl-builder' ),
 							'gradient' => __( 'Gradient', 'fl-builder' ),
 						),
 					),
-					'btn_button_transition' => array(
+					'btn_button_transition'  => array(
 						'type'    => 'select',
-						'label'   => __( 'Button Background Animation', 'fl-builder' ),
+						'label'   => __( 'Background Animation', 'fl-builder' ),
 						'default' => 'disable',
 						'options' => array(
 							'disable' => __( 'Disabled', 'fl-builder' ),
@@ -738,25 +936,20 @@ FLBuilder::register_module('FLContactFormModule', array(
 							'type' => 'none',
 						),
 					),
-				),
-			),
-			'btn_border'  => array(
-				'title'  => __( 'Button Border', 'fl-builder' ),
-				'fields' => array(
 					'btn_border'             => array(
 						'type'       => 'border',
-						'label'      => __( 'Button Border', 'fl-builder' ),
+						'label'      => __( 'Border', 'fl-builder' ),
 						'responsive' => true,
 						'preview'    => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button',
+							'selector'  => '{node} .fl-button:is(a, button)',
 							'important' => true,
 						),
 					),
 					'btn_border_hover_color' => array(
 						'type'        => 'color',
 						'connections' => array( 'color' ),
-						'label'       => __( 'Button Border Hover Color', 'fl-builder' ),
+						'label'       => __( 'Border Hover Color', 'fl-builder' ),
 						'default'     => '',
 						'show_reset'  => true,
 						'show_alpha'  => true,

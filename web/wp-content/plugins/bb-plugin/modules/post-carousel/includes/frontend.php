@@ -16,7 +16,18 @@ if ( $query->have_posts() ) :
 	?>
 
 	<div class="fl-post-carousel fl-post-carousel-<?php echo sanitize_html_class( $layout ); ?>"<?php FLBuilder::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/Blog"' ); ?>>
-		<div class="fl-post-carousel-wrapper">
+		<?php if ( 'yes' == $settings->navigation && $query->have_posts() ) : ?>
+		<div class="fl-post-carousel-navigation" aria-label="carousel buttons">
+			<?php if ( 1 == $module->version ) : ?>
+				<a class="carousel-prev" href="#" aria-label="previous" role="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></a>
+				<a class="carousel-next" href="#" aria-label="next" role="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></a>
+			<?php else : ?>
+				<button class="carousel-prev fl-content-ui-button" aria-label="previous" type="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></button>
+				<button class="carousel-next fl-content-ui-button" aria-label="next" type="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></button>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		<<?php echo ( 1 == $module->version ) ? 'div' : 'ul'; ?> class="fl-post-carousel-wrapper">
 			<?php
 
 			while ( $query->have_posts() ) {
@@ -33,17 +44,7 @@ if ( $query->have_posts() ) :
 			}
 
 			?>
-		</div>
-		<?php
-
-		// Render the navigation.
-		if ( 'yes' == $settings->navigation && $query->have_posts() ) :
-			?>
-			<div class="fl-post-carousel-navigation" aria-label="carousel buttons">
-				<a class="carousel-prev" href="#" aria-label="previous" role="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></a>
-				<a class="carousel-next" href="#" aria-label="next" role="button"><div class="fl-post-carousel-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></a>
-			</div>
-		<?php endif; ?>
+		</<?php echo ( 1 == $module->version ) ? 'div' : 'ul'; ?>>
 	</div>
 
 	<div class="fl-clear"></div>

@@ -56,6 +56,6 @@
 }
 
 /* Buttons */
-.fl-module-content-slider .fl-slide a.fl-button {
+.fl-module-content-slider .fl-slide .fl-button:is(a, button) {
 	padding: 10px 20px;
 }

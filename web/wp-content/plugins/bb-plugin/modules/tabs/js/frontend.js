@@ -19,9 +19,9 @@
 			var win = $(window);
 
 			$(this.nodeClass + ' .fl-tabs-labels .fl-tabs-label').click($.proxy(this._labelClick, this));
-			$(this.nodeClass + ' .fl-tabs-labels .fl-tabs-label').on('keypress', $.proxy(this._labelClick, this));
+			$(this.nodeClass + ' .fl-tabs-labels .fl-tabs-label').on('keydown', $.proxy(this._labelClick, this));
 			$(this.nodeClass + ' .fl-tabs-panels .fl-tabs-label').click($.proxy(this._responsiveLabelClick, this));
-			$(this.nodeClass + ' .fl-tabs-panels .fl-tabs-label').on('keypress', $.proxy(this._responsiveLabelClick, this));
+			$(this.nodeClass + ' .fl-tabs-panels .fl-tabs-label').on('keydown', $.proxy(this._responsiveLabelClick, this));
 
 			win.on('resize', $.proxy( this._setupTabs, this));
 
@@ -53,12 +53,12 @@
 			icon.removeClass('fa-plus');
 
 			// Toggle the tabs.
-			wrap.find('.fl-tabs-labels:first > .fl-tab-active').removeClass('fl-tab-active').attr('aria-selected', 'false').attr('aria-expanded', 'false');
-			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tab-active').removeClass('fl-tab-active');
+			wrap.find('.fl-tabs-labels:first .fl-tab-active').removeClass('fl-tab-active').attr('aria-selected', 'false');
+			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tab-active').removeClass('fl-tab-active').attr('aria-selected', 'false');
 			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-content').attr('aria-hidden', 'true').css('display', '');
 
-			wrap.find('.fl-tabs-labels:first > .fl-tabs-label[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-selected', 'true').attr('aria-expanded', 'true');
-			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-label[data-index="' + index + '"]').addClass('fl-tab-active');
+			wrap.find('.fl-tabs-labels:first .fl-tabs-label[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-selected', 'true');
+			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-label[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-selected', 'true');
 			wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-content[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-hidden', 'false');
 
 			// Gallery module support.
@@ -89,7 +89,6 @@
 				index           = label.data('index'),
 				content         = label.siblings('.fl-tabs-panel-content'),
 				activeContent   = wrap.find('.fl-tabs-panel-content.fl-tab-active'),
-				activeIndex     = activeContent.data('index'),
 				allIcons        = wrap.find('.fl-tabs-panels .fl-tabs-label > .fas'),
 				icon            = label.find('.fas');
 
@@ -112,9 +111,9 @@
 
 			content.slideDown('normal', function(){
 
-				wrap.find('.fl-tab-active').removeClass('fl-tab-active').attr('aria-hidden', 'true');
+				wrap.find('.fl-tab-active').removeClass('fl-tab-active').attr('aria-selected', 'false');
 				wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-content').attr('aria-hidden', 'true');
-				wrap.find('.fl-tabs-label[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-hidden', 'false');
+				wrap.find('.fl-tabs-label[data-index="' + index + '"]').addClass('fl-tab-active').attr('aria-selected', 'true');
 				wrap.find('.fl-tabs-panels:first > .fl-tabs-panel > .fl-tabs-panel-content[data-index="' + index + '"]').attr('aria-hidden', 'false');
 				content.addClass('fl-tab-active');
 				wrap.removeClass('fl-tabs-animation');
@@ -169,8 +168,7 @@
 				activeTabContent = $( this.nodeClass + ' .fl-tabs-panel-content.fl-tab-active' ),
 				activeTabPanel = activeTabContent.parent(),
 				activeTabLabelIcon = activeTabPanel.find('i'),
-				smallBreakPoint = FLBuilderLayoutConfig.breakpoints.small,
-				mediumBreakPoint = FLBuilderLayoutConfig.breakpoints.medium;
+				smallBreakPoint = FLBuilderLayoutConfig.breakpoints.small;
 
 			if ( winWidth <= smallBreakPoint && 'close-all' == this.tabsOnMobile ) {
 				activeTabContent.hide();

@@ -228,6 +228,23 @@ class FLPostSliderModule extends FLBuilderModule {
 	}
 
 	/**
+	 *  Returns the relevant deprecated version of the photo module if the post slider module is deprecated.
+	 *  It returns null (current version) if the post slider module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_photo_version
+	 * @return int|null
+	 */
+	public function get_photo_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return null;
+		}
+	}
+
+	/**
 	 * Render thumbnail image.
 	 *
 	 * Gets the post ID and renders the html markup for the featured image
@@ -268,7 +285,7 @@ class FLPostSliderModule extends FLBuilderModule {
 
 				// render image
 				echo '<div class="fl-post-slider-img">';
-				FLBuilder::render_module_html( 'photo', $photo_settings );
+				FLBuilder::render_module_html( 'photo', $photo_settings, $this->get_photo_version() );
 				echo '</div>';
 
 			} elseif ( 'background' == $this->settings->image_type ) {
@@ -318,7 +335,7 @@ class FLPostSliderModule extends FLBuilderModule {
 
 				// render image
 				echo '<div class="fl-post-slider-mobile-img">';
-				FLBuilder::render_module_html( 'photo', $photo_settings );
+				FLBuilder::render_module_html( 'photo', $photo_settings, $this->get_photo_version() );
 				echo '</div>';
 
 			}
@@ -587,6 +604,15 @@ FLBuilder::register_module('FLPostSliderModule', array(
 							'yes' => array(
 								'sections' => array( 'nav_arrow_color' ),
 							),
+						),
+					),
+					'play_pause' => array(
+						'type'    => 'select',
+						'label'   => __( 'Show Play/Pause', 'fl-builder' ),
+						'default' => 'no',
+						'options' => array(
+							'no'  => __( 'No', 'fl-builder' ),
+							'yes' => __( 'Yes', 'fl-builder' ),
 						),
 					),
 				),
@@ -1102,3 +1128,8 @@ FLBuilder::register_module('FLPostSliderModule', array(
 		'file'  => FL_BUILDER_DIR . 'includes/loop-settings.php',
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'post-slider', [
+	// Register module version (v1) to deprecate old HTML markup.
+	'v1' => [],
+] );

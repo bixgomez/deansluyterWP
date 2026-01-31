@@ -217,6 +217,23 @@ class FLGalleryModule extends FLBuilderModule {
 
 		return $photos;
 	}
+
+	/**
+	 *  Returns the relevant deprecated version of the photo module if the gallery module is deprecated.
+	 *  It returns null (current version) if the gallery module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_photo_version
+	 * @return int|null
+	 */
+	public function get_photo_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return null;
+		}
+	}
 }
 
 /**
@@ -350,3 +367,8 @@ FLBuilder::register_module('FLGalleryModule', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'gallery', [
+	// Register module version (v1) to deprecate old HTML markup in frontend.php & photo module.
+	'v1' => [],
+] );

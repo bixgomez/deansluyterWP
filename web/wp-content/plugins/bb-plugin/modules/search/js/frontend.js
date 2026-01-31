@@ -6,7 +6,7 @@
 		this.searchForm = $(this.nodeClass + ' .fl-search-form');
 		this.form       = this.searchForm.find('form');
 		this.input      = this.form.find('input[type=search]');
-		this.button     = this.searchForm.find('a.fl-button, a.fl-button *');
+		this.button     = this.searchForm.find('.fl-button:is(a, button), .fl-button:is(a, button) *');
 		this.resultsEl  = $(this.nodeClass + ' .fl-search-results-content');
 
 		this._init();

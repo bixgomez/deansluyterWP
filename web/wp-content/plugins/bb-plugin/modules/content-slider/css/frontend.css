@@ -21,8 +21,17 @@ body.rtl .fl-module-content-slider .bx-viewport {
 	visibility: visible;
 }
 
+.fl-content-slider-navigation button,
+.fl-content-slider-navigation button:focus,
+.fl-content-slider-navigation button:hover {
+	all: unset;
+	cursor: pointer;
+	position: absolute;
+}
+
 /* Controls */
-.bx-wrapper .bx-controls-direction a {
+.bx-wrapper .bx-controls-direction a,
+.bx-wrapper .bx-controls-direction button {
 	z-index: 99;
 }
 
@@ -75,7 +84,7 @@ body.rtl .fl-module-content-slider .bx-viewport {
 .fl-slide-mobile-photo {
 	display: none;
 }
-.fl-slide-mobile-photo-img  {
+.fl-slide-mobile-photo-img {
 	width: 100%;
 }
 
@@ -113,7 +122,7 @@ body.rtl .fl-module-content-slider .bx-viewport {
 	padding-top: 24px;
 }
 
-.fl-content-slider-navigation{
+.fl-content-slider-navigation {
 	position: absolute;
 	top: 50%;
 	left: 0;
@@ -121,41 +130,43 @@ body.rtl .fl-module-content-slider .bx-viewport {
 	z-index: 1;
 	margin-top: -16px;
 }
-.fl-content-slider-navigation a{
+.fl-content-slider-navigation .slider-prev,
+.fl-content-slider-navigation .slider-next {
 	position: absolute;
 	display: inline-block;
 	opacity: .7;
 }
-.fl-content-slider-navigation a:hover{ opacity: 1; }
+.fl-content-slider-navigation .slider-prev:hover,
+.fl-content-slider-navigation .slider-next:hover {
+	opacity: 1;
+}
 
-.fl-content-slider-navigation .slider-prev{ left: 5px; }
-.fl-content-slider-navigation .slider-next{ right: 5px; }
+.fl-module-content-slider .fl-content-slider-navigation .slider-prev { left: 5px; }
+.fl-module-content-slider .fl-content-slider-navigation .slider-next { right: 5px; }
 
-.fl-content-slider-navigation .fl-content-slider-svg-container{
+.fl-content-slider-navigation .fl-content-slider-svg-container {
 	position: relative;
 	width: 32px;
 	height: 32px;
 }
-.fl-content-slider-navigation svg{
+.fl-content-slider-navigation svg {
 	position: absolute;
 	top: 0;
 	left: 0;
 	bottom: 0;
 	right: 0;
 }
-.fl-content-slider-navigation path{ 
+.fl-content-slider-navigation path { 
 	fill: #fff;
 }
 .fl-content-slider-navigation a.disabled,
-.bx-controls a.disabled {
+.fl-content-slider-navigation button.disabled,
+.bx-controls a.disabled,
+.bx-controls button.disabled {
 	cursor: not-allowed;
 	pointer-events: none;
 }
 
-/* Slider controls fixes */
-.bx-wrapper .bx-controls:not(.bx-has-pager) {
-	height: 30px;
-}
-.bx-wrapper .bx-controls:not(.bx-has-pager) .bx-controls-auto {
-	bottom: 0;
+.fl-content-slider-navigation button:focus {
+	outline: 1px auto -webkit-focus-ring-color;
 }

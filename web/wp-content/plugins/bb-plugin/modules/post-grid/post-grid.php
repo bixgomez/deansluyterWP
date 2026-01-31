@@ -24,12 +24,12 @@ class FLPostGridModule extends FLBuilderModule {
 	 * Ensure backwards compatibility with old settings
 	 * before defaults are merged in.
 	 *
-	 * @since 2.6.0.1
+	 * @since 2.9
 	 * @param object $settings A module settings object.
 	 * @param object $defaults The defaults for this module.
 	 * @return object
 	 */
-	public function filter_raw_settings( $settings, $defaults ) {
+	public function filter_raw_settings_defaults( $settings, $defaults ) {
 
 		// Handle columns for the new large breakpoint.
 		if ( ! isset( $settings->post_columns_large ) ) {
@@ -589,9 +589,8 @@ class FLPostGridModule extends FLBuilderModule {
 	 */
 	public function get_button_settings() {
 		$settings = array(
-			'align'       => 'center',
-			'link'        => '#',
-			'link_target' => '_self',
+			'align'        => 'center',
+			'click_action' => 'button',
 		);
 
 		foreach ( $this->settings as $key => $value ) {
@@ -604,7 +603,43 @@ class FLPostGridModule extends FLBuilderModule {
 		return $settings;
 	}
 
-	public function get_posts_container() {
+	/**
+	 *  Returns the relevant deprecated version of the button module if the post grid module is deprecated.
+	 *  It returns null (current version) if the post grid module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_button_version
+	 * @return int|null
+	 */
+	public function get_button_version() {
+		switch ( $this->version ) {
+			case 1:
+				return 2;
+			default:
+				return null;
+		}
+	}
+
+	public function get_posts_container( $is_wrapper = false, $is_parent = false ) {
+		if ( $is_wrapper ) {
+			if ( 'li' === $this->settings->posts_container ) {
+				return 'div';
+			} elseif ( 'ul' === $this->settings->posts_container ) {
+				return 'li';
+			} else {
+				return esc_attr( $this->settings->posts_container );
+			}
+		}
+		if ( $is_parent ) {
+			if ( 'ul' === $this->settings->posts_container ) {
+				return 'li';
+			} else {
+				return esc_attr( $this->settings->posts_container );
+			}
+		}
+		if ( 'ul' === $this->settings->posts_container && 'columns' === $this->settings->layout ) {
+			return 'div';
+		}
 		return esc_attr( $this->settings->posts_container );
 	}
 
@@ -743,12 +778,13 @@ FLBuilder::register_module('FLPostGridModule', array(
 					'posts_container'          => array(
 						'type'     => 'select',
 						'label'    => __( 'Posts Element', 'fl-builder' ),
-						'default'  => 'div',
-						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'div' ),
+						'default'  => 'ul',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'li' ),
 						'options'  => array(
 							'div'     => '&lt;div&gt;',
 							'article' => '&lt;article&gt;',
-							'li'      => '&lt;li&gt;',
+							'li'      => '&lt;li&gt;(wrapped in divs)',
+							'ul'      => '&lt;li&gt;(unwrapped in divs)',
 						),
 						'help'     => __( 'Optional. Choose an appropriate HTML5 content sectioning element to use for each post to improve accessibility and machine-readability.', 'fl-builder' ),
 						'toggle'   => array(
@@ -1484,7 +1520,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'units'      => array( 'px' ),
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '.fl-button:is(a, button)',
 							'property' => 'padding',
 						),
 					),
@@ -1502,7 +1538,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button, a.fl-button *',
+							'selector'  => '.fl-button:is(a, button), .fl-button:is(a, button) *',
 							'property'  => 'color',
 							'important' => true,
 						),
@@ -1516,7 +1552,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'show_alpha'  => true,
 						'preview'     => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button:hover, a.fl-button:hover *, a.fl-button:focus, a.fl-button:focus *',
+							'selector'  => '.fl-button:is(a, button):hover, .fl-button:is(a, button):hover *, .fl-button:is(a, button):focus, .fl-button:is(a, button):focus *',
 							'property'  => 'color',
 							'important' => true,
 						),
@@ -1527,7 +1563,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'responsive' => true,
 						'preview'    => array(
 							'type'     => 'css',
-							'selector' => 'a.fl-button',
+							'selector' => '.fl-button:is(a, button)',
 						),
 					),
 				),
@@ -1589,7 +1625,7 @@ FLBuilder::register_module('FLPostGridModule', array(
 						'responsive' => true,
 						'preview'    => array(
 							'type'      => 'css',
-							'selector'  => 'a.fl-button',
+							'selector'  => '.fl-button:is(a, button)',
 							'important' => true,
 						),
 					),
@@ -1611,3 +1647,12 @@ FLBuilder::register_module('FLPostGridModule', array(
 ));
 // custom field filter form
 require FL_BUILDER_DIR . 'includes/loop-settings-filter.php';
+
+FLBuilder::register_module_deprecations( 'post-grid', [
+	// Register module version (v1) to deprecate old HTML markup & posts_container default value.
+	'v1' => [
+		'defaults' => [
+			'posts_container' => 'div',
+		],
+	],
+] );

@@ -105,7 +105,7 @@ FLBuilderCSS::dimension_field_rule( array(
 
 // Label Typography
 FLBuilderCSS::typography_field_rule( array(
-	'selector'     => ".fl-node-$id .fl-tabs-label",
+	'selector'     => ".fl-node-$id .fl-tabs .fl-tabs-label",
 	'setting_name' => 'label_typography',
 	'settings'     => $settings,
 ) );

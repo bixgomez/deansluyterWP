@@ -25,10 +25,19 @@ body.rtl .fl-testimonials-wrap .fl-testimonial {
 .fl-testimonials-wrap {
 	position: relative;
 }
+.fl-testimonials-wrap button,
+.fl-testimonials-wrap button:focus,
+.fl-testimonials-wrap button:hover {
+	all: unset;
+	cursor: pointer;
+}
 .fl-testimonials-wrap .fl-testimonial {
 	position: absolute;
 	top: 0;
 	visibility: hidden;
+}
+.fl-testimonials-wrap .fl-testimonial > blockquote {
+	margin: 0;
 }
 .fl-testimonials-wrap .fl-testimonial:first-child,
 .fl-testimonials-loaded .fl-testimonial {
@@ -87,6 +96,13 @@ body.rtl .fl-testimonials-wrap .fl-testimonial {
 /* Navigation Fixes */
 .fl-testimonials-wrap .fl-slider-next a.disabled,
 .fl-testimonials-wrap .fl-slider-prev a.disabled,
-.fl-testimonials-wrap .bx-controls a.disabled {
+.fl-testimonials-wrap .bx-controls a.disabled,
+.fl-testimonials-wrap .fl-slider-next button.disabled,
+.fl-testimonials-wrap .fl-slider-prev button.disabled,
+.fl-testimonials-wrap .bx-controls button.disabled {
 	pointer-events: none;
+}
+.fl-testimonials-wrap .fl-slider-next button:focus,
+.fl-testimonials-wrap .fl-slider-prev button:focus {
+	outline: 1px auto -webkit-focus-ring-color;
 }

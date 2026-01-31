@@ -1,6 +1,7 @@
+<?php $container = 1 === $module->version ? 'div role="list"' : 'ul'; ?>
 <?php if ( 'collage' == $settings->layout ) : ?>
 <div class="fl-mosaicflow">
-	<div class="fl-mosaicflow-content">
+	<<?php echo $container; ?> class="fl-mosaicflow-content">
 		<?php foreach ( $module->get_photos() as $photo ) : ?>
 		<div class="fl-mosaicflow-item">
 			<?php
@@ -25,18 +26,18 @@
 				'photo'        => $photo,
 				'photo_src'    => $photo->src,
 				'show_caption' => $settings->show_captions,
-			));
+			), $module->get_photo_version());
 
 			?>
 		</div>
 		<?php endforeach; ?>
-	</div>
+	</<?php echo esc_attr( $container ); ?>>
 	<div class="fl-clear"></div>
 </div>
 <?php else : ?>
-<div class="fl-gallery">
+<<?php echo $container; ?> class="fl-gallery">
 	<?php foreach ( $module->get_photos() as $photo ) : ?>
-	<div class="fl-gallery-item">
+	<<?php echo ( 1 === $module->version ) ? 'div role="listitem"' : 'li'; ?> class="fl-gallery-item">
 		<?php
 
 		$url = 'none' == $settings->click_action ? '' : $photo->link;
@@ -59,10 +60,10 @@
 			'photo'        => $photo,
 			'photo_src'    => $photo->src,
 			'show_caption' => $settings->show_captions,
-		));
+		), $module->get_photo_version());
 
 		?>
-	</div>
+	</<?php echo ( 1 === $module->version ) ? 'div' : 'li'; ?>>
 	<?php endforeach; ?>
-</div>
+</<?php echo esc_attr( $container ); ?>>
 <?php endif; ?>

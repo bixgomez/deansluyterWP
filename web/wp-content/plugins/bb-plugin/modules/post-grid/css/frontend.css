@@ -3,6 +3,10 @@
 	display: inline-block;
 	margin: 0 2px;
 }
+.fl-module-post-grid :not(.fl-builder-pagination) > ul {
+	all: unset;
+	list-style: none;
+}
 
 /* Post Columns */
 body.rtl .fl-post-column {
@@ -257,12 +261,4 @@ body .fl-post-feed-meta {
 	padding: 40px 0;
 	text-align: center;
 	width: 100%;
-}
-
-/* No posts message */
-.fl-post-grid-empty {
-}
-
-li.fl-post-feed-post,li.fl-post-gallery-post, li.fl-post-grid-post {
-	list-style: none;
 }

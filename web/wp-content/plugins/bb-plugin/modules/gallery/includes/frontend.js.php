@@ -78,7 +78,8 @@
 		}).mosaicflow({
 			itemSelector: '.fl-mosaicflow-item',
 			columnClass: 'fl-mosaicflow-col',
-			minItemWidth: <?php echo esc_js( $settings->photo_size ); ?>
+			minItemWidth: <?php echo esc_js( $settings->photo_size ); ?>,
+			fallbackHTML: <?php echo ( 1 === $module->version ) ? 'true' : 'false'; ?>
 		});
 		<?php else : ?>
 		$( '.fl-node-<?php echo $id; ?> .fl-gallery' ).imagesLoaded( function(){

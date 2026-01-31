@@ -429,6 +429,34 @@ final class FLBuilderGlobalStyles {
 			'setting_name' => 'text_typography',
 		) );
 
+		// all headings.
+		FLBuilderCSS::rule( array(
+			'selector' => array(
+				'.fl-builder-content h1, .fl-builder-content h1 a, .fl-builder-content h1 span',
+				'.fl-builder-content h2, .fl-builder-content h2 a, .fl-builder-content h2 span',
+				'.fl-builder-content h3, .fl-builder-content h3 a, .fl-builder-content h3 span',
+				'.fl-builder-content h4, .fl-builder-content h4 a, .fl-builder-content h4 span',
+				'.fl-builder-content h5, .fl-builder-content h5 a, .fl-builder-content h5 span',
+				'.fl-builder-content h6, .fl-builder-content h6 a, .fl-builder-content h6 span',
+			),
+			'props'    => array(
+				'color' => $settings->h_color,
+			),
+		) );
+
+		FLBuilderCSS::typography_field_rule( array(
+			'selector'     => array(
+				'.fl-builder-content h1',
+				'.fl-builder-content h2',
+				'.fl-builder-content h3',
+				'.fl-builder-content h4',
+				'.fl-builder-content h5',
+				'.fl-builder-content h6',
+			),
+			'settings'     => $settings,
+			'setting_name' => 'h_typography',
+		) );
+
 		// h1
 		FLBuilderCSS::rule( array(
 			'selector' => '.fl-builder-content h1, .fl-builder-content h1 a, .fl-builder-content h1 span',
@@ -537,14 +565,14 @@ final class FLBuilderGlobalStyles {
 		// button
 		FLBuilderCSS::rule( array(
 			'selector' => array(
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-builder-content input[type=button]',
 				'.fl-builder-content input[type=submit]',
-				'.fl-builder-content a.fl-button',
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle) *',
+				'.fl-builder-content .fl-button:is(a, button)',
+				'.fl-builder-content button:not(.fl-content-ui-button) *',
 				'.fl-builder-content input[type=button] *',
 				'.fl-builder-content input[type=submit] *',
-				'.fl-builder-content a.fl-button *',
+				'.fl-builder-content .fl-button:is(a, button) *',
 				'.fl-builder-content button:visited',
 				'.fl-builder-content input[type=button]:visited',
 				'.fl-builder-content input[type=submit]:visited',
@@ -553,14 +581,14 @@ final class FLBuilderGlobalStyles {
 				'.fl-builder-content input[type=button]:visited *',
 				'.fl-builder-content input[type=submit]:visited *',
 				'.fl-builder-content a.fl-button:visited *',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-page .fl-builder-content input[type=button]',
 				'.fl-page .fl-builder-content input[type=submit]',
-				'.fl-page .fl-builder-content a.fl-button',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle) *',
+				'.fl-page .fl-builder-content .fl-button:is(a, button)',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button) *',
 				'.fl-page .fl-builder-content input[type=button] *',
 				'.fl-page .fl-builder-content input[type=submit] *',
-				'.fl-page .fl-builder-content a.fl-button *',
+				'.fl-page .fl-builder-content .fl-button:is(a, button) *',
 				'.fl-page .fl-builder-content button:visited',
 				'.fl-page .fl-builder-content input[type=button]:visited',
 				'.fl-page .fl-builder-content input[type=submit]:visited',
@@ -577,22 +605,22 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::rule( array(
 			'selector' => array(
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content button:not(.fl-content-ui-button):hover',
 				'.fl-builder-content input[type=button]:hover',
 				'.fl-builder-content input[type=submit]:hover',
-				'.fl-builder-content a.fl-button:hover',
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle):hover *',
+				'.fl-builder-content .fl-button:is(a, button):hover',
+				'.fl-builder-content button:not(.fl-content-ui-button):hover *',
 				'.fl-builder-content input[type=button]:hover *',
 				'.fl-builder-content input[type=submit]:hover *',
-				'.fl-builder-content a.fl-button:hover *',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content .fl-button:is(a, button):hover *',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button):hover',
 				'.fl-page .fl-builder-content input[type=button]:hover',
 				'.fl-page .fl-builder-content input[type=submit]:hover',
-				'.fl-page .fl-builder-content a.fl-button:hover',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle):hover *',
+				'.fl-page .fl-builder-content .fl-button:is(a, button):hover',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button):hover *',
 				'.fl-page .fl-builder-content input[type=button]:hover *',
 				'.fl-page .fl-builder-content input[type=submit]:hover *',
-				'.fl-page .fl-builder-content a.fl-button:hover *',
+				'.fl-page .fl-builder-content .fl-button:is(a, button):hover *',
 			),
 			'props'    => array(
 				'color' => $settings->button_hover_color,
@@ -601,18 +629,18 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::rule( array(
 			'selector' => array(
-				'.fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-menu-mobile-toggle)',
+				'.fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-content-ui-button)',
 				'.fl-builder-content input[type=button]',
 				'.fl-builder-content input[type=submit]',
-				'.fl-builder-content a.fl-button',
+				'.fl-builder-content .fl-button:is(a, button)',
 				'.fl-builder-content button:visited',
 				'.fl-builder-content input[type=button]:visited',
 				'.fl-builder-content input[type=submit]:visited',
 				'.fl-builder-content a.fl-button:visited',
-				'.fl-page .fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-menu-mobile-toggle)',
+				'.fl-page .fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-content-ui-button)',
 				'.fl-page .fl-builder-content input[type=button]',
 				'.fl-page .fl-builder-content input[type=submit]',
-				'.fl-page .fl-builder-content a.fl-button',
+				'.fl-page .fl-builder-content .fl-button:is(a, button)',
 				'.fl-page .fl-builder-content button:visited',
 				'.fl-page .fl-builder-content input[type=button]:visited',
 				'.fl-page .fl-builder-content input[type=submit]:visited',
@@ -625,14 +653,14 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::rule( array(
 			'selector' => array(
-				'.fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-content-ui-button):hover',
 				'.fl-builder-content input[type=button]:hover',
 				'.fl-builder-content input[type=submit]:hover',
-				'.fl-builder-content a.fl-button:hover',
-				'.fl-page .fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content .fl-button:is(a, button):hover',
+				'.fl-page .fl-builder-content .fl-module-content:not(:has(.fl-inline-editor)) button:not(.fl-content-ui-button):hover',
 				'.fl-page .fl-builder-content input[type=button]:hover',
 				'.fl-page .fl-builder-content input[type=submit]:hover',
-				'.fl-page .fl-builder-content a.fl-button:hover',
+				'.fl-page .fl-builder-content .fl-button:is(a, button):hover',
 			),
 			'props'    => array(
 				'background-color' => $settings->button_hover_background,
@@ -641,18 +669,18 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::typography_field_rule( array(
 			'selector'     => array(
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-builder-content input[type=button]',
 				'.fl-builder-content input[type=submit]',
-				'.fl-builder-content a.fl-button',
+				'.fl-builder-content .fl-button:is(a, button)',
 				'.fl-builder-content button:visited',
 				'.fl-builder-content input[type=button]:visited',
 				'.fl-builder-content input[type=submit]:visited',
 				'.fl-builder-content a.fl-button:visited',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-page .fl-builder-content input[type=button]',
 				'.fl-page .fl-builder-content input[type=submit]',
-				'.fl-page .fl-builder-content a.fl-button',
+				'.fl-page .fl-builder-content .fl-button:is(a, button)',
 				'.fl-page .fl-builder-content button:visited',
 				'.fl-page .fl-builder-content input[type=button]:visited',
 				'.fl-page .fl-builder-content input[type=submit]:visited',
@@ -664,18 +692,18 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::border_field_rule( array(
 			'selector'     => array(
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-builder-content input[type=button]',
 				'.fl-builder-content input[type=submit]',
-				'.fl-builder-content a.fl-button',
+				'.fl-builder-content .fl-button:is(a, button)',
 				'.fl-builder-content button:visited',
 				'.fl-builder-content input[type=button]:visited',
 				'.fl-builder-content input[type=submit]:visited',
 				'.fl-builder-content a.fl-button:visited',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle)',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button)',
 				'.fl-page .fl-builder-content input[type=button]',
 				'.fl-page .fl-builder-content input[type=submit]',
-				'.fl-page .fl-builder-content a.fl-button',
+				'.fl-page .fl-builder-content .fl-button:is(a, button)',
 				'.fl-page .fl-builder-content button:visited',
 				'.fl-page .fl-builder-content input[type=button]:visited',
 				'.fl-page .fl-builder-content input[type=submit]:visited',
@@ -687,14 +715,14 @@ final class FLBuilderGlobalStyles {
 
 		FLBuilderCSS::rule( array(
 			'selector' => array(
-				'.fl-builder-content button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content button:not(.fl-content-ui-button):hover',
 				'.fl-builder-content input[type=button]:hover',
 				'.fl-builder-content input[type=submit]:hover',
-				'.fl-builder-content a.fl-button:hover',
-				'.fl-page .fl-builder-content button:not(.fl-menu-mobile-toggle):hover',
+				'.fl-builder-content .fl-button:is(a, button):hover',
+				'.fl-page .fl-builder-content button:not(.fl-content-ui-button):hover',
 				'.fl-page .fl-builder-content input[type=button]:hover',
 				'.fl-page .fl-builder-content input[type=submit]:hover',
-				'.fl-page .fl-builder-content a.fl-button:hover',
+				'.fl-page .fl-builder-content .fl-button:is(a, button):hover',
 			),
 			'props'    => array(
 				'border-color' => $settings->button_border_hover_color,

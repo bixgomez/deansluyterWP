@@ -18,16 +18,42 @@ class FLTestimonialsModule extends FLBuilderModule {
 		));
 	}
 
-
 	/**
- * @method enqueue_scripts
- */
+	 * @method enqueue_scripts
+	 */
 	public function enqueue_scripts() {
 		if ( $this->settings && 'compact' == $this->settings->layout && $this->settings->arrows ) {
 			$this->add_css( 'font-awesome-5' );
 		}
 		$this->add_css( 'jquery-bxslider' );
 		$this->add_js( 'jquery-bxslider' );
+	}
+
+	/**
+	 * @since 2.10
+	 * @method get_tag
+	 * @param string class name
+	 * @return string
+	 */
+	public function get_tag( $class = null ) {
+		$tag[] = 1 === $this->version ? 'div' : 'ul';
+		if ( isset( $class ) ) {
+			$tag[] = 'class=" ' . $class . '"';
+		}
+		return join( ' ', $tag );
+	}
+
+	/**
+	 * @since 2.10
+	 * @method render_items
+	 * @param string testimonial item
+	 * @return string
+	 */
+	public function render_item( $testimonial ) {
+		if ( 1 === $this->version ) {
+			return '<div class="fl-testimonial">' . $testimonial . '</div>';
+		}
+		return '<li class="fl-testimonial"><blockquote>' . $testimonial . '</blockquote></li>';
 	}
 }
 
@@ -67,6 +93,15 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 							'1' => __( 'Yes', 'fl-builder' ),
 						),
 					),
+					'play_pause' => array(
+						'type'    => 'select',
+						'label'   => __( 'Show Play/Pause', 'fl-builder' ),
+						'default' => '0',
+						'options' => array(
+							'0' => __( 'No', 'fl-builder' ),
+							'1' => __( 'Yes', 'fl-builder' ),
+						),
+					),
 					'pause'      => array(
 						'type'     => 'unit',
 						'label'    => __( 'Delay', 'fl-builder' ),
@@ -77,6 +112,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 							'max'  => 10,
 							'step' => .5,
 						),
+						'help'     => __( 'Delay should be greater than the Transition Speed.', 'fl-builder' ),
 					),
 					'transition' => array(
 						'type'    => 'select',
@@ -97,6 +133,7 @@ FLBuilder::register_module('FLTestimonialsModule', array(
 							'max'  => 10,
 							'step' => .5,
 						),
+						'help'     => __( 'Transition Speed should be less than the Delay value.', 'fl-builder' ),
 					),
 					'direction'  => array(
 						'type'    => 'select',
@@ -282,3 +319,8 @@ FLBuilder::register_settings_form('testimonials_form', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'testimonials', [
+	// Register module version (v1) to deprecate old HTML markup.
+	'v1' => [],
+] );

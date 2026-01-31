@@ -676,7 +676,7 @@ FLBuilder::register_module('FLSlideshowModule', array(
 					'overlay_hide'       => array(
 						'type'    => 'select',
 						'label'   => __( 'Overlay Hide', 'fl-builder' ),
-						'default' => 'true',
+						'default' => 'false',
 						'options' => array(
 							'false' => __( 'No', 'fl-builder' ),
 							'true'  => __( 'Yes', 'fl-builder' ),
@@ -749,3 +749,12 @@ FLBuilder::register_module('FLSlideshowModule', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'slideshow', [
+	// Deprecates the old controls markup & sets the old default for the overlay hide field.
+	'v1' => [
+		'defaults' => [
+			'overlay_hide' => 'true',
+		],
+	],
+] );

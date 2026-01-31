@@ -33,9 +33,10 @@ final class FLBuilderUserTemplatesAdminAdd {
 		$action  = __( 'Add', 'fl-builder' );
 
 		if ( 'fl-builder-add-new' == $page ) {
+			wp_enqueue_style( 'fl-builder-css' );
 			wp_enqueue_style( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'css/jquery.tiptip.css', array(), $version );
-			wp_enqueue_script( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'js/jquery.tiptip.min.js', array( 'jquery' ), $version, true );
-			wp_enqueue_script( 'jquery-validate', FLBuilder::plugin_url() . 'js/jquery.validate.min.js', array(), $version, true );
+			wp_enqueue_script( 'fl-jquery-tiptip', FLBuilder::plugin_url() . 'js/libs/jquery.tiptip.min.js', array( 'jquery' ), $version, true );
+			wp_enqueue_script( 'jquery-validate', FLBuilder::plugin_url() . 'js/libs/jquery.validate.min.js', array(), $version, true );
 			wp_enqueue_style( $slug . 'add', $url . 'css/' . $slug . 'add.css', array(), $version );
 			wp_enqueue_script( $slug . 'add', $url . 'js/' . $slug . 'add.js', array(), $version, true );
 
@@ -79,6 +80,17 @@ final class FLBuilderUserTemplatesAdminAdd {
 				'label' => __( 'Saved Module', 'fl-builder' ),
 			),
 		) );
+
+		$content_types = array(
+			100 => array(
+				'key'   => 'template',
+				'label' => __( 'Template', 'fl-builder' ),
+			),
+			200 => array(
+				'key'   => 'component',
+				'label' => __( 'Component', 'fl-builder' ),
+			),
+		);
 
 		include FL_BUILDER_USER_TEMPLATES_DIR . 'includes/admin-add-new-form.php';
 	}
@@ -147,7 +159,6 @@ final class FLBuilderUserTemplatesAdminAdd {
 		}
 
 		$template_id = FLBuilderModel::generate_node_id();
-		$global      = isset( $_POST['fl-template']['global'] ) ? 1 : 0;
 		$module      = sanitize_text_field( $_POST['fl-template']['module'] );
 
 		// Set the template type.
@@ -155,8 +166,21 @@ final class FLBuilderUserTemplatesAdminAdd {
 
 		// Set row and module template meta.
 		if ( in_array( $type, array( 'row', 'module' ) ) ) {
+
+			$global                = 0;
+			$dynamic               = 0;
+			$template_content_type = isset( $_POST['fl-template']['content_type'] ) ? sanitize_text_field( $_POST['fl-template']['content_type'] ) : '';
+
+			if ( 'component' === $template_content_type ) {
+				$dynamic = 1;
+				$global  = 1;
+			} elseif ( 'template' === $template_content_type && isset( $_POST['fl-template']['global'] ) ) {
+				$global = intval( $_POST['fl-template']['global'] );
+			}
+
 			update_post_meta( $post_id, '_fl_builder_template_id', $template_id );
 			update_post_meta( $post_id, '_fl_builder_template_global', $global );
+			update_post_meta( $post_id, '_fl_builder_template_dynamic_editing', $dynamic );
 		}
 
 		// Force the builder to use this post ID.

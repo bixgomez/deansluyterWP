@@ -1,10 +1,11 @@
 <?php
 
+	$item_tag           = ( 1 == $module->version ) ? 'div' : 'li';
 	$no_thumb           = ! has_post_thumbnail( get_the_ID() ) ? ' fl-post-no-thumb' : '';
 	$post_icon_position = isset( $settings->post_icon_position ) ? $settings->post_icon_position : 'above';
 
 ?>
-<div <?php $module->render_post_class( 'gallery' ); ?> <?php FLPostGridModule::print_schema( ' itemscope itemtype="' . FLPostGridModule::schema_itemtype() . '"' ); ?>>
+<<?php echo $item_tag; ?> <?php $module->render_post_class( 'gallery' ); ?> <?php FLPostGridModule::print_schema( ' itemscope itemtype="' . FLPostGridModule::schema_itemtype() . '"' ); ?>>
 
 	<?php FLPostGridModule::schema_meta(); ?>
 
@@ -64,4 +65,4 @@
 			</div>
 		</div>
 	</a>
-</div>
+</<?php echo $item_tag; ?>>

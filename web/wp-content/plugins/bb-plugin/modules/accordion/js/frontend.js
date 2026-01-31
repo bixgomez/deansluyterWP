@@ -1,9 +1,10 @@
+/* eslint-disable no-undef */
 (function($) {
 
 	FLBuilderAccordion = function( settings )
 	{
-		this.settings 	= settings;
-		this.nodeClass  = '.fl-node-' + settings.id;
+		this.settings 	 = settings;
+		this.nodeClass   = '.fl-node-' + settings.id;
 		this.wasToggled  = false;
 		this.expandOnTab = settings.expandOnTab;
 		this._init();
@@ -11,17 +12,15 @@
 
 	FLBuilderAccordion.prototype = {
 
-		settings	: {},
+		settings	  : {},
 		nodeClass   : '',
 		wasToggled  : false,
 		expandOnTab : false,
 
 		_init: function()
 		{
-			$( this.nodeClass + ' .fl-accordion-button' ).on('click', $.proxy( this._buttonClick, this ) );
-			$( this.nodeClass + ' .fl-accordion-button' ).on('keypress', $.proxy( this._buttonClick, this ) );
-			$( this.nodeClass + ' .fl-accordion-button-label' ).on('focusin', $.proxy( this._labelFocusIn, this ) );
-			$( this.nodeClass + ' .fl-accordion-button' ).on('focusout', $.proxy( this._focusOut, this ) );
+			$( this.nodeClass + ' .fl-accordion-item' ).on('click keydown', $.proxy( this._buttonClick, this ) );
+			$( this.nodeClass + ' .fl-accordion-button-icon:not(i)' ).on('focusin', $.proxy( this._focusIn, this ) );
 
 			if ( 'undefined' !== typeof FLBuilderLayout ) {
 				FLBuilderLayout.preloadAudio( this.nodeClass + ' .fl-accordion-content' );
@@ -30,7 +29,7 @@
 			this._openActiveAccordion();
 		},
 
-		_openActiveAccordion: function (e) {
+		_openActiveAccordion: function () {
 			var activeAccordion = $( this.nodeClass + ' .fl-accordion-item.fl-accordion-item-active' );
 
 			if ( activeAccordion.length > 0 ) {
@@ -38,8 +37,8 @@
 			}
 		},
 
-		_labelFocusIn: function(e) {
-			var button = $( e.target ).closest('.fl-accordion-button')
+		_focusIn: function(e) {
+			var button = $( e.target ).closest('.fl-accordion-button');
 
 			if ( ! e.relatedTarget ) {
 				return;
@@ -49,7 +48,6 @@
 				return;
 			}
 
-			button.attr('aria-selected', 'true');
 			this._toggleAccordion( button );
 			e.preventDefault();
 			e.stopImmediatePropagation();
@@ -58,7 +56,8 @@
 
 		_buttonClick: function( e )
 		{
-			var button        = $( e.target ).closest('.fl-accordion-button'),
+			var button        = $( e.target ).closest('.fl-accordion-item').find('.fl-accordion-button'),
+				itemActive      = button.closest( '.fl-accordion-item' ).hasClass('fl-accordion-item-active'),
 				targetModule    = $( e.target ).closest('.fl-module-accordion'),
 				targetNodeClass = 'fl-node-' + targetModule.data('node'),
 				nodeClassName   = this.nodeClass.replace('.', '');
@@ -73,31 +72,44 @@
 				return;
 			}
 
-			if ( this.expandOnTab && this.wasToggled ) {
+			if ( e.key !== 'Escape' && this.expandOnTab && this.wasToggled ) {
 				this.wasToggled = false;
 				e.preventDefault();
 				return;
 			}
 
 			// Prevent scrolling when the spacebar is pressed
-			e.preventDefault();
-			e.stopPropagation();
-			this._toggleAccordion( button );
+			if ( e.key === ' ' ) {
+				e.stopPropagation();
+				if ( $( e.target ).hasClass( 'fl-accordion-button-icon' ) ) {
+					e.preventDefault();
+				}
+			}
+
+			// Prevent the enter key from retoggling the button by not triggering a click event
+			if ( e.key === 'Enter' && $( e.target ).hasClass( 'fl-accordion-button-icon' ) ) {
+				e.preventDefault();
+			}
+
+			const classes = '.fl-accordion-button, .fl-accordion-button-label, .fl-accordion-button-icon';
+			if ( ( e.key !== 'Escape' && $( e.target ).is( classes ) ) || ( e.key === 'Escape' && itemActive ) ) {
+				this._toggleAccordion( button );
+			}
 
 		},
 
 		_toggleAccordion: function( button ) {
-			var accordion   = button.closest('.fl-accordion'),
-				item	    = button.closest('.fl-accordion-item'),
+			var accordion = button.closest('.fl-accordion'),
+				item	      = button.closest('.fl-accordion-item'),
 				allContent  = accordion.find('.fl-accordion-content'),
 				allIcons    = accordion.find('.fl-accordion-button i.fl-accordion-button-icon'),
 				content     = button.siblings('.fl-accordion-content'),
 				icon        = button.find('i.fl-accordion-button-icon');
 
 			if(accordion.hasClass('fl-accordion-collapse')) {
-				accordion.find( '> .fl-accordion-item-active' ).removeClass( 'fl-accordion-item-active' );
-				accordion.find( '> .fl-accordion-button' ).attr('aria-expanded', 'false');
-				accordion.find( '> .fl-accordion-content' ).attr('aria-hidden', 'true');
+				accordion.find( '.fl-accordion-item-active' ).removeClass( 'fl-accordion-item-active' );
+				accordion.find( '.fl-accordion-button-icon:not(i)' ).attr('aria-expanded', 'false');
+				accordion.find( '.fl-accordion-content' ).attr('aria-hidden', 'true');
 				allContent.slideUp('normal');
 
 				if( allIcons.find('svg').length > 0 ) {
@@ -108,10 +120,14 @@
 				}
 			}
 
+			if ( ! item.find( '.fl-accordion-button-icon:not(i)' ).is( ':focus' ) ) {
+				item.find( '.fl-accordion-button-icon:not(i)' ).trigger( 'focus' );
+			}
+
 			if(content.is(':hidden')) {
-				button.attr('aria-expanded', 'true');
-				item.addClass( 'fl-accordion-item-active' );
+				item.find( '.fl-accordion-button-icon:not(i)' ).attr('aria-expanded', 'true');
 				item.find( '.fl-accordion-content' ).attr('aria-hidden', 'false');
+				item.addClass( 'fl-accordion-item-active' );
 				content.slideDown('normal', this._slideDownComplete);
 
 				if( icon.find('svg').length > 0 ) {
@@ -120,14 +136,13 @@
 					icon.removeClass( this.settings.labelIcon );
 					icon.addClass( this.settings.activeIcon );
 				}
-				icon.attr( 'title', this.settings.collapseTxt );
 				icon.parent().find('span').text( this.settings.collapseTxt );
 				icon.find('span').text( this.settings.collapseTxt );
 			}
 			else {
-				button.attr('aria-expanded', 'false');
-				item.removeClass( 'fl-accordion-item-active' );
+				item.find( '.fl-accordion-button-icon:not(i)' ).attr('aria-expanded', 'false');
 				item.find( '.fl-accordion-content' ).attr('aria-hidden', 'true');
+				item.removeClass( 'fl-accordion-item-active' );
 				content.slideUp('normal', this._slideUpComplete);
 
 				if( icon.find('svg').length > 0 ) {
@@ -136,33 +151,25 @@
 					icon.removeClass( this.settings.activeIcon );
 					icon.addClass( this.settings.labelIcon );
 				}
-				icon.attr( 'title', this.settings.expandTxt );
 				icon.parent().find('span').text( this.settings.expandTxt );
 				icon.find('span').text( this.settings.expandTxt );
 			}
 		},
 
-		_focusOut: function( e )
-		{
-			var button      = $( e.target ).closest('.fl-accordion-button');
-
-			button.attr('aria-selected', 'false');
-		},
-
 		_slideUpComplete: function()
 		{
-			var content 	= $( this ),
-				accordion 	= content.closest( '.fl-accordion' );
+			var content = $( this ),
+				accordion = content.closest( '.fl-accordion' );
 
 			accordion.trigger( 'fl-builder.fl-accordion-toggle-complete' );
 		},
 
 		_slideDownComplete: function()
 		{
-			var content 	= $( this ),
-				accordion 	= content.closest( '.fl-accordion' ),
-				item 		= content.parent(),
-				win  		= $( window );
+			var content = $( this ),
+				accordion = content.closest( '.fl-accordion' ),
+				item 		  = content.parent(),
+				win  		  = $( window );
 
 			if ( 'undefined' !== typeof FLBuilderLayout ) {
 				FLBuilderLayout.refreshGalleries( content );
@@ -194,7 +201,7 @@
 
 		_validClick: function(e)
 		{
-			return (e.which == 1 || e.which == 13 || e.which == 32 || e.which == undefined) ? true : false;
+			return (e.which == 1 || e.which == 13 || e.which == 27 || e.which == 32 || e.which == undefined) ? true : false;
 		}
 	};
 

@@ -1,4 +1,5 @@
-<div <?php $module->render_post_class( 'grid' ); ?> <?php FLPostGridModule::print_schema( ' itemscope itemtype="' . FLPostGridModule::schema_itemtype() . '"' ); ?>>
+<?php $item_tag = ( 1 == $module->version ) ? 'div' : 'li'; ?>
+<<?php echo $item_tag; ?> <?php $module->render_post_class( 'grid' ); ?> <?php FLPostGridModule::print_schema( ' itemscope itemtype="' . FLPostGridModule::schema_itemtype() . '"' ); ?>>
 
 	<?php FLPostGridModule::schema_meta(); ?>
 
@@ -48,8 +49,11 @@
 				$module->render_excerpt();
 			}
 			?>
-			<?php if ( $settings->show_more_link ) : ?>
-			<a class="fl-post-carousel-more" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php echo $settings->more_link_text; ?></a>
+			<?php
+			if ( $settings->show_more_link ) :
+				$more_link_context = '<span class="sr-only"> about ' . the_title_attribute( array( 'echo' => false ) ) . '</span>';
+				?>
+				<a class="fl-post-carousel-more" href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>" aria-hidden="true" tabindex="-1"><?php echo $settings->more_link_text . $more_link_context; ?></a>
 			<?php endif; ?>
 		</div>
 		<?php endif; ?>
@@ -57,4 +61,4 @@
 
 	</div>
 
-</div>
+</<?php echo $item_tag; ?>>

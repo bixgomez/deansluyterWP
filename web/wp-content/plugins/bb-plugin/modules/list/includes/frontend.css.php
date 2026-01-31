@@ -152,66 +152,75 @@ FLBuilderCSS::responsive_rule( array(
 <?php
 $section      = 'section-' . $id;
 $item_counter = 0;
-foreach ( $settings->list_items as $k => $item ) :
 
-	if ( ! is_object( $item ) ) {
+if ( 'basic' === $settings->list_layout ) {
+	$list_items = explode( "\n", $settings->item_data );
+} else {
+	$list_items = $settings->list_items;
+}
+
+foreach ( $list_items as $k => $item ) :
+
+	if ( ! is_object( $item ) && 'advanced' === $settings->list_layout ) {
 		$item_counter++;
 		continue;
 	}
 
-	// Item Heading Text Color
-	if ( ! empty( $item->heading_text_color ) ) :
-		?>
-		.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-text,
-		.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-text {
-			color: <?php echo FLBuilderColor::hex_or_rgb( $item->heading_text_color ); ?>;
-		}
-		<?php
-	endif;
+	if ( 'advanced' === $settings->list_layout ) :
+		// Item Heading Text Color
+		if ( ! empty( $item->heading_text_color ) ) :
+			?>
+			.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-text,
+			.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-text {
+				color: <?php echo FLBuilderColor::hex_or_rgb( $item->heading_text_color ); ?>;
+			}
+			<?php
+		endif;
 
-	// Item Content Text Color
-	if ( ! empty( $item->content_text_color ) ) :
-		?>
-		.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-text *,
-		.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-text * {
-			color: <?php echo FLBuilderColor::hex_or_rgb( $item->content_text_color ); ?>;
-		}
-		<?php
-	endif;
+		// Item Content Text Color
+		if ( ! empty( $item->content_text_color ) ) :
+			?>
+			.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-text *,
+			.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-text * {
+				color: <?php echo FLBuilderColor::hex_or_rgb( $item->content_text_color ); ?>;
+			}
+			<?php
+		endif;
 
-	// Item Background Color
-	if ( ! empty( $item->bg_color ) ) :
-		?>
-		.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> {
-			background-color: <?php echo FLBuilderColor::hex_or_rgb( $item->bg_color ); ?>;
-		}
-		<?php
-	endif;
+		// Item Background Color
+		if ( ! empty( $item->bg_color ) ) :
+			?>
+			.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> {
+				background-color: <?php echo FLBuilderColor::hex_or_rgb( $item->bg_color ); ?>;
+			}
+			<?php
+		endif;
 
-	// Item Icon Style - Color
-	if ( ! empty( $item->icon_color ) ) :
-		?>
-		.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-icon .fl-list-item-icon,
-		.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-icon .fl-list-item-icon,
-		.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-icon .fl-list-item-icon,
-		.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-icon .fl-list-item-icon {
-			color: <?php echo FLBuilderColor::hex_or_rgb( $item->icon_color ); ?>;
-		}
-		<?php
-	endif;
+		// Item Icon Style - Color
+		if ( ! empty( $item->icon_color ) ) :
+			?>
+			.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-icon .fl-list-item-icon,
+			.fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-icon .fl-list-item-icon,
+			.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-heading-icon .fl-list-item-icon,
+			.fl-row .fl-col .fl-node-<?php echo $id; ?> .fl-list .fl-list-item-<?php echo $item_counter; ?> .fl-list-item-content-icon .fl-list-item-icon {
+				color: <?php echo FLBuilderColor::hex_or_rgb( $item->icon_color ); ?>;
+			}
+			<?php
+		endif;
 
-	// List Item Padding
-	FLBuilderCSS::dimension_field_rule( array(
-		'settings'     => $settings->list_items[ $k ],
-		'setting_name' => 'list_item_padding',
-		'selector'     => ".fl-node-$id .fl-list .fl-list-item-$item_counter",
-		'props'        => array(
-			'padding-top'    => 'list_item_padding_top',
-			'padding-right'  => 'list_item_padding_right',
-			'padding-bottom' => 'list_item_padding_bottom',
-			'padding-left'   => 'list_item_padding_left',
-		),
-	) );
+		// List Item Padding
+		FLBuilderCSS::dimension_field_rule( array(
+			'settings'     => $settings->list_items[ $k ],
+			'setting_name' => 'list_item_padding',
+			'selector'     => ".fl-node-$id .fl-list .fl-list-item-$item_counter",
+			'props'        => array(
+				'padding-top'    => 'list_item_padding_top',
+				'padding-right'  => 'list_item_padding_right',
+				'padding-bottom' => 'list_item_padding_bottom',
+				'padding-left'   => 'list_item_padding_left',
+			),
+		) );
+	endif;
 
 	// Item Icons
 	// For the Ordered List, Icons will be a numeric sequence unless overridden

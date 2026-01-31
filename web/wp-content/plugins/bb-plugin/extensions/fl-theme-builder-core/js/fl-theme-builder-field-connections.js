@@ -543,14 +543,22 @@
 
 				if (field.find('.fl-field-responsive-setting').length > 0) {
 					// Responsive wrappers exist, get input for the currently visible device
-					colorInput = field.find('.fl-field-responsive-setting:visible .fl-color-picker-value');
+					if(field.find('.fl-field-responsive-setting:visible .fl-color-picker-value').attr('name').includes('bg_gradient')) {
+						colorInput = target.closest('.fl-gradient-picker-color').find('input.fl-color-picker-value');
+					} else {
+						colorInput = field.find('.fl-field-responsive-setting:visible .fl-color-picker-value');
+					}
 				} else {
 					// No responsive wrappers, fallback to flat structure
-					colorInput = field.find('.fl-color-picker-value');
+					if( field.find('.fl-color-picker-value').length > 0 && field.find('.fl-color-picker-value').attr('name').includes('bg_gradient')) {
+						colorInput = target.closest('.fl-gradient-picker-color').find('input.fl-color-picker-value');
+					} else {
+						colorInput = field.find('.fl-color-picker-value');
+					}
 				}
 
 				// set color value to connection's color that is to be removed
-				colorInput.val(color)
+				colorInput.val(color).trigger('change', [{ source: 'removeConnection' }]);
 
 			if ( field.find( '.fl-field-connection-compound' ).length ) {
 				FLThemeBuilderCompoundConnections._removeConnection( connection );

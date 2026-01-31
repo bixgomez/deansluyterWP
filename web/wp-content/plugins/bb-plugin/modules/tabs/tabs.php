@@ -89,7 +89,7 @@ class FLTabsModule extends FLBuilderModule {
 		$html[] = '<div><a class="fl-tabs-post-more-link"';
 		$html[] = 'href="' . esc_url( get_the_permalink() ) . '"';
 		$html[] = 'title="' . the_title_attribute( array( 'echo' => false ) ) . '">';
-		$html[] = $more_link_text;
+		$html[] = $more_link_text . '<span class="sr-only"> about ' . the_title_attribute( array( 'echo' => false ) ) . '</span>';
 		$html[] = '</a></div>';
 		echo join( '', $html );
 	}
@@ -517,3 +517,8 @@ FLBuilder::register_settings_form('items_form', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'tabs', [
+	// Deprecates the old controls markup.
+	'v1' => [],
+] );

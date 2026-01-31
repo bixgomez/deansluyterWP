@@ -76,6 +76,7 @@ final class FLBuilderUserTemplatesAdminEdit {
 
 		if ( 'post.php' == $pagenow && 'fl-builder-template' == $screen->post_type ) {
 
+			wp_enqueue_style( 'fl-builder-css' );
 			wp_enqueue_style( $slug . 'edit', $url . 'css/' . $slug . 'edit.css', array(), $version );
 			wp_enqueue_script( $slug . 'edit', $url . 'js/' . $slug . 'edit.js', array(), $version );
 

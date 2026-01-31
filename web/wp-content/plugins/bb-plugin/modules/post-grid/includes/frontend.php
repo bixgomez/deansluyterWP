@@ -32,7 +32,7 @@ if ( ! $themer_archive_404 && $query->have_posts() ) :
 	<div class="fl-post-<?php echo sanitize_html_class( $module->get_layout_slug() ) . $paged; ?>"<?php echo FLPostGridModule::print_schema( ' itemscope="itemscope" itemtype="' . FLPostGridModule::schema_collection_type( $data_source, $post_type ) . '"' ); ?>>
 	<?php
 
-	if ( 'li' == $module->get_posts_container() ) :
+	if ( 'li' == $module->get_posts_container( false, true ) ) :
 		if ( '' != $module->settings->posts_container_ul_class ) {
 			echo '<ul class="' . FLBuilderUtils::sanitize_html_class( $module->settings->posts_container_ul_class ) . '">';
 		} else {
@@ -53,7 +53,7 @@ if ( ! $themer_archive_404 && $query->have_posts() ) :
 		echo do_shortcode( ob_get_clean() );
 	}
 
-	if ( 'li' == $module->get_posts_container() ) :
+	if ( 'li' == $module->get_posts_container( false, true ) ) :
 		echo '</ul>';
 	endif;
 
@@ -79,7 +79,7 @@ if ( 'none' != $settings->pagination && $query->have_posts() && $query->max_num_
 		<div class="fl-builder-pagination-load-more">
 			<?php
 
-			FLBuilder::render_module_html( 'button', $module->get_button_settings() );
+			FLBuilder::render_module_html( 'button', $module->get_button_settings(), $module->get_button_version() );
 
 			?>
 </div>

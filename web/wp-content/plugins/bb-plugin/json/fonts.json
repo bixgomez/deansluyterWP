@@ -299,6 +299,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Amarna": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "100italic", "200italic", "300italic", "italic", "500italic", "600italic", "700italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Amatic SC": {
     "variants": ["regular", "700"],
     "fallback": "cursive"
@@ -702,6 +707,21 @@
   "B612 Mono": {
     "variants": ["regular", "italic", "700", "700italic"],
     "fallback": "monospace"
+  }
+}, {
+  "BBH Bartle": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "BBH Bogle": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "BBH Hegarty": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
   }
 }, {
   "BIZ UDGothic": {
@@ -1479,6 +1499,11 @@
     "fallback": "serif"
   }
 }, {
+  "Cause": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
+    "fallback": "cursive"
+  }
+}, {
   "Caveat": {
     "variants": ["regular", "500", "600", "700"],
     "fallback": "cursive"
@@ -2214,6 +2239,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Elms Sans": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900", "100italic", "200italic", "300italic", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Elsie": {
     "variants": ["regular", "900"],
     "fallback": "sans-serif"
@@ -2744,6 +2774,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Geom": {
+    "variants": ["300", "regular", "500", "600", "700", "800", "900", "300italic", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Georama": {
     "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900", "100italic", "200italic", "300italic", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
     "fallback": "sans-serif"
@@ -2844,9 +2879,19 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Google Sans": {
+    "variants": ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Google Sans Code": {
     "variants": ["300", "regular", "500", "600", "700", "800", "300italic", "italic", "500italic", "600italic", "700italic", "800italic"],
     "fallback": "monospace"
+  }
+}, {
+  "Google Sans Flex": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
+    "fallback": "sans-serif"
   }
 }, {
   "Gorditas": {
@@ -3734,6 +3779,11 @@
     "fallback": "sans-serif"
   }
 }, {
+  "Kedebideri": {
+    "variants": ["regular", "500", "600", "700", "800", "900"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Kelly Slab": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -4110,7 +4160,7 @@
   }
 }, {
   "Libre Baskerville": {
-    "variants": ["regular", "italic", "700"],
+    "variants": ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
     "fallback": "serif"
   }
 }, {
@@ -4142,6 +4192,11 @@
   "Life Savers": {
     "variants": ["regular", "700", "800"],
     "fallback": "sans-serif"
+  }
+}, {
+  "Lilex": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "100italic", "200italic", "300italic", "italic", "500italic", "600italic", "700italic"],
+    "fallback": "monospace"
   }
 }, {
   "Lilita One": {
@@ -4747,6 +4802,21 @@
   "Molle": {
     "variants": ["italic"],
     "fallback": "cursive"
+  }
+}, {
+  "Momo Signature": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Momo Trust Display": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Momo Trust Sans": {
+    "variants": ["200", "300", "regular", "500", "600", "700", "800"],
+    "fallback": "sans-serif"
   }
 }, {
   "Mona Sans": {
@@ -5810,6 +5880,11 @@
   }
 }, {
   "Noto Sans Syriac Eastern": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Noto Sans Syriac Western": {
     "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
     "fallback": "sans-serif"
   }
@@ -8039,6 +8114,11 @@
     "fallback": "cursive"
   }
 }, {
+  "Science Gothic": {
+    "variants": ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
+    "fallback": "sans-serif"
+  }
+}, {
   "Scope One": {
     "variants": ["regular"],
     "fallback": "serif"
@@ -8072,6 +8152,11 @@
   "Sedgwick Ave Display": {
     "variants": ["regular"],
     "fallback": "cursive"
+  }
+}, {
+  "Sekuya": {
+    "variants": ["regular"],
+    "fallback": "sans-serif"
   }
 }, {
   "Sen": {
@@ -8496,6 +8581,21 @@
 }, {
   "Staatliches": {
     "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Stack Sans Headline": {
+    "variants": ["200", "300", "regular", "500", "600", "700"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Stack Sans Notch": {
+    "variants": ["200", "300", "regular", "500", "600", "700"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "Stack Sans Text": {
+    "variants": ["200", "300", "regular", "500", "600", "700"],
     "fallback": "sans-serif"
   }
 }, {

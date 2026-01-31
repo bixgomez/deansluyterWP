@@ -103,7 +103,7 @@ class FLAccordionModule extends FLBuilderModule {
 		$html[] = '<div><a class="fl-accordion-post-more-link"';
 		$html[] = 'href="' . esc_url( get_the_permalink() ) . '"';
 		$html[] = 'title="' . the_title_attribute( array( 'echo' => false ) ) . '">';
-		$html[] = $more_link_text;
+		$html[] = $more_link_text . '<span class="sr-only"> about ' . the_title_attribute( array( 'echo' => false ) ) . '</span>';
 		$html[] = '</a></div>';
 		echo join( '', $html );
 	}
@@ -186,8 +186,8 @@ FLBuilder::register_module('FLAccordionModule', array(
 					'label_tag'         => array(
 						'type'     => 'select',
 						'label'    => __( 'Label Tag', 'fl-builder' ),
-						'default'  => 'a',
-						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'a' ),
+						'default'  => 'h2',
+						'sanitize' => array( 'FLBuilderUtils::esc_tags', 'h2' ),
 						'options'  => array(
 							'a'    => 'a',
 							'h1'   => 'h1',
@@ -600,3 +600,12 @@ FLBuilder::register_settings_form('accordion_items_form', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'accordion', [
+	// Register module version (v1) to deprecate old HTML markup & label_tag default value.
+	'v1' => [
+		'defaults' => [
+			'label_tag' => 'a',
+		],
+	],
+] );

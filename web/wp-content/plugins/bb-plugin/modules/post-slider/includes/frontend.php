@@ -15,7 +15,18 @@ if ( $query->have_posts() ) :
 	?>
 
 	<div class="fl-post-slider"<?php FLBuilder::print_schema( ' itemscope="itemscope" itemtype="https://schema.org/Blog"' ); ?>>
-		<div class="fl-post-slider-wrapper">
+		<?php if ( 'yes' == $settings->navigation && $query->have_posts() ) : ?>
+			<div class="fl-post-slider-navigation" aria-label="post slider buttons">
+				<?php if ( 1 == $module->version ) : ?>
+					<a class="slider-prev" href="#" aria-label="previous" role="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></a>
+					<a class="slider-next" href="#" aria-label="next" role="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></a>
+				<?php else : ?>
+					<button class="slider-prev fl-content-ui-button" aria-label="previous" type="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></button>
+					<button class="slider-next fl-content-ui-button" aria-label="next" type="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></button>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+		<<?php echo ( 1 == $module->version ) ? 'div' : 'ul'; ?> class="fl-post-slider-wrapper">
 
 			<?php
 
@@ -33,17 +44,7 @@ if ( $query->have_posts() ) :
 			}
 
 			?>
-		</div>
-	<?php
-
-	// Render the navigation.
-	if ( 'yes' == $settings->navigation && $query->have_posts() ) :
-		?>
-		<div class="fl-post-slider-navigation" aria-label="post slider buttons">
-			<a class="slider-prev" href="#" aria-label="previous" role="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-left.svg'; ?></div></a>
-			<a class="slider-next" href="#" aria-label="next" role="button"><div class="fl-post-slider-svg-container"><?php include FL_BUILDER_DIR . 'img/svg/arrow-right.svg'; ?></div></a>
-		</div>
-	<?php endif; ?>
+		</<?php echo ( 1 == $module->version ) ? 'div' : 'ul'; ?>>
 	</div>
 	<div class="fl-clear"></div>
 <?php endif; ?>

@@ -150,6 +150,15 @@
 				loaderSrc       = FLBuilderLayoutConfig.paths.pluginUrl + 'img/ajax-loader-small.svg',
 				loader          = $('<img class="fl-builder-preview-loader" src="' + loaderSrc + '" />');
 
+			// Skip preview refresh for specific fields that do not require live updates.
+			// This is a temporary workaround for fields like 'h_groups' that do not affect the preview directly.
+			// TODO: Refactor this logic when a more robust method for handling non-preview fields is available.
+			const nonPreviewFields = [ 'fl-field-h_groups' ];
+
+			if ( nonPreviewFields.includes( field.attr( 'id' ) ) ) {
+				return;
+			}
+
 			// clear prev timeout
 			this.clearTimeout();
 

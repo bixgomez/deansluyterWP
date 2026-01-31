@@ -9,7 +9,7 @@ if ( 'post' == $settings->source ) {
 
 <div class="fl-tabs fl-tabs-<?php echo sanitize_html_class( $settings->layout ); ?> fl-clearfix">
 
-	<div class="fl-tabs-labels fl-clearfix" role="tablist">
+	<<?php echo 1 === $module->version ? 'div' : 'ul'; ?> class="fl-tabs-labels fl-clearfix" role="tablist">
 		<?php
 		$active_tab     = intval( $settings->active_tab );
 		$tabs_on_mobile = $settings->tabs_on_mobile;
@@ -19,6 +19,8 @@ if ( 'post' == $settings->source ) {
 		}
 		?>
 		<?php
+		$control_tag = 1 === $module->version ? 'a role="button" tabindex="0"' : 'button type="button"';
+		$tag_classes = 1 === $module->version ? 'fl-tabs-label' : 'fl-tabs-label fl-content-ui-button';
 		if ( 'content' == $settings->source ) {
 			for ( $i = 0; $i < count( $settings->items ); $i++ ) {
 				if ( ! is_object( $settings->items[ $i ] ) ) {
@@ -26,15 +28,30 @@ if ( 'post' == $settings->source ) {
 				}
 
 				$tab_label_id = 'fl-tabs-' . $module->node . '-label-' . $i;
+				$tab_panel_id = 'fl-tabs-' . $module->node . '-panel-' . $i;
+				$tab_selected = ( ( $active_tab - 1 ) == $i ) ? 'true' : 'false';
+				$tab_active   = ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : '';
+				$tab_classes  = $tag_classes . $tab_active;
+				$tab_aria     = 'role="tab" aria-selected="' . $tab_selected . '" aria-controls="' . $tab_panel_id . '"';
 				$id_in_label  = apply_filters( 'fl_tabs_id_in_label', false, $settings, $i );
 
 				if ( $id_in_label && ! empty( $settings->id ) ) {
 					$tab_label_id = esc_attr( $settings->id ) . '-label-' . $i;
 				}
 				?>
-				<a href="#" class="fl-tabs-label<?php if ( ($active_tab - 1) == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" data-index="<?php echo $i; ?>" aria-selected="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false';?>" aria-controls="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" aria-expanded="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false'; ?>" role="tab" tabindex="0"><?php // @codingStandardsIgnoreLine ?>
+				<?php
+				if ( 1 !== $module->version ) :
+					echo '<li role="presentation">';
+				endif;
+				?>
+				<<?php echo $control_tag; ?> class="<?php echo $tab_classes; ?>" id="<?php echo $tab_label_id; ?>" data-index="<?php echo $i; ?>" <?php echo $tab_aria; ?>>
 				<?php echo $settings->items[ $i ]->label; ?>
-				</a>
+				</<?php echo esc_attr( $control_tag ); ?>>
+				<?php
+				if ( 1 !== $module->version ) {
+					echo '</li>';
+				}
+				?>
 				<?php
 			}
 		} elseif ( 'post' == $settings->source ) {
@@ -45,15 +62,30 @@ if ( 'post' == $settings->source ) {
 					$query->the_post();
 
 					$tab_label_id = 'fl-tabs-' . $module->node . '-label-' . $i;
+					$tab_panel_id = 'fl-tabs-' . $module->node . '-panel-' . $i;
+					$tab_selected = ( ( $active_tab - 1 ) == $i ) ? 'true' : 'false';
+					$tab_active   = ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : '';
+					$tab_classes  = $tag_classes . $tab_active;
+					$tab_aria     = 'role="tab" aria-selected="' . $tab_selected . '" aria-controls="' . $tab_panel_id . '"';
 					$id_in_label  = apply_filters( 'fl_tabs_id_in_label', false, $settings, $i );
 
 					if ( $id_in_label && ! empty( $settings->id ) ) {
 						$tab_label_id = esc_attr( $settings->id ) . '-label-' . $i;
 					}
 					?>
-					<a href="#" class="fl-tabs-label<?php if ( ($active_tab - 1) == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" data-index="<?php echo $i; ?>" aria-selected="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false';?>" aria-controls="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" aria-expanded="<?php echo ( ($active_tab - 1) == $i ) ? 'true' : 'false'; ?>" role="tab" tabindex="0"><?php // @codingStandardsIgnoreLine ?>
+					<?php
+					if ( 1 !== $module->version ) :
+						echo '<li role="presentation">';
+					endif;
+					?>
+					<<?php echo $control_tag; ?> class="<?php echo $tab_classes; ?>" id="<?php echo $tab_label_id; ?>" data-index="<?php echo $i; ?>" <?php echo $tab_aria; ?>>
 						<?php the_title(); ?>
-					</a>
+					</<?php echo esc_attr( $control_tag ); ?>>
+					<?php
+					if ( 1 !== $module->version ) :
+						echo '</li>';
+					endif;
+					?>
 					<?php
 					$i++;
 				}
@@ -62,22 +94,34 @@ if ( 'post' == $settings->source ) {
 		}
 		?>
 
-	</div>
+	</<?php echo 1 === $module->version ? 'div' : 'ul'; ?>>
 
 	<div class="fl-tabs-panels fl-clearfix">
 		<?php
+		$tag_classes .= ' fl-tabs-panel-label';
+		$control_tag  = 1 === $module->version ? 'div role="button" tabindex="0"' : 'button type="button"';
 		if ( 'content' == $settings->source ) {
 			for ( $i = 0; $i < count( $settings->items ); $i++ ) {
+				$tab_label_id  = 'fl-tabs-' . $module->node . '-label-' . $i;
+				$tab_panel_id  = 'fl-tabs-' . $module->node . '-panel-' . $i;
+				$tab_selected  = ( ( $active_tab - 1 ) == $i ) ? 'true' : 'false';
+				$tab_active    = ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : '';
+				$tab_classes   = $tag_classes . $tab_active;
+				$tab_aria      = 'role="tab" aria-selected="' . $tab_selected . '" aria-controls="' . $tab_panel_id . '"';
+				$panel_classes = 'fl-tabs-panel-content fl-clearfix' . $tab_active;
+				$panel_hidden  = ( ( $active_tab - 1 ) !== $i ) ? ' aria-hidden="true"' : '';
+				$panel_aria    = 'role="tabpanel" aria-live="polite" aria-labelledby="' . $tab_label_id . '"' . $panel_hidden;
+
 				if ( ! is_object( $settings->items[ $i ] ) ) {
 					continue;
 				}
 				?>
 				<div class="fl-tabs-panel"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-					<div class="fl-tabs-label fl-tabs-panel-label<?php echo ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : ''; ?>" data-index="<?php echo $i; ?>" tabindex="0">
+					<<?php echo $control_tag; ?> class="<?php echo $tab_classes; ?>" data-index="<?php echo $i; ?>" <?php echo $tab_aria; ?>>
 						<span><?php echo $settings->items[ $i ]->label; ?></span>
 						<i class="fas<?php echo ( ( $active_tab - 1 ) !== $i || 'close-all' === $tabs_on_mobile ) ? ' fa-plus' : ''; ?>"></i>
-					</div>
-					<div class="fl-tabs-panel-content fl-clearfix<?php if ( ($active_tab - 1)  == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" data-index="<?php echo $i; ?>"<?php if ( ($active_tab - 1) !== $i ) { echo ' aria-hidden="true"';} ?> aria-labelledby="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" role="tabpanel" aria-live="polite"><?php // @codingStandardsIgnoreLine ?>
+					</<?php echo esc_attr( $control_tag ); ?>>
+					<div class="<?php echo $panel_classes; ?>" id="<?php echo $tab_panel_id; ?>" data-index="<?php echo $i; ?>" <?php echo $panel_aria; ?>>
 						<?php
 						if ( 'none' === $settings->items[ $i ]->saved_layout ) {
 							echo FLBuilderUtils::wpautop( $wp_embed->autoembed( $settings->items[ $i ]->content ), $module );
@@ -98,14 +142,23 @@ if ( 'post' == $settings->source ) {
 				$i = 0;
 
 				while ( $query->have_posts() ) {
+					$tab_label_id  = 'fl-tabs-' . $module->node . '-label-' . $i;
+					$tab_panel_id  = 'fl-tabs-' . $module->node . '-panel-' . $i;
+					$tab_selected  = ( ( $active_tab - 1 ) == $i ) ? 'true' : 'false';
+					$tab_active    = ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : '';
+					$tab_classes   = $tag_classes . $tab_active;
+					$tab_aria      = 'role="tab" aria-selected="' . $tab_selected . '" aria-controls="' . $tab_panel_id . '"';
+					$panel_classes = 'fl-tabs-panel-content fl-clearfix' . $tab_active;
+					$panel_hidden  = ( ( $active_tab - 1 ) !== $i ) ? ' aria-hidden="true"' : '';
+					$panel_aria    = 'role="tabpanel" aria-live="polite" aria-labelledby="' . $tab_label_id . '"' . $panel_hidden;
 					$query->the_post();
 					?>
 					<div class="fl-tabs-panel"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-						<div class="fl-tabs-label fl-tabs-panel-label<?php echo ( ( $active_tab - 1 ) == $i ) ? ' fl-tab-active' : ''; ?>" data-index="<?php echo $i; ?>" tabindex="0">
+						<<?php echo $control_tag; ?> class="<?php echo $tab_classes; ?>" data-index="<?php echo $i; ?>" <?php echo $tab_aria; ?>>
 							<span><?php the_title(); ?></span>
 							<i class="fas<?php echo ( ( $active_tab - 1 ) !== $i || 'close-all' === $tabs_on_mobile ) ? ' fa-plus' : ''; ?>"></i>
-						</div>
-						<div class="fl-tabs-panel-content fl-clearfix<?php if ( ($active_tab - 1)  == $i ) { echo ' fl-tab-active';} ?>" id="<?php echo 'fl-tabs-' . $module->node . '-panel-' . $i; ?>" data-index="<?php echo $i; ?>"<?php if ( ($active_tab - 1) !== $i ) { echo ' aria-hidden="true"';} ?> aria-labelledby="<?php echo 'fl-tabs-' . $module->node . '-label-' . $i; ?>" role="tabpanel" aria-live="polite"><?php // @codingStandardsIgnoreLine ?>
+						</<?php echo esc_attr( $control_tag ); ?>>
+						<div class="<?php echo $panel_classes; ?>" id="<?php echo $tab_panel_id; ?>" data-index="<?php echo $i; ?>" <?php echo $panel_aria; ?>>
 							<?php
 
 							$post_id = get_the_id();

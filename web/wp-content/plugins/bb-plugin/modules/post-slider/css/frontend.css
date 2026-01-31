@@ -22,15 +22,28 @@ body.rtl .fl-module-post-slider .bx-viewport {
 	z-index: 20;
 	margin-top: -16px;
 }
-.fl-post-slider-navigation a{
+.fl-post-slider-navigation button,
+.fl-post-slider-navigation button:focus,
+.fl-post-slider-navigation button:hover{
+	all: unset;
+	cursor: pointer;
+	position: absolute;
+}
+.fl-post-slider-navigation button:focus{
+	outline: 1px auto -webkit-focus-ring-color;
+}
+.fl-post-slider-navigation a,
+.fl-post-slider-navigation button{
 	position: absolute;
 	display: inline-block;
 	opacity: .7;
 }
-.fl-post-slider-navigation a:hover{ opacity: 1; }
-
-.fl-post-slider-navigation .slider-prev{ left: 5px; }
-.fl-post-slider-navigation .slider-next{ right: 5px; }
+.fl-post-slider-navigation a:hover,
+.fl-post-slider-navigation button:hover{
+	opacity: 1;
+}
+.fl-post-slider .fl-post-slider-navigation .slider-prev{ left: 5px; }
+.fl-post-slider .fl-post-slider-navigation .slider-next{ right: 5px; }
 
 .fl-post-slider-navigation .fl-post-slider-svg-container{
 	position: relative;
@@ -47,7 +60,9 @@ body.rtl .fl-module-post-slider .bx-viewport {
 .fl-post-slider-navigation path{ fill: #fff; }
 
 .fl-post-slider-navigation a.disabled,
-.bx-controls a.disabled {
+.fl-post-slider-navigation button.disabled,
+.bx-controls a.disabled,
+.bx-controls button.disabled {
 	pointer-events: none;
 }
 

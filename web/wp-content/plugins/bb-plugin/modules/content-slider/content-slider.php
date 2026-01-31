@@ -295,12 +295,24 @@ class FLContentSliderModule extends FLBuilderModule {
 	}
 
 	/**
+	 * Returns the relevant deprecated version of the button module if the content slider module is deprecated.
+	 * It returns null (current version) if the content slider module is not deprecated.
+	 *
+	 * @since 2.10
+	 * @method get_button_version
+	 * @return integer|null
+	 */
+	public function get_button_version() {
+		return null;  // Temporary lock on current version only until further changes are ready for the next version
+	}
+
+	/**
 	 * @method render_button
 	 */
 	public function render_button( $slide, $slide_index = 0, $node_id = 0 ) {
 		if ( 'button' == $slide->cta_type ) {
 			echo '<div id="' . "fl-slide-cta-button-$node_id-$slide_index" . '" class="fl-slide-cta-button">';
-			FLBuilder::render_module_html( 'button', $this->get_button_settings( $slide ) );
+			FLBuilder::render_module_html( 'button', $this->get_button_settings( $slide ), $this->get_button_version() );
 			echo '</div>';
 		}
 	}
@@ -317,6 +329,30 @@ class FLContentSliderModule extends FLBuilderModule {
 		} else {
 			return $this->settings->loop;
 		}
+	}
+
+	/**
+	 * Returns string array of labels for all slides
+	 *
+	 * @since 2.9.0
+	 * @method get_slides_labels
+	 * @return string array
+	 */
+	public function get_slides_labels() {
+		$labels = [];
+		$keys   = [ 'title', 'text', 'label' ];
+		foreach ( $this->settings->slides as $index => $slide ) {
+			foreach ( $keys as $key ) {
+				if ( isset( $slide->$key ) && ! empty( trim( $slide->$key ) ) ) {
+					$labels[ $index ] = esc_js( wp_strip_all_tags( str_replace( "\n", '<br />', $slide->$key ) ) );
+					break;
+				}
+			}
+			if ( ! isset( $labels[ $index ] ) || empty( $labels[ $index ] ) ) {
+				$labels[ $index ] = 'Slide ' . ( $index + 1 );
+			}
+		}
+		return $labels;
 	}
 }
 
@@ -909,7 +945,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'units'      => array( 'px' ),
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => 'a.fl-button',
+								'selector' => '.fl-button:is(a, button)',
 								'property' => 'padding',
 							),
 						),
@@ -927,7 +963,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'show_alpha'  => true,
 							'preview'     => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button, a.fl-button *',
+								'selector'  => '.fl-button:is(a, button), .fl-button:is(a, button) *',
 								'property'  => 'color',
 								'important' => true,
 							),
@@ -941,7 +977,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'show_alpha'  => true,
 							'preview'     => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button:hover, a.fl-button:hover *, a.fl-button:focus, a.fl-button:focus *',
+								'selector'  => '.fl-button:is(a, button):hover, .fl-button:is(a, button):hover *, .fl-button:is(a, button):focus, .fl-button:is(a, button):focus *',
 								'property'  => 'color',
 								'important' => true,
 							),
@@ -952,7 +988,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'responsive' => true,
 							'preview'    => array(
 								'type'     => 'css',
-								'selector' => 'a.fl-button',
+								'selector' => '.fl-button:is(a, button)',
 							),
 						),
 					),
@@ -1042,7 +1078,7 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 							'responsive' => true,
 							'preview'    => array(
 								'type'      => 'css',
-								'selector'  => 'a.fl-button',
+								'selector'  => '.fl-button:is(a, button)',
 								'important' => true,
 							),
 						),
@@ -1123,3 +1159,8 @@ FLBuilder::register_settings_form('content_slider_slide', array(
 		),
 	),
 ));
+
+FLBuilder::register_module_deprecations( 'content-slider', [
+	// Register module version (v1) to deprecate old HTML markup.
+	'v1' => [],
+] );

@@ -1,4 +1,4 @@
-/* Post Slider */
+/* Post Carousel */
 
 /* Wrappers */
 body.rtl .fl-module-post-carousel .bx-viewport {
@@ -30,15 +30,29 @@ body.rtl .fl-post-carousel-post {
 	z-index: 2;
 	margin-top: -16px;
 }
-.fl-post-carousel-navigation a{
+.fl-post-carousel-navigation button,
+.fl-post-carousel-navigation button:focus,
+.fl-post-carousel-navigation button:hover{
+	all: unset;
+	cursor: pointer;
+	position: absolute;
+}
+.fl-post-carousel-navigation button:focus{
+	outline: 1px auto -webkit-focus-ring-color;
+}
+.fl-post-carousel-navigation a,
+.fl-post-carousel-navigation button{
 	position: absolute;
 	display: inline-block;
 	opacity: .7;
 }
-.fl-post-carousel-navigation a:hover{ opacity: 1; }
+.fl-post-carousel-navigation a:hover,
+.fl-post-carousel-navigation button:hover {
+	opacity: 1;
+}
 
-.fl-post-carousel-navigation .carousel-prev{ left: 0; }
-.fl-post-carousel-navigation .carousel-next{ right: 0; }
+.fl-module-post-carousel .fl-post-carousel-navigation .carousel-prev{ left: 0; }
+.fl-module-post-carousel .fl-post-carousel-navigation .carousel-next{ right: 0; }
 
 .fl-post-carousel-navigation .fl-post-carousel-svg-container{
 	position: relative;
@@ -55,7 +69,9 @@ body.rtl .fl-post-carousel-post {
 .fl-post-carousel-navigation path{ fill: #fff; }
 
 .fl-post-carousel-navigation a.disabled,
-.bx-controls a.disabled {
+.fl-post-carousel-navigation button.disabled,
+.bx-controls a.disabled,
+.bx-controls button.disabled {
 	pointer-events: none;
 }
 

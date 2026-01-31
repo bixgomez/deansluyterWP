@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 ( function( $ ) {
 
 	window.onLoadFLReCaptcha = function() {
@@ -29,7 +30,7 @@
 
 								// Re-submitting the form after a successful invisible validation.
 								if ( 'invisible' == self.data( 'validate' ) ) {
-									self.closest( '.fl-subscribe-form' ).find( 'a.fl-button' ).trigger( 'click' );
+									self.closest( '.fl-subscribe-form' ).find( '.fl-button:is(a, button)' ).trigger( 'click' );
 								}
 							}
 						}
@@ -47,7 +48,7 @@
 		this.settings	= settings;
 		this.nodeClass	= '.fl-node-' + settings.id;
 		this.form 		= $( this.nodeClass + ' .fl-subscribe-form' );
-		this.button		= this.form.find( 'a.fl-button' );
+		this.button		= this.form.find( '.fl-button:is(a, button)' );
 		this._init();
 	};
 
@@ -84,6 +85,7 @@
 				waitText       = submitButton.closest( '.fl-form-button' ).data( 'wait-text' ),
 				name           = currentForm.find( 'input[name=fl-subscribe-form-name]' ),
 				email          = currentForm.find( 'input[name=fl-subscribe-form-email]' ),
+				customFieldInputs = currentForm.find( 'input[data-custom-field]' ),
 				successUrl     = this.settings.successUrl,
 				termsCheckbox  = currentForm.find( 'input[name=fl-terms-checkbox]'),
 				recaptcha      = currentForm.find( '.fl-grecaptcha' ),
@@ -91,9 +93,21 @@
 				re             = /\S+@\S+\.\S+/,
 				valid          = true,
 				ajaxData       = null,
-				nonce          = currentForm.find('#fl-subscribe-form-nonce').val();
+				nonce          = currentForm.find('#fl-subscribe-form-nonce').val(),
+				customField = {},
+				fieldValue = '',
+				fieldName = '';
 
 			e.preventDefault();
+			if ( customFieldInputs.length > 0 ) {
+				customFieldInputs.each(function() {
+					fieldValue = $( this ).val();
+					fieldName = $( this ).data( 'custom-field' );
+					if ( fieldValue !== '' ) {
+						customField[fieldName] = fieldValue;
+					}
+				});
+			}
 
 			if ( submitButton.hasClass( 'fl-form-button-disabled' ) ) {
 				return; // Already submitting
@@ -101,11 +115,13 @@
 
 			if ( name.length > 0 && name.val() == '' ) {
 				name.addClass( 'fl-form-error' );
+				name.attr( 'aria-invalid', 'true' );
 				name.siblings( '.fl-form-error-message' ).show();
 				valid = false;
 			}
 			if ( '' == email.val() || ! re.test( email.val() ) ) {
 				email.addClass( 'fl-form-error' );
+				email.attr( 'aria-invalid', 'true' );
 				email.siblings( '.fl-form-error-message' ).show();
 				valid = false;
 			}
@@ -114,6 +130,7 @@
 				if ( ! termsCheckbox.is(':checked') ) {
 					valid = false;
 					termsCheckbox.addClass( 'fl-form-error' );
+					termsCheckbox.attr( 'aria-invalid', 'true' );
 					termsCheckbox.parent().siblings( '.fl-form-error-message' ).show();
 				}
 				else {
@@ -158,6 +175,7 @@
 					action           : 'fl_builder_subscribe_form_submit',
 					name             : name.val(),
 					email            : email.val(),
+					custom_field	 : customField,
 					success_url      : successUrl,
 					terms_checked    : termsCheckbox.is(':checked') ? '1' : '0',
 					post_id          : postId,
@@ -209,7 +227,7 @@
 		{
 			if (e.which == 13) {
 				var currentForm = $( e.currentTarget ).closest( '.fl-subscribe-form' );
-				currentForm.find( 'a.fl-button' ).trigger( 'click' );
+				currentForm.find( '.fl-button:is(a, button)' ).trigger( 'click' );
 		  	}
 		}
 	}

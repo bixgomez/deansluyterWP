@@ -1,10 +1,12 @@
 <?php global $wp_embed; ?>
 <?php
-$label_tag     = 'a' === $settings->label_tag ? $settings->label_tag . ' href="#" ' : esc_attr( $settings->label_tag );
-$tabindex_attr = wp_validate_boolean( $settings->expand_on_tab ) ? 'tabindex="-1"' : ' tabindex="0"';
+$label_tag     = 'a' === $settings->label_tag ? $settings->label_tag . ' role="heading" aria-level="2" tabindex="-1" ' : esc_attr( $settings->label_tag );
+$icon_tag      = 1 === $module->version ? 'a role="button" tabindex="0"' : 'button type="button"';
+$exclude_class = 1 === $module->version ? '' : 'fl-content-ui-button';
+$module_class  = 'class="fl-accordion fl-accordion-' . sanitize_html_class( $settings->label_size ) . ( $settings->collapse ? ' fl-accordion-collapse' : '' ) . '"';
 ?>
 
-<div class="fl-accordion fl-accordion-<?php echo sanitize_html_class( $settings->label_size ); ?><?php echo ( $settings->collapse ) ? ' fl-accordion-collapse' : ''; ?>"<?php echo ( ! $settings->collapse ) ? ' multiselectable="true"' : ''; ?>>
+<div <?php echo $module_class; ?> <?php echo ( ! $settings->collapse ) ? ' multiselectable="true"' : ''; ?>>
 	<?php
 	if ( 'content' == $settings->source ) {
 		for ( $i = 0; $i < count( $settings->items ); $i++ ) {
@@ -12,28 +14,33 @@ $tabindex_attr = wp_validate_boolean( $settings->expand_on_tab ) ? 'tabindex="-1
 				continue;
 			}
 
-			$label_id            = 'fl-accordion-' . $module->node . '-label-' . $i;
-			$icon_id             = 'fl-accordion-' . $module->node . '-icon-' . $i;
-			$content_id          = 'fl-accordion-' . $module->node . '-panel-' . $i;
-			$item_tab_class      = ( 0 === $i && '1' === $settings->open_first ) ? 'fl-accordion-item-active' : '';
-			$item_tab_icon_class = ( 0 === $i && '1' === $settings->open_first ) ? $settings->label_active_icon : $settings->label_icon;
-			$expand_text         = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
+			$label_id    = 'fl-accordion-' . $module->node . '-label-' . $i;
+			$icon_id     = 'id="fl-accordion-' . $module->node . '-icon-' . $i . '"';
+			$content_id  = 'fl-accordion-' . $module->node . '-panel-' . $i;
+			$settings_id = ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : '';
+			$item_opened = ( 0 === $i && '1' === $settings->open_first ) ? true : false;
+			$item_class  = $item_opened ? 'fl-accordion-item-active' : '';
+			$icon_active = $item_opened ? $settings->label_active_icon : $settings->label_icon;
+			$icon_class  = 'class="fl-accordion-button-icon fl-accordion-button-icon-' . $settings->label_icon_position . ' ' . $exclude_class . '"';
+			$icon_aria   = 'aria-expanded="' . ( $item_opened ? 'true' : 'false' ) . '" aria-controls="' . $content_id . '"';
+			$expand_text = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
+			$icon_markup = '<i class="fl-accordion-button-icon ' . $icon_active . '"><span class="sr-only">' . esc_attr( $expand_text ) . '</span></i>';
 			?>
-			<div class="fl-accordion-item <?php echo $item_tab_class; ?>"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-				<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>">
+			<div class="fl-accordion-item <?php echo $item_class; ?>" <?php echo $settings_id; ?>>
+				<div class="fl-accordion-button">
 
 					<?php if ( 'left' === $settings->label_icon_position ) : ?>
-					<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-left" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>"><span class="sr-only"><?php echo ( $i > 0 || ! $settings->open_first ) ? 'Expand' : 'Collapse'; ?></span></i></a>
+					<<?php echo join( ' ', [ $icon_tag, $icon_id, $icon_class, $icon_aria ] ); ?>><?php echo $icon_markup; ?></<?php echo esc_attr( $icon_tag ); ?>>
 					<?php endif; ?>
 
-					<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php echo wp_kses_post( $settings->items[ $i ]->label ); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
+					<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label"><?php echo wp_kses_post( $settings->items[ $i ]->label ); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
 
 					<?php if ( 'right' === $settings->label_icon_position ) : ?>
-						<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-right" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
+						<<?php echo join( ' ', [ $icon_tag, $icon_id, $icon_class, $icon_aria ] ); ?>><?php echo $icon_markup; ?></<?php echo esc_attr( $icon_tag ); ?>>
 					<?php endif; ?>
 
 				</div>
-				<div class="fl-accordion-content fl-clearfix" id="<?php echo $content_id; ?>" aria-labelledby="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-hidden="<?php echo ( $i > 0 || ! $settings->open_first ) ? 'true' : 'false'; ?>">
+				<div class="fl-accordion-content fl-clearfix" role="region" id="<?php echo $content_id; ?>" aria-labelledby="<?php echo $label_id; ?>" aria-hidden="<?php echo $item_opened ? 'false' : 'true'; ?>">
 					<?php
 					if ( 'none' === $settings->items[ $i ]->saved_layout ) {
 						echo FLBuilderUtils::wpautop( $wp_embed->autoembed( $settings->items[ $i ]->content ), $module );
@@ -59,28 +66,33 @@ $tabindex_attr = wp_validate_boolean( $settings->expand_on_tab ) ? 'tabindex="-1
 			while ( $query->have_posts() ) {
 				$query->the_post();
 
-				$label_id            = 'fl-accordion-' . $module->node . '-label-' . $i;
-				$icon_id             = 'fl-accordion-' . $module->node . '-icon-' . $i;
-				$content_id          = 'fl-accordion-' . $module->node . '-panel-' . $i;
-				$item_tab_class      = ( 0 === $i && '1' === $settings->open_first ) ? 'fl-accordion-item-active' : '';
-				$item_tab_icon_class = ( 0 === $i && '1' === $settings->open_first ) ? $settings->label_active_icon : $settings->label_icon;
-				$expand_text         = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
+				$label_id    = 'fl-accordion-' . $module->node . '-title-' . $i;
+				$icon_id     = 'id="fl-accordion-' . $module->node . '-icon-' . $i . '"';
+				$content_id  = 'fl-accordion-' . $module->node . '-content-' . $i;
+				$settings_id = ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : '';
+				$item_opened = ( 0 === $i && '1' === $settings->open_first ) ? true : false;
+				$item_class  = $item_opened ? 'fl-accordion-item-active' : '';
+				$icon_active = $item_opened ? $settings->label_active_icon : $settings->label_icon;
+				$icon_class  = 'class="fl-accordion-button-icon fl-accordion-button-icon-' . $settings->label_icon_position . ' ' . $exclude_class . '"';
+				$icon_aria   = 'aria-expanded="' . ( $item_opened ? 'true' : 'false' ) . '" aria-controls="' . $content_id . '"';
+				$expand_text = ( $i > 0 || ! $settings->open_first ) ? __( 'Expand', 'fl-builder' ) : __( 'Collapse', 'fl-builder' );
+				$icon_markup = '<i class="fl-accordion-button-icon ' . $icon_active . '"><span class="sr-only">' . esc_attr( $expand_text ) . '</span></i>';
 				?>
-				<div class="fl-accordion-item <?php echo $item_tab_class; ?>"<?php echo ( ! empty( $settings->id ) ) ? ' id="' . sanitize_html_class( $settings->id ) . '-' . $i . '"' : ''; ?>>
-					<div class="fl-accordion-button" id="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-controls="<?php echo 'fl-accordion-' . $module->node . '-panel-' . $i; ?>">
+				<div class="fl-accordion-item <?php echo $item_class; ?>" <?php echo $settings_id; ?>>
+					<div class="fl-accordion-button">
 
 						<?php if ( 'left' === $settings->label_icon_position ) : ?>
-						<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-left" <?php echo $tabindex_attr; ?>><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>"><span class="sr-only"><?php echo ( $i > 0 || ! $settings->open_first ) ? 'Expand' : 'Collapse'; ?></span></i></a>
+						<<?php echo join( ' ', [ $icon_tag, $icon_id, $icon_class, $icon_aria ] ); ?>><?php echo $icon_markup; ?></<?php echo esc_attr( $icon_tag ); ?>>
 						<?php endif; ?>
 
-						<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label" tabindex="0" aria-controls="<?php echo $content_id; ?>"><?php the_title(); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
+						<<?php echo $label_tag; ?> id="<?php echo $label_id; ?>" class="fl-accordion-button-label"><?php the_title(); ?></<?php echo esc_attr( $settings->label_tag ); ?>>
 
 						<?php if ( 'right' === $settings->label_icon_position ) : ?>
-							<a href="#" id="<?php echo $icon_id; ?>" class="fl-accordion-button-icon fl-accordion-button-icon-right" <?php echo $tabindex_attr; ?> aria-controls="<?php echo $content_id; ?>"><i class="fl-accordion-button-icon <?php echo $item_tab_icon_class; ?>" title="<?php echo esc_attr( $expand_text ); ?>"><span class="sr-only"><?php echo esc_attr( $expand_text ); ?></span></i></a>
+							<<?php echo join( ' ', [ $icon_tag, $icon_id, $icon_class, $icon_aria ] ); ?>><?php echo $icon_markup; ?></<?php echo esc_attr( $icon_tag ); ?>>
 						<?php endif; ?>
 
 					</div>
-					<div class="fl-accordion-content fl-clearfix" id="<?php echo $content_id; ?>" aria-labelledby="<?php echo 'fl-accordion-' . $module->node . '-tab-' . $i; ?>" aria-hidden="<?php echo ( $i > 0 || ! $settings->open_first ) ? 'true' : 'false'; ?>" role="tabpanel" aria-live="polite">
+					<div class="fl-accordion-content fl-clearfix" role="region" id="<?php echo $content_id; ?>" aria-labelledby="<?php echo $label_id; ?>" aria-hidden="<?php echo $item_opened ? 'false' : 'true'; ?>">
 					<?php
 
 					$post_id = get_the_id();

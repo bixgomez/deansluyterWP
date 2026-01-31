@@ -81,3 +81,11 @@
 	position: absolute;
 	top: 15px;
 }
+
+.fl-login-form .fl-form-field:has(.fl-login-form-label) .fl-icon {
+	top: 38px;
+}
+
+.fl-login-form-label {
+	display: block;
+}

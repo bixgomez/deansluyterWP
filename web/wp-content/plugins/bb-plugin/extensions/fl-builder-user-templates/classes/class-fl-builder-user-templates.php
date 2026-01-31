@@ -67,9 +67,17 @@ final class FLBuilderUserTemplates {
 		FLBuilderUserAccess::register_setting( 'global_node_editing', array(
 			'default'     => 'all',
 			'group'       => __( 'Frontend', 'fl-builder' ),
-			'label'       => __( 'Global Rows, Columns and Modules Editing', 'fl-builder' ),
-			'description' => __( 'The selected roles will be able to edit global rows, columns and modules.', 'fl-builder' ),
+			'label'       => __( 'Global and Component Editing', 'fl-builder' ),
+			'description' => __( 'The selected roles will be able to edit the main instances of Globals and Components.', 'fl-builder' ),
 			'order'       => '10',
+		) );
+
+		FLBuilderUserAccess::register_setting( 'cloud_ui_access', array(
+			'default'     => array( 'administrator' ),
+			'group'       => __( 'Frontend', 'fl-builder' ),
+			'label'       => __( 'Cloud Access', 'fl-builder' ),
+			'description' => __( 'The selected roles will have access to the interface for managing templates and assets in the cloud.', 'fl-builder' ),
+			'order'       => '11',
 		) );
 	}
 
@@ -145,6 +153,7 @@ final class FLBuilderUserTemplates {
 			$data = array(
 				'templates'   => array(),
 				'categorized' => array(),
+				'groups'      => array(),
 			);
 		}
 
@@ -181,6 +190,7 @@ final class FLBuilderUserTemplates {
 			'isUserTemplate'             => FLBuilderModel::is_post_user_template() ? true : false,
 			'userCanEditGlobalTemplates' => FLBuilderUserAccess::current_user_can( 'global_node_editing' ) ? true : false,
 			'userTemplateType'           => FLBuilderModel::get_user_template_type(),
+			'isOverrideModuleCategories' => FLBuilderModel::get_admin_settings_option( '_fl_builder_templates_override', false ) && FLBuilderModel::get_admin_settings_option( '_fl_builder_templates_override_modules', false ),
 		) );
 	}
 
@@ -518,9 +528,11 @@ final class FLBuilderUserTemplates {
 			$attrs['class'][] = 'fl-node-global';
 		}
 		if ( $global && $active ) {
-			$attrs['data-template']      = $row->template_id;
-			$attrs['data-template-node'] = $row->template_node_id;
-			$attrs['data-template-url']  = FLBuilderModel::get_node_template_edit_url( $row->template_id );
+			$attrs['data-node-type']       = 'row';
+			$attrs['data-template']        = $row->template_id;
+			$attrs['data-template-node']   = $row->template_node_id;
+			$attrs['data-dynamic-editing'] = FLBuilderModel::is_post_dynamic_editing_node_template( $global );
+			$attrs['data-template-url']    = FLBuilderModel::get_node_template_edit_url( $row->template_id );
 		}
 
 		return $attrs;
@@ -542,11 +554,13 @@ final class FLBuilderUserTemplates {
 			$attrs['class'][] = 'fl-node-global';
 		}
 		if ( $global && $active ) {
+			$attrs['data-node-type']     = 'col';
 			$attrs['data-template']      = $col->template_id;
 			$attrs['data-template-node'] = $col->template_node_id;
 
 			if ( isset( $col->template_root_node ) ) {
-				$attrs['data-template-url'] = FLBuilderModel::get_node_template_edit_url( $col->template_id );
+				$attrs['data-dynamic-editing'] = FLBuilderModel::is_post_dynamic_editing_node_template( $global );
+				$attrs['data-template-url']    = FLBuilderModel::get_node_template_edit_url( $col->template_id );
 			}
 		}
 
@@ -569,11 +583,17 @@ final class FLBuilderUserTemplates {
 			$attrs['class'][] = 'fl-node-global';
 		}
 		if ( $global && $active ) {
+			$attrs['data-node-type']     = 'module';
 			$attrs['data-template']      = $module->template_id;
 			$attrs['data-template-node'] = $module->template_node_id;
 
-			if ( isset( $module->template_root_node ) ) {
-				$attrs['data-template-url'] = FLBuilderModel::get_node_template_edit_url( $module->template_id );
+			if ( isset( $module->template_root_node ) && ! empty( $module->template_node_id ) ) {
+				$template_data                 = FLBuilderModel::get_layout_data( 'published', $global );
+				$template_node_settings        = $template_data[ $module->template_node_id ]->settings;
+				$attrs['data-dynamic-fields']  = empty( $template_node_settings->dynamic_fields ) ? '' : '1';
+				$attrs['data-global']          = FLBuilderModel::is_post_global_node_template( $global );
+				$attrs['data-dynamic-editing'] = FLBuilderModel::is_post_dynamic_editing_node_template( $global );
+				$attrs['data-template-url']    = FLBuilderModel::get_node_template_edit_url( $module->template_id );
 			}
 		}
 
