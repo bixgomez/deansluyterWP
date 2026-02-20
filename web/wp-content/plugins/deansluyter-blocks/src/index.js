@@ -1,6 +1,6 @@
 /**
- * Entry point for deansluyter-blocks.
+ * Shared utilities can live here as the block library grows.
  *
- * Add block registrations here, for example:
- * import './blocks/hero';
+ * Block registrations are discovered automatically from block.json files
+ * under src/, so this file can stay minimal.
  */

@@ -12,12 +12,26 @@ if (! defined('ABSPATH')) {
 }
 
 function deansluyter_blocks_register_blocks(): void {
-    $block_build_path = __DIR__ . '/build/block.json';
+    $build_dir = __DIR__ . '/build';
 
-    if (! file_exists($block_build_path)) {
+    if (! is_dir($build_dir)) {
         return;
     }
 
-    register_block_type($block_build_path);
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($build_dir, FilesystemIterator::SKIP_DOTS)
+    );
+
+    foreach ($iterator as $file) {
+        if (! $file instanceof SplFileInfo) {
+            continue;
+        }
+
+        if ($file->getFilename() !== 'block.json') {
+            continue;
+        }
+
+        register_block_type($file->getPathname());
+    }
 }
 add_action('init', 'deansluyter_blocks_register_blocks');
