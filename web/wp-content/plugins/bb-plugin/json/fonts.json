@@ -3944,6 +3944,11 @@
     "fallback": "serif"
   }
 }, {
+  "LINE Seed JP": {
+    "variants": ["100", "regular", "700", "800"],
+    "fallback": "sans-serif"
+  }
+}, {
   "LXGW Marker Gothic": {
     "variants": ["regular"],
     "fallback": "sans-serif"
@@ -7119,6 +7124,16 @@
     "fallback": "cursive"
   }
 }, {
+  "Playwrite NZ Basic": {
+    "variants": ["100", "200", "300", "regular"],
+    "fallback": "cursive"
+  }
+}, {
+  "Playwrite NZ Basic Guides": {
+    "variants": ["regular"],
+    "fallback": "cursive"
+  }
+}, {
   "Playwrite NZ Guides": {
     "variants": ["regular"],
     "fallback": "cursive"
@@ -7956,6 +7971,11 @@
 }, {
   "Rye": {
     "variants": ["regular"],
+    "fallback": "sans-serif"
+  }
+}, {
+  "SN Pro": {
+    "variants": ["200", "300", "regular", "500", "600", "700", "800", "900", "200italic", "300italic", "italic", "500italic", "600italic", "700italic", "800italic", "900italic"],
     "fallback": "sans-serif"
   }
 }, {

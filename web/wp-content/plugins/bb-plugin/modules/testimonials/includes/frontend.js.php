@@ -42,7 +42,9 @@
 					testimonials.reloadSlider();
 				}, 50 );
 			}
-			FLBuilder.addHook( 'responsive-editing-switched', reloadTestimonials );
+			if ( ! FLBuilder.UIIFrame.isEnabled() ) {
+				FLBuilder.addHook( 'responsive-editing-switched', reloadTestimonials );
+			}
 			FLBuilder.addHook( 'col-resize-drag', reloadTestimonials );
 			FLBuilder.addHook( 'col-deleted', reloadTestimonials );
 		}

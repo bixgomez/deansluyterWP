@@ -542,11 +542,15 @@
 				color      = target.siblings('.fl-field-connection-label').find('.swatch').css('background-color');
 
 				if (field.find('.fl-field-responsive-setting').length > 0) {
+
+					const pickerValue = field.find('.fl-field-responsive-setting:visible .fl-color-picker-value');
+					const nameAttr = pickerValue.attr('name');
+
 					// Responsive wrappers exist, get input for the currently visible device
-					if(field.find('.fl-field-responsive-setting:visible .fl-color-picker-value').attr('name').includes('bg_gradient')) {
+					if( nameAttr && nameAttr.includes('bg_gradient') ) {
 						colorInput = target.closest('.fl-gradient-picker-color').find('input.fl-color-picker-value');
 					} else {
-						colorInput = field.find('.fl-field-responsive-setting:visible .fl-color-picker-value');
+						colorInput = pickerValue;
 					}
 				} else {
 					// No responsive wrappers, fallback to flat structure

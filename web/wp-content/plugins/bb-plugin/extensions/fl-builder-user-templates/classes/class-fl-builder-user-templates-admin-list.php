@@ -27,6 +27,13 @@ final class FLBuilderUserTemplatesAdminList {
 		add_filter( 'post_row_actions', __CLASS__ . '::row_actions' );
 		add_action( 'restrict_manage_posts', __CLASS__ . '::restrict_listings' );
 		add_filter( 'manage_edit-fl-builder-template_sortable_columns', __CLASS__ . '::add_sortable_columns' );
+		/**
+		 * Remove "view" as it is not public and lands on a 404
+		 */
+		add_filter( 'fl-builder-template-category_row_actions', function ( $actions, $tag ) {
+			unset( $actions['view'] );
+			return $actions;
+		}, 10, 2 );
 	}
 
 	/**
@@ -251,6 +258,22 @@ final class FLBuilderUserTemplatesAdminList {
 				break;
 			case 'screenshot':
 				echo get_the_post_thumbnail( $post_id, 'thumbnail', array( 'class' => 'center' ) );
+				break;
+			case 'category':
+				$terms = get_the_terms( $post_id, 'fl-builder-template-category' );
+				$links = [];
+				foreach ( (array) $terms as $term ) {
+					if ( isset( $term->term_id ) ) {
+						$args = array(
+							'post_type' => 'fl-builder-template',
+							'fl-builder-template-category' => $term->slug,
+							'fl-builder-template-type' => $_GET['fl-builder-template-type'],
+						);
+						$edit    = add_query_arg( $args, admin_url( 'edit.php' ) );
+						$links[] = sprintf( '<a href="%s">%s</a>', $edit, $term->name );
+					}
+				}
+				echo join( __( ', ', 'fl-builder' ), $links );
 				break;
 		}
 	}

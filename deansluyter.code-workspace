@@ -1,9 +1,15 @@
 {
   "folders": [
 	{
+		"name": "deansluyter",
+		"path": "../../../../home/bixgomez/dev_assets/site_notes/deansluyter"
+	},
+	{
+		"name": "deansluyter",
 		"path": "."
 	},
 	{
+		"name": "web",
 		"path": "web"
 	}
 ],

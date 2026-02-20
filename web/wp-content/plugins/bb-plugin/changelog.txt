@@ -1,10 +1,25 @@
+<h4>2.10.0.7 - 02/18/2026</h4>
+<p><strong>Hotfix</strong></p>
+<ul>
+	<li>Optimize cache writes when using WP FileSystem APIs (#4832)</li>
+	<li>Box module: Remove min-height as it is not needed and is causing text overlapping in some circumstances and fix min width for children not rendering (#4830)</li>
+	<li>Button Module: Prevent code entered into onclick field from breaking the UI (#4796)</li>
+	<li>Fixed auto suggest fields not updating properly in filter section of modules with loops (#4828)</li>
+	<li>Fixed categories not rendering in the WP Admin for saved nodes and remove "View" link for Beaver Builder template categories (#4812)</li>
+	<li>Optimization: move CSS that is static for buttons to static stylesheet (#4810)</li>
+	<li>Ensure "enable component editing" only renders for components (#4805)</li>
+	<li>Advanced Settings: Fixed revision limit not working (#4794)</li>
+	<li>UI: Fixed saved tab collapsing sections not working after using search field (#4734)</li>
+	<li>UI: Fixed testimonials reloading when responsive editing is switched in the iframe UI</li>
+</ul>
+
 <h4>2.10.0.6 - 01/28/2026</h4>
 <p><strong>Hotfix</strong></p>
 <ul>
 	<li>Security: Add capability check before saving global settings (#4773)</li>
 	<li>Components: Fixed unlinking a Box component instance reverting settings (#4784)</li>
 	<li>Components: Fixed photo fields not working correctly when only enabling source (#4782)</li>
-	<li>Components: Fixed duplicating containers with components in them not working properl (#4763)</li>
+	<li>Components: Fixed duplicating containers with components in them not working properly (#4763)</li>
 	<li>Components: Fixed incorrect position of container module components when dropped or moved around (#4763)</li>
 	<li>Fixed SASS warning and deprecation notices in PHP 8.4+ (#4771)</li>
 	<li>Accordion Module: Fixed not being able to type spaces in forms (#4776)</li>

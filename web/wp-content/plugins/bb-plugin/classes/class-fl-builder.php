@@ -3474,7 +3474,7 @@ final class FLBuilder {
 
 		// Save the CSS.
 		if ( 'file' === $enqueuemethod && $css ) {
-			fl_builder_filesystem()->file_put_contents( $path, $css );
+			fl_builder_filesystem()->file_put_contents_atomic( $path, $css );
 		}
 
 		/**
@@ -4151,7 +4151,7 @@ final class FLBuilder {
 
 			// Save the JS.
 			if ( 'file' === $enqueuemethod && $js ) {
-				fl_builder_filesystem()->file_put_contents( $path, $js );
+				fl_builder_filesystem()->file_put_contents_atomic( $path, $js );
 			}
 
 			/**
