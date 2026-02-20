@@ -11,6 +11,9 @@
 	{
 		"name": "web",
 		"path": "web"
+	},
+	{
+		"path": "web/wp-content/plugins/deansluyter-blocks"
 	}
 ],
 	"settings": {
