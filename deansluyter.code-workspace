@@ -14,6 +14,9 @@
 	},
 	{
 		"path": "web/wp-content/plugins/deansluyter-blocks"
+	},
+	{
+		"path": "web/wp-content/themes/fezziwig-base-2019"
 	}
 ],
 	"settings": {
