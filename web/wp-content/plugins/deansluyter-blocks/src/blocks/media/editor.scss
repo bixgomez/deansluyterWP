@@ -2,21 +2,40 @@
   border: 1px dashed #b9c6d2;
   border-radius: 6px;
   padding: 0.75rem;
-}
 
-.wp-block-deansluyter-media .media--image img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+  .media--image {
+    position: relative;
+  }
 
-.wp-block-deansluyter-media .media--image-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin: 0.75rem 0;
-}
+  .media--image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 
-.wp-block-deansluyter-media .info-header,
-.wp-block-deansluyter-media .info-body {
-  margin-top: 0.5rem;
+  .media--image-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    position: absolute;
+    top: .25rem;
+    right: .25rem;
+
+    .components-button {
+      background-color: rgba(#fff, .85);
+      font-size: 12px;
+      padding: 6px 8px;
+      height: max-content;
+
+      &:hover {
+        background-color: #fff;
+      }
+    }
+  }
+
+  .info-header,
+  .info-body {
+    margin-top: 0.5rem;
+  }
 }

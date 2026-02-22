@@ -81,31 +81,32 @@ export default function Edit({ attributes, setAttributes }) {
                             </MediaUploadCheck>
                         )}
                     </div>
-                </div>
 
-                {imageUrl && (
-                    <p className="media--image-actions">
-                        <MediaUploadCheck>
-                            <MediaUpload
-                                onSelect={onSelectImage}
-                                allowedTypes={['image']}
-                                render={({ open }) => (
-                                    <Button variant="secondary" onClick={open}>
-                                        {__('Replace image', 'deansluyter-blocks')}
-                                    </Button>
-                                )}
-                            />
-                        </MediaUploadCheck>
-                        <Button
-                            variant="tertiary"
-                            onClick={() =>
-                                setAttributes({ imageId: 0, imageUrl: '', imageAlt: '' })
-                            }
-                        >
-                            {__('Remove image', 'deansluyter-blocks')}
-                        </Button>
-                    </p>
-                )}
+                    {imageUrl && (
+                        <p className="media--image-actions">
+                            <MediaUploadCheck>
+                                <MediaUpload
+                                    onSelect={onSelectImage}
+                                    allowedTypes={['image']}
+                                    render={({ open }) => (
+                                        <Button variant="secondary" size="compact" onClick={open}>
+                                            {__('Replace image', 'deansluyter-blocks')}
+                                        </Button>
+                                    )}
+                                />
+                            </MediaUploadCheck>
+                            <Button
+                                variant="secondary"
+                                size="compact"
+                                onClick={() =>
+                                    setAttributes({ imageId: 0, imageUrl: '', imageAlt: '' })
+                                }
+                            >
+                                {__('Remove image', 'deansluyter-blocks')}
+                            </Button>
+                        </p>
+                    )}
+                </div>
 
                 <div className="media--info">
                     <div className="inner">
