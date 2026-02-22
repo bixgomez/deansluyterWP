@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Fezziwig_Base_2019
+ * @package Deansluyter_Theme
  */
 
 ?>
@@ -22,21 +22,21 @@
 			?>
 			<div class="entry-meta">
 				<?php
-				fezziwig_base_2019_posted_on();
-				fezziwig_base_2019_posted_by();
+				deansluyter_theme_posted_on();
+				deansluyter_theme_posted_by();
 				?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php fezziwig_base_2019_post_thumbnail(); ?>
+	<?php deansluyter_theme_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
 		the_content( sprintf(
 			wp_kses(
 				/* translators: %s: Name of current post. Only visible to screen readers */
-				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'fezziwig-base-2019' ),
+				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'deansluyter-theme' ),
 				array(
 					'span' => array(
 						'class' => array(),
@@ -47,13 +47,13 @@
 		) );
 
 		wp_link_pages( array(
-			'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'fezziwig-base-2019' ),
+			'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'deansluyter-theme' ),
 			'after'  => '</div>',
 		) );
 		?>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php fezziwig_base_2019_entry_footer(); ?>
+		<?php deansluyter_theme_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

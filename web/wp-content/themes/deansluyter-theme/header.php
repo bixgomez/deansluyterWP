@@ -6,7 +6,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package Fezziwig_Base_2019
+ * @package Deansluyter_Theme
  */
 
 ?>
@@ -23,7 +23,7 @@
 
 <body <?php body_class( 'front-end' ); ?>>
 <a name="Top" id="Top"></a>
-<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'fezziwig-base-2019' ); ?></a>
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'deansluyter-theme' ); ?></a>
 
 <div class="page-wrapper">
 
@@ -48,7 +48,7 @@
           </div><!-- .site-branding -->
 
           <nav id="site-navigation" class="main-navigation">
-            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'fezziwig-base-2019-02' ); ?></button>
+            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'deansluyter-theme-02' ); ?></button>
             <?php
             wp_nav_menu( array(
               'theme_location' => 'menu-1',
@@ -64,7 +64,7 @@
 
   <?php /* ?>
   <nav id="navigation" class="section section-navigation">
-    <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Main Menu', 'fezziwig-base-2019' ); ?></button>
+    <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Main Menu', 'deansluyter-theme' ); ?></button>
     <?php
     wp_nav_menu( array(
       'theme_location' => 'menu-1',

@@ -8,33 +8,33 @@
  *
  * @link https://developer.wordpress.org/themes/functionality/custom-headers/
  *
- * @package Fezziwig_Base_2019
+ * @package Deansluyter_Theme
  */
 
 /**
  * Set up the WordPress core custom header feature.
  *
- * @uses fezziwig_base_2019_header_style()
+ * @uses deansluyter_theme_header_style()
  */
-function fezziwig_base_2019_custom_header_setup() {
-	add_theme_support( 'custom-header', apply_filters( 'fezziwig_base_2019_custom_header_args', array(
+function deansluyter_theme_custom_header_setup() {
+	add_theme_support( 'custom-header', apply_filters( 'deansluyter_theme_custom_header_args', array(
 		'default-image'          => '',
 		'default-text-color'     => '000000',
 		'width'                  => 1000,
 		'height'                 => 250,
 		'flex-height'            => true,
-		'wp-head-callback'       => 'fezziwig_base_2019_header_style',
+		'wp-head-callback'       => 'deansluyter_theme_header_style',
 	) ) );
 }
-add_action( 'after_setup_theme', 'fezziwig_base_2019_custom_header_setup' );
+add_action( 'after_setup_theme', 'deansluyter_theme_custom_header_setup' );
 
-if ( ! function_exists( 'fezziwig_base_2019_header_style' ) ) :
+if ( ! function_exists( 'deansluyter_theme_header_style' ) ) :
 	/**
 	 * Styles the header image and text displayed on the blog.
 	 *
-	 * @see fezziwig_base_2019_custom_header_setup().
+	 * @see deansluyter_theme_custom_header_setup().
 	 */
-	function fezziwig_base_2019_header_style() {
+	function deansluyter_theme_header_style() {
 		$header_text_color = get_header_textcolor();
 
 		/*

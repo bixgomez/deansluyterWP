@@ -4,7 +4,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
- * @package Fezziwig_Base_2019
+ * @package Deansluyter_Theme
  */
 
 get_header();

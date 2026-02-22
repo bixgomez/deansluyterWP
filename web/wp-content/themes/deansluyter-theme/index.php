@@ -1,28 +1,31 @@
 <?php
 /**
- * The template for displaying archive pages
+ * The main template file
+ *
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
- * @package Fezziwig_Base_2019
+ * @package Deansluyter_Theme
  */
 
 get_header();
 ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+		<?php
+		if ( have_posts() ) :
 
-		<?php if ( have_posts() ) : ?>
-
-			<header class="page-header">
-				<?php
-				the_archive_title( '<h1 class="page-title">', '</h1>' );
-				the_archive_description( '<div class="archive-description">', '</div>' );
+			if ( is_home() && ! is_front_page() ) :
 				?>
-			</header><!-- .page-header -->
+				<header>
+					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
+				</header>
+				<?php
+			endif;
 
-			<?php
 			/* Start the Loop */
 			while ( have_posts() ) :
 				the_post();
@@ -44,9 +47,6 @@ get_header();
 
 		endif;
 		?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
 
 <?php
 get_sidebar();
