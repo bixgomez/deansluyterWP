@@ -27,3 +27,5 @@ wp-config.php
 *.sql.gz
 .vscode
 ._*
+/web/repair-deansluyter-media-escapes.php
+/web/migrate-acf-media-to-gutenberg.php
