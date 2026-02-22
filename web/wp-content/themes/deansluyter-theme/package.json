@@ -1,20 +1,18 @@
 {
-  "name": "deansluyter-theme-tooling",
+  "name": "deansluyter-theme",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "vite build",
-    "watch": "CHOKIDAR_USEPOLLING=true CHOKIDAR_INTERVAL=150 chokidar \"src/**/*.{scss,js}\" -c \"vite build\" --initial",
-    "bsync": "browser-sync start --proxy https://deansluyter.ddev.site --files \"dist/css/**/*.css,dist/js/**/*.js,**/*.php\" --no-open --no-ui",
-    "dev": "concurrently \"npm:watch\" \"npm:bsync\""
+    "dev": "concurrently \"npm:watch\" \"npm:serve\"",
+    "watch": "vite build --watch",
+    "serve": "browser-sync start --proxy https://deansluyter.ddev.site --files \"dist/**/*,**/*.php\" --no-open --no-ui",
+    "build": "vite build"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.10.2",
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "breakpoint-sass": "^2.7.1",
-    "browser-sync": "^3.0.3",
-    "chokidar-cli": "^3.0.0",
-    "compass-sass-mixins": "^0.12.7",
-    "concurrently": "^9.0.1",
-    "normalize-scss": "^7.0.1",
+    "browser-sync": "^3.0.2",
+    "concurrently": "^8.2.2",
     "sass": "^1.77.8",
     "vite": "^5.4.10"
   }
