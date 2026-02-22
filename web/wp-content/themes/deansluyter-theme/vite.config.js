@@ -3,15 +3,34 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   publicDir: false,
+  css: {
+    preprocessorOptions: {
+      scss: {
+        includePaths: [
+          path.resolve(__dirname, 'node_modules/breakpoint-sass/stylesheets'),
+          path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/scss'),
+        ],
+      },
+    },
+  },
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: false,
     minify: 'esbuild',
-    cssCodeSplit: false,
+    sourcemap: false,
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/style.scss'),
+      input: {
+        app: path.resolve(__dirname, 'src/main.js'),
+      },
       output: {
-        assetFileNames: 'css/style.min.css',
+        entryFileNames: 'js/app.min.js',
+        chunkFileNames: 'js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'css/style.min.css';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
       },
     },
   },

@@ -164,6 +164,7 @@ add_action( 'widgets_init', 'deansluyter_theme_widgets_init' );
 function deansluyter_theme_scripts() {
 	wp_enqueue_style( 'deansluyter-theme-style', get_stylesheet_uri() );
   wp_enqueue_style( 'deansluyter-theme-styles', get_template_directory_uri() . '/dist/css/style.min.css' );
+  wp_enqueue_script( 'deansluyter-theme-app', get_template_directory_uri() . '/dist/js/app.min.js', array(), null, true );
 	wp_enqueue_script( 'deansluyter-theme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 	wp_enqueue_script( 'deansluyter-theme-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
     wp_enqueue_script( 'hc-offcanvas-nav', get_template_directory_uri() .'/js/hc-offcanvas-nav.js', array('jquery'), null, true );
