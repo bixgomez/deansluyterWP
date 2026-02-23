@@ -16,9 +16,6 @@
 		"path": "web/wp-content/plugins/deansluyter-blocks"
 	},
 	{
-		"path": "web/wp-content/themes/deansluyter-theme"
-	},
-	{
 		"path": "web/wp-content/themes/deansluyter-theme-2026"
 	}
 ],

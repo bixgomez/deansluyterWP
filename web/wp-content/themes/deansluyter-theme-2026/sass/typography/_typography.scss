@@ -4,7 +4,7 @@ html {
   font-size: $font-size--html;
 }
 
-body.front-end {
+body {
   @include typography-body;
 }
 
