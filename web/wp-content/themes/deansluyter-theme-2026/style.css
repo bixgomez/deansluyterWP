@@ -11,6 +11,8 @@ Requires PHP: 8.1
 Text Domain: deansluyter-theme-2026
 */
 
+/* Fallback styles live here; Vite output is loaded from dist/css/styles.css when available. */
+
 :root {
   --site-max-width: 960px;
   --site-padding: 1rem;

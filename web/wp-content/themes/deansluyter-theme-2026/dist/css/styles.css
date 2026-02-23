@@ -1,0 +1,1 @@
+:root{--site-max-width: 960px;--site-padding: 1rem;--text-color: #1a1a1a;--bg-color: #fffddd}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text-color);background:var(--bg-color)}.site-wrap{max-width:var(--site-max-width);margin:0 auto;padding:var(--site-padding)}
