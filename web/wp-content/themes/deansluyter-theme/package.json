@@ -3,12 +3,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "mkdir -p dist/.vite && touch dist/.vite/hot && vite",
-    "build": "rm -f dist/.vite/hot && vite build"
+    "watch": "CHOKIDAR_USEPOLLING=true CHOKIDAR_INTERVAL=150 vite build --watch",
+    "bsync": "browser-sync start --config bs-config.cjs",
+    "dev": "concurrently -k -n vite,bsync \"npm:watch\" \"npm:bsync\"",
+    "build": "vite build"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "breakpoint-sass": "^2.7.1",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.0.1",
     "sass": "^1.77.8",
     "vite": "^5.4.10"
   }

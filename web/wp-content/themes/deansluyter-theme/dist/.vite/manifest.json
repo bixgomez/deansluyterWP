@@ -1,36 +1,40 @@
 {
-  "assets/d_train.png": {
+  "src/assets/d_train.png": {
     "file": "assets/d_train.png",
-    "src": "assets/d_train.png"
+    "src": "src/assets/d_train.png"
   },
-  "assets/dean-portrait_028_v02.jpg": {
+  "src/assets/dean-portrait_028_v02.jpg": {
     "file": "assets/dean-portrait_028_v02.jpg",
-    "src": "assets/dean-portrait_028_v02.jpg"
+    "src": "src/assets/dean-portrait_028_v02.jpg"
   },
-  "assets/dharma-bums-cover.jpg": {
+  "src/assets/dharma-bums-cover.jpg": {
     "file": "assets/dharma-bums-cover.jpg",
-    "src": "assets/dharma-bums-cover.jpg"
+    "src": "src/assets/dharma-bums-cover.jpg"
   },
-  "assets/logo-amazon.png": {
+  "src/assets/home page banner tweaked again.jpg": {
+    "file": "assets/home page banner tweaked again.jpg",
+    "src": "src/assets/home page banner tweaked again.jpg"
+  },
+  "src/assets/logo-amazon.png": {
     "file": "assets/logo-amazon.png",
-    "src": "assets/logo-amazon.png"
+    "src": "src/assets/logo-amazon.png"
   },
-  "assets/logo-barnesnoble.png": {
+  "src/assets/logo-barnesnoble.png": {
     "file": "assets/logo-barnesnoble.png",
-    "src": "assets/logo-barnesnoble.png"
+    "src": "src/assets/logo-barnesnoble.png"
   },
-  "assets/logo-indiebound.png": {
+  "src/assets/logo-indiebound.png": {
     "file": "assets/logo-indiebound.png",
-    "src": "assets/logo-indiebound.png"
+    "src": "src/assets/logo-indiebound.png"
   },
-  "assets/nautilus_award.png": {
+  "src/assets/nautilus_award.png": {
     "file": "assets/nautilus_award.png",
-    "src": "assets/nautilus_award.png"
+    "src": "src/assets/nautilus_award.png"
   },
-  "main.js": {
+  "src/main.js": {
     "file": "js/app.min.js",
     "name": "main",
-    "src": "main.js",
+    "src": "src/main.js",
     "isEntry": true,
     "css": [
       "css/style.min.css"
@@ -38,6 +42,7 @@
     "assets": [
       "assets/d_train.png",
       "assets/dean-portrait_028_v02.jpg",
+      "assets/home page banner tweaked again.jpg",
       "assets/dharma-bums-cover.jpg",
       "assets/nautilus_award.png",
       "assets/logo-amazon.png",

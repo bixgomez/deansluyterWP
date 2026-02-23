@@ -2,27 +2,8 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
-  root: 'src',
-  base: '/wp-content/themes/deansluyter-theme/dist/',
+  base: './',
   publicDir: false,
-
-  server: {
-    host: '0.0.0.0',
-    port: 5173,
-    strictPort: true,
-    https: false,
-    cors: true,
-    origin: 'https://deansluyter.ddev.site:5173',
-    hmr: {
-      host: 'deansluyter.ddev.site',
-      port: 5173,
-      protocol: 'wss',
-    },
-    watch: {
-      usePolling: true,
-      interval: 300,
-    },
-  },
 
   build: {
     outDir: path.resolve(__dirname, 'dist'),
