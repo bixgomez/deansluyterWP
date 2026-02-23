@@ -1,17 +1,7 @@
 .wp-block-deansluyter-media {
   border: 1px dashed #b9c6d2;
-  border-radius: 6px;
-  padding: 0.75rem;
-
-  .media--image {
-    position: relative;
-  }
-
-  .media--image img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
+  border-radius: 0;
+  padding: 0.25rem;
 
   .media--image-actions {
     display: flex;
@@ -24,18 +14,13 @@
 
     .components-button {
       background-color: rgba(#fff, .85);
-      font-size: 12px;
-      padding: 6px 8px;
+      font-size: 10px;
+      padding: 6px 7px;
       height: max-content;
 
       &:hover {
         background-color: #fff;
       }
     }
-  }
-
-  .info-header,
-  .info-body {
-    margin-top: 0.5rem;
   }
 }

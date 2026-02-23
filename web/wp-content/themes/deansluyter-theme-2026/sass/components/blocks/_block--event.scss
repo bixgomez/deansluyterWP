@@ -1,5 +1,4 @@
-.event,
-.wp-block-deansluyter-media {
+.event {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5em;
@@ -41,14 +40,14 @@
       }
     }
   }
-}
 
-.info-header {
-  background-color: rgba($color--header, .5);
-  padding: .5em;
-  margin-bottom: 1em;
-}
+  .info-header {
+    background-color: rgba($color--header, .5);
+    padding: .5em;
+    margin-bottom: 1em;
+  }
 
-.info-body {
- margin-left: .5em;
+  .info-body {
+    margin-left: .5em;
+  }
 }

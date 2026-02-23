@@ -5,8 +5,6 @@
   font-weight: 400;
   line-height: $lineheight-default;
   color: rgba(black, .9);
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: subpixel-antialiased;
 }
 
@@ -15,7 +13,7 @@
   font-weight: 600;
   line-height: 1.125;
   padding: 0;
-  margin: 0 0 .75em 0;
+  margin: 0 0 .75rem 0;
   color: mix(black, $color--primary, 25%);
   -webkit-font-smoothing: unset;
   -moz-osx-font-smoothing: unset;
@@ -122,7 +120,7 @@
     float: left;
     max-width: 50%;
     margin-left: 0;
-    margin-right: 2em /*!rtl:end:ignore*/;
+    margin-right: 2rem /*!rtl:end:ignore*/;
     height: auto;
   }
 }
