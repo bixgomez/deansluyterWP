@@ -9,11 +9,11 @@ body.home .section--content {
 
 .front-page-grid {
   max-width: $max-site-width;
-  margin: 1em auto;
-  padding: 0 1em;
+  margin: 1rem auto;
+  padding: 0 1rem;
 
   display: grid;
-  grid-gap: 1em;
+  grid-gap: 1rem;
   grid-template-columns: 1fr;
 
   @include breakpoint($md) {
@@ -39,21 +39,21 @@ body.home .section--content {
 
 .front-page-content--wrapper {
   max-width: $max-site-width;
-  margin: 0 auto;
+  margin: 1rem auto 0;
   padding: 0;
 }
 
 div.front-page-content {
   width: 100%;
   margin: 0;
-  padding: 1em;
+  padding: 1rem;
   background-color: rgba(white, .25);
 
   .fl-row-content {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 2em;
-    font-size: 1em;
+    grid-gap: 2rem;
+    font-size: 1rem;
     transition: $transition-fast;
 
     &:before,
@@ -63,14 +63,14 @@ div.front-page-content {
 
     @include breakpoint($sm) {
       grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 1em;
-      font-size: .8em;
+      grid-gap: 1rem;
+      font-size: .8rem;
     }
 
     @include breakpoint($md) {
       grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 1.5em;
-      font-size: 1em;
+      grid-gap: 1.5rem;
+      font-size: 1rem;
     }
   }
 
@@ -103,7 +103,7 @@ div.front-page-content {
   }
 
   div.fl-module-teaser {
-    min-height: 3em;
+    min-height: 3rem;
 
     &:before,
     &:after {

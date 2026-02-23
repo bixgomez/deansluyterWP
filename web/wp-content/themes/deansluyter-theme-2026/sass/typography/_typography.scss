@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6, #primary-menu, .site-info {
 // Heading font sizes.
 h1 {
   font-size: $font-size--xxl;
-  letter-spacing: .15em;
+  letter-spacing: .15rem;
   margin-bottom: ($font-size--xxl * .5);
   text-transform: uppercase;
 
@@ -42,14 +42,14 @@ h1 {
     margin: 0;
     font-family: "raleway", "Montserrat", Helvetica, Arial, sans-serif;
     font-weight: 800;
-    letter-spacing: .05em;
-    font-size: 2.125em;
+    letter-spacing: .05rem;
+    font-size: 2.125rem;
   }
 }
 
 h2 {
   font-size: $font-size--xl;
-  letter-spacing: .1em;
+  letter-spacing: .1rem;
   margin-bottom: ($font-size--xl * .5);
   text-transform: lowercase;
   opacity: .625;
@@ -57,7 +57,7 @@ h2 {
 
 h3 {
   font-size: $font-size--lg;
-  letter-spacing: .05em;
+  letter-spacing: .05rem;
   margin-bottom: ($font-size--lg * .5);
   text-transform: lowercase;
   opacity: .625;
@@ -65,19 +65,19 @@ h3 {
 
 h4 {
   font-size: $font-size--md;
-  letter-spacing: .05em;
+  letter-spacing: .05rem;
   margin-bottom: ($font-size--md * .5);
 }
 
 h5 {
   font-size: $font-size--sm;
-  letter-spacing: .05em;
+  letter-spacing: .05rem;
   margin-bottom: ($font-size--sm * .5);
 }
 
 h6 {
   font-size: $font-size--xxs;
-  letter-spacing: .05em;
+  letter-spacing: .05rem;
   margin-bottom: ($font-size--xxs * .5);
 }
 
@@ -121,11 +121,11 @@ dfn, cite, em, i {
 }
 
 blockquote {
-  margin: 0 1.5em;
+  margin: 0 1.5rem;
 }
 
 address {
-  margin: 0 0 1.5em;
+  margin: 0 0 1.5rem;
 }
 
 pre {
@@ -133,10 +133,10 @@ pre {
   font-family: "Courier 10 Pitch", Courier, monospace;
   font-size: $font-size--sm;
   line-height: $lineheight-default;
-  margin-bottom: 1.6em;
+  margin-bottom: 1.6rem;
   max-width: 100%;
   overflow: auto;
-  padding: 1.6em;
+  padding: 1.6rem;
 }
 
 code, kbd, tt, var {

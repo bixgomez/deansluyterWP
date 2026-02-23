@@ -54,7 +54,7 @@
   @include breakpoint($md) {
     float: right;
     max-width: 50%;
-    margin-left: 2em /*!rtl:end:ignore*/;
+    margin-left: 2rem /*!rtl:end:ignore*/;
     margin-right: 0;
 
     img {
@@ -82,7 +82,7 @@
     float: left;
     max-width: 50%;
     margin-left: 0;
-    margin-right: 2em /*!rtl:end:ignore*/;
+    margin-right: 2rem /*!rtl:end:ignore*/;
 
     img {
       height: auto;
@@ -98,7 +98,7 @@
   height: auto;
   max-width: 67%;
   display: block;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 @mixin img--align-right {
@@ -107,7 +107,7 @@
   @include breakpoint($md) {
     float: right;
     max-width: 50%;
-    margin-left: 2em /*!rtl:end:ignore*/;
+    margin-left: 2rem /*!rtl:end:ignore*/;
     margin-right: 0;
     height: auto;
   }

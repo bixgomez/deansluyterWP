@@ -1,45 +1,50 @@
 .front-page-header--wrapper {
   font-size: 1vw;
 
-  @include breakpoint(1300px) {
+  @include breakpoint(80rem) {
     font-size: 13px;
+    font-size: .825rem;
     display: flex;
     justify-content: center;
   }
 }
 
 .front-page-header {
+  width: 100cqi;
+  max-width: 80rem;
+  container-name: front-page-header;
+  container-type: inline-size;
+  margin: 0 auto;
   display: flex;
-  width: 100em;
   flex-direction: column;
 
   @include breakpoint($sm) {
     flex-direction: row;
-    height: 50em;
+    aspect-ratio: 3 / 1;
+    justify-content: center;
   }
 
   .front-page-image {
-    width: 100em;
-    height: 70em;
+    width: 100cqi;
+    height: 70cqi;
 
     @include breakpoint($sm) {
-      width: 67em;
-      height: 50em;
+      width: 67cqi;
+      height: 50cqi;
     }
   }
 
   .front-page-cta {
-    // background-color: #9fa1a4;
     background-color: darken(#9fa1a4, 10%);
-    width: 100em;
-    height: 125em;
+    width: 100cqi;
+    height: 125cqi;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 
     @include breakpoint($sm) {
-      width: 33em;
-      height: 50em;
+      width: 33cqi;
+      height: 50cqi;
     }
   }
 }
@@ -56,14 +61,14 @@
 
 .front-page-text {
   position: absolute;
-  left: 2.25em;
-  bottom: 6em;
+  left: 2.3cqi;
+  bottom: 3cqi;
   z-index: 1000;
-  font-size: 2em;
+  font-size: 2cqi;
 
   @include breakpoint($sm) {
-    font-size: 1.15em;
-    bottom: 2.25em;
+    font-size: 1.15cqi;
+    bottom: 2.25cqi;
   }
 
   .inner {

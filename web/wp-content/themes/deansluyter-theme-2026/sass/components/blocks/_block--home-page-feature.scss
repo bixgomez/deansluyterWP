@@ -1,6 +1,6 @@
 .home-page-feature {
   text-decoration: none;
-  padding: .5em .5em .75em .5em;
+  padding: .5rem .5rem .75rem .5rem;
   background-color: rgba(#dedede, .5);
   position: relative;
   transition: .5s ease-in-out;
@@ -34,14 +34,14 @@
 
   .home-page-feature--link-text {
     color: $color--primary;
-    margin-top: .5em;
+    margin-top: .5rem;
   }
 
   .home-page-feature--body,
   .home-page-feature--title,
   .home-page-feature--link-text {
-    padding-left: .5em;
-    padding-right: .5em;
+    padding-left: .5rem;
+    padding-right: .5rem;
   }
 
   .home-page-feature--link-text,
@@ -51,11 +51,11 @@
   }
 
   .home-page-feature--title h3 {
-    margin: .25em 0 0 0;
+    margin: .25rem 0 0 0;
   }
 
   .home-page-feature--body p {
-    margin: .5em 0 0 0;
+    margin: .5rem 0 0 0;
   }
 
   .home-page-feature--background-image {
@@ -93,7 +93,7 @@
 .home-page-feature--featured-image {
 
   .image-position--first & {
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
   }
 
   img  {
