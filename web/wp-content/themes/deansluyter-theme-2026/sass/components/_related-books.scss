@@ -1,0 +1,98 @@
+.related-books {
+  // border: 1px solid orange;
+}
+
+.related-book {
+  // border: 1px dashed purple;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3em;
+
+  .book-image {
+    width: 23%;
+    // border: 1px dotted red;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .book-text {
+    width: 43%;
+    // border: 1px dotted red;
+  }
+
+  .book-links {
+    width: 28%;
+    // border: 1px dotted red;
+  }
+
+  .book-title {
+    text-transform: uppercase;
+  }
+
+  .quote-text p {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    font-style: oblique;
+
+    &:before,
+    &:after {
+      content: '"';
+    }
+  }
+
+  .quote-attribute {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+}
+
+ul.purchase-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-evenly;
+
+  li.link-item {
+    display: flex;
+    // border: 1px solid red;
+    width: 28%;
+    overflow: hidden;
+
+    a {
+      min-height: 5rem;
+      display: block;
+      text-indent: -9999px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      width: 100%;
+      height: 100%;
+
+      &.link--amazon {
+        background-image: url("@assets/logo-amazon.png");
+      }
+
+      &.link--indiebound {
+        background-image: url("@assets/logo-indiebound.png");
+      }
+
+      &.link--barnesnoble {
+        background-image: url("@assets/logo-barnesnoble.png");
+      }
+
+      opacity: .9;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

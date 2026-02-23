@@ -1,12 +1,24 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import sassGlobImports from 'vite-plugin-sass-glob-import';
 
 const __dirname = import.meta.dirname;
 
 export default defineConfig({
   base: '/wp-content/themes/deansluyter-theme-2026/dist/',
   css: {
-    devSourcemap: true,
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api'],
+        loadPaths: [
+          resolve(__dirname, 'node_modules'),
+          resolve(__dirname, 'node_modules/breakpoint-sass/stylesheets'),
+          resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/scss')
+        ]
+      }
+    },
+    devSourcemap: true
   },
   build: {
     outDir: './dist',
@@ -15,7 +27,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         styles: resolve(__dirname, 'entries/styles.js'),
-        script: resolve(__dirname, 'js/script.js'),
+        script: resolve(__dirname, 'js/script.js')
       },
       output: {
         assetFileNames: (assetInfo) => {
@@ -25,8 +37,9 @@ export default defineConfig({
           return 'assets/[name]-[hash][extname]';
         },
         entryFileNames: 'js/[name].js',
-        chunkFileNames: 'js/[name]-[hash].js',
-      },
-    },
+        chunkFileNames: 'js/[name]-[hash].js'
+      }
+    }
   },
+  plugins: [sassGlobImports()]
 });
