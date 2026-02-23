@@ -76,6 +76,7 @@ if ( ! function_exists( 'deansluyter_theme_2026_setup' ) ) :
 endif;
 add_action( 'after_setup_theme', 'deansluyter_theme_2026_setup' );
 
+
 /**
  * Enqueue admin styles.
  */
@@ -93,7 +94,7 @@ function deansluyter_theme_2026_admin_style() {
 		return;
 	}
 
-	$dist_css_rel = '/dist/css/styles.css';
+	$dist_css_rel = '/dist/css/admin.css';
 	$dist_css_abs = get_theme_file_path( $dist_css_rel );
 	if ( file_exists( $dist_css_abs ) ) {
 		wp_enqueue_style(
@@ -123,7 +124,7 @@ function deansluyter_theme_2026_extra_gutenberg_assets() {
 		return;
 	}
 
-	$dist_css_rel = '/dist/css/styles.css';
+	$dist_css_rel = '/dist/css/styles_editor_extra.css';
 	$dist_css_abs = get_theme_file_path( $dist_css_rel );
 	if ( file_exists( $dist_css_abs ) ) {
 		wp_enqueue_style(
@@ -135,7 +136,6 @@ function deansluyter_theme_2026_extra_gutenberg_assets() {
 	}
 }
 add_action( 'enqueue_block_editor_assets', 'deansluyter_theme_2026_extra_gutenberg_assets' );
-
 /**
  * Set the content width in pixels.
  */
