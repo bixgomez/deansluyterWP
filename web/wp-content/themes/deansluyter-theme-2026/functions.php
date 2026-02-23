@@ -302,6 +302,9 @@ function deansluyter_theme_2026_acf_init() {
 			'icon'            => 'admin-comments',
 			'mode'            => 'edit',
 			'keywords'        => array( 'media', 'audio', 'video' ),
+			'supports'        => array(
+				'inserter' => false,
+			),
 		)
 	);
 
