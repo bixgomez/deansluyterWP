@@ -10,14 +10,14 @@
   }
 
   &--facebook a {
-    mask-image: url("../assets/icons/facebook-square.svg");
+    mask-image: url("@assets/icons/facebook-square.svg");
   }
 
   &--instagram a {
-    mask-image: url("../assets/icons/instagram.svg");
+    mask-image: url("@assets/icons/instagram.svg");
   }
 
   &--youtube a {
-    mask-image: url("../assets/icons/youtube-square.svg");
+    mask-image: url("@assets/icons/youtube-square.svg");
   }
 }

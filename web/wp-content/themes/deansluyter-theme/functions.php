@@ -159,18 +159,45 @@ function deansluyter_theme_widgets_init() {
 add_action( 'widgets_init', 'deansluyter_theme_widgets_init' );
 
 /**
+ * Check if Vite dev server is running.
+ */
+function deansluyter_theme_is_vite_dev() {
+	$hot_file = get_template_directory() . '/dist/.vite/hot';
+	return file_exists( $hot_file );
+}
+
+/**
  * Enqueue scripts and styles.
  */
 function deansluyter_theme_scripts() {
 	wp_enqueue_style( 'deansluyter-theme-style', get_stylesheet_uri() );
-	wp_enqueue_style( 'deansluyter-theme-styles', get_template_directory_uri() . '/dist/css/style.min.css' );
-	wp_enqueue_script( 'deansluyter-theme-app', get_template_directory_uri() . '/dist/js/app.min.js', array( 'jquery' ), null, true );
+
+	if ( deansluyter_theme_is_vite_dev() ) {
+		// Dev mode: load from Vite dev server with HMR (via DDEV's HTTPS router)
+		wp_enqueue_script( 'vite-client', 'https://deansluyter.ddev.site:5173/@vite/client', array(), null, false );
+		wp_enqueue_script( 'deansluyter-theme-app', 'https://deansluyter.ddev.site:5173/main.js', array( 'jquery', 'vite-client' ), null, true );
+	} else {
+		// Production: load from dist/
+		wp_enqueue_style( 'deansluyter-theme-styles', get_template_directory_uri() . '/dist/css/style.min.css' );
+		wp_enqueue_script( 'deansluyter-theme-app', get_template_directory_uri() . '/dist/js/app.min.js', array( 'jquery' ), null, true );
+	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'deansluyter_theme_scripts' );
+
+/**
+ * Add type="module" to Vite scripts.
+ */
+function deansluyter_theme_script_type( $tag, $handle, $src ) {
+	if ( in_array( $handle, array( 'vite-client', 'deansluyter-theme-app' ) ) && deansluyter_theme_is_vite_dev() ) {
+		return '<script type="module" src="' . esc_url( $src ) . '"></script>';
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'deansluyter_theme_script_type', 10, 3 );
 
 // retrieves the attachment ID from the file URL
 function pippin_get_image_id($image_url) {

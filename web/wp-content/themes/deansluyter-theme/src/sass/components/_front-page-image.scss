@@ -47,7 +47,9 @@
 .front-page-image {
   overflow: hidden;
   position: relative;
-  background-image: url(../../images/dean-portrait_028_v02.jpg);
+  background-image: url("@assets/dean-portrait_028_v02.jpg");
+  // background-image:url("@assets/home page banner tweaked again.jpg");  
+  // background-image: none;
   background-color: #2a231b;
   background-repeat: no-repeat;
   background-size: cover;
@@ -118,7 +120,7 @@ a.new-book-link {
 
   &:before {
     content: "";
-    background-image: url(../../images/dharma-bums-cover.jpg);
+    background-image: url("@assets/dharma-bums-cover.jpg");
     background-color: #36bbc2;
     background-position: bottom;
     border: 1px solid rgba(black, 0.5);
@@ -133,7 +135,7 @@ a.new-book-link {
 
   &:after {
     content: "";
-    background-image: url(../../images/nautilus_award.png);
+    background-image: url("@assets/nautilus_award.png");
     width: 6.125em;
     height: 6.125em;
     background-position: center;

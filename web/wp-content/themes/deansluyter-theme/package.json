@@ -3,16 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm:watch\" \"npm:serve\"",
-    "watch": "vite build --watch",
-    "serve": "browser-sync start --proxy https://deansluyter.ddev.site --files \"dist/**/*,**/*.php\" --no-open --no-ui",
-    "build": "vite build"
+    "dev": "mkdir -p dist/.vite && touch dist/.vite/hot && vite",
+    "build": "rm -f dist/.vite/hot && vite build"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "breakpoint-sass": "^2.7.1",
-    "browser-sync": "^3.0.2",
-    "concurrently": "^8.2.2",
     "sass": "^1.77.8",
     "vite": "^5.4.10"
   }

@@ -77,15 +77,15 @@ ul.purchase-links {
       height: 100%;
 
       &.link--amazon {
-        background-image: url("../assets/logo-amazon.png");
+        background-image: url("@assets/logo-amazon.png");
       }
 
       &.link--indiebound {
-        background-image: url("../assets/logo-indiebound.png");
+        background-image: url("@assets/logo-indiebound.png");
       }
 
       &.link--barnesnoble {
-        background-image: url("../assets/logo-barnesnoble.png");
+        background-image: url("@assets/logo-barnesnoble.png");
       }
 
       opacity: .9;

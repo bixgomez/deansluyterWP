@@ -3,12 +3,31 @@ import path from 'path';
 
 export default defineConfig({
   root: 'src',
+  base: '/wp-content/themes/deansluyter-theme/dist/',
   publicDir: false,
+
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+    https: false,
+    cors: true,
+    origin: 'https://deansluyter.ddev.site:5173',
+    hmr: {
+      host: 'deansluyter.ddev.site',
+      port: 5173,
+      protocol: 'wss',
+    },
+    watch: {
+      usePolling: true,
+      interval: 300,
+    },
+  },
 
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
-    manifest: false,
+    manifest: true,
     minify: 'esbuild',
     sourcemap: true,
 
@@ -25,7 +44,6 @@ export default defineConfig({
         },
       },
       external: ['jquery'],
-
     },
   },
 
@@ -45,6 +63,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
     },
   },
 });
