@@ -5,7 +5,7 @@ import { execSync } from 'child_process';
 console.log('Building with Vite...\n');
 
 try {
-  execSync('npx vite build', { stdio: 'inherit' });
+  execSync('npx vite build --config vite.config.mjs', { stdio: 'inherit' });
   console.log('\nBuild complete.\n');
 } catch (error) {
   console.error('Build failed:', error.message);

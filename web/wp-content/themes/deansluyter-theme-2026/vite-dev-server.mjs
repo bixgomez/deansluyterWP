@@ -80,7 +80,7 @@ function startDistWatcher() {
 
 startDistWatcher();
 
-const viteProcess = spawn('npx', ['vite', 'build', '--watch'], {
+const viteProcess = spawn('npx', ['vite', 'build', '--watch', '--config', 'vite.config.mjs'], {
   stdio: ['inherit', 'pipe', 'pipe'],
   shell: true,
   env: {
