@@ -1,21 +1,23 @@
 {
   "folders": [
 	{
-		"name": "deansluyter",
+		"name": "Site Notes",
 		"path": "../../../../home/bixgomez/dev_assets/site_notes/deansluyter"
 	},
 	{
-		"name": "deansluyter",
+		"name": "Project Root",
 		"path": "."
 	},
 	{
-		"name": "web",
+		"name": "Site Root",
 		"path": "web"
 	},
 	{
+		"name": "Custom Plugin",
 		"path": "web/wp-content/plugins/deansluyter-blocks"
 	},
 	{
+		"name": "Custom Theme",
 		"path": "web/wp-content/themes/deansluyter-theme-2026"
 	}
 ],
