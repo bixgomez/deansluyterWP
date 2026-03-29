@@ -301,7 +301,7 @@
 					$( event.target ).trigger( 'click' );
 				}
 			}, this ) );
-			$( this.wrapperClass ).on( 'click', 'a, .fl-menu-toggle', $.proxy( function( event ) {
+			$( this.wrapperClass ).on( 'click', 'a[role="menu-item"], .fl-menu-toggle', $.proxy( function( event ) {
 				event.stopPropagation();
 				// Only allow mouse clicks with accordion & mobile menus
 				if ( this._isMouseAvailable() && ! this._isMenuToggle() && event.detail && this.type !== 'accordion' ) return;

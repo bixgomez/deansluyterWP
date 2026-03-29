@@ -219,14 +219,16 @@ final class FLBuilderUserTemplatesAdminList {
 
 		switch ( $column ) {
 			case 'fl-builder-template-title':
-				$badge      = '';
-				$post_title = get_the_title( $post_id );
-				$link       = get_the_permalink( $post_id );
-				$title_attr = the_title_attribute( [
+				$badge       = '';
+				$post_title  = get_the_title( $post_id );
+				$link        = get_edit_post_link( $post_id );
+				$title_attr  = the_title_attribute( [
 					'echo' => false,
 					'post' => get_post( $post_id ),
 				] );
-				$aria_label = $post_title . ' ( ' . __( 'Edit', 'fl-builder' ) . ')';
+				$aria_label  = $post_title . ' ( ' . __( 'Edit', 'fl-builder' ) . ')';
+				$post        = get_post( $post_id );
+				$post_status = _post_states( $post, false );
 
 				if ( FLBuilderModel::is_post_global_node_template( $post_id ) ) {
 					$badgelabel = __( 'Global', 'fl-builder' );
@@ -240,13 +242,16 @@ final class FLBuilderUserTemplatesAdminList {
 					}
 				}
 
-				printf( '<strong><a href="%s" class="row-title" title="%s" aria-label="%s">%s</a>%s</strong>',
+				printf( '<strong><a href="%s" class="row-title" title="%s" aria-label="%s">%s</a>%s%s</strong>',
 					$link,
 					$title_attr,
 					$aria_label,
 					$post_title,
+					$post_status,
 					$badge
 				);
+
+				get_inline_data( $post );
 
 				break;
 			case 'code':
@@ -264,10 +269,10 @@ final class FLBuilderUserTemplatesAdminList {
 				$links = [];
 				foreach ( (array) $terms as $term ) {
 					if ( isset( $term->term_id ) ) {
-						$args = array(
-							'post_type' => 'fl-builder-template',
+						$args    = array(
+							'post_type'                    => 'fl-builder-template',
 							'fl-builder-template-category' => $term->slug,
-							'fl-builder-template-type' => $_GET['fl-builder-template-type'],
+							'fl-builder-template-type'     => $_GET['fl-builder-template-type'],
 						);
 						$edit    = add_query_arg( $args, admin_url( 'edit.php' ) );
 						$links[] = sprintf( '<a href="%s">%s</a>', $edit, $term->name );

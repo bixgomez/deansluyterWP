@@ -2609,6 +2609,7 @@
 				important = preview.important ? ' !important' : '',
 				val = ''
 
+
 			// If the selected font is a Google Font, build the font stylesheet
 			if( fontGroup == 'Google' || fontGroup == 'Recently Used' ){
 				this._buildFontStylesheet( uniqueID, font.val(), weight.val() );
@@ -2666,7 +2667,6 @@
 					weights = weights.filter( function( weight ) {
 				        return fontArray[ key ].indexOf( weight ) < 0;
 				    });
-
 					fontArray[ key ] = fontArray[ key ].concat( weights );
 
 				});
@@ -2677,6 +2677,14 @@
 				if ( 'Molle' === font ) {
 					href += font + ':i|';
 				} else {
+					/**
+					 * If default is set for weight, then we have to load all the weights so Google
+					 * can use the intended default.
+					 * This wrecked my head.
+					 */
+					if ( weight[0] == 'default' ) {
+						weight = [FLBuilderFontFamilies.google[font].join('|')]
+					}
 					href += font + ':' + weight.join() + '|';
 				}
 			} );
@@ -3831,7 +3839,6 @@
 			} );
 			this.updateCSSRule( shapeSelector, 'transform', shapeTransforms.join(' ') );
 		},
-
 	}
 
 })(jQuery);

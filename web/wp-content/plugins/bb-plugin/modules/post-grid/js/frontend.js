@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 (function($) {
 
 	FLBuilderPostGrid = function(settings)
@@ -155,10 +156,10 @@
 			}
 		},
 
-		_infiniteScroll: function(settings)
+		_infiniteScroll: function()
 		{
 			var path 		= $(this.nodeClass + ' .fl-builder-pagination a.next').attr('href'),
-				pagePattern = /(.*?(\/|\&|\?)paged-[0-9]{1,}(\/|=))([0-9]{1,})+(.*)/,
+				pagePattern = /(.*?(\/|&|\?)paged-[0-9]{1,}(\/|=))([0-9]{1,})+(.*)/,
 				wpPattern   = /^(.*?\/?page\/?)(?:\d+)(.*?$)/,
 				pageMatched = null,
 				scrollData	= {
@@ -186,7 +187,7 @@
 				scrollData.path = path.match( wpPattern ).slice( 1 );
 			}
 
-			$(this.wrapperClass).infinitescroll( scrollData, $.proxy(this._infiniteScrollComplete, this) );
+			$(this.postClass).first().parent().infinitescroll( scrollData, $.proxy(this._infiniteScrollComplete, this) );
 
 			setTimeout(function(){
 				$(window).trigger('resize');
@@ -224,10 +225,6 @@
 				$( '#infscr-loading' ).appendTo( this.wrapperClass );
 			}
 
-			elements.find( 'img[srcset]' ).each( function( index, img ) {
-				img.outerHTML = img.outerHTML;
-			});
-
 			this.currPage++;
 
 			this._removeLoadMoreButton();
@@ -239,7 +236,7 @@
 
 		_infiniteScrollLoadMore: function()
 		{
-			var wrap = $( this.wrapperClass );
+			var wrap = $( this.postClass ).first().parent();
 
 			$( window ).unbind( '.infscr' );
 

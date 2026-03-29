@@ -5,7 +5,6 @@
 	{
 		this.settings 	 = settings;
 		this.nodeClass   = '.fl-node-' + settings.id;
-		this.wasToggled  = false;
 		this.expandOnTab = settings.expandOnTab;
 		this._init();
 	};
@@ -14,13 +13,13 @@
 
 		settings	  : {},
 		nodeClass   : '',
-		wasToggled  : false,
 		expandOnTab : false,
 
 		_init: function()
 		{
-			$( this.nodeClass + ' .fl-accordion-item' ).on('click keydown', $.proxy( this._buttonClick, this ) );
-			$( this.nodeClass + ' .fl-accordion-button-icon:not(i)' ).on('focusin', $.proxy( this._focusIn, this ) );
+			$( this.nodeClass + ' .fl-accordion-button' ).on('click keydown', $.proxy( this._buttonClick, this ) );
+			$( this.nodeClass + ' .fl-accordion-content' ).on('keydown', $.proxy( this._contentKeys, this ) );
+			$( this.nodeClass + ' .fl-accordion-button' ).on('focusin', $.proxy( this._focusIn, this ) );
 
 			if ( 'undefined' !== typeof FLBuilderLayout ) {
 				FLBuilderLayout.preloadAudio( this.nodeClass + ' .fl-accordion-content' );
@@ -37,65 +36,46 @@
 			}
 		},
 
-		_focusIn: function(e) {
-			var button = $( e.target ).closest('.fl-accordion-button');
-
-			if ( ! e.relatedTarget ) {
-				return;
+		_contentKeys: function( e )
+		{
+			const item   = $( e.target ).closest( '.fl-accordion-item' );
+			const active = item.hasClass( 'fl-accordion-item-active' );
+			const typing = $( e.target ).is( 'input, textarea, select' ) || e.target.isContentEditable;
+			if ( e.key === 'Escape' && active ) {
+				// Only toggle the accordion if the escape key was pressed and the item is active
+				this._toggleAccordion( item.find( '.fl-accordion-button' ) );
+			} else if ( e.key === ' ' && ! typing ) {
+				// Prevent the space key from scrolling the page when focus is on the content and not on a form field
+				e.preventDefault();
 			}
+		},
 
-			if ( ! this.expandOnTab ) {
-				return;
-			}
-
+		_focusIn: function( e ) {
+			if ( ! e.relatedTarget || ! this.expandOnTab ) return;
+			// Only toggle the accordion if the focus was triggered via keyboard navigation
+			if ( ! e.target.matches( ':focus-visible' ) ) return;
+			const button = $( e.target ).closest( '.fl-accordion-button' );
 			this._toggleAccordion( button );
-			e.preventDefault();
-			e.stopImmediatePropagation();
-			this.wasToggled = true;
 		},
 
 		_buttonClick: function( e )
 		{
-			var button        = $( e.target ).closest('.fl-accordion-item').find('.fl-accordion-button'),
-				itemActive      = button.closest( '.fl-accordion-item' ).hasClass('fl-accordion-item-active'),
-				targetModule    = $( e.target ).closest('.fl-module-accordion'),
-				targetNodeClass = 'fl-node-' + targetModule.data('node'),
-				nodeClassName   = this.nodeClass.replace('.', '');
-
-			// Click or keyboard (enter or spacebar) input?
-			if(!this._validClick(e)) {
-				return;
-			}
-
-			// Prevent event handler being called twice when Accordion is nested.
-			if ( nodeClassName !== targetNodeClass ) {
-				return;
-			}
-
-			if ( e.key !== 'Escape' && this.expandOnTab && this.wasToggled ) {
-				this.wasToggled = false;
-				e.preventDefault();
-				return;
-			}
-
-			// Prevent scrolling when the spacebar is pressed
-			if ( e.key === ' ' ) {
-				e.stopPropagation();
-				if ( $( e.target ).hasClass( 'fl-accordion-button-icon' ) ) {
-					e.preventDefault();
-				}
-			}
-
-			// Prevent the enter key from retoggling the button by not triggering a click event
-			if ( e.key === 'Enter' && $( e.target ).hasClass( 'fl-accordion-button-icon' ) ) {
-				e.preventDefault();
-			}
-
-			const classes = '.fl-accordion-button, .fl-accordion-button-label, .fl-accordion-button-icon';
-			if ( ( e.key !== 'Escape' && $( e.target ).is( classes ) ) || ( e.key === 'Escape' && itemActive ) ) {
-				this._toggleAccordion( button );
-			}
-
+			const item   = $( e.currentTarget ).closest( '.fl-accordion-item' );
+			const active = item.hasClass( 'fl-accordion-item-active' );
+			const button = item.find( '.fl-accordion-button' );
+			const target = 'fl-node-' + item.closest( '.fl-module-accordion' ).data( 'node' );
+			const	node   = this.nodeClass.replace( '.', '' );
+			// Check keyboard keys and ignore the rest
+			if( e.type === 'keydown' && ! [ ' ', 'Enter', 'Escape' ].includes( e.key ) ) return;
+			// Only allow left click for mouse input or simulated clicks
+			if ( e.type === 'click' && e.button !== 0 && e.button !== undefined ) return;
+			// Prevent event handler being called twice when Accordion is nested
+			if ( node !== target ) return;
+			// Do not toggle the accordion if the escape key is pressed and the item is not active
+			if ( e.key === 'Escape' && ! active ) return;
+			// Prevent the space & enter keys from retoggling the button by not triggering a click event
+			if ( [ ' ', 'Enter' ].includes( e.key ) && $( e.target ).hasClass( 'fl-accordion-button-icon' ) ) e.preventDefault();
+			this._toggleAccordion( button );
 		},
 
 		_toggleAccordion: function( button ) {
@@ -197,12 +177,8 @@
 			}
 
 			accordion.trigger( 'fl-builder.fl-accordion-toggle-complete' );
-		},
-
-		_validClick: function(e)
-		{
-			return (e.which == 1 || e.which == 13 || e.which == 27 || e.which == 32 || e.which == undefined) ? true : false;
 		}
+
 	};
 
 })(jQuery);

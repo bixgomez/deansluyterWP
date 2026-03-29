@@ -1,10 +1,10 @@
 === Assistant - Every Day Productivity Apps ===
 Contributors: justinbusa, RobbyMcCullough, billyyoung, brentjettgmailcom, pross, shahidajmeri22, codente
 Tags: Assistant Pro, Beaver Builder, Page Builder, Gutenberg, Blocks
-Requires at least: 5.2
+Requires at least: 6.6
+Requires PHP: 7.2
 Tested up to: 6.9
-Requires PHP: 5.6
-Stable tag: 1.5.3.2
+Stable tag: 1.5.4.1
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,16 @@ No! Assistant is a standalone plugin and can be used with any WordPress 5.0+ ins
 
 
 == Changelog ==
+
+= 1.5.4.1 ( 2026-03-19 ) =
+* Fixed thumbnail being cropped incorrectly when exporting images
+* Fixed incorrect image dimensions in item details panel
+* Fixed timeout when downloading zip files of libraries with many items
+
+= 1.5.4 ( 2026-02-25 ) =
+* Allow exporting/importing of Beaver Builder settings to/from libraries
+* Modify import library to allow selecting type of library item to import
+* Adjust "Add All" UI to prevent accidental exporting of items
 
 = 1.5.3.2 ( 2026-01-28 ) =
 * Fixed PHP warning for undefined array key when updating profile

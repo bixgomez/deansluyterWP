@@ -3,7 +3,7 @@
 	display: inline-block;
 	margin: 0 2px;
 }
-.fl-module-post-grid :not(.fl-builder-pagination) > ul {
+div:where(.fl-module-post-grid :not(.fl-builder-pagination)) > ul {
 	all: unset;
 	list-style: none;
 }
