@@ -27,11 +27,22 @@
   .front-page-image {
     width: 100cqi;
     height: 70cqi;
+    overflow: hidden;
+    position: relative;
 
     @include breakpoint($sm) {
       width: 67cqi;
       height: 50cqi;
     }
+  }
+
+  .front-page-image__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
   }
 
   .front-page-cta {
@@ -47,16 +58,6 @@
       height: 50cqi;
     }
   }
-}
-
-.front-page-image {
-  overflow: hidden;
-  position: relative;
-  background-image: url("@assets/dean-portrait_028_v02.jpg");
-  background-color: #2a231b;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
 }
 
 .front-page-text {
