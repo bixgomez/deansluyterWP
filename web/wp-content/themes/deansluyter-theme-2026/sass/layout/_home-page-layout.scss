@@ -7,35 +7,35 @@ body.home .section--content {
   }
 }
 
-.front-page-grid {
-  max-width: $max-site-width;
-  margin: 1rem auto;
-  padding: 0 1rem;
+// .front-page-grid {
+//   max-width: $max-site-width;
+//   margin: 1rem auto;
+//   padding: 0 1rem;
 
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: 1fr;
+//   display: grid;
+//   grid-gap: 1rem;
+//   grid-template-columns: 1fr;
 
-  @include breakpoint($md) {
-    grid-template-columns: 1fr 1fr;
+//   @include breakpoint($md) {
+//     grid-template-columns: 1fr 1fr;
 
-    .item.full-width {
-      grid-column: auto / span 2;
-    }
-  }
+//     .item.full-width {
+//       grid-column: auto / span 2;
+//     }
+//   }
 
-  @include breakpoint($lg) {
-    grid-template-columns: 1fr 1fr 1fr;
+//   @include breakpoint($lg) {
+//     grid-template-columns: 1fr 1fr 1fr;
 
-    .item.full-width {
-      grid-column: auto / span 3;
-    }
-  }
+//     .item.full-width {
+//       grid-column: auto / span 3;
+//     }
+//   }
 
-  h3 {
-    text-transform: uppercase;
-  }
-}
+//   h3 {
+//     text-transform: uppercase;
+//   }
+// }
 
 .front-page-content--wrapper {
   max-width: $max-site-width;

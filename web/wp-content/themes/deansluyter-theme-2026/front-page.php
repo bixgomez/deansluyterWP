@@ -54,46 +54,16 @@ if ( file_exists( $hero_image_path ) ) {
         </div>
     </div>
 
-<?php /* ?>
-<div class="front-page-image">
-  <div class="front-page-text">
-    <div class="inner">
-      <?php while ( have_posts() ) : the_post(); ?>
-        <?php  ?>
-        <h1 class="site-name">Dean Sluyter</h1>
-        <?php  ?>
-        <p class="home-page-intro-text">
-          <?php the_field('intro_text'); ?>
-        </p>
-      <?php endwhile; ?>
+    <div class="front-page-content--wrapper">
+        <div class="front-page-content">
+            <?php
+            while ( have_posts() ) :
+                the_post();
+                get_template_part( 'template-parts/content', 'front' );
+            endwhile;
+            ?>
+        </div>
     </div>
-  </div>
-</div>
-<?php */ ?>
-
-<?php /* ?>
-  <div class="front-page-grid--wrapper">
-    <div class="front-page-grid">
-      <?php
-      while ( have_posts() ) :
-        the_post();
-        get_template_part( 'template-parts/content', 'front' );
-      endwhile;
-      ?>
-    </div>
-  </div>
-<?php */ ?>
-
-<div class="front-page-content--wrapper">
-  <div class="front-page-content">
-    <?php
-    while ( have_posts() ) :
-      the_post();
-      get_template_part( 'template-parts/content', 'front' );
-    endwhile;
-    ?>
-  </div>
-</div>
 
 <?php
 get_sidebar();
