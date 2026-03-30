@@ -14,8 +14,7 @@ export default defineConfig({
         silenceDeprecations: ['legacy-js-api'],
         loadPaths: [
           resolve(__dirname, 'node_modules'),
-          resolve(__dirname, 'node_modules/breakpoint-sass/stylesheets'),
-          resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/scss')
+          resolve(__dirname, 'node_modules/breakpoint-sass/stylesheets')
         ]
       }
     },

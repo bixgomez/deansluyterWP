@@ -10,7 +10,6 @@
     "build": "node vite-build.mjs"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
     "breakpoint-sass": "^2.7.1"
   },
   "devDependencies": {
