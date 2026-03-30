@@ -191,8 +191,15 @@ add_action( 'widgets_init', 'deansluyter_theme_2026_widgets_init' );
  */
 function deansluyter_theme_2026_scripts() {
 	$theme_version = wp_get_theme()->get( 'Version' );
+	$google_fonts_url = 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@400;600;700&family=Raleway:wght@600;800;900&display=swap';
 
-	wp_enqueue_style( 'deansluyter-theme-2026-style', get_stylesheet_uri(), array(), $theme_version );
+	wp_enqueue_style( 'deansluyter-theme-2026-fonts', $google_fonts_url, array(), null );
+	wp_enqueue_style(
+		'deansluyter-theme-2026-style',
+		get_stylesheet_uri(),
+		array( 'deansluyter-theme-2026-fonts' ),
+		$theme_version
+	);
 
 	$css_rel_path = '/dist/css/styles.css';
 	$css_abs_path = get_theme_file_path( $css_rel_path );
