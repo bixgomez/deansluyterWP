@@ -224,6 +224,30 @@ function deansluyter_theme_2026_scripts() {
 add_action( 'wp_enqueue_scripts', 'deansluyter_theme_2026_scripts' );
 
 /**
+ * Remove jQuery Migrate on the public-facing site.
+ *
+ * This is a performance test and should remain easy to revert if a legacy
+ * script turns out to depend on Migrate.
+ *
+ * @param WP_Scripts $scripts Registered script collection.
+ */
+function deansluyter_theme_2026_remove_frontend_jquery_migrate( $scripts ) {
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( ! isset( $scripts->registered['jquery'] ) ) {
+		return;
+	}
+
+	$scripts->registered['jquery']->deps = array_diff(
+		$scripts->registered['jquery']->deps,
+		array( 'jquery-migrate' )
+	);
+}
+add_action( 'wp_default_scripts', 'deansluyter_theme_2026_remove_frontend_jquery_migrate' );
+
+/**
  * Retrieve the attachment ID from a file URL.
  *
  * @param string $image_url Image URL.
