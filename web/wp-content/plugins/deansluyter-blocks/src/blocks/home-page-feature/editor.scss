@@ -1,0 +1,18 @@
+.wp-block-deansluyter-home-page-feature {
+  .home-page-feature--featured-image {
+    margin-bottom: 0.75rem;
+  }
+
+  img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .home-page-feature--image-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0.5rem 0 0;
+  }
+}
