@@ -1,4 +1,11 @@
 .wp-block-deansluyter-home-page-feature {
+  position: relative;
+
+  .home-page-feature--link {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
   .home-page-feature--featured-image {
     margin-bottom: 0.75rem;
   }

@@ -59,12 +59,6 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
 
             <div {...blockProps}>
-                {linkUrl && linkText && (
-                    <a className="home-page-feature--link" href={linkUrl}>
-                        {linkText}
-                    </a>
-                )}
-
                 <div className="home-page-feature--featured-image">
                     {imageUrl ? (
                         <img src={imageUrl} alt={imageAlt || ''} className="image" />
