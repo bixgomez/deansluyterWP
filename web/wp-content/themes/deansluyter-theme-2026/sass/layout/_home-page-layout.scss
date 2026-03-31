@@ -13,12 +13,13 @@ body.home .section--content {
   padding: 0;
 }
 
-body div.wp-block-group {
+.home-page-features {
   width: 100%;
   margin: 0;
   padding: 1rem;
   background-color: rgba(white, .25);
 
+  .wp-block-group__inner-container {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 2rem;
@@ -41,7 +42,7 @@ body div.wp-block-group {
       grid-gap: 1.5rem;
       font-size: 1rem;
     }
-  
+  }
 
   // Ignore all module wrappers, as they are unpredictable.
   .fl-col-group {
