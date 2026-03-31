@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "deansluyter/home-page-feature",
+  "version": "0.1.2",
+  "title": "Home Page Feature",
+  "category": "widgets",
+  "icon": "format-image",
+  "description": "A minimal home page feature block with image, title, subtitle, body text, and link.",
+  "keywords": [
+    "home",
+    "feature",
+    "teaser"
+  ],
+  "supports": {
+    "html": false
+  },
+  "render": "file:./render.php",
+  "attributes": {
+    "imageId": {
+      "type": "number"
+    },
+    "imageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "imageAlt": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "subtitle": {
+      "type": "string",
+      "default": ""
+    },
+    "body": {
+      "type": "string",
+      "default": ""
+    },
+    "linkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "linkText": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "deansluyter-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
