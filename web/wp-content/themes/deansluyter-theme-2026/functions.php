@@ -231,6 +231,61 @@ function deansluyter_theme_2026_scripts() {
 add_action( 'wp_enqueue_scripts', 'deansluyter_theme_2026_scripts' );
 
 /**
+ * Get the GA4 measurement ID for the site, if one has been configured.
+ *
+ * Preferred configuration is the `DEANSLUYTER_THEME_2026_GA4_MEASUREMENT_ID`
+ * constant in wp-config.php. A filter is also available for environment-
+ * specific injection without hard-coding the ID in the theme.
+ *
+ * @return string
+ */
+function deansluyter_theme_2026_get_ga4_measurement_id() {
+	$measurement_id = '';
+
+	if ( defined( 'DEANSLUYTER_THEME_2026_GA4_MEASUREMENT_ID' ) ) {
+		$measurement_id = (string) DEANSLUYTER_THEME_2026_GA4_MEASUREMENT_ID;
+	}
+
+	$measurement_id = trim(
+		(string) apply_filters(
+			'deansluyter_theme_2026_ga4_measurement_id',
+			$measurement_id
+		)
+	);
+
+	if ( ! preg_match( '/^G-[A-Z0-9]+$/i', $measurement_id ) ) {
+		return '';
+	}
+
+	return $measurement_id;
+}
+
+/**
+ * Print the GA4 tag in the document head when a measurement ID is configured.
+ */
+function deansluyter_theme_2026_print_ga4_tag() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	$measurement_id = deansluyter_theme_2026_get_ga4_measurement_id();
+
+	if ( '' === $measurement_id ) {
+		return;
+	}
+	?>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $measurement_id ); ?>"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', '<?php echo esc_js( $measurement_id ); ?>');
+	</script>
+	<?php
+}
+add_action( 'wp_head', 'deansluyter_theme_2026_print_ga4_tag', 20 );
+
+/**
  * Remove jQuery Migrate on the public-facing site.
  *
  * This is a performance test and should remain easy to revert if a legacy
