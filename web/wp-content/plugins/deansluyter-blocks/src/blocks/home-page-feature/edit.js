@@ -61,7 +61,7 @@ export default function Edit({ attributes, setAttributes }) {
             <div {...blockProps}>
                 <div className="home-page-feature--featured-image">
                     {imageUrl ? (
-                        <img src={imageUrl} alt={imageAlt || ''} className="image" />
+                        <img src={imageUrl} alt={imageAlt || ''} className="size-homepage" />
                     ) : (
                         <MediaUploadCheck>
                             <MediaUpload
@@ -128,6 +128,7 @@ export default function Edit({ attributes, setAttributes }) {
                         onChange={(nextBody) => setAttributes({ body: nextBody })}
                         placeholder={__('Body text...', 'deansluyter-blocks')}
                     />
+                    <div className="home-page-feature--body-extra"></div>
                 </div>
 
                 <div className="home-page-feature--link-text">

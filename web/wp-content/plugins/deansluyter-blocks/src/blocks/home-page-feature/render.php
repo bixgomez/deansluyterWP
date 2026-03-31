@@ -33,25 +33,35 @@ if ( $image_id ) {
 		false,
 		array(
 			'alt'   => $image_alt,
-			'class' => 'image',
+			'class' => 'size-homepage',
 		)
 	);
 } elseif ( $image_url ) {
 	$image_html = sprintf(
-		'<img src="%1$s" alt="%2$s" class="image" />',
+		'<img src="%1$s" alt="%2$s" class="size-homepage" />',
 		esc_url( $image_url ),
 		esc_attr( $image_alt )
 	);
 }
+
+$image_markup = $image_html;
+
+if ( $image_html && $link_url ) {
+	$image_markup = sprintf(
+		'<a href="%1$s">%2$s</a>',
+		esc_url( $link_url ),
+		$image_html
+	);
+}
 ?>
 <div <?php echo $wrapper_attrs; ?>>
-	<?php if ( $link_url && $link_text ) : ?>
+	<?php if ( $link_url ) : ?>
 		<a class="home-page-feature--link" href="<?php echo esc_url( $link_url ); ?>"><?php echo esc_html( $link_text ); ?></a>
 	<?php endif; ?>
 
-	<?php if ( $image_html ) : ?>
+	<?php if ( $image_markup ) : ?>
 		<div class="home-page-feature--featured-image">
-			<?php echo $image_html; ?>
+			<?php echo $image_markup; ?>
 		</div>
 	<?php endif; ?>
 
@@ -69,12 +79,11 @@ if ( $image_id ) {
 	<?php if ( $body ) : ?>
 		<div class="home-page-feature--body">
 			<?php echo wp_kses_post( $body ); ?>
+			<div class="home-page-feature--body-extra"></div>
 		</div>
 	<?php endif; ?>
 
-	<?php if ( $link_url && $link_text ) : ?>
-		<div class="home-page-feature--link-text">
-			<?php echo esc_html( $link_text ); ?>
-		</div>
-	<?php endif; ?>
+	<div class="home-page-feature--link-text">
+		<?php echo esc_html( $link_text ); ?>
+	</div>
 </div>
