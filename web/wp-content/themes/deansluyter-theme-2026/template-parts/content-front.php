@@ -9,8 +9,10 @@
 
 ?>
 
-<?php
-the_content();
-?>
+<div class="home-page-features">
+    <div class="home-page-features-wrapper">
+        <?php the_content(); ?>
+    </div>
+</div>
 
 <!-- #post-<?php the_ID(); ?> -->
