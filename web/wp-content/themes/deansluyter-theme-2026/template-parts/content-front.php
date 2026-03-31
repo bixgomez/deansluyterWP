@@ -9,8 +9,8 @@
 
 ?>
 
-<div class="home-page-features">
-    <div class="home-page-features-wrapper">
+<div class="home-page-features-wrapper">
+    <div class="home-page-features">
         <?php the_content(); ?>
     </div>
 </div>
