@@ -32,13 +32,16 @@ if ( $image_id ) {
 		'homepage feature mobile',
 		false,
 		array(
-			'alt'   => $image_alt,
-			'class' => 'size-homepage',
+			'alt'           => $image_alt,
+			'class'         => 'size-homepage',
+			'decoding'      => 'async',
+			'loading'       => 'lazy',
+			'fetchpriority' => 'low',
 		)
 	);
 } elseif ( $image_url ) {
 	$image_html = sprintf(
-		'<img src="%1$s" alt="%2$s" class="size-homepage" />',
+		'<img src="%1$s" alt="%2$s" class="size-homepage" decoding="async" loading="lazy" fetchpriority="low" />',
 		esc_url( $image_url ),
 		esc_attr( $image_alt )
 	);
