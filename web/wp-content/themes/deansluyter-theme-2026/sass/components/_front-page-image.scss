@@ -122,29 +122,21 @@ a.new-book-link {
     transition: text-shadow 0.25s linear;
   }
 
-  &:before {
-    content: "";
-    background-image: url("@assets/dharma-bums-cover.jpg");
+  .new-book-link__cover {
+    display: block;
     background-color: #36bbc2;
-    background-position: bottom;
     border: 1px solid rgba(black, 0.5);
-    height: 21em;
     width: 13.7em;
+    height: auto;
     box-shadow: 0 0 2.5em rgba(white, 0.25);
-    background-size: contain;
-    background-repeat: no-repeat;
     margin: 2.5em auto 1em;
     transition: box-shadow 0.25s linear;
   }
 
-  &:after {
-    content: "";
-    background-image: url("@assets/nautilus_award.png");
+  .new-book-link__award {
+    display: block;
     width: 6.125em;
-    height: 6.125em;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
+    height: auto;
     position: absolute;
     top: 13.5em;
     right: -1.5em;
@@ -156,7 +148,7 @@ a.new-book-link {
       text-shadow: 0 0 0.75em rgba(white, 1);
     }
 
-    &:before {
+    .new-book-link__cover {
       box-shadow: 0 0 2.5em rgba(white, 0.5);
     }
   }
