@@ -15,6 +15,7 @@ let distWatcher;
 
 bs.init({
   proxy: 'https://deansluyter.ddev.site',
+  port: 3003,
   open: false,
   notify: false,
   logLevel: 'info',
@@ -29,7 +30,7 @@ bs.init({
   },
 });
 
-console.log('\nBrowserSync ready at: https://localhost:3000');
+console.log('\nBrowserSync ready at: https://localhost:3003');
 console.log('Starting Vite in watch mode...\n');
 
 const distPath = join(__dirname, 'dist');
