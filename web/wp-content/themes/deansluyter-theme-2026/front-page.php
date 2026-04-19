@@ -80,7 +80,7 @@ if ( file_exists( $cta_award_path ) ) {
                         loading="lazy"
                         decoding="async"
                     />
-                    <span class="new-book-link__text">New Book</span>
+                    <span class="new-book-link__text">Latest Book</span>
                 </a>
             </div>
         </div>
