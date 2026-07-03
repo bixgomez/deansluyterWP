@@ -42,12 +42,14 @@ define( 'GUTENVIEW_URL', plugin_dir_url( __FILE__ ) );
 /**
  * Bootstrap the plugin.
  *
- * Intentionally does nothing yet. Feature modules will be wired up here as they
- * are built (see the friction-point inventory / roadmap).
+ * Feature modules are wired up here as they are built (see the friction-point
+ * inventory / roadmap).
  *
  * @return void
  */
 function gutenview_bootstrap() {
-	// No-op for now.
+	if ( is_admin() ) {
+		require_once GUTENVIEW_DIR . 'includes/admin/settings-page.php';
+	}
 }
 add_action( 'plugins_loaded', 'gutenview_bootstrap' );
