@@ -26,10 +26,11 @@ while ( have_posts() ) :
 
 	if( $featured_book ):
 		echo '<div class="featured-book-wrapper">';
-		$post = $featured_book;
+		foreach( $featured_book as $post ):
 			setup_postdata($post);
 			get_template_part('template-parts/featured-book', get_post_format());
-		  wp_reset_postdata();
+		endforeach;
+		wp_reset_postdata();
 		echo '</div>';
 	endif;
 
