@@ -40,6 +40,11 @@ define( 'GUTENVIEW_DIR', plugin_dir_path( __FILE__ ) );
 define( 'GUTENVIEW_URL', plugin_dir_url( __FILE__ ) );
 
 /**
+ * Option name where all GutenView settings are stored (single array option).
+ */
+define( 'GUTENVIEW_OPTION', 'gutenview_settings' );
+
+/**
  * Bootstrap the plugin.
  *
  * Feature modules are wired up here as they are built (see the friction-point
@@ -48,8 +53,14 @@ define( 'GUTENVIEW_URL', plugin_dir_url( __FILE__ ) );
  * @return void
  */
 function gutenview_bootstrap() {
+	// Settings accessors — always available (editor + front end + admin).
+	require_once GUTENVIEW_DIR . 'includes/settings.php';
+
+	// Admin-only UI + editor features (the block editor runs in wp-admin).
 	if ( is_admin() ) {
 		require_once GUTENVIEW_DIR . 'includes/admin/settings-page.php';
+		require_once GUTENVIEW_DIR . 'includes/features/view-same-tab.php';
+		require_once GUTENVIEW_DIR . 'includes/features/snackbar-position.php';
 	}
 }
 add_action( 'plugins_loaded', 'gutenview_bootstrap' );

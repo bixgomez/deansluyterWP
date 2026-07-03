@@ -30,4 +30,6 @@ This is an early scaffold. Features are being added incrementally.
 == Changelog ==
 
 = 0.1.0 =
-* Initial scaffold. No functional features yet.
+* Settings page (Settings -> GutenView) with a master enable switch.
+* View & Save: "View in same tab" button in the block editor header.
+* View & Save: option to move the "saved" notice up near the Save button.
