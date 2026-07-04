@@ -26,6 +26,7 @@ function gutenview_default_settings() {
 		'enabled'             => true,  // Master switch.
 		'view_same_tab'       => false, // Same-tab "View" button in the editor header.
 		'reposition_snackbar' => false, // Move the "saved" notice up near the Save button.
+		'block_outlines'      => 'off', // Block boundary outlines: 'off' | 'hover' | 'always'.
 	);
 }
 

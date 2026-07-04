@@ -1,0 +1,40 @@
+/**
+ * GutenView — Block outlines (always).
+ *
+ * Draws a dashed boundary around every block at all times, on a light-to-medium
+ * gray ramp: light at rest, medium on hover, and a mid-tone when selected. Uses
+ * `outline` with a negative `outline-offset` so the line sits *inside* the block
+ * edge (inset by its own width) with zero layout shift.
+ *
+ * @package GutenView
+ */
+
+.editor-styles-wrapper {
+	/* Tweak these to restyle every GutenView block outline. */
+	--gutenview-block-outline-color: #e2e2e4;        /* resting (light) */
+	--gutenview-block-outline-color-hover: #9ea1a4;  /* hover (medium) */
+	--gutenview-block-outline-color-active: #c0c2c4; /* selected (between) */
+}
+
+/* Resting: every block, light. */
+.block-editor-block-list__block {
+	outline: 3px dashed var( --gutenview-block-outline-color );
+	outline-offset: -3px;
+	transition: outline-color 0.2s linear;
+}
+
+/* Hover: medium. */
+.block-editor-block-list__block:hover,
+.block-editor-block-list__block.is-hovered {
+	outline-color: var( --gutenview-block-outline-color-hover );
+}
+
+/*
+ * Selected: mid-tone. Uses the full shorthand + !important because Gutenberg
+ * manages the selected block's outline via inline styles (JS), which a normal
+ * stylesheet rule can't override.
+ */
+.block-editor-block-list__block.is-selected {
+	outline: 3px dashed var( --gutenview-block-outline-color-active ) !important;
+	outline-offset: -3px !important;
+}

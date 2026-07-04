@@ -107,6 +107,24 @@ function gutenview_register_settings() {
 		'gutenview_render_discoverability_section',
 		'gutenview'
 	);
+
+	add_settings_field(
+		'gutenview_field_block_outlines',
+		__( 'Block outlines', 'gutenview' ),
+		'gutenview_render_select_field',
+		'gutenview',
+		'gutenview_section_discoverability',
+		array(
+			'key'         => 'block_outlines',
+			'label_for'   => 'gutenview_block_outlines',
+			'choices'     => array(
+				'off'    => __( 'Off', 'gutenview' ),
+				'hover'  => __( 'On hover', 'gutenview' ),
+				'always' => __( 'Always', 'gutenview' ),
+			),
+			'description' => __( 'Draw a dashed boundary around blocks so their edges are visible. "On hover" shows it only for the block under the cursor (and the selected block); "Always" outlines every block.', 'gutenview' ),
+		)
+	);
 }
 add_action( 'admin_init', 'gutenview_register_settings' );
 
@@ -121,10 +139,15 @@ function gutenview_sanitize_settings( $input ) {
 
 	$output = array();
 
-	// All current settings are booleans (checkbox present === on).
+	// Boolean toggles (checkbox present === on).
 	$output['enabled']             = ! empty( $input['enabled'] );
 	$output['view_same_tab']       = ! empty( $input['view_same_tab'] );
 	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
+
+	// Block outlines mode (whitelist).
+	$allowed_modes            = array( 'off', 'hover', 'always' );
+	$mode                     = isset( $input['block_outlines'] ) ? $input['block_outlines'] : 'off';
+	$output['block_outlines'] = in_array( $mode, $allowed_modes, true ) ? $mode : 'off';
 
 	return $output;
 }
@@ -161,6 +184,44 @@ function gutenview_render_checkbox_field( $args ) {
 		/>
 		<?php echo esc_html( $label ); ?>
 	</label>
+	<?php if ( '' !== $description ) : ?>
+		<p class="description"><?php echo esc_html( $description ); ?></p>
+	<?php endif; ?>
+	<?php
+}
+
+/**
+ * Render a select (dropdown) field.
+ *
+ * @param array $args {
+ *     @type string $key         Setting key within the GutenView option.
+ *     @type string $label_for   Select id.
+ *     @type array  $choices     value => label pairs.
+ *     @type string $description Optional help text.
+ * }
+ * @return void
+ */
+function gutenview_render_select_field( $args ) {
+	$key = isset( $args['key'] ) ? $args['key'] : '';
+
+	if ( '' === $key || empty( $args['choices'] ) || ! is_array( $args['choices'] ) ) {
+		return;
+	}
+
+	$id          = isset( $args['label_for'] ) ? $args['label_for'] : 'gutenview_' . $key;
+	$description = isset( $args['description'] ) ? $args['description'] : '';
+	$current     = (string) gutenview_get_setting( $key );
+	?>
+	<select
+		id="<?php echo esc_attr( $id ); ?>"
+		name="<?php echo esc_attr( GUTENVIEW_OPTION ); ?>[<?php echo esc_attr( $key ); ?>]"
+	>
+		<?php foreach ( $args['choices'] as $value => $label ) : ?>
+			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current, (string) $value ); ?>>
+				<?php echo esc_html( $label ); ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
 	<?php if ( '' !== $description ) : ?>
 		<p class="description"><?php echo esc_html( $description ); ?></p>
 	<?php endif; ?>
