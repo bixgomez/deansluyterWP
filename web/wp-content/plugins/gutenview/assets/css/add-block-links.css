@@ -1,35 +1,33 @@
 /**
  * GutenView — Add-block hints.
  *
- * A faint "ghost +" at each top-level block boundary as a persistent hint that a
- * block can be inserted there. It is purely cosmetic (`pointer-events: none`), so
- * it never intercepts anything; WordPress's own inserter does all the real work.
+ * Faint "ghost +" hints where WordPress lets you insert:
+ *   - between top-level blocks (vertical gap), and
+ *   - between columns inside a Columns block (horizontal gap).
  *
- * Position comes from a custom property written by assets/js/add-block-links.js,
- * which measures the theme's actual, variable gap:
- *   --gutenview-gap  measured gap below the block (ghost is centered in it)
- *
- * No fade is needed: WordPress's own inserter is a high-z-index popover that
- * renders on top of the ghost when you approach a boundary.
+ * Each is purely cosmetic (`pointer-events: none`); WordPress's own inserter is a
+ * high-z-index popover that renders on top of the ghost as you approach, so no
+ * fade/hover logic is needed. Positions come from custom properties written by
+ * assets/js/add-block-links.js, which measures the theme's actual (variable) gaps:
+ *   --gutenview-gap             vertical gap below a top-level block
+ *   --gutenview-ghost-display   "none" on the final top-level block (no native "+")
+ *   --gutenview-col-gap         horizontal gap to the right of a column
+ *   --gutenview-col-ghost-display "none" on the last column (no native "+")
  *
  * @package GutenView
  */
 
-/* Positioning context for the ghost. */
-.is-root-container > .block-editor-block-list__block {
+/* Positioning context for the ghosts. */
+.is-root-container > .block-editor-block-list__block,
+.block-editor-block-list__block[data-type="core/column"] {
 	position: relative;
 }
 
-/* The ghost "+", styled to match the native dark inserter toggle. */
-.is-root-container > .block-editor-block-list__block::after {
+/* Shared ghost appearance (matches the native dark inserter toggle). */
+.is-root-container > .block-editor-block-list__block::after,
+.block-editor-block-list__block[data-type="core/column"]::after {
 	content: "";
-	/* JS sets this to "none" on the final block (no native inserter there). */
-	display: var( --gutenview-ghost-display, block );
 	position: absolute;
-	left: 50%;
-	bottom: 0;
-	/* Center in the gap: half the ghost's own height, plus half the measured gap. */
-	transform: translate( -50%, calc( 50% + var( --gutenview-gap, 0px ) / 2 ) );
 	z-index: 6;
 	width: 16px;
 	height: 16px;
@@ -44,6 +42,22 @@
 	   positions before appearing. */
 	opacity: 0;
 	animation: gutenview-ghost-fade-in 0.4s linear 1s forwards;
+}
+
+/* Between-block ghost: centered in the vertical gap below the block. */
+.is-root-container > .block-editor-block-list__block::after {
+	display: var( --gutenview-ghost-display, block );
+	left: 50%;
+	bottom: 0;
+	transform: translate( -50%, calc( 50% + var( --gutenview-gap, 0px ) / 2 ) );
+}
+
+/* Between-column ghost: centered in the horizontal gap to the right of the column. */
+.block-editor-block-list__block[data-type="core/column"]::after {
+	display: var( --gutenview-col-ghost-display, block );
+	right: 0;
+	top: 50%;
+	transform: translate( calc( 50% + var( --gutenview-col-gap, 0px ) / 2 ), -50% );
 }
 
 @keyframes gutenview-ghost-fade-in {

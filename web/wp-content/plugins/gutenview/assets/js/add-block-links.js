@@ -85,10 +85,47 @@
 	}
 
 	/**
-	 * Write the gap offset onto every block.
+	 * The next sibling that is a column block, or null.
+	 *
+	 * @param {Element} col
+	 * @return {Element|null}
+	 */
+	function nextColumn( col ) {
+		var n = col.nextElementSibling;
+		while ( n ) {
+			if ( n.getAttribute && 'core/column' === n.getAttribute( 'data-type' ) ) {
+				return n;
+			}
+			n = n.nextElementSibling;
+		}
+		return null;
+	}
+
+	/**
+	 * Measure horizontal gaps between columns and flag the last column of each set.
+	 */
+	function updateColumns() {
+		var cols = state.doc.querySelectorAll( '.block-editor-block-list__block[data-type="core/column"]' );
+		for ( var i = 0; i < cols.length; i++ ) {
+			var col = cols[ i ];
+			var next = nextColumn( col );
+			if ( next ) {
+				var gap = Math.max( 0, Math.round( next.getBoundingClientRect().left - col.getBoundingClientRect().right ) );
+				col.style.setProperty( '--gutenview-col-gap', gap + 'px' );
+				col.style.removeProperty( '--gutenview-col-ghost-display' );
+			} else {
+				// No native inserter after the last column, so hide that ghost.
+				col.style.setProperty( '--gutenview-col-ghost-display', 'none' );
+			}
+		}
+	}
+
+	/**
+	 * Write the gap offsets onto every block (vertical) and column (horizontal).
 	 */
 	function updatePositions() {
 		state.rafPos = null;
+
 		var blocks = topLevelBlocks();
 		var last = blocks.length - 1;
 		for ( var i = 0; i < blocks.length; i++ ) {
@@ -100,6 +137,8 @@
 				blocks[ i ].style.removeProperty( '--gutenview-ghost-display' );
 			}
 		}
+
+		updateColumns();
 	}
 
 	function schedulePositions() {
