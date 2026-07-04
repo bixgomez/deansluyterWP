@@ -62,6 +62,7 @@ function gutenview_bootstrap() {
 		require_once GUTENVIEW_DIR . 'includes/features/view-same-tab.php';
 		require_once GUTENVIEW_DIR . 'includes/features/snackbar-position.php';
 		require_once GUTENVIEW_DIR . 'includes/features/block-outlines.php';
+		require_once GUTENVIEW_DIR . 'includes/features/add-block-links.php';
 	}
 }
 add_action( 'plugins_loaded', 'gutenview_bootstrap' );

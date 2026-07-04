@@ -125,6 +125,20 @@ function gutenview_register_settings() {
 			'description' => __( 'Draw a dashed boundary around blocks so their edges are visible. "On hover" shows it only for the block under the cursor (and the selected block); "Always" outlines every block.', 'gutenview' ),
 		)
 	);
+
+	add_settings_field(
+		'gutenview_field_add_block_links',
+		__( 'Add-block hints', 'gutenview' ),
+		'gutenview_render_checkbox_field',
+		'gutenview',
+		'gutenview_section_discoverability',
+		array(
+			'key'         => 'add_block_links',
+			'label_for'   => 'gutenview_add_block_links',
+			'label'       => __( 'Show a persistent "+" between blocks', 'gutenview' ),
+			'description' => __( 'Places a faint "+" hint at each block boundary so you can see where new blocks go. As you approach it, it steps aside and WordPress\'s own inserter takes over, so clicking works exactly like normal.', 'gutenview' ),
+		)
+	);
 }
 add_action( 'admin_init', 'gutenview_register_settings' );
 
@@ -143,6 +157,7 @@ function gutenview_sanitize_settings( $input ) {
 	$output['enabled']             = ! empty( $input['enabled'] );
 	$output['view_same_tab']       = ! empty( $input['view_same_tab'] );
 	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
+	$output['add_block_links']     = ! empty( $input['add_block_links'] );
 
 	// Block outlines mode (whitelist).
 	$allowed_modes            = array( 'off', 'hover', 'always' );

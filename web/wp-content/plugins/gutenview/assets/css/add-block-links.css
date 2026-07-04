@@ -1,0 +1,56 @@
+/**
+ * GutenView — Add-block hints.
+ *
+ * A faint "ghost +" at each top-level block boundary as a persistent hint that a
+ * block can be inserted there. It is purely cosmetic (`pointer-events: none`), so
+ * it never intercepts anything; WordPress's own inserter does all the real work.
+ *
+ * Position comes from a custom property written by assets/js/add-block-links.js,
+ * which measures the theme's actual, variable gap:
+ *   --gutenview-gap  measured gap below the block (ghost is centered in it)
+ *
+ * No fade is needed: WordPress's own inserter is a high-z-index popover that
+ * renders on top of the ghost when you approach a boundary.
+ *
+ * @package GutenView
+ */
+
+/* Positioning context for the ghost. */
+.is-root-container > .block-editor-block-list__block {
+	position: relative;
+}
+
+/* The ghost "+", styled to match the native dark inserter toggle. */
+.is-root-container > .block-editor-block-list__block::after {
+	content: "";
+	/* JS sets this to "none" on the final block (no native inserter there). */
+	display: var( --gutenview-ghost-display, block );
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	/* Center in the gap: half the ghost's own height, plus half the measured gap. */
+	transform: translate( -50%, calc( 50% + var( --gutenview-gap, 0px ) / 2 ) );
+	z-index: 6;
+	width: 16px;
+	height: 16px;
+	border-radius: 2px;
+	background-color: #1e1e1e;
+	background-image: url( "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M11 5h2v14h-2zM5 11h14v2H5z'/%3E%3C/svg%3E" );
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 11px;
+	pointer-events: none;
+	/* Start hidden and fade in after a beat, so ghosts settle into their measured
+	   positions before appearing. */
+	opacity: 0;
+	animation: gutenview-ghost-fade-in 0.4s linear 1s forwards;
+}
+
+@keyframes gutenview-ghost-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.28;
+	}
+}
