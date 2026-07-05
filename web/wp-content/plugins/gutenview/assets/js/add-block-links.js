@@ -136,6 +136,13 @@
 			} else {
 				blocks[ i ].style.removeProperty( '--gutenview-ghost-display' );
 			}
+			// A void block (e.g. a separator <hr>) can't host ::after, so the ghost
+			// for the gap below it is carried by THIS block's ::before instead.
+			if ( i > 0 && 'HR' === blocks[ i - 1 ].tagName ) {
+				blocks[ i ].style.setProperty( '--gutenview-prevsep-gap', gapBelow( blocks, i - 1 ) + 'px' );
+			} else {
+				blocks[ i ].style.removeProperty( '--gutenview-prevsep-gap' );
+			}
 		}
 
 		updateColumns();

@@ -25,6 +25,7 @@
 
 /* Shared ghost appearance (matches the native dark inserter toggle). */
 .is-root-container > .block-editor-block-list__block::after,
+.is-root-container > hr.block-editor-block-list__block + .block-editor-block-list__block::before,
 .block-editor-block-list__block[data-type="core/column"]::after {
 	content: "";
 	position: absolute;
@@ -50,6 +51,17 @@
 	left: 50%;
 	bottom: 0;
 	transform: translate( -50%, calc( 50% + var( --gutenview-gap, 0px ) / 2 ) );
+}
+
+/*
+ * Void-block ghost: a separator is an <hr>, a void element that can't host
+ * ::after, so the ghost for the gap below it is rendered as the ::before of the
+ * following block (a real, non-void element) instead.
+ */
+.is-root-container > hr.block-editor-block-list__block + .block-editor-block-list__block::before {
+	left: 50%;
+	top: 0;
+	transform: translate( -50%, calc( -50% - var( --gutenview-prevsep-gap, 0px ) / 2 ) );
 }
 
 /* Between-column ghost: centered in the horizontal gap to the right of the column. */
