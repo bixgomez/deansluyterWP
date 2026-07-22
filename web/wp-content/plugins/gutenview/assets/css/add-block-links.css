@@ -72,6 +72,28 @@
 	transform: translate( calc( 50% + var( --gutenview-col-gap, 0px ) / 2 ), -50% );
 }
 
+/*
+ * When Gutenberg highlights a block (e.g. while hovering the parent-selector
+ * button), it draws its own ring on ::after with `inset: 0` — the same pseudo
+ * our ghost uses. Core never declares width/height, so our 16px box survives and
+ * traps the ring at ghost size, so it never appears. Hand the pseudo back to core
+ * for that moment; our ghost simply sits out, which is fine since it's transient
+ * and the ring is the more useful cue right then.
+ *
+ * Declared LAST so it also beats the block and column ghost rules above, which
+ * have the same specificity.
+ */
+.block-editor-block-list__block.is-highlighted::after {
+	display: block;
+	width: auto;
+	height: auto;
+	transform: none;
+	background: none;
+	border-radius: 0;
+	opacity: 1;
+	animation: none;
+}
+
 @keyframes gutenview-ghost-fade-in {
 	from {
 		opacity: 0;
