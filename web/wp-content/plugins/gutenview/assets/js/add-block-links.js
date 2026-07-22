@@ -21,6 +21,7 @@
 	'use strict';
 
 	var GAP_DEFAULT = 32; // px — ghost offset after the last block (no next block to measure).
+	var MAX_COLUMNS = 6;  // Core Columns caps at 6; past that, WP shows no "Add column" +.
 
 	var state = {
 		doc: null,
@@ -102,12 +103,38 @@
 	}
 
 	/**
+	 * How many column blocks are in this column's set (its parent Columns block).
+	 *
+	 * @param {Element} col
+	 * @return {number}
+	 */
+	function columnCount( col ) {
+		var parent = col.parentElement;
+		if ( ! parent ) {
+			return 1;
+		}
+		var n = 0;
+		for ( var i = 0; i < parent.children.length; i++ ) {
+			var child = parent.children[ i ];
+			if ( child.getAttribute && 'core/column' === child.getAttribute( 'data-type' ) ) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	/**
 	 * Measure horizontal gaps between columns and flag the last column of each set.
 	 */
 	function updateColumns() {
 		var cols = state.doc.querySelectorAll( '.block-editor-block-list__block[data-type="core/column"]' );
 		for ( var i = 0; i < cols.length; i++ ) {
 			var col = cols[ i ];
+			// At the max, WordPress shows no "Add column" +, so neither do we.
+			if ( columnCount( col ) >= MAX_COLUMNS ) {
+				col.style.setProperty( '--gutenview-col-ghost-display', 'none' );
+				continue;
+			}
 			var next = nextColumn( col );
 			if ( next ) {
 				var gap = Math.max( 0, Math.round( next.getBoundingClientRect().left - col.getBoundingClientRect().right ) );
