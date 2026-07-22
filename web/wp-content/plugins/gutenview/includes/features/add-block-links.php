@@ -63,7 +63,9 @@ function gutenview_add_block_links_enqueue_script() {
 	wp_enqueue_script(
 		'gutenview-add-block-links',
 		GUTENVIEW_URL . $rel_path,
-		array(),
+		// Needed to ask the editor whether the selected block is an untouched
+		// empty one, which decides whether the adjacent ghosts are honest.
+		array( 'wp-data', 'wp-blocks' ),
 		$version,
 		true
 	);

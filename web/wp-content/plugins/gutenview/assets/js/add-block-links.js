@@ -23,6 +23,9 @@
 	var GAP_DEFAULT = 32; // px — ghost offset after the last block (no next block to measure).
 	var MAX_COLUMNS = 6;  // Core Columns caps at 6; past that, WP shows no "Add column" +.
 
+	var subscribed = false;
+	var lastEmptyId = null;
+
 	var state = {
 		doc: null,
 		win: null,
@@ -67,6 +70,36 @@
 			}
 		}
 		return out;
+	}
+
+	/**
+	 * Client id of the selected block IF it is a brand-new, untouched default
+	 * block, otherwise null.
+	 *
+	 * Core deliberately offers no between-block inserter next to such a block —
+	 * the empty block already IS the insertion point — so a ghost in either
+	 * adjacent gap would promise something that can't be clicked.
+	 *
+	 * @return {string|null}
+	 */
+	function selectedEmptyBlockId() {
+		if ( ! window.wp || ! window.wp.data || ! window.wp.blocks ) {
+			return null;
+		}
+		try {
+			var select = window.wp.data.select( 'core/block-editor' );
+			var clientId = select.getSelectedBlockClientId();
+			if ( ! clientId || ! window.wp.blocks.isUnmodifiedDefaultBlock ) {
+				return null;
+			}
+			var block = select.getBlock( clientId );
+			if ( block && window.wp.blocks.isUnmodifiedDefaultBlock( block ) ) {
+				return clientId;
+			}
+		} catch ( e ) {
+			// Store API changed / unavailable — fail open (ghosts just stay visible).
+		}
+		return null;
 	}
 
 	/**
@@ -155,10 +188,26 @@
 
 		var blocks = topLevelBlocks();
 		var last = blocks.length - 1;
+		var emptyId = selectedEmptyBlockId();
+
 		for ( var i = 0; i < blocks.length; i++ ) {
 			blocks[ i ].style.setProperty( '--gutenview-gap', gapBelow( blocks, i ) + 'px' );
-			// No native inserter exists after the final block, so hide that ghost.
-			if ( i === last ) {
+
+			// No native inserter exists after the final block.
+			var hide = ( i === last );
+
+			// Nor in either gap touching a brand-new empty block, so don't promise one.
+			if ( emptyId ) {
+				var next = blocks[ i + 1 ];
+				if ( blocks[ i ].getAttribute( 'data-block' ) === emptyId ) {
+					hide = true; // Gap below the empty block.
+				}
+				if ( next && next.getAttribute( 'data-block' ) === emptyId ) {
+					hide = true; // Gap above the empty block.
+				}
+			}
+
+			if ( hide ) {
 				blocks[ i ].style.setProperty( '--gutenview-ghost-display', 'none' );
 			} else {
 				blocks[ i ].style.removeProperty( '--gutenview-ghost-display' );
@@ -231,9 +280,34 @@
 		}
 	}
 
+	/**
+	 * Re-run when the selected-empty-block state flips, since that decides whether
+	 * the adjacent ghosts should show. Selection changes are attribute changes,
+	 * which the DOM observers deliberately don't watch (far too noisy), so the
+	 * store is the right signal. Only schedules work when the value actually
+	 * changes, rather than on every store tick.
+	 */
+	function subscribeToSelection() {
+		if ( subscribed || ! window.wp || ! window.wp.data || ! window.wp.data.subscribe ) {
+			return;
+		}
+		subscribed = true;
+		window.wp.data.subscribe( function () {
+			var id = selectedEmptyBlockId();
+			if ( id !== lastEmptyId ) {
+				lastEmptyId = id;
+				schedulePositions();
+			}
+		} );
+	}
+
 	function boot() {
 		ensure();
-		setInterval( ensure, 1000 );
+		subscribeToSelection();
+		setInterval( function () {
+			ensure();
+			subscribeToSelection(); // Retry until wp.data is available.
+		}, 1000 );
 	}
 
 	if ( document.readyState !== 'loading' ) {
