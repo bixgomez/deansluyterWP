@@ -20,7 +20,7 @@
 
 .editor-styles-wrapper {
 	/* Tweak these to restyle every GutenView block outline. */
-	--gutenview-block-outline-color: #d5d8db;       /* resting (ambient) */
+	--gutenview-block-outline-color: rgba( 0, 0, 0, 0.1 ); /* resting (ambient) */
 	--gutenview-block-outline-color-hover: #9ea1a4; /* hover (medium) */
 
 	/*
