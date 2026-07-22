@@ -21,14 +21,19 @@
 .editor-styles-wrapper {
 	/* Tweak these to restyle every GutenView block outline. */
 	--gutenview-block-outline-color: rgba( 0, 0, 0, 0.1 ); /* resting (ambient) */
-	--gutenview-block-outline-color-hover: #9ea1a4; /* hover (medium) */
 
 	/*
-	 * Selection states borrow WordPress's own colour language, where blue means
-	 * "selected" / "about to be selected". Pulled from --wp-admin-theme-color so
-	 * it follows the user's admin colour scheme, with the ancestor tint derived
-	 * from that same blue so the pair always stays in family.
+	 * Everything selection-related borrows WordPress's own colour language, where
+	 * blue means "selected" / "about to be selected" — so hover, the containment
+	 * chain and the current block are all tints of the same admin blue, growing
+	 * stronger as they become more relevant to what you're doing:
+	 *
+	 *   ancestors (35%)  <  hover (50%)  <  selected (100%)
+	 *
+	 * All derived from --wp-admin-theme-color, so the whole ramp follows whatever
+	 * admin colour scheme the user has set.
 	 */
+	--gutenview-block-outline-color-hover: color-mix( in srgb, var( --wp-admin-theme-color, #3858e9 ) 50%, #fff );
 	--gutenview-block-outline-color-ancestor: color-mix( in srgb, var( --wp-admin-theme-color, #3858e9 ) 35%, #fff );
 	--gutenview-block-outline-color-active: var( --wp-admin-theme-color, #3858e9 );
 }
