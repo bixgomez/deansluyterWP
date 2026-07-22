@@ -64,6 +64,7 @@ function gutenview_bootstrap() {
 		require_once GUTENVIEW_DIR . 'includes/features/block-outlines.php';
 		require_once GUTENVIEW_DIR . 'includes/features/add-block-links.php';
 		require_once GUTENVIEW_DIR . 'includes/features/remove-block-button.php';
+		require_once GUTENVIEW_DIR . 'includes/features/end-block-inserter.php';
 	}
 }
 add_action( 'plugins_loaded', 'gutenview_bootstrap' );

@@ -153,6 +153,20 @@ function gutenview_register_settings() {
 			'description' => __( 'Puts a matching minus button next to the "+" that appears on a new empty block, so an accidentally added block can be removed on the spot instead of hunting through the toolbar menu.', 'gutenview' ),
 		)
 	);
+
+	add_settings_field(
+		'gutenview_field_end_block_inserter',
+		__( 'Add-block button at the end', 'gutenview' ),
+		'gutenview_render_checkbox_field',
+		'gutenview',
+		'gutenview_section_discoverability',
+		array(
+			'key'         => 'end_block_inserter',
+			'label_for'   => 'gutenview_end_block_inserter',
+			'label'       => __( 'Show a "+" below the last block', 'gutenview' ),
+			'description' => __( 'Adds a working "add block" button beneath the final top-level block, so there is always an obvious place to continue writing instead of hunting for the right spot to click.', 'gutenview' ),
+		)
+	);
 }
 add_action( 'admin_init', 'gutenview_register_settings' );
 
@@ -173,6 +187,7 @@ function gutenview_sanitize_settings( $input ) {
 	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
 	$output['add_block_links']     = ! empty( $input['add_block_links'] );
 	$output['remove_block_button'] = ! empty( $input['remove_block_button'] );
+	$output['end_block_inserter']  = ! empty( $input['end_block_inserter'] );
 
 	// Block outlines mode (whitelist).
 	$allowed_modes            = array( 'off', 'hover', 'always' );
