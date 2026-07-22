@@ -28,6 +28,7 @@ function gutenview_default_settings() {
 		'reposition_snackbar' => false, // Move the "saved" notice up near the Save button.
 		'block_outlines'      => 'off', // Block boundary outlines: 'off' | 'hover' | 'always'.
 		'add_block_links'     => false, // Persistent "ghost +" hint between top-level blocks.
+		'remove_block_button' => false, // "Minus" button beside the empty-block inserter.
 	);
 }
 

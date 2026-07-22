@@ -139,6 +139,20 @@ function gutenview_register_settings() {
 			'description' => __( 'Places a faint "+" hint at each block boundary so you can see where new blocks go. As you approach it, it steps aside and WordPress\'s own inserter takes over, so clicking works exactly like normal.', 'gutenview' ),
 		)
 	);
+
+	add_settings_field(
+		'gutenview_field_remove_block_button',
+		__( 'Remove-block button', 'gutenview' ),
+		'gutenview_render_checkbox_field',
+		'gutenview',
+		'gutenview_section_discoverability',
+		array(
+			'key'         => 'remove_block_button',
+			'label_for'   => 'gutenview_remove_block_button',
+			'label'       => __( 'Add a "remove block" button beside the new-block "+"', 'gutenview' ),
+			'description' => __( 'Puts a matching minus button next to the "+" that appears on a new empty block, so an accidentally added block can be removed on the spot instead of hunting through the toolbar menu.', 'gutenview' ),
+		)
+	);
 }
 add_action( 'admin_init', 'gutenview_register_settings' );
 
@@ -158,6 +172,7 @@ function gutenview_sanitize_settings( $input ) {
 	$output['view_same_tab']       = ! empty( $input['view_same_tab'] );
 	$output['reposition_snackbar'] = ! empty( $input['reposition_snackbar'] );
 	$output['add_block_links']     = ! empty( $input['add_block_links'] );
+	$output['remove_block_button'] = ! empty( $input['remove_block_button'] );
 
 	// Block outlines mode (whitelist).
 	$allowed_modes            = array( 'off', 'hover', 'always' );
