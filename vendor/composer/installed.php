@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-2026.07.02c--books-page-blocks',
-        'version' => 'dev-2026.07.02c--books-page-blocks',
-        'reference' => '79733c965cad80d2a32bc2eaeec712b53dcc7dbb',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'a14b860fd17df0f7d92ac87abacaa594c76732a7',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-2026.07.02c--books-page-blocks',
-            'version' => 'dev-2026.07.02c--books-page-blocks',
-            'reference' => '79733c965cad80d2a32bc2eaeec712b53dcc7dbb',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'a14b860fd17df0f7d92ac87abacaa594c76732a7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

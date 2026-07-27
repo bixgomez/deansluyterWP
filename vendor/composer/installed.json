@@ -341,6 +341,6 @@
             "install-path": "../../wp-content/plugins/carbon-fields-plugin"
         }
     ],
-    "dev": true,
+    "dev": false,
     "dev-package-names": []
 }
