@@ -1,0 +1,10 @@
+# Plugins/themes excluded from automatic updates on THIS site.
+# One slug per line. Read by ~/bin/update-sites.sh.
+#
+# These are licensed products: they report updates but need a valid key, so
+# automating them either fails nightly or silently does nothing. They are
+# reported as "MANUAL UPDATE NEEDED" instead, and updated through the vendor.
+
+advanced-custom-fields-pro
+gravityforms
+gravityformsconstantcontact
