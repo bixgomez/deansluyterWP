@@ -5,5 +5,3 @@
 # automating them either fails nightly or silently does nothing. They are
 # reported as "MANUAL UPDATE NEEDED" instead, and updated through the vendor.
 
-gravityforms
-gravityformsconstantcontact
