@@ -1,5 +1,11 @@
-// @import "breakpoint";
-// @import "config/config";
+@import "breakpoint";
+@import "config/config";
+
+// Match the block width in the editor to the front-end content width.
+.editor-styles-wrapper .wp-block {
+  max-width: $max-site-width - ($site-padding * 2);
+}
+
 // // @import "base/base";
 // @import "typography/typography";
 // @import "layout/layout";

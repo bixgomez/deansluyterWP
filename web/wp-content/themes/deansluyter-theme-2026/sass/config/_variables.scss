@@ -19,8 +19,8 @@ $color--header: $color--gray-lightest;
 $color--footer: lighten($color--header, 5%);
 
 // Typography variables.
-$font-choice--base: 'Open Sans', 'Lato', 'Merriweather', Palatino, Times, serif;
-$font-choice--heading: 'Josefin Sans X','Montserrat', Helvetica, Arial, sans-serif;
+$font-choice--base: 'Open Sans', Palatino, Times, serif;
+$font-choice--heading: 'Montserrat', Helvetica, Arial, sans-serif;
 
 $font-size--html: 16px;
 $font-size--base: 1rem;
