@@ -476,6 +476,70 @@ class GF_ConstantContact extends GFFeedAddOn {
 	}
 
 	/**
+	 * Get a lookup array of Constant Contact single_select and multi_select custom fields and their choices.
+	 *
+	 * Used by build_subscriber_details() to translate a submitted choices into
+	 * the choice_id(s) Constant Contact expects for single_select and multi_select custom fields.
+	 *
+	 * Results are cached in a transient for 1 hour.
+	 *
+	 * @since 1.8.1
+	 *
+	 * @return array Array keyed by custom_field_id. Each value is an array of
+	 *               choices, each containing 'choice_label' and 'choice_id'.
+	 *               Example:
+	 *               array(
+	 *                   'abc-123' => array(
+	 *                       array( 'choice_label' => 'Gold', 'choice_id' => 21249 ),
+	 *                       array( 'choice_label' => 'Silver', 'choice_id' => 28784 ),
+	 *                   ),
+	 *               )
+	 */
+	private function get_select_fields() {
+		$transient_key = 'gf_constantcontact_select_fields_' . get_current_blog_id();
+
+		$cached_fields = get_transient( $transient_key );
+
+		if ( false !== $cached_fields ) {
+			return $cached_fields;
+		}
+
+		$select_fields = array();
+
+		if ( ! $this->initialize_api() ) {
+			return $select_fields;
+		}
+
+		$custom_fields = $this->api->get_custom_fields();
+
+		if ( is_wp_error( $custom_fields ) || empty( $custom_fields['custom_fields'] ) ) {
+			return $select_fields;
+		}
+
+		if ( is_array( $custom_fields['custom_fields'] ) ) {
+			foreach ( $custom_fields['custom_fields'] as $field ) {
+				if ( rgar( $field, 'type', false ) && ( $field['type'] === 'multi_select' || $field['type'] === 'single_select' ) ) {
+					$id = rgar( $field, 'custom_field_id' );
+					$select_fields[ $id ] = array();
+
+					if ( rgar( $field, 'choices', false ) && is_array( $field['choices'] ) ) {
+						foreach ( $field['choices'] as $choice ) {
+							$select_fields[ $id ][] = array(
+								'choice_label' => rgar( $choice, 'choice_label' ),
+								'choice_id'    => rgar( $choice, 'choice_id' ),
+							);
+						}
+					}
+				}
+			}
+		}
+
+		set_transient( $transient_key, $select_fields, HOUR_IN_SECONDS );
+
+		return $select_fields;
+	}
+
+	/**
 	 * Add custom fields for mapping.
 	 *
 	 * @since 1.0
@@ -1092,7 +1156,7 @@ class GF_ConstantContact extends GFFeedAddOn {
 			return new WP_Error( 'invalid_subscriber_details', 'The subscriber details were invalid.' );
 		}
 
-		$subscription_results = $this->subscribe_to_list( $subscriber_details, rgar( $entry, 'id' ) );
+		$subscription_results = $this->subscribe_to_list( $subscriber_details, rgar( $entry, 'id' ), $feed, $entry, $form );
 
 		if ( is_wp_error( $subscription_results ) ) {
 			$this->add_feed_error( sprintf( esc_html__( 'Unable to add/update subscriber: %s', 'gravityformsconstantcontact' ), $subscription_results->get_error_message() ), $feed, $entry, $form );
@@ -1198,12 +1262,50 @@ class GF_ConstantContact extends GFFeedAddOn {
 
 				$field_value = $this->get_field_value( $form, $entry, $custom_field['value'] );
 
-				if ( ! rgblank( $field_value ) ) {
-					$subscriber_details['custom_fields'][] = array(
-						'custom_field_id' => $custom_field['key'],
-						'value'           => $field_value,
-					);
+				if ( rgblank( $field_value ) ) {
+					continue;
 				}
+
+				$field = GFFormsModel::get_field( $form, $custom_field['value'] );
+
+				$select_fields  = array();
+				$choices_fields = array( 'checkbox', 'radio', 'select', 'multiselect' ); // This includes Multiple Choice fields.
+
+				// Get CC single_select and multi_select fields only when mapped one of the supported field types.
+				if ( is_object( $field ) && in_array( $field->get_input_type(), $choices_fields ) ) {
+					// Lookup of single_select and multi_select custom fields data.
+					$select_fields = $this->get_select_fields();
+				}
+
+				// If this custom_field_id is a single_select or multi_select field, translate the GF selected choices into CC field choice_ids.
+				if ( isset( $select_fields[ $custom_field['key'] ] ) ) {
+					$choices          = $select_fields[ $custom_field['key'] ];
+					$selected_choices = array_map( 'trim', explode( ',', $field_value ) );
+					$selected_choices = array_map( 'strtolower', $selected_choices );
+					$choice_ids       = array();
+
+					foreach ( $choices as $choice ) {
+						if ( in_array( strtolower( $choice['choice_label'] ), $selected_choices, true ) ) {
+							$choice_ids[] = $choice['choice_id'];
+						}
+					}
+
+					if ( ! empty( $choice_ids ) ) {
+						$subscriber_details['custom_fields'][] = array(
+							'custom_field_id' => $custom_field['key'],
+							'choice_ids'      => $choice_ids,
+						);
+					} else {
+						$this->log_debug( __METHOD__ . '(): No matching choices found for custom field ' . $custom_field['key'] . ' with value ' . $field_value );
+					}
+
+					continue;
+				}
+
+				$subscriber_details['custom_fields'][] = array(
+					'custom_field_id' => $custom_field['key'],
+					'value'           => $field_value,
+				);
 			}
 		}
 
@@ -1223,14 +1325,18 @@ class GF_ConstantContact extends GFFeedAddOn {
 	 * Subscribe a contact to lists
 	 *
 	 * @since 1.0
-	 * @since 1.8 Added the $entry_id param.
+	 * @since 1.8.0 Added the $entry_id param.
+	 * @since 1.8.1 Added the $feed, $entry, and $form params.
 	 *
 	 * @param array    $subscriber_details Subscriber details.
 	 * @param null|int $entry_id           The ID of the entry being processed.
+	 * @param array    $feed               The feed being processed.
+	 * @param array    $entry              The entry being processed.
+	 * @param array    $form               The form being processed.
 	 *
 	 * @return true|WP_Error
 	 */
-	public function subscribe_to_list( $subscriber_details = array(), $entry_id = null ) {
+	public function subscribe_to_list( $subscriber_details = array(), $entry_id = null, $feed = array(), $entry = array(), $form = array() ) {
 		foreach ( $subscriber_details as $key => $detail ) {
 			if ( is_string( $detail ) ) {
 				$detail = trim( $detail );
@@ -1241,8 +1347,25 @@ class GF_ConstantContact extends GFFeedAddOn {
 			}
 		}
 
-		$contact    = $this->api->contact_exists( $subscriber_details['email_address']['address'] );
-		$contact_id = is_wp_error( $contact ) ? false : rgar( $contact, 'contact_id', false );
+		$contact = $this->api->contact_exists( $subscriber_details['email_address']['address'] );
+		if ( is_wp_error( $contact ) ) {
+			$contact = array();
+		}
+
+		/**
+		 * Allows the subscriber details to be modified before being sent to Constant Contact.
+		 *
+		 * @since 1.8.1
+		 *
+		 * @param array $subscriber_details Subscriber details.
+		 * @param array $feed               The feed being processed.
+		 * @param array $entry              The entry being processed.
+		 * @param array $form               The form being processed.
+		 * @param array $contact            The existing contact details or an empty array.
+		 */
+		$subscriber_details = apply_filters( 'gform_constantcontact_subscriber_details', $subscriber_details, $feed, $entry, $form, $contact );
+
+		$contact_id = rgar( $contact, 'contact_id', false );
 		$action     = ( $contact_id ) ? 'updated' : 'added';
 
 		// Log the subscriber to be added or updated.
